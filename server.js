@@ -332,7 +332,7 @@ app.get('/dashboard', (req, res) => {
 // ─────────────────────────────────────────────
 // Start
 // ─────────────────────────────────────────────
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ╔══════════════════════════════════════════╗
 ║  Chameleon Server running on port ${PORT}   ║
