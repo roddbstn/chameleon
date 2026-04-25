@@ -9,7 +9,7 @@
   'use strict';
 
   // ── 설정 ───────────────────────────────────
-  const CHAMELEON_SERVER = 'https://brave-geography-function-lens.trycloudflare.com';
+  const CHAMELEON_SERVER = 'https://chameleon-production-7bf7.up.railway.app';
   // 카페24 전역 객체에서 mall_id 추출, 없으면 hostname에서 추출
   const MALL_ID =
     (window.CAFE24 && (CAFE24?.SHOP?.MALL_ID || CAFE24?.GLOBAL_INFO?.mall_id)) ||
