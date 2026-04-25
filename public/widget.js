@@ -432,12 +432,6 @@
       Promise.resolve(collectSignals()),
     ]);
 
-    const product = getProductInfo();
-    console.log('[Chameleon] Config:', config);
-    console.log('[Chameleon] Signals:', signals);
-    console.log('[Chameleon] Product:', product);
-
-    await new Promise(r => setTimeout(r, 3000));
     signals.scrollDepth = Math.round(
       (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
     );
