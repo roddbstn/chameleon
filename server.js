@@ -30,6 +30,12 @@ app.use(express.static(path.join(__dirname, 'public'), {
   },
 }));
 
+// widget.js 명시적 라우트 — Cafe24 CORS 검증용
+app.get('/widget.js', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.sendFile(path.join(__dirname, 'public', 'widget.js'));
+});
+
 const {
   CAFE24_CLIENT_ID,
   CAFE24_CLIENT_SECRET,
