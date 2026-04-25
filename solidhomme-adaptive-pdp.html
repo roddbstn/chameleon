@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>블랙 테리 밴딩 쇼츠 — SOLIDHOMME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: #000;
+    background: #fff;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { cursor: pointer; font-family: inherit; }
+
+  /* ── Demo Persona Bar (Kinect-style) ── */
+  .demo-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 9999;
+    background: #FAFAF8;
+    border-bottom: 1px solid #E8E8E4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 20px 12px;
+    gap: 10px;
+  }
+  .demo-bar-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: #888;
+    text-transform: uppercase;
+  }
+  .demo-bar-label span {
+    color: #C0392B;
+    font-weight: 500;
+  }
+  .persona-tabs {
+    display: flex;
+    gap: 8px;
+  }
+  .persona-tab {
+    background: transparent;
+    border: 1.5px solid #C8C8C2;
+    border-radius: 999px;
+    padding: 6px 18px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: #666;
+    transition: all 0.2s ease;
+    font-weight: 400;
+  }
+  .persona-tab:hover { border-color: #333; color: #333; }
+  .persona-tab.active {
+    background: #1A1A1A;
+    border-color: #1A1A1A;
+    color: #fff;
+    font-weight: 400;
+  }
+
+  /* ── Site Header ── */
+  .site-header {
+    margin-top: 80px; /* offset for demo-bar */
+    padding: 0 30px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #E1E1E1;
+  }
+  .site-logo {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .site-nav {
+    display: flex;
+    gap: 22px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: #555;
+  }
+  .site-nav a:hover { color: #000; }
+  .site-actions {
+    display: flex;
+    gap: 18px;
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Breadcrumb ── */
+  .breadcrumb {
+    padding: 12px 30px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: #999;
+  }
+  .breadcrumb span { margin: 0 6px; }
+
+  /* ── Product Layout ── */
+  .product-wrap {
+    display: flex;
+    align-items: flex-start;
+    padding: 0 0 100px;
+  }
+
+  /* ── Left: Images ── */
+  .product-images {
+    width: 60%;
+    padding: 0 0 0 30px;
+  }
+  .product-images ul {
+    list-style: none;
+  }
+  .product-images ul li {
+    padding: 20px 0 60px;
+    text-align: center;
+  }
+  .product-images ul li img {
+    width: 100%;
+    max-width: 640px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* ── Right: Info ── */
+  .product-info {
+    width: 40%;
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding: 40px 30px 30px 20px;
+    scrollbar-width: none;
+  }
+  .product-info::-webkit-scrollbar { display: none; }
+
+  .product-code {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #999;
+    margin-bottom: 10px;
+  }
+  .product-name {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+  .product-price {
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-align: right;
+    margin-bottom: 24px;
+    color: #000;
+  }
+  .product-desc {
+    font-size: 11px;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+    color: #444;
+    border-top: 1px solid #EEE;
+    padding-top: 18px;
+    margin-bottom: 24px;
+  }
+
+  /* ── Size Options ── */
+  .size-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .size-options {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .size-btn {
+    border: 1px solid #000;
+    background: transparent;
+    padding: 0 14px;
+    height: 26px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    transition: all 0.15s;
+  }
+  .size-btn:hover, .size-btn.selected {
+    background: #000;
+    color: #fff;
+  }
+  .size-btn.soldout {
+    border-color: #CCC;
+    color: #CCC;
+    cursor: not-allowed;
+  }
+
+  /* ── Buttons ── */
+  .btn-cart {
+    width: 100%;
+    height: 44px;
+    background: #000;
+    color: #fff;
+    border: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    transition: opacity 0.2s;
+  }
+  .btn-cart:hover { opacity: 0.75; }
+  .btn-wish {
+    width: 100%;
+    height: 44px;
+    background: transparent;
+    border: 1px solid #000;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    margin-bottom: 24px;
+  }
+  .btn-wish:hover { background: #F5F5F5; }
+
+  /* ── Adaptive PDP Panel ── */
+  .adaptive-panel {
+    border-top: 1px solid #E8E8E4;
+    padding-top: 20px;
+    animation: fadeUp 0.35s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .intent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+  .intent-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Persona color themes */
+  .theme-fashion  .intent-badge { background: #FEF3F0; color: #C0392B; }
+  .theme-fashion  .intent-badge .dot { background: #C0392B; }
+  .theme-fashion  .ai-card { border-color: #F9DDD8; background: #FEF8F7; }
+  .theme-fashion  .ai-card-title { color: #C0392B; }
+  .theme-fashion  .ai-card-icon { color: #C0392B; }
+
+  .theme-gift  .intent-badge { background: #F3F3F3; color: #333; }
+  .theme-gift  .intent-badge .dot { background: #555; }
+  .theme-gift  .ai-card { border-color: #E8E8E8; background: #F8F8F8; }
+  .theme-gift  .ai-card-title { color: #222; }
+
+  .theme-repeat  .intent-badge { background: #FEF3F0; color: #C0392B; }
+  .theme-repeat  .intent-badge .dot { background: #C0392B; }
+  .theme-repeat  .ai-card { border-color: #F9DDD8; background: #FEF8F7; }
+  .theme-repeat  .ai-card-title { color: #C0392B; }
+
+  .ai-card {
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .ai-card-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px;
+  }
+  .ai-card-icon {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    flex-shrink: 0;
+  }
+  .ai-card-title {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .ai-card-body {
+    font-size: 11px;
+    line-height: 1.85;
+    color: #444;
+    letter-spacing: 0.03em;
+  }
+
+  .faq-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .faq-chip {
+    border: 1px solid #D0D0CC;
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    color: #555;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .faq-chip:hover { border-color: #888; color: #222; }
+
+  .upsell-row {
+    background: #F8F8F6;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: #555;
+    line-height: 1.6;
+  }
+  .upsell-row::before {
+    content: '💡 ';
+  }
+
+  /* ── Additional Info ── */
+  .prd-add-info {
+    margin-top: 20px;
+    border-top: 1px solid #EEE;
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .prd-add-info a {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: #444;
+    position: relative;
+    padding-left: 12px;
+    cursor: pointer;
+  }
+  .prd-add-info a::before {
+    content: '';
+    width: 3px; height: 3px;
+    background: #000;
+    border-radius: 50%;
+    position: absolute;
+    left: 0; top: 7px;
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid #E1E1E1;
+    padding: 40px 30px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     DEMO BAR (Kinect-style persona switcher)
+══════════════════════════════════════ -->
+<div class="demo-bar">
+  <div class="demo-bar-label">
+    <span>Chameleon</span> — 같은 상품, 같은 URL. 방문자에 따라 페이지가 달라집니다.
+  </div>
+  <div class="persona-tabs">
+    <button class="persona-tab active" data-persona="fashion">패션 피플</button>
+    <button class="persona-tab" data-persona="gift">선물 구매자</button>
+    <button class="persona-tab" data-persona="repeat">재방문 고객</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SITE HEADER
+══════════════════════════════════════ -->
+<header class="site-header">
+  <div class="site-logo">SOLIDHOMME</div>
+  <nav class="site-nav">
+    <a href="#">Shopping</a>
+    <a href="#">Outerwear</a>
+    <a href="#">Tops</a>
+    <a href="#">Bottoms</a>
+    <a href="#">Footwear & Accessories</a>
+    <a href="#">Collections</a>
+  </nav>
+  <div class="site-actions">
+    <a href="#">Search</a>
+    <a href="#">Account</a>
+    <a href="#">Bag (0)</a>
+  </div>
+</header>
+
+<div class="breadcrumb">
+  Bottoms <span>›</span> Shorts <span>›</span> 블랙 테리 밴딩 쇼츠
+</div>
+
+<!-- ══════════════════════════════════════
+     PRODUCT DETAIL
+══════════════════════════════════════ -->
+<div class="product-wrap">
+
+  <!-- Left: Product Images -->
+  <div class="product-images">
+    <ul>
+      <li>
+        <img
+          src="https://solidhomme.com/web/product/extra/small/202604/a27bc8ab62da1576ce877b5f22ea269e.jpg"
+          alt="블랙 테리 밴딩 쇼츠 1"
+          onerror="this.style.background='#F3F3F3';this.style.minHeight='600px';this.removeAttribute('src')"
+        >
+      </li>
+      <li>
+        <img
+          src="https://solidhomme.com/web/product/extra/small/202604/053b5c4d22891f90b2ec770e875026ca.jpg"
+          alt="블랙 테리 밴딩 쇼츠 2"
+          onerror="this.style.background='#F3F3F3';this.style.minHeight='600px';this.removeAttribute('src')"
+        >
+      </li>
+      <li>
+        <img
+          src="https://solidhomme.com/web/product/extra/small/202604/69aa4393ae22dc78ccbff1c78a438a5b.jpg"
+          alt="블랙 테리 밴딩 쇼츠 3"
+          onerror="this.style.background='#F3F3F3';this.style.minHeight='600px';this.removeAttribute('src')"
+        >
+      </li>
+      <li>
+        <img
+          src="https://solidhomme.com/web/product/extra/small/202604/284f3bcaa33fca880db66792ffdbe05c.jpg"
+          alt="블랙 테리 밴딩 쇼츠 4"
+          onerror="this.style.background='#F3F3F3';this.style.minHeight='600px';this.removeAttribute('src')"
+        >
+      </li>
+    </ul>
+  </div>
+
+  <!-- Right: Product Info -->
+  <div class="product-info" id="productInfo">
+
+    <p class="product-code">S261PTB1341B</p>
+    <p class="product-name">블랙 테리 밴딩 쇼츠</p>
+    <div class="product-price">KRW 328,000</div>
+
+    <div class="product-desc">
+      쇼츠 아이템. 밴딩 디테일. 폴리에스터 텍스처.<br><br>
+      OUTSHELL: POLYESTER 100%<br>
+      JAPANESE FABRIC
+    </div>
+
+    <div class="size-label">Size</div>
+    <div class="size-options">
+      <button class="size-btn selected">30</button>
+      <button class="size-btn">32</button>
+      <button class="size-btn">34</button>
+      <button class="size-btn soldout">36</button>
+    </div>
+
+    <button class="btn-cart">Add to Bag</button>
+    <button class="btn-wish">Wishlist</button>
+
+    <!-- ── Adaptive PDP Panel ── -->
+    <div class="adaptive-panel theme-fashion" id="adaptivePanel">
+      <!-- content injected by JS -->
+    </div>
+
+    <div class="prd-add-info">
+      <a>Size Guide</a>
+      <a>Shipping &amp; Returns</a>
+      <a>제품 안내사항</a>
+      <a>Benefits</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="site-footer">
+  <div>© 2025 SOLIDHOMME. All rights reserved.</div>
+  <div>서울특별시 강남구 압구정로 46길 20</div>
+</footer>
+
+<script>
+// ── Persona Data ──────────────────────────────────────────────
+const personas = {
+  fashion: {
+    theme: 'theme-fashion',
+    badge: '시즌 키 아이템',
+    cardTitle: '이번 시즌 룩을 완성하는 쇼츠',
+    cardBody: `테리 패브릭의 리치한 텍스처와 밴딩 디테일이 만들어내는 구조적인 실루엣.
+일본산 원단 특유의 중량감이 캐주얼과 세미포멀의 경계를 허문다.
+스타일링 만족도 4.7/5 — "오버사이즈 셔츠와 레이어드하면 완벽."`,
+    chips: ['어떤 상의와 매칭해요?', '일본 원단 퀄리티는?', '세탁 후 수축 있나요?'],
+    upsell: '이 쇼츠와 함께 구매한 고객: 블랙 크루 삭스 + 모노 슬립온'
+  },
+  gift: {
+    theme: 'theme-gift',
+    badge: '선물 추천',
+    cardTitle: '받는 사람이 더 좋아할 선물',
+    cardBody: `무난한 블랙 컬러에 고급스러운 테리 소재 — 취향을 타지 않아요.
+밴딩 핏이라 사이즈 걱정 없이 고를 수 있습니다.
+2일 이내 배송 가능 · 브랜드 쇼핑백 기본 포함 · 60일 이내 사이즈 교환 보장.`,
+    chips: ['사이즈 교환 되나요?', '선물 포장 가능한가요?', '영수증 없이 교환 되나요?'],
+    upsell: '선물세트로 구성하기: 쇼츠 + 솔리드홈므 에코백 (+₩18,000)'
+  },
+  repeat: {
+    theme: 'theme-repeat',
+    badge: '재방문 고객',
+    cardTitle: '지난 시즌 쇼츠의 업데이트 버전입니다',
+    cardBody: `기존 핏 그대로 — 소재만 일본산으로 업그레이드되었습니다.
+현재 30, 32 사이즈 재고 있음.
+재구매 시 무료배송 + 로열티 포인트 2배 적립.`,
+    chips: ['이전 버전과 핏 같나요?', '포인트 적립 언제 되나요?', '같은 시즌 다른 아이템은?'],
+    upsell: '8개월 전 구매 고객 검증 완료 — 동일 핏으로 리오더하기'
+  }
+};
+
+// ── Render Panel ──────────────────────────────────────────────
+function renderPanel(key) {
+  const p = personas[key];
+  const panel = document.getElementById('adaptivePanel');
+
+  // Swap theme class
+  panel.className = `adaptive-panel ${p.theme}`;
+
+  panel.innerHTML = `
+    <div class="intent-badge">
+      <span class="dot"></span>${p.badge}
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-header">
+        <span class="ai-card-icon"></span>
+        <span class="ai-card-title">${p.cardTitle}</span>
+      </div>
+      <div class="ai-card-body">${p.cardBody.replace(/\n/g, '<br>')}</div>
+    </div>
+    <div class="faq-chips">
+      ${p.chips.map(c => `<button class="faq-chip">${c}</button>`).join('')}
+    </div>
+    <div class="upsell-row">${p.upsell}</div>
+  `;
+}
+
+// ── Tab Switching ─────────────────────────────────────────────
+document.querySelectorAll('.persona-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.persona-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderPanel(tab.dataset.persona);
+  });
+});
+
+// Size button toggle
+document.querySelectorAll('.size-btn:not(.soldout)').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+});
+
+// ── Initial Render ────────────────────────────────────────────
+renderPanel('fashion');
+</script>
+</body>
+</html>
