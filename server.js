@@ -177,7 +177,7 @@ app.get('/auth/callback', async (req, res) => {
 // widget.js를 카페24 스토어의 지정 페이지에 자동 삽입
 // ─────────────────────────────────────────────
 async function registerScripttag(mallId, accessToken) {
-  const widgetUrl = `${APP_BASE_URL}/widget.js`;
+  const widgetUrl = 'https://cdn.jsdelivr.net/gh/roddbstn/chameleon@main/public/widget.js';
   const apiHeaders = { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' };
 
   // 기존 scripttag 전부 삭제 (이전 URL 충돌 방지)
