@@ -10,20 +10,13 @@
 
 require('dotenv').config();
 const express = require('express');
+const cors    = require('cors');
 const axios   = require('axios');
 const path    = require('path');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
-
-// 카페24 스토어 브라우저에서 우리 서버로 오는 모든 요청에 CORS 허용
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.sendStatus(204);
-  next();
-});
 app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -185,31 +178,32 @@ app.get('/auth/callback', async (req, res) => {
 // ─────────────────────────────────────────────
 async function registerScripttag(mallId, accessToken) {
   const widgetUrl = `${APP_BASE_URL}/widget.js`;
+  const apiHeaders = { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' };
 
-  // 기존 태그 중복 방지: 먼저 목록 조회 후 같은 src 있으면 스킵
+  // 기존 scripttag 전부 삭제 (이전 URL 충돌 방지)
   const listRes = await axios.get(
     `https://${mallId}.cafe24api.com/api/v2/admin/scripttags`,
-    { headers: { Authorization: `Bearer ${accessToken}` } }
+    { headers: apiHeaders }
   );
-
   const existing = listRes.data.scripttags || [];
-  const alreadyRegistered = existing.some(t => t.src === widgetUrl);
-
-  if (alreadyRegistered) {
-    console.log(`[Scripttag] Already registered for ${mallId}`);
-    return;
+  for (const tag of existing) {
+    await axios.delete(
+      `https://${mallId}.cafe24api.com/api/v2/admin/scripttags/${tag.script_no}`,
+      { headers: apiHeaders }
+    );
+    console.log(`[Scripttag] Deleted old tag: ${tag.src}`);
   }
 
-  // 등록
+  // 새 URL로 등록
   const res = await axios.post(
     `https://${mallId}.cafe24api.com/api/v2/admin/scripttags`,
     {
       request: {
         src: widgetUrl,
-        display_location: ['PRODUCT_DETAIL'], // 상품 상세 페이지에만 로드
+        display_location: ['PRODUCT_DETAIL'],
       },
     },
-    { headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' } }
+    { headers: apiHeaders }
   );
 
   console.log(`[Scripttag] Registered: ${widgetUrl} on ${mallId}`);
