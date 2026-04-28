@@ -857,19 +857,25 @@
 
     const chatHistory = [];
 
-    const SIDEBAR_W = '340px';
+    const SIDEBAR_W = 340;
+    const EASE = 'cubic-bezier(0.4,0,0.2,1)';
 
     function openSidebar() {
       panel.classList.add('cml-open');
       tab.classList.add('cml-hidden');
-      document.body.style.transition = 'margin-right 0.28s cubic-bezier(0.4,0,0.2,1)';
-      document.body.style.marginRight = SIDEBAR_W;
+      const t = `width 0.28s ${EASE}, max-width 0.28s ${EASE}`;
+      document.documentElement.style.transition = t;
+      document.body.style.transition = t;
+      document.documentElement.style.maxWidth = `calc(100vw - ${SIDEBAR_W}px)`;
+      document.documentElement.style.overflowX = 'hidden';
+      document.body.style.width = '100%';
       inputEl.focus();
     }
     function closeSidebar() {
       panel.classList.remove('cml-open');
       tab.classList.remove('cml-hidden');
-      document.body.style.marginRight = '0';
+      document.documentElement.style.maxWidth = '';
+      document.documentElement.style.overflowX = '';
     }
     tab.addEventListener('click', openSidebar);
     closeBtn.addEventListener('click', closeSidebar);
