@@ -211,7 +211,15 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   // 벡터 검색
   const searchQuery = intent.search_query || query;
   const queryEmbedding = await embedQuery(searchQuery);
-  const products = await vectorSearch(queryEmbedding, mallId);
+  const rawProducts = await vectorSearch(queryEmbedding, mallId);
+
+  // product_id 기준 중복 제거
+  const seen = new Set();
+  const products = rawProducts.filter(p => {
+    if (seen.has(p.product_id)) return false;
+    seen.add(p.product_id);
+    return true;
+  });
 
   if (!products.length) {
     return {
@@ -220,6 +228,17 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
       products: [],
     };
   }
+
+  // 이미지 URL 일괄 조회 (raw_data.list_image)
+  const productIds = products.map(p => p.product_id);
+  const { data: imgRows } = await supabase
+    .from('products')
+    .select('product_id, raw_data')
+    .in('product_id', productIds);
+  const imgMap = {};
+  (imgRows || []).forEach(r => {
+    imgMap[r.product_id] = r.raw_data?.list_image || r.raw_data?.detail_image || null;
+  });
 
   // 브랜드 프로필 조회
   const { data: brandProfile } = await supabase
@@ -232,10 +251,12 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   const message = await generateRecommendation(query, intent, products, brandProfile);
   await logApiCost(mallId, 'response_generation', 3000, 600);
 
-  // 추천에 언급된 상품 인덱스 파싱 ([1], [2], [3])
-  const mentionedIndices = [...message.matchAll(/\[(\d+)\]/g)]
-    .map(m => parseInt(m[1]) - 1)
-    .filter(i => i >= 0 && i < products.length);
+  // 추천에 언급된 상품 인덱스 파싱 ([1], [2], [3]) — 중복 인덱스도 제거
+  const mentionedIndices = [...new Set(
+    [...message.matchAll(/\[(\d+)\]/g)]
+      .map(m => parseInt(m[1]) - 1)
+      .filter(i => i >= 0 && i < products.length)
+  )];
 
   const recommendedProducts = mentionedIndices.length
     ? mentionedIndices.map(i => products[i])
@@ -250,6 +271,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
       price:      p.price,
       similarity: p.similarity,
       attributes: p.attributes,
+      image_url:  imgMap[p.product_id] || null,
     })),
     intent,
   };

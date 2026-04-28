@@ -495,46 +495,79 @@
       .cml-chat-products {
         display: flex;
         flex-direction: column;
-        gap: 6px;
-        align-self: flex-start;
-        width: 85%;
+        gap: 10px;
+        align-self: stretch;
+        width: 100%;
       }
       .cml-chat-product-card {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         background: #fff;
         border: 1px solid #E8E8E4;
-        border-radius: 8px;
-        padding: 8px 12px;
-        text-decoration: none;
-        color: inherit;
-        font-size: 11px;
-        transition: border-color 0.15s;
+        border-radius: 10px;
+        overflow: hidden;
+        font-size: 12px;
+        transition: box-shadow 0.15s;
       }
-      .cml-chat-product-card:hover { border-color: #111; }
+      .cml-chat-product-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+      .cml-chat-product-img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        display: block;
+        background: #F4F4F2;
+      }
+      .cml-chat-product-img-placeholder {
+        width: 100%;
+        height: 160px;
+        background: #F4F4F2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #CCC;
+        font-size: 11px;
+      }
+      .cml-chat-product-body {
+        padding: 10px 12px 12px;
+      }
       .cml-chat-product-name {
-        font-weight: 500;
-        color: #222;
+        font-weight: 600;
+        color: #111;
+        font-size: 13px;
+        margin-bottom: 3px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        flex: 1;
-        min-width: 0;
       }
       .cml-chat-product-price {
-        font-size: 10px;
-        color: #777;
-        margin-top: 1px;
+        font-size: 12px;
+        color: #444;
+        margin-bottom: 10px;
       }
-      .cml-chat-product-sim {
-        font-size: 10px;
-        color: #111;
+      .cml-chat-product-btns {
+        display: flex;
+        gap: 6px;
+      }
+      .cml-chat-product-btn {
+        flex: 1;
+        padding: 8px 0;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        font-family: inherit;
+        border: none;
+        transition: opacity 0.15s;
+      }
+      .cml-chat-product-btn:hover { opacity: 0.82; }
+      .cml-chat-product-btn.primary {
+        background: #111;
+        color: #fff;
+      }
+      .cml-chat-product-btn.secondary {
         background: #F0F0EE;
-        border-radius: 999px;
-        padding: 2px 7px;
-        margin-left: 8px;
-        flex-shrink: 0;
+        color: #333;
       }
       .cml-chat-input-row {
         padding: 10px 12px;
@@ -654,21 +687,28 @@
       if (cardsEl) cardsEl.remove();
       if (!products || !products.length) return;
 
+      const pdpBase = '/product/detail.html?product_no=';
       cardsEl = document.createElement('div');
       cardsEl.className = 'cml-product-cards';
       cardsEl.innerHTML = products.map(p => {
-        const url = `/product/detail.html?product_no=${p.id}`;
-        const price = p.price ? `₩${Number(p.price).toLocaleString()}` : '';
-        const sim = p.similarity ? `${Math.round(p.similarity * 100)}% 일치` : '';
+        const pdpUrl = `${pdpBase}${p.id}`;
+        const imgHtml = p.image_url
+          ? `<img class="cml-chat-product-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
+          : `<div class="cml-chat-product-img-placeholder">이미지 없음</div>`;
+        const priceHtml = p.price
+          ? `<div class="cml-chat-product-price">₩${Number(p.price).toLocaleString()}</div>` : '';
         return `
-          <a class="cml-product-card" href="${url}">
-            <div class="cml-product-card-info">
-              <div class="cml-product-card-name">${p.name}</div>
-              ${price ? `<div class="cml-product-card-price">${price}</div>` : ''}
+          <div class="cml-chat-product-card">
+            ${imgHtml}
+            <div class="cml-chat-product-body">
+              <div class="cml-chat-product-name">${p.name}</div>
+              ${priceHtml}
+              <div class="cml-chat-product-btns">
+                <a class="cml-chat-product-btn primary" href="${pdpUrl}">자세히 보기</a>
+                <a class="cml-chat-product-btn secondary" href="${pdpUrl}">장바구니 담기</a>
+              </div>
             </div>
-            ${sim ? `<span class="cml-product-card-badge">${sim}</span>` : ''}
-          </a>
-        `;
+          </div>`;
       }).join('');
 
       answerEl.insertAdjacentElement('afterend', cardsEl);
@@ -893,15 +933,27 @@
       if (!products?.length) return;
       const wrap = document.createElement('div');
       wrap.className = 'cml-chat-products';
-      wrap.innerHTML = products.map(p => `
-        <a class="cml-chat-product-card" href="/product/detail.html?product_no=${p.id}">
-          <div>
-            <div class="cml-chat-product-name">${p.name}</div>
-            ${p.price ? `<div class="cml-chat-product-price">₩${Number(p.price).toLocaleString()}</div>` : ''}
-          </div>
-          ${p.similarity ? `<span class="cml-chat-product-sim">${Math.round(p.similarity * 100)}%</span>` : ''}
-        </a>
-      `).join('');
+      const pdpBase = '/product/detail.html?product_no=';
+      wrap.innerHTML = products.map(p => {
+        const pdpUrl = `${pdpBase}${p.id}`;
+        const imgHtml = p.image_url
+          ? `<img class="cml-chat-product-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
+          : `<div class="cml-chat-product-img-placeholder">이미지 없음</div>`;
+        const priceHtml = p.price
+          ? `<div class="cml-chat-product-price">₩${Number(p.price).toLocaleString()}</div>` : '';
+        return `
+          <div class="cml-chat-product-card">
+            ${imgHtml}
+            <div class="cml-chat-product-body">
+              <div class="cml-chat-product-name">${p.name}</div>
+              ${priceHtml}
+              <div class="cml-chat-product-btns">
+                <a class="cml-chat-product-btn primary" href="${pdpUrl}">자세히 보기</a>
+                <a class="cml-chat-product-btn secondary" href="${pdpUrl}">장바구니 담기</a>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
       messagesEl.appendChild(wrap);
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
