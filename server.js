@@ -341,6 +341,7 @@ app.post('/api/ask', async (req, res) => {
 // ─────────────────────────────────────────────
 const { extractSizeData } = require('./services/sizeExtractor');
 const { runEmbedding }   = require('./services/embedder');
+const { recommend }      = require('./services/recommender');
 
 app.post('/api/extract-size', async (req, res) => {
   const { mallId, productNo, pageUrl, sizeGuideImageUrl } = req.body;
@@ -508,6 +509,25 @@ app.post('/admin/sync/:mallId', async (req, res) => {
 
   } catch (err) {
     console.error('[Sync Error]', err.response?.data || err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────
+// 9. RECOMMEND API — 유저 상황/니즈 → AI 추천
+//
+// POST /api/recommend
+// { mallId, query, conversationHistory? }
+// ─────────────────────────────────────────────
+app.post('/api/recommend', async (req, res) => {
+  const { mallId, query, conversationHistory } = req.body;
+  if (!mallId || !query) return res.status(400).json({ error: 'mallId, query 필요' });
+
+  try {
+    const result = await recommend({ mallId, query, conversationHistory });
+    res.json(result);
+  } catch (err) {
+    console.error('[Recommend Error]', err.message);
     res.status(500).json({ error: err.message });
   }
 });
