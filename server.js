@@ -296,6 +296,8 @@ app.post('/api/ask', async (req, res) => {
     });
   }
 
+  console.log(`[Ask] mallId=${mallId} productNo=${productNo} question="${question}"`);
+
   try {
     // Supabase에서 실제 상품 데이터 조회
     let productContext = '';
@@ -548,6 +550,8 @@ app.post('/admin/sync/:mallId', async (req, res) => {
 app.post('/api/recommend', async (req, res) => {
   const { mallId, query, conversationHistory } = req.body;
   if (!mallId || !query) return res.status(400).json({ error: 'mallId, query 필요' });
+
+  console.log(`[Recommend] mallId=${mallId} query="${query}"`);
 
   try {
     const result = await recommend({ mallId, query, conversationHistory });
