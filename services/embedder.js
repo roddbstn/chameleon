@@ -75,7 +75,7 @@ async function runEmbedding(mallId) {
       await new Promise(r => setTimeout(r, 200));
 
     } catch (e) {
-      console.error(`[Embed] Error on ${product.id}:`, e.message);
+      console.error(`[Embed] Error on ${product.id}:`, e.response?.data || e.message);
       failed++;
     }
   }
