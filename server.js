@@ -310,7 +310,7 @@ app.post('/api/ask', async (req, res) => {
 친절하고 간결하게 2-3문장으로 답변해주세요. 모르는 정보는 솔직하게 말하고, 구매에 도움이 되는 방향으로 답변하세요.`,
           }],
         }],
-        generationConfig: { maxOutputTokens: 300 },
+        generationConfig: { maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } },
       }
     );
 

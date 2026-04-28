@@ -115,7 +115,10 @@ JSON만 응답하세요.`;
 
   const res = await callGemini(
     `${GEMINI_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
-    { contents: [{ parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 500 } }
+    {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } },
+    }
   );
 
   const text = res.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
@@ -178,7 +181,10 @@ ${productList}
 
   const res = await callGemini(
     `${GEMINI_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
-    { contents: [{ parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 600 } }
+    {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 600, thinkingConfig: { thinkingBudget: 0 } },
+    }
   );
 
   return res.data.candidates?.[0]?.content?.parts?.[0]?.text || '죄송해요, 다시 시도해주세요.';
