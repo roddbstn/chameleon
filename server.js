@@ -437,12 +437,26 @@ app.post('/admin/sync/:mallId', async (req, res) => {
 
       for (const p of products) {
         try {
+          // 상품 상세 개별 호출 (list API는 description 미포함)
+          let description = '';
+          let material = p.product_material || '';
+          try {
+            const detailRes = await axios.get(
+              `https://${mallId}.cafe24api.com/api/v2/admin/products/${p.product_no}`,
+              { headers }
+            );
+            const detail = detailRes.data.product;
+            description = stripHtml(detail.description || '');
+            material = detail.product_material || material;
+          } catch (e) {
+            console.warn(`[Sync] detail fetch failed for ${p.product_no}:`, e.message);
+          }
+
           // embed_text: 임베딩에 쓸 텍스트 조합
-          const descText = stripHtml(p.description);
           const embedText = [
             p.product_name,
-            p.product_material || '',
-            descText,
+            material,
+            description,
           ].filter(Boolean).join(' | ').slice(0, 3000);
 
           const row = {
@@ -453,9 +467,9 @@ app.post('/admin/sync/:mallId', async (req, res) => {
             price:      parseInt(p.price) || 0,
             status:     p.display === 'T' ? 'active' : 'deleted',
             attributes: {
-              material:    p.product_material || null,
+              material:     material || null,
               retail_price: parseInt(p.retail_price) || null,
-              options:     p.options || [],
+              options:      p.options || [],
             },
             raw_data:   p,
             embed_text: embedText,
