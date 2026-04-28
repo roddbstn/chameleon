@@ -6,14 +6,11 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-const GEMINI_EMBEDDING_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent';
-
 async function embedText(text) {
   const res = await axios.post(
-    `${GEMINI_EMBEDDING_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/embedding-001:embedContent?key=${process.env.GOOGLE_AI_API_KEY}`,
     {
-      model: 'models/text-embedding-004',
+      model: 'models/embedding-001',
       content: { parts: [{ text }] },
     }
   );
