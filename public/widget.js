@@ -139,7 +139,7 @@
         <div class="cml-upsell">💡 ${p.upsell}</div>
         <div class="cml-answer" id="cml-answer" style="display:none;"></div>
         <div class="cml-ask">
-          <input class="cml-ask-input" id="cml-ask-input" type="text" placeholder="상품에 대해 무엇이든 물어보세요" autocomplete="off" />
+          <input class="cml-ask-input" id="cml-ask-input" type="text" placeholder="원하는 스타일이나 상황을 말해보세요" autocomplete="off" />
           <button class="cml-ask-btn" id="cml-ask-btn" aria-label="질문하기">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -276,6 +276,54 @@
         font-style: italic;
       }
 
+      /* ── 추천 상품 카드 ── */
+      .cml-product-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .cml-product-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        border: 1px solid #E8E8E4;
+        border-radius: 8px;
+        padding: 10px 14px;
+        text-decoration: none;
+        color: inherit;
+        transition: border-color 0.15s, box-shadow 0.15s;
+      }
+      .cml-product-card:hover {
+        border-color: var(--cml-accent);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      }
+      .cml-product-card-info { flex: 1; min-width: 0; }
+      .cml-product-card-name {
+        font-size: 11px;
+        font-weight: 500;
+        color: #222;
+        letter-spacing: 0.03em;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cml-product-card-price {
+        font-size: 11px;
+        color: #555;
+      }
+      .cml-product-card-badge {
+        font-size: 10px;
+        color: var(--cml-accent);
+        background: color-mix(in srgb, var(--cml-accent) 10%, white);
+        border-radius: 999px;
+        padding: 2px 8px;
+        flex-shrink: 0;
+        margin-left: 8px;
+      }
+
       /* ── 질문 입력창 ── */
       .cml-ask {
         display: flex;
@@ -367,17 +415,47 @@
     const position = config?.insert?.position || 'afterend';
     target.insertAdjacentElement(position, panel);
 
-    // 질문 전송 공통 함수
     const answerEl = panel.querySelector('#cml-answer');
     const inputEl  = panel.querySelector('#cml-ask-input');
     const btnEl    = panel.querySelector('#cml-ask-btn');
 
-    async function askQuestion(question) {
+    // 대화 히스토리 (멀티턴)
+    const conversationHistory = [];
+
+    // 추천 상품 카드 렌더링
+    function renderProductCards(products) {
+      let cardsEl = panel.querySelector('.cml-product-cards');
+      if (cardsEl) cardsEl.remove();
+      if (!products || !products.length) return;
+
+      cardsEl = document.createElement('div');
+      cardsEl.className = 'cml-product-cards';
+      cardsEl.innerHTML = products.map(p => {
+        const url = `/product/detail.html?product_no=${p.id}`;
+        const price = p.price ? `₩${Number(p.price).toLocaleString()}` : '';
+        const sim = p.similarity ? `${Math.round(p.similarity * 100)}% 일치` : '';
+        return `
+          <a class="cml-product-card" href="${url}">
+            <div class="cml-product-card-info">
+              <div class="cml-product-card-name">${p.name}</div>
+              ${price ? `<div class="cml-product-card-price">${price}</div>` : ''}
+            </div>
+            ${sim ? `<span class="cml-product-card-badge">${sim}</span>` : ''}
+          </a>
+        `;
+      }).join('');
+
+      answerEl.insertAdjacentElement('afterend', cardsEl);
+    }
+
+    // FAQ 칩 → /api/ask (상품 Q&A)
+    async function askProductQuestion(question) {
       if (!question.trim()) return;
       answerEl.textContent = '답변을 생성하고 있어요...';
       answerEl.className = 'cml-answer loading';
       answerEl.style.display = 'block';
       btnEl.disabled = true;
+      panel.querySelector('.cml-product-cards')?.remove();
 
       try {
         const res = await fetch(`${CHAMELEON_SERVER}/api/ask`, {
@@ -393,6 +471,56 @@
         answerEl.textContent = data.answer || '죄송해요, 다시 시도해주세요.';
         answerEl.className = 'cml-answer';
       } catch {
+        answerEl.textContent = '네트워크 오류가 발생했어요.';
+        answerEl.className = 'cml-answer';
+      } finally {
+        btnEl.disabled = false;
+      }
+    }
+
+    // 자유 입력 → /api/recommend (AI 추천, 멀티턴)
+    async function sendRecommend(query) {
+      if (!query.trim()) return;
+      answerEl.textContent = '추천을 찾고 있어요...';
+      answerEl.className = 'cml-answer loading';
+      answerEl.style.display = 'block';
+      btnEl.disabled = true;
+      panel.querySelector('.cml-product-cards')?.remove();
+
+      try {
+        const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mallId: MALL_ID,
+            query,
+            conversationHistory,
+          }),
+        });
+        const data = await res.json();
+
+        if (data.type === 'clarification') {
+          answerEl.textContent = data.message;
+          answerEl.className = 'cml-answer';
+          // 대화 히스토리에 추가 (clarification은 assistant 턴)
+          conversationHistory.push({ role: 'user', content: query });
+          conversationHistory.push({ role: 'assistant', content: data.message });
+        } else if (data.type === 'recommendation') {
+          answerEl.textContent = data.message;
+          answerEl.className = 'cml-answer';
+          renderProductCards(data.products);
+          conversationHistory.push({ role: 'user', content: query });
+          conversationHistory.push({ role: 'assistant', content: data.message });
+          // 히스토리 최대 10턴 유지
+          if (conversationHistory.length > 20) conversationHistory.splice(0, 2);
+        } else if (data.type === 'no_results') {
+          answerEl.textContent = data.message;
+          answerEl.className = 'cml-answer';
+        } else {
+          answerEl.textContent = data.message || data.error || '죄송해요, 다시 시도해주세요.';
+          answerEl.className = 'cml-answer';
+        }
+      } catch {
         answerEl.textContent = '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
         answerEl.className = 'cml-answer';
       } finally {
@@ -400,24 +528,26 @@
       }
     }
 
-    // FAQ 칩 클릭 → 질문 전송
+    // FAQ 칩 클릭 → 상품 Q&A
     panel.querySelectorAll('.cml-chip').forEach(chip => {
       chip.addEventListener('click', () => {
         const q = chip.dataset.q;
         inputEl.value = q;
-        askQuestion(q);
+        askProductQuestion(q);
       });
     });
 
-    // 입력창 제출
+    // 입력창 제출 → AI 추천
     btnEl.addEventListener('click', () => {
-      askQuestion(inputEl.value);
+      const q = inputEl.value;
       inputEl.value = '';
+      sendRecommend(q);
     });
     inputEl.addEventListener('keydown', e => {
       if (e.key === 'Enter') {
-        askQuestion(inputEl.value);
+        const q = inputEl.value;
         inputEl.value = '';
+        sendRecommend(q);
       }
     });
   }
