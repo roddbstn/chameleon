@@ -471,10 +471,14 @@
         max-width: 85%;
         padding: 10px 14px;
         border-radius: 12px;
-        font-size: 13px;
+        font-size: 14px;
         line-height: 1.75;
         letter-spacing: 0.01em;
         white-space: pre-wrap;
+      }
+      .cml-chat-bubble strong {
+        font-weight: 700;
+        font-size: 15px;
       }
       .cml-chat-bubble.user {
         align-self: flex-end;
@@ -531,14 +535,14 @@
       .cml-chat-product-name {
         font-weight: 600;
         color: #111;
-        font-size: 13px;
+        font-size: 14px;
         margin-bottom: 3px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .cml-chat-product-price {
-        font-size: 12px;
+        font-size: 13px;
         color: #444;
         margin-bottom: 10px;
       }
@@ -550,7 +554,7 @@
         flex: 1;
         padding: 8px 0;
         border-radius: 6px;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 500;
         cursor: pointer;
         text-align: center;
@@ -581,7 +585,7 @@
         border: 1px solid #E0E0DC;
         border-radius: 999px;
         padding: 9px 16px;
-        font-size: 13px;
+        font-size: 14px;
         outline: none;
         font-family: inherit;
         color: #333;
@@ -615,7 +619,7 @@
         border: 1px solid #D8D8D4;
         border-radius: 999px;
         padding: 7px 14px;
-        font-size: 12px;
+        font-size: 13px;
         color: #555;
         background: #fff;
         cursor: pointer;
@@ -920,10 +924,20 @@
     tab.addEventListener('click', openSidebar);
     closeBtn.addEventListener('click', closeSidebar);
 
+    function parseMd(text) {
+      return text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    }
+
     function addBubble(role, text) {
       const div = document.createElement('div');
       div.className = `cml-chat-bubble ${role}`;
-      div.textContent = text;
+      if (role === 'assistant') {
+        div.innerHTML = parseMd(text);
+      } else {
+        div.textContent = text;
+      }
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
       return div;
