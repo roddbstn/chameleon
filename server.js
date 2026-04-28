@@ -297,19 +297,45 @@ app.post('/api/ask', async (req, res) => {
   }
 
   try {
+    // Supabase에서 실제 상품 데이터 조회
+    let productContext = '';
+    if (mallId && productNo) {
+      const { data: product } = await supabase
+        .from('products')
+        .select('name, price, attributes, embed_text')
+        .eq('store_id', mallId)
+        .eq('product_id', String(productNo))
+        .single();
+
+      if (product) {
+        const attrs = product.attributes || {};
+        productContext = `
+상품명: ${product.name}
+가격: ${product.price?.toLocaleString()}원
+소재: ${attrs.material || '정보 없음'}
+상품 설명: ${product.embed_text?.slice(0, 800) || ''}
+`.trim();
+      }
+    }
+
+    const prompt = `당신은 패션을 잘 아는 친한 친구처럼 솔직하고 따뜻하게 말해주는 쇼핑 어시스턴트입니다.
+
+${productContext ? `[상품 정보]\n${productContext}\n` : ''}
+고객 질문: "${question}"
+
+위 상품 정보를 바탕으로 질문에 직접 답해주세요.
+
+규칙:
+- 상품 정보에 있는 내용을 근거로 구체적으로 답할 것
+- "~하시면 됩니다", "~해주시면" 같은 딱딱한 말투 금지
+- 다른 페이지나 링크로 유도하지 말 것 — 지금 여기서 바로 답할 것
+- 정보가 없는 경우에도 "페이지에서 확인하세요" 대신, 소재/디자인에서 추론해서 솔직하게 말해줄 것
+- 2~3문장, 간결하게`;
+
     const geminiRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`,
       {
-        contents: [{
-          parts: [{
-            text: `당신은 쇼핑몰 상품 전문 어시스턴트입니다.
-쇼핑몰: ${mallId}, 상품번호: ${productNo}
-
-고객 질문: ${question}
-
-친절하고 간결하게 2-3문장으로 답변해주세요. 모르는 정보는 솔직하게 말하고, 구매에 도움이 되는 방향으로 답변하세요.`,
-          }],
-        }],
+        contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } },
       }
     );
