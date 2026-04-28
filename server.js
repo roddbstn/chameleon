@@ -13,6 +13,12 @@ const express = require('express');
 const cors    = require('cors');
 const axios   = require('axios');
 const path    = require('path');
+const { createClient } = require('@supabase/supabase-js');
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+);
 
 const app = express();
 app.use(cors());
@@ -314,6 +320,180 @@ app.post('/api/ask', async (req, res) => {
   } catch (err) {
     console.error('[Ask API Error]', err.response?.data || err.message);
     res.status(500).json({ answer: '죄송해요, 지금 답변을 생성할 수 없어요. 잠시 후 다시 시도해주세요.' });
+  }
+});
+
+// ─────────────────────────────────────────────
+// 6. SIZE EXTRACT API — 상품 사이즈 추출 파이프라인
+//
+// 3가지 소스 자동 시도 (우선순위 순):
+//   ① pageUrl로 HTML 직접 스크래핑
+//   ② 카페24 API description HTML
+//   ③ 사이즈가이드 이미지 Vision OCR
+//
+// Request body (최소 하나 필요):
+// {
+//   "mallId":            "solidhomme",
+//   "productNo":         "5534",
+//   "pageUrl":           "https://solidhomme.com/product/detail.html?product_no=5534",
+//   "sizeGuideImageUrl": "https://cdn.../size_guide.jpg"   ← 선택
+// }
+// ─────────────────────────────────────────────
+const { extractSizeData } = require('./services/sizeExtractor');
+
+app.post('/api/extract-size', async (req, res) => {
+  const { mallId, productNo, pageUrl, sizeGuideImageUrl } = req.body;
+
+  if (!pageUrl && !mallId) {
+    return res.status(400).json({ error: 'pageUrl 또는 mallId+productNo 필요' });
+  }
+
+  try {
+    // ① 상품 페이지 HTML 수집
+    let pageHtml = '';
+    const targetUrl = pageUrl ||
+      `https://${mallId}.cafe24.com/product/detail.html?product_no=${productNo}`;
+
+    try {
+      const pageRes = await axios.get(targetUrl, {
+        timeout: 15000,
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ChameleonBot/1.0)' },
+      });
+      pageHtml = pageRes.data;
+    } catch (e) {
+      console.warn(`[ExtractSize] Page fetch failed (${e.message}), description만 사용`);
+    }
+
+    // ② 카페24 API에서 상품 정보 수집 (토큰 있는 경우)
+    let productInfo = { name: '', description: '', material: '', sizeGuideImageUrl };
+    const token = mallId && tokenStore[mallId]?.access_token;
+    if (token && productNo) {
+      try {
+        const apiRes = await axios.get(
+          `https://${mallId}.cafe24api.com/api/v2/admin/products/${productNo}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const p = apiRes.data.product;
+        productInfo = {
+          name:               p.product_name,
+          description:        p.description || '',
+          material:           p.material_name || '',
+          sizeGuideImageUrl:  sizeGuideImageUrl || null,
+        };
+      } catch (e) {
+        console.warn('[ExtractSize] Cafe24 API call failed:', e.message);
+      }
+    }
+
+    // ③ 사이즈 추출 파이프라인 실행
+    const result = await extractSizeData(productInfo, pageHtml);
+
+    if (!result) {
+      return res.json({ success: false, message: '사이즈 정보를 찾을 수 없습니다.' });
+    }
+
+    res.json({ success: true, mallId, productNo, result });
+
+  } catch (err) {
+    console.error('[ExtractSize] Error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────
+// 7. ADMIN SYNC — 카페24 상품 → Supabase upsert
+//
+// POST /admin/sync/:mallId
+// 카페24 상품 전체를 가져와 products 테이블에 저장
+// ─────────────────────────────────────────────
+function stripHtml(html) {
+  return (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+app.post('/admin/sync/:mallId', async (req, res) => {
+  const { mallId } = req.params;
+  const token = tokenStore[mallId]?.access_token;
+
+  if (!token) {
+    return res.status(401).json({ error: `${mallId} 토큰 없음. /install 먼저 실행하세요.` });
+  }
+
+  const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  let offset = 0;
+  const limit = 100;
+  let totalSynced = 0;
+  let totalFailed = 0;
+
+  try {
+    while (true) {
+      // 카페24 상품 목록 페이지네이션
+      const listRes = await axios.get(
+        `https://${mallId}.cafe24api.com/api/v2/admin/products`,
+        { headers, params: { limit, offset, embed: 'options' } }
+      );
+
+      const products = listRes.data.products || [];
+      if (products.length === 0) break;
+
+      for (const p of products) {
+        try {
+          // embed_text: 임베딩에 쓸 텍스트 조합
+          const descText = stripHtml(p.description);
+          const embedText = [
+            p.product_name,
+            p.product_material || '',
+            descText,
+          ].filter(Boolean).join(' | ').slice(0, 3000);
+
+          const row = {
+            store_id:   mallId,
+            product_id: String(p.product_no),
+            name:       p.product_name,
+            category:   p.categories?.[0]?.category_name || null,
+            price:      parseInt(p.price) || 0,
+            status:     p.display === 'T' ? 'active' : 'deleted',
+            attributes: {
+              material:    p.product_material || null,
+              retail_price: parseInt(p.retail_price) || null,
+              options:     p.options || [],
+            },
+            raw_data:   p,
+            embed_text: embedText,
+            synced_at:  new Date().toISOString(),
+          };
+
+          const { error } = await supabase
+            .from('products')
+            .upsert(row, { onConflict: 'store_id,product_id' });
+
+          if (error) {
+            console.error(`[Sync] Failed ${p.product_no}:`, error.message);
+            totalFailed++;
+          } else {
+            totalSynced++;
+          }
+        } catch (e) {
+          console.error(`[Sync] Error on product ${p.product_no}:`, e.message);
+          totalFailed++;
+        }
+      }
+
+      console.log(`[Sync] offset=${offset} 처리완료: ${products.length}개`);
+      if (products.length < limit) break;
+      offset += limit;
+    }
+
+    res.json({
+      success: true,
+      mallId,
+      synced: totalSynced,
+      failed: totalFailed,
+      message: `${totalSynced}개 상품 동기화 완료`,
+    });
+
+  } catch (err) {
+    console.error('[Sync Error]', err.response?.data || err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
