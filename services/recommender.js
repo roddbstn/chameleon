@@ -1,6 +1,38 @@
 const axios = require('axios');
 const { createClient } = require('@supabase/supabase-js');
 
+// ─────────────────────────────────────────────
+// 월 비용 한도 체크
+// ─────────────────────────────────────────────
+async function checkCostLimit() {
+  const limit = parseFloat(process.env.MONTHLY_COST_LIMIT_USD || '1.0');
+  const monthStart = new Date();
+  monthStart.setDate(1);
+  monthStart.setHours(0, 0, 0, 0);
+
+  const { data } = await supabase
+    .from('api_events')
+    .select('cost_usd')
+    .gte('occurred_at', monthStart.toISOString());
+
+  const total = (data || []).reduce((sum, r) => sum + (r.cost_usd || 0), 0);
+  if (total >= limit) {
+    throw new Error(`월 API 비용 한도($${limit}) 초과. 현재 누적: $${total.toFixed(4)}`);
+  }
+  return total;
+}
+
+async function logApiCost(storeId, agentType, tokensIn, tokensOut) {
+  const costUsd = (tokensIn * 0.10 + tokensOut * 0.40) / 1_000_000;
+  await supabase.from('api_events').insert({
+    store_id:    storeId,
+    agent_type:  agentType,
+    tokens_in:   tokensIn,
+    tokens_out:  tokensOut,
+    cost_usd:    costUsd,
+  });
+}
+
 async function callGemini(url, body, retries = 3) {
   for (let i = 0; i < retries; i++) {
     try {
@@ -156,8 +188,12 @@ ${productList}
 // 메인 추천 파이프라인
 // ─────────────────────────────────────────────
 async function recommend({ mallId, query, conversationHistory = [] }) {
+  // 비용 한도 체크
+  await checkCostLimit();
+
   // Agent 1: 인텐트 분석
   const intent = await analyzeIntent(query, conversationHistory);
+  await logApiCost(mallId, 'intent_analysis', 2000, 500);
 
   // 명확화 질문이 필요한 경우 바로 반환
   if (intent.clarification_needed && intent.clarification_question) {
@@ -190,6 +226,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
 
   // Agent 2: 추천 생성
   const message = await generateRecommendation(query, intent, products, brandProfile);
+  await logApiCost(mallId, 'response_generation', 3000, 600);
 
   // 추천에 언급된 상품 인덱스 파싱 ([1], [2], [3])
   const mentionedIndices = [...message.matchAll(/\[(\d+)\]/g)]
