@@ -749,7 +749,7 @@
       sendRecommend(q);
     });
     inputEl.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' && !e.isComposing) {
         const q = inputEl.value;
         inputEl.value = '';
         sendRecommend(q);
@@ -920,7 +920,7 @@
       const q = inputEl.value; inputEl.value = ''; sendChat(q);
     });
     inputEl.addEventListener('keydown', e => {
-      if (e.key === 'Enter') { const q = inputEl.value; inputEl.value = ''; sendChat(q); }
+      if (e.key === 'Enter' && !e.isComposing) { const q = inputEl.value; inputEl.value = ''; sendChat(q); }
     });
     startChips.forEach(chip => {
       chip.addEventListener('click', () => sendChat(chip.dataset.q));
