@@ -340,6 +340,7 @@ app.post('/api/ask', async (req, res) => {
 // }
 // ─────────────────────────────────────────────
 const { extractSizeData } = require('./services/sizeExtractor');
+const { runEmbedding }   = require('./services/embedder');
 
 app.post('/api/extract-size', async (req, res) => {
   const { mallId, productNo, pageUrl, sizeGuideImageUrl } = req.body;
@@ -507,6 +508,29 @@ app.post('/admin/sync/:mallId', async (req, res) => {
 
   } catch (err) {
     console.error('[Sync Error]', err.response?.data || err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────
+// 8. ADMIN EMBED — products → Gemini 임베딩 → product_embeddings
+//
+// POST /admin/embed/:mallId
+// ─────────────────────────────────────────────
+app.post('/admin/embed/:mallId', async (req, res) => {
+  const { mallId } = req.params;
+
+  try {
+    console.log(`[Embed] ${mallId} 임베딩 시작...`);
+    const result = await runEmbedding(mallId);
+    res.json({
+      success: true,
+      mallId,
+      ...result,
+      message: `${result.embedded}개 임베딩 완료 (스킵: ${result.skipped}, 실패: ${result.failed})`,
+    });
+  } catch (err) {
+    console.error('[Embed Error]', err.message);
     res.status(500).json({ error: err.message });
   }
 });
