@@ -284,6 +284,62 @@ function logEvent(event) {
 }
 
 // ─────────────────────────────────────────────
+// 5-A. CHIPS API — 상품별 동적 FAQ 질문 생성
+// POST /api/chips  { mallId, productNo, persona }
+// ─────────────────────────────────────────────
+app.post('/api/chips', async (req, res) => {
+  const { mallId, productNo, persona } = req.body;
+  if (!mallId || !productNo) return res.json({ chips: [] });
+
+  try {
+    const { data: product } = await supabase
+      .from('products')
+      .select('name, attributes, embed_text')
+      .eq('store_id', mallId)
+      .eq('product_id', String(productNo))
+      .single();
+
+    if (!product) return res.json({ chips: [] });
+
+    const personaContext = {
+      fashion: '패션에 관심 있는 일반 쇼퍼',
+      gift:    '선물을 구매하려는 고객',
+      repeat:  '이전에 구매한 적 있는 재방문 고객',
+    }[persona] || '일반 쇼퍼';
+
+    const prompt = `상품: ${product.name}
+소재: ${product.attributes?.material || ''}
+설명: ${(product.embed_text || '').slice(0, 500)}
+구매자 유형: ${personaContext}
+
+이 상품을 보고 있는 "${personaContext}"가 구매를 결정하기 전에 실제로 궁금해할 질문 3개를 만들어주세요.
+
+규칙:
+- 반드시 이 상품의 실제 특성(소재, 핏, 관리법, 착용 상황 등)에서 나온 질문
+- 누구나 실제로 물어볼 법한 것 (뻔한 일반 질문 금지)
+- 한 질문당 15자 이내로 짧게
+- JSON 배열만 응답: ["질문1", "질문2", "질문3"]`;
+
+    const geminiRes = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`,
+      {
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 120, thinkingConfig: { thinkingBudget: 0 } },
+      }
+    );
+
+    const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
+    const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    const chips = JSON.parse(cleaned);
+    console.log(`[Chips] ${mallId} product:${productNo} persona:${persona} →`, chips);
+    res.json({ chips });
+  } catch (err) {
+    console.error('[Chips Error]', err.message);
+    res.json({ chips: [] });
+  }
+});
+
+// ─────────────────────────────────────────────
 // 5. ASK API — 상품 관련 자유 질문 → Claude 응답
 // ─────────────────────────────────────────────
 app.post('/api/ask', async (req, res) => {

@@ -744,13 +744,12 @@
       }
     }
 
-    // FAQ 칩 클릭 → 상품 Q&A
-    panel.querySelectorAll('.cml-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        const q = chip.dataset.q;
-        inputEl.value = q;
-        askProductQuestion(q);
-      });
+    // FAQ 칩 클릭 → 상품 Q&A (이벤트 위임: 동적 교체 후에도 작동)
+    panel.querySelector('.cml-chips').addEventListener('click', e => {
+      const chip = e.target.closest('.cml-chip');
+      if (!chip) return;
+      inputEl.value = chip.dataset.q;
+      askProductQuestion(chip.dataset.q);
     });
 
     // 입력창 제출 → AI 추천
@@ -768,7 +767,26 @@
     });
   }
 
-  // ── 9. 플로팅 채팅 버튼 (FAB) ──────────────────
+  // ── 9. 동적 FAQ 칩 교체 ─────────────────────────
+  async function fetchDynamicChips(productNo, persona) {
+    try {
+      const res = await fetch(`${CHAMELEON_SERVER}/api/chips`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mallId: MALL_ID, productNo, persona }),
+      });
+      const data = await res.json();
+      if (!data.chips?.length) return;
+
+      const chipsEl = document.querySelector('#cml-panel .cml-chips');
+      if (!chipsEl) return;
+      chipsEl.innerHTML = data.chips
+        .map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`)
+        .join('');
+    } catch { /* 실패해도 기본 칩 유지 */ }
+  }
+
+  // ── 10. 플로팅 채팅 버튼 (FAB) ──────────────────
   function renderFab(config) {
     if (document.getElementById('cml-fab')) return;
 
@@ -928,6 +946,8 @@
       const persona = await fetchPersona(signals);
       console.log('[Chameleon] Persona:', persona);
       renderPanel(persona, config);
+      // 패널 렌더 후 비동기로 칩 교체 (블로킹 없음)
+      fetchDynamicChips(signals.productNo, persona);
     }
   }
 
