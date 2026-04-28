@@ -146,11 +146,10 @@ async function generateRecommendation(query, intent, products, brandProfile = nu
 유사도: ${(p.similarity * 100).toFixed(0)}%`;
   }).join('\n\n');
 
-  const prompt = `당신은 유저를 진심으로 돕고 싶어하는, 패션을 잘 아는 친한 친구입니다.
-유저의 말 뒤에 숨은 진짜 니즈를 이해하고, 단순한 상품 나열이 아니라
-"나를 제대로 이해해 주었어"라는 말이 나오도록 추천해주세요.
+  const prompt = `당신은 패션을 잘 아는 쇼핑 어드바이저입니다.
+유저의 말 뒤에 숨은 진짜 니즈를 이해하고, "나를 제대로 이해해 주었어"라는 반응이 나오도록 추천해주세요.
 
-브랜드 톤: ${brandTone}
+브랜드 톤 가이드: ${brandTone}
 
 유저 상황 분석:
 - 상황: ${intent.situation || ''}
@@ -163,27 +162,26 @@ async function generateRecommendation(query, intent, products, brandProfile = nu
 검색된 상품들:
 ${productList}
 
-다음 형식으로 응답하세요:
+응답 형식:
+1. 유저 상황을 한 문장으로 공감 (인사말 없이 바로 시작)
+2. 상품 2~3개 추천, 각각:
+   - [1], [2] 등 번호로 시작
+   - 이 상황에 왜 이 상품인지 구체적 이유
+   - 솔직한 장단점
+3. 마지막에 짧은 한 마디 (필요한 경우에만 질문 1개)
 
-먼저 유저의 상황을 한 문장으로 공감해주세요.
-그 다음 상품 2~3개를 추천하되, 각 상품마다:
-- 왜 이 상황에 이 상품인지 구체적으로 설명
-- 장단점 trade-off를 솔직하게
-- 숫자([1], [2] 등)로 시작
-
-마지막에 가볍게 한 줄 덧붙이거나, 꼭 필요한 경우에만 질문 1개.
-
-규칙:
-- 모든 상품을 나열하지 말 것. 진짜 맞는 것만
-- "~하시면 됩니다" 같은 딱딱한 말투 금지
-- 가격이 예산을 약간 초과해도 가치 있으면 솔직하게 말해줄 것
-- 200자 이내로 간결하게`;
+말투 규칙:
+- "안녕하세요", "야", "안녕" 같은 인사로 절대 시작하지 말 것
+- 존댓말 사용 (예: "~해요", "~거예요")
+- "~하시면 됩니다", "~해주세요" 같은 딱딱한 표현 금지
+- 문장을 반드시 완성해서 끝낼 것 — 중간에 절대 끊기지 말 것
+- 모든 상품 나열 금지, 진짜 맞는 것만`;
 
   const res = await callGemini(
     `${GEMINI_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
     {
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 600, thinkingConfig: { thinkingBudget: 0 } },
+      generationConfig: { maxOutputTokens: 1000, thinkingConfig: { thinkingBudget: 0 } },
     }
   );
 

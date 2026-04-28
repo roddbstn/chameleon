@@ -25,8 +25,6 @@
                 (path.includes('/product/') && location.search.includes('product_no')) ||
                 isSeoProduct;
 
-  if (!isPDP) return;
-
   // ── 1. 신호 수집 ─────────────────────────────
   function collectSignals() {
     const params    = new URLSearchParams(location.search);
@@ -364,6 +362,224 @@
       }
       .cml-ask-btn:hover { opacity: 0.85; }
       .cml-ask-btn:disabled { opacity: 0.4; cursor: default; }
+
+      /* ── 플로팅 채팅 버튼 (FAB) ── */
+      .cml-fab {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+        font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      }
+      .cml-fab-btn {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #111;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        transition: transform 0.15s, box-shadow 0.15s;
+        flex-shrink: 0;
+      }
+      .cml-fab-btn:hover {
+        transform: scale(1.06);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.28);
+      }
+      .cml-fab-badge {
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        width: 10px;
+        height: 10px;
+        background: #E74C3C;
+        border-radius: 50%;
+        border: 2px solid #fff;
+      }
+
+      /* ── 플로팅 채팅 패널 ── */
+      .cml-chat-panel {
+        position: fixed;
+        bottom: 86px;
+        right: 24px;
+        z-index: 99998;
+        width: 320px;
+        max-height: 500px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        animation: cmlSlideUp 0.2s ease;
+        font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+        font-size: 12px;
+      }
+      .cml-chat-panel.cml-hidden { display: none; }
+      @keyframes cmlSlideUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .cml-chat-header {
+        padding: 14px 16px;
+        background: #111;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .cml-chat-close {
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.7);
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        padding: 0;
+      }
+      .cml-chat-close:hover { color: #fff; }
+      .cml-chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 14px 14px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .cml-chat-bubble {
+        max-width: 85%;
+        padding: 9px 12px;
+        border-radius: 12px;
+        font-size: 11px;
+        line-height: 1.7;
+        letter-spacing: 0.02em;
+        white-space: pre-wrap;
+      }
+      .cml-chat-bubble.user {
+        align-self: flex-end;
+        background: #111;
+        color: #fff;
+        border-bottom-right-radius: 4px;
+      }
+      .cml-chat-bubble.assistant {
+        align-self: flex-start;
+        background: #F4F4F2;
+        color: #222;
+        border-bottom-left-radius: 4px;
+      }
+      .cml-chat-bubble.loading {
+        color: #aaa;
+        font-style: italic;
+      }
+      .cml-chat-products {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-self: flex-start;
+        width: 85%;
+      }
+      .cml-chat-product-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        border: 1px solid #E8E8E4;
+        border-radius: 8px;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: inherit;
+        font-size: 11px;
+        transition: border-color 0.15s;
+      }
+      .cml-chat-product-card:hover { border-color: #111; }
+      .cml-chat-product-name {
+        font-weight: 500;
+        color: #222;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        min-width: 0;
+      }
+      .cml-chat-product-price {
+        font-size: 10px;
+        color: #777;
+        margin-top: 1px;
+      }
+      .cml-chat-product-sim {
+        font-size: 10px;
+        color: #111;
+        background: #F0F0EE;
+        border-radius: 999px;
+        padding: 2px 7px;
+        margin-left: 8px;
+        flex-shrink: 0;
+      }
+      .cml-chat-input-row {
+        padding: 10px 12px;
+        border-top: 1px solid #F0F0EE;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .cml-chat-input {
+        flex: 1;
+        border: 1px solid #E0E0DC;
+        border-radius: 999px;
+        padding: 7px 13px;
+        font-size: 11px;
+        outline: none;
+        font-family: inherit;
+        color: #333;
+        background: #FAFAF9;
+      }
+      .cml-chat-input:focus { border-color: #111; }
+      .cml-chat-input::placeholder { color: #bbb; }
+      .cml-chat-send {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #111;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: opacity 0.15s;
+      }
+      .cml-chat-send:hover { opacity: 0.8; }
+      .cml-chat-send:disabled { opacity: 0.35; cursor: default; }
+      .cml-chat-starter-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 0 14px 10px;
+      }
+      .cml-chat-starter-chip {
+        border: 1px solid #D8D8D4;
+        border-radius: 999px;
+        padding: 5px 11px;
+        font-size: 10px;
+        color: #555;
+        background: #fff;
+        cursor: pointer;
+        font-family: inherit;
+        transition: border-color 0.12s, color 0.12s;
+      }
+      .cml-chat-starter-chip:hover { border-color: #888; color: #111; }
     `;
     document.head.appendChild(style);
   }
@@ -552,24 +768,167 @@
     });
   }
 
-  // ── 9. 실행 ────────────────────────────────────
+  // ── 9. 플로팅 채팅 버튼 (FAB) ──────────────────
+  function renderFab(config) {
+    if (document.getElementById('cml-fab')) return;
+
+    const accentColor = config?.theme?.accentColor || '#111';
+
+    // FAB 버튼
+    const fab = document.createElement('div');
+    fab.id = 'cml-fab';
+    fab.className = 'cml-fab';
+    fab.innerHTML = `
+      <div class="cml-chat-panel cml-hidden" id="cml-chat-panel">
+        <div class="cml-chat-header">
+          <span>어떤 스타일 찾으세요?</span>
+          <button class="cml-chat-close" id="cml-chat-close" aria-label="닫기">✕</button>
+        </div>
+        <div class="cml-chat-messages" id="cml-chat-messages">
+          <div class="cml-chat-bubble assistant">안녕하세요! 원하시는 스타일이나 상황을 말씀해주시면 딱 맞는 아이템 찾아드릴게요 :)</div>
+        </div>
+        <div class="cml-chat-starter-chips" id="cml-chat-starters">
+          <button class="cml-chat-starter-chip" data-q="요즘 트렌디한 아이템 뭐 있어요?">요즘 트렌드</button>
+          <button class="cml-chat-starter-chip" data-q="소개팅에 입기 좋은 옷 추천해주세요">소개팅 룩</button>
+          <button class="cml-chat-starter-chip" data-q="여름에 시원하게 입을 수 있는 옷 있나요?">여름 아이템</button>
+          <button class="cml-chat-starter-chip" data-q="친구한테 선물하기 좋은 거 있어요?">선물 추천</button>
+        </div>
+        <div class="cml-chat-input-row">
+          <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="원하는 스타일, 상황을 말해보세요" autocomplete="off" />
+          <button class="cml-chat-send" id="cml-chat-send" aria-label="전송">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <button class="cml-fab-btn" id="cml-fab-btn" aria-label="쇼핑 어시스턴트" style="background:${accentColor};">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="cml-fab-badge"></span>
+      </button>
+    `;
+    document.body.appendChild(fab);
+
+    const panel    = fab.querySelector('#cml-chat-panel');
+    const fabBtn   = fab.querySelector('#cml-fab-btn');
+    const closeBtn = fab.querySelector('#cml-chat-close');
+    const messagesEl = fab.querySelector('#cml-chat-messages');
+    const inputEl  = fab.querySelector('#cml-chat-input');
+    const sendBtn  = fab.querySelector('#cml-chat-send');
+    const startChips = fab.querySelectorAll('.cml-chat-starter-chip');
+
+    const chatHistory = [];
+
+    function togglePanel() {
+      panel.classList.toggle('cml-hidden');
+      if (!panel.classList.contains('cml-hidden')) {
+        inputEl.focus();
+        fab.querySelector('.cml-fab-badge').style.display = 'none';
+      }
+    }
+    fabBtn.addEventListener('click', togglePanel);
+    closeBtn.addEventListener('click', togglePanel);
+
+    function addBubble(role, text) {
+      const div = document.createElement('div');
+      div.className = `cml-chat-bubble ${role}`;
+      div.textContent = text;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return div;
+    }
+
+    function addProductCards(products) {
+      if (!products?.length) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'cml-chat-products';
+      wrap.innerHTML = products.map(p => `
+        <a class="cml-chat-product-card" href="/product/detail.html?product_no=${p.id}">
+          <div>
+            <div class="cml-chat-product-name">${p.name}</div>
+            ${p.price ? `<div class="cml-chat-product-price">₩${Number(p.price).toLocaleString()}</div>` : ''}
+          </div>
+          ${p.similarity ? `<span class="cml-chat-product-sim">${Math.round(p.similarity * 100)}%</span>` : ''}
+        </a>
+      `).join('');
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    async function sendChat(query) {
+      if (!query.trim()) return;
+
+      // 스타터 칩 숨기기
+      fab.querySelector('#cml-chat-starters').style.display = 'none';
+
+      addBubble('user', query);
+      const loadingBubble = addBubble('assistant loading', '추천을 찾고 있어요...');
+      sendBtn.disabled = true;
+
+      try {
+        const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mallId: MALL_ID, query, conversationHistory: chatHistory }),
+        });
+        const data = await res.json();
+
+        loadingBubble.remove();
+        const msg = data.message || data.error || '죄송해요, 다시 시도해주세요.';
+        addBubble('assistant', msg);
+
+        if (data.type === 'recommendation') {
+          addProductCards(data.products);
+          chatHistory.push({ role: 'user', content: query });
+          chatHistory.push({ role: 'assistant', content: msg });
+          if (chatHistory.length > 20) chatHistory.splice(0, 2);
+        } else if (data.type === 'clarification') {
+          chatHistory.push({ role: 'user', content: query });
+          chatHistory.push({ role: 'assistant', content: msg });
+        }
+      } catch {
+        loadingBubble.remove();
+        addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
+      } finally {
+        sendBtn.disabled = false;
+        inputEl.focus();
+      }
+    }
+
+    sendBtn.addEventListener('click', () => {
+      const q = inputEl.value; inputEl.value = ''; sendChat(q);
+    });
+    inputEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { const q = inputEl.value; inputEl.value = ''; sendChat(q); }
+    });
+    startChips.forEach(chip => {
+      chip.addEventListener('click', () => sendChat(chip.dataset.q));
+    });
+  }
+
+  // ── 10. 실행 ────────────────────────────────────
   async function init() {
     injectStyles();
 
-    // 스토어 config와 신호 수집을 병렬로
     const [config, signals] = await Promise.all([
       fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`).then(r => r.json()).catch(() => null),
       Promise.resolve(collectSignals()),
     ]);
 
-    signals.scrollDepth = Math.round(
-      (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
-    );
+    // 모든 페이지: 플로팅 채팅 버튼
+    renderFab(config);
 
-    const persona = await fetchPersona(signals);
-    console.log('[Chameleon] Persona:', persona);
-
-    renderPanel(persona, config);
+    // PDP 전용: Adaptive 패널
+    if (isPDP) {
+      signals.scrollDepth = Math.round(
+        (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+      );
+      const persona = await fetchPersona(signals);
+      console.log('[Chameleon] Persona:', persona);
+      renderPanel(persona, config);
+    }
   }
 
   // DOM 준비 후 실행
