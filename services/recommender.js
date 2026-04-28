@@ -1,6 +1,23 @@
 const axios = require('axios');
 const { createClient } = require('@supabase/supabase-js');
 
+async function callGemini(url, body, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await axios.post(url, body);
+      return res;
+    } catch (e) {
+      if (e.response?.status === 429 && i < retries - 1) {
+        const wait = (i + 1) * 5000;
+        console.log(`[Gemini] 429 rate limit, ${wait/1000}초 후 재시도...`);
+        await new Promise(r => setTimeout(r, wait));
+      } else {
+        throw e;
+      }
+    }
+  }
+}
+
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
@@ -13,7 +30,7 @@ const EMBED_URL  = 'https://generativelanguage.googleapis.com/v1beta/models/gemi
 // 유저 쿼리 → 벡터
 // ─────────────────────────────────────────────
 async function embedQuery(text) {
-  const res = await axios.post(
+  const res = await callGemini(
     `${EMBED_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
     { model: 'models/gemini-embedding-001', content: { parts: [{ text }] } }
   );
@@ -64,7 +81,7 @@ async function analyzeIntent(query, conversationHistory = []) {
 
 JSON만 응답하세요.`;
 
-  const res = await axios.post(
+  const res = await callGemini(
     `${GEMINI_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
     { contents: [{ parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 500 } }
   );
@@ -127,7 +144,7 @@ ${productList}
 - 가격이 예산을 약간 초과해도 가치 있으면 솔직하게 말해줄 것
 - 200자 이내로 간결하게`;
 
-  const res = await axios.post(
+  const res = await callGemini(
     `${GEMINI_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
     { contents: [{ parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 600 } }
   );
