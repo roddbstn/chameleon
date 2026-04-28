@@ -44,6 +44,7 @@ async function runEmbedding(mallId) {
   let embedded = 0;
   let skipped = 0;
   let failed = 0;
+  const errors = [];
 
   for (const product of products) {
     if (existingIds.has(product.id)) {
@@ -64,23 +65,23 @@ async function runEmbedding(mallId) {
         }, { onConflict: 'product_id' });
 
       if (upsertError) {
-        console.error(`[Embed] Failed ${product.id}:`, upsertError.message);
+        errors.push({ id: product.id, error: upsertError.message });
         failed++;
       } else {
         embedded++;
         console.log(`[Embed] ${embedded}/${products.length - skipped} 완료`);
       }
 
-      // Gemini free tier 분당 1500 req 제한 — 안전하게 딜레이
       await new Promise(r => setTimeout(r, 200));
 
     } catch (e) {
-      console.error(`[Embed] Error on ${product.id}:`, e.response?.data || e.message);
+      const msg = e.response?.data ? JSON.stringify(e.response.data) : e.message;
+      errors.push({ id: product.id, error: msg });
       failed++;
     }
   }
 
-  return { embedded, skipped, failed };
+  return { embedded, skipped, failed, errors: errors.slice(0, 3) };
 }
 
 module.exports = { runEmbedding };
