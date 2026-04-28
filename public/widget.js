@@ -363,88 +363,78 @@
       .cml-ask-btn:hover { opacity: 0.85; }
       .cml-ask-btn:disabled { opacity: 0.4; cursor: default; }
 
-      /* ── 플로팅 채팅 버튼 (FAB) ── */
-      .cml-fab {
+      /* ── 사이드바 탭 (항상 보이는 트리거) ── */
+      .cml-sidebar-tab {
         position: fixed;
-        bottom: 24px;
-        right: 24px;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
         z-index: 99999;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 12px;
-        font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
-      }
-      .cml-fab-btn {
-        width: 52px;
-        height: 52px;
-        border-radius: 50%;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
         background: #111;
         color: #fff;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-        transition: transform 0.15s, box-shadow 0.15s;
-        flex-shrink: 0;
-      }
-      .cml-fab-btn:hover {
-        transform: scale(1.06);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.28);
-      }
-      .cml-fab-badge {
-        position: absolute;
-        top: -3px;
-        right: -3px;
-        width: 10px;
-        height: 10px;
-        background: #E74C3C;
-        border-radius: 50%;
-        border: 2px solid #fff;
-      }
-
-      /* ── 플로팅 채팅 패널 ── */
-      .cml-chat-panel {
-        position: fixed;
-        bottom: 86px;
-        right: 24px;
-        z-index: 99998;
-        width: 320px;
-        max-height: 500px;
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.16);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        animation: cmlSlideUp 0.2s ease;
         font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
         font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        padding: 18px 10px;
+        cursor: pointer;
+        border-radius: 8px 0 0 8px;
+        box-shadow: -2px 0 12px rgba(0,0,0,0.15);
+        transition: background 0.15s, padding 0.15s;
+        user-select: none;
       }
-      .cml-chat-panel.cml-hidden { display: none; }
-      @keyframes cmlSlideUp {
-        from { opacity: 0; transform: translateY(12px); }
-        to   { opacity: 1; transform: translateY(0); }
+      .cml-sidebar-tab:hover { background: #333; padding-right: 14px; }
+
+      /* ── 사이드바 패널 ── */
+      .cml-chat-panel {
+        position: fixed;
+        top: 0;
+        right: -380px;
+        width: 360px;
+        height: 100dvh;
+        background: #fff;
+        box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+        display: flex;
+        flex-direction: column;
+        z-index: 99998;
+        font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+        font-size: 13px;
+        transition: right 0.28s cubic-bezier(0.4,0,0.2,1);
       }
+      .cml-chat-panel.cml-open { right: 0; }
+
+      /* ── 딤 오버레이 ── */
+      .cml-sidebar-dim {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 99997;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.28s;
+      }
+      .cml-sidebar-dim.cml-open { opacity: 1; pointer-events: auto; }
+
       .cml-chat-header {
-        padding: 14px 16px;
+        padding: 18px 20px;
         background: #111;
         color: #fff;
-        font-size: 13px;
-        font-weight: 500;
+        font-size: 14px;
+        font-weight: 600;
         letter-spacing: 0.04em;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-shrink: 0;
       }
       .cml-chat-close {
         background: none;
         border: none;
         color: rgba(255,255,255,0.7);
         cursor: pointer;
-        font-size: 16px;
+        font-size: 20px;
         line-height: 1;
         padding: 0;
       }
@@ -459,11 +449,11 @@
       }
       .cml-chat-bubble {
         max-width: 85%;
-        padding: 9px 12px;
+        padding: 10px 14px;
         border-radius: 12px;
-        font-size: 11px;
-        line-height: 1.7;
-        letter-spacing: 0.02em;
+        font-size: 13px;
+        line-height: 1.75;
+        letter-spacing: 0.01em;
         white-space: pre-wrap;
       }
       .cml-chat-bubble.user {
@@ -537,8 +527,8 @@
         flex: 1;
         border: 1px solid #E0E0DC;
         border-radius: 999px;
-        padding: 7px 13px;
-        font-size: 11px;
+        padding: 9px 16px;
+        font-size: 13px;
         outline: none;
         font-family: inherit;
         color: #333;
@@ -571,8 +561,8 @@
       .cml-chat-starter-chip {
         border: 1px solid #D8D8D4;
         border-radius: 999px;
-        padding: 5px 11px;
-        font-size: 10px;
+        padding: 7px 14px;
+        font-size: 12px;
         color: #555;
         background: #fff;
         cursor: pointer;
@@ -786,68 +776,79 @@
     } catch { /* 실패해도 기본 칩 유지 */ }
   }
 
-  // ── 10. 플로팅 채팅 버튼 (FAB) ──────────────────
+  // ── 10. 사이드바 채팅 ──────────────────────────
   function renderFab(config) {
-    if (document.getElementById('cml-fab')) return;
+    if (document.getElementById('cml-sidebar-tab')) return;
 
     const accentColor = config?.theme?.accentColor || '#111';
 
-    // FAB 버튼
-    const fab = document.createElement('div');
-    fab.id = 'cml-fab';
-    fab.className = 'cml-fab';
-    fab.innerHTML = `
-      <div class="cml-chat-panel cml-hidden" id="cml-chat-panel">
-        <div class="cml-chat-header">
-          <span>어떤 스타일 찾으세요?</span>
-          <button class="cml-chat-close" id="cml-chat-close" aria-label="닫기">✕</button>
-        </div>
-        <div class="cml-chat-messages" id="cml-chat-messages">
-          <div class="cml-chat-bubble assistant">안녕하세요! 원하시는 스타일이나 상황을 말씀해주시면 딱 맞는 아이템 찾아드릴게요 :)</div>
-        </div>
-        <div class="cml-chat-starter-chips" id="cml-chat-starters">
-          <button class="cml-chat-starter-chip" data-q="요즘 트렌디한 아이템 뭐 있어요?">요즘 트렌드</button>
-          <button class="cml-chat-starter-chip" data-q="소개팅에 입기 좋은 옷 추천해주세요">소개팅 룩</button>
-          <button class="cml-chat-starter-chip" data-q="여름에 시원하게 입을 수 있는 옷 있나요?">여름 아이템</button>
-          <button class="cml-chat-starter-chip" data-q="친구한테 선물하기 좋은 거 있어요?">선물 추천</button>
-        </div>
-        <div class="cml-chat-input-row">
-          <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="원하는 스타일, 상황을 말해보세요" autocomplete="off" />
-          <button class="cml-chat-send" id="cml-chat-send" aria-label="전송">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-              <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <button class="cml-fab-btn" id="cml-fab-btn" aria-label="쇼핑 어시스턴트" style="background:${accentColor};">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="cml-fab-badge"></span>
-      </button>
-    `;
-    document.body.appendChild(fab);
+    // 사이드바 탭 (트리거)
+    const tab = document.createElement('div');
+    tab.id = 'cml-sidebar-tab';
+    tab.className = 'cml-sidebar-tab';
+    tab.setAttribute('role', 'button');
+    tab.setAttribute('aria-label', 'AI 쇼핑 어시스턴트 열기');
+    tab.style.background = accentColor;
+    tab.textContent = 'AI 쇼핑 도우미';
+    document.body.appendChild(tab);
 
-    const panel    = fab.querySelector('#cml-chat-panel');
-    const fabBtn   = fab.querySelector('#cml-fab-btn');
-    const closeBtn = fab.querySelector('#cml-chat-close');
-    const messagesEl = fab.querySelector('#cml-chat-messages');
-    const inputEl  = fab.querySelector('#cml-chat-input');
-    const sendBtn  = fab.querySelector('#cml-chat-send');
-    const startChips = fab.querySelectorAll('.cml-chat-starter-chip');
+    // 딤 오버레이
+    const dim = document.createElement('div');
+    dim.id = 'cml-sidebar-dim';
+    dim.className = 'cml-sidebar-dim';
+    document.body.appendChild(dim);
+
+    // 사이드바 패널
+    const panel = document.createElement('div');
+    panel.id = 'cml-chat-panel';
+    panel.className = 'cml-chat-panel';
+    panel.innerHTML = `
+      <div class="cml-chat-header">
+        <span>AI 쇼핑 도우미</span>
+        <button class="cml-chat-close" id="cml-chat-close" aria-label="닫기">✕</button>
+      </div>
+      <div class="cml-chat-messages" id="cml-chat-messages">
+        <div class="cml-chat-bubble assistant">안녕하세요! 원하시는 스타일이나 상황을 말씀해주시면 딱 맞는 아이템 찾아드릴게요 :)</div>
+      </div>
+      <div class="cml-chat-starter-chips" id="cml-chat-starters">
+        <button class="cml-chat-starter-chip" data-q="요즘 트렌디한 아이템 뭐 있어요?">요즘 트렌드</button>
+        <button class="cml-chat-starter-chip" data-q="소개팅에 입기 좋은 옷 추천해주세요">소개팅 룩</button>
+        <button class="cml-chat-starter-chip" data-q="여름에 시원하게 입을 수 있는 옷 있나요?">여름 아이템</button>
+        <button class="cml-chat-starter-chip" data-q="친구한테 선물하기 좋은 거 있어요?">선물 추천</button>
+      </div>
+      <div class="cml-chat-input-row">
+        <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="원하는 스타일, 상황을 말해보세요" autocomplete="off" />
+        <button class="cml-chat-send" id="cml-chat-send" aria-label="전송">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    `;
+    document.body.appendChild(panel);
+
+    const closeBtn   = panel.querySelector('#cml-chat-close');
+    const messagesEl = panel.querySelector('#cml-chat-messages');
+    const inputEl    = panel.querySelector('#cml-chat-input');
+    const sendBtn    = panel.querySelector('#cml-chat-send');
+    const startChips = panel.querySelectorAll('.cml-chat-starter-chip');
 
     const chatHistory = [];
 
-    function togglePanel() {
-      panel.classList.toggle('cml-hidden');
-      if (!panel.classList.contains('cml-hidden')) {
-        inputEl.focus();
-        fab.querySelector('.cml-fab-badge').style.display = 'none';
-      }
+    function openSidebar() {
+      panel.classList.add('cml-open');
+      dim.classList.add('cml-open');
+      tab.style.display = 'none';
+      inputEl.focus();
     }
-    fabBtn.addEventListener('click', togglePanel);
-    closeBtn.addEventListener('click', togglePanel);
+    function closeSidebar() {
+      panel.classList.remove('cml-open');
+      dim.classList.remove('cml-open');
+      tab.style.display = '';
+    }
+    tab.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    dim.addEventListener('click', closeSidebar);
 
     function addBubble(role, text) {
       const div = document.createElement('div');
@@ -879,7 +880,7 @@
       if (!query.trim()) return;
 
       // 스타터 칩 숨기기
-      fab.querySelector('#cml-chat-starters').style.display = 'none';
+      panel.querySelector('#cml-chat-starters').style.display = 'none';
 
       addBubble('user', query);
       const loadingBubble = addBubble('assistant loading', '추천을 찾고 있어요...');
