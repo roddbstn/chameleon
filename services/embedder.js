@@ -8,9 +8,9 @@ const supabase = createClient(
 
 async function embedText(text) {
   const res = await axios.post(
-    `https://generativelanguage.googleapis.com/v1beta/models/embedding-001:embedContent?key=${process.env.GOOGLE_AI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1/models/text-embedding-004:embedContent?key=${process.env.GOOGLE_AI_API_KEY}`,
     {
-      model: 'models/embedding-001',
+      model: 'models/text-embedding-004',
       content: { parts: [{ text }] },
     }
   );
@@ -58,7 +58,7 @@ async function runEmbedding(mallId) {
           product_id:  product.id,
           embedding:   JSON.stringify(vector),
           embed_text:  product.embed_text,
-          embed_model: 'gemini-embedding-004',
+          embed_model: 'text-embedding-004',
         }, { onConflict: 'product_id' });
 
       if (upsertError) {
