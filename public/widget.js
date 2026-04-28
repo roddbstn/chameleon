@@ -370,23 +370,36 @@
         right: 0;
         transform: translateY(-50%);
         z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        border: 1px solid #E4E4E0;
+        border-right: none;
+        border-radius: 12px 0 0 12px;
+        padding: 16px 10px;
+        cursor: pointer;
+        box-shadow: -4px 0 16px rgba(0,0,0,0.07);
+        transition: opacity 0.2s, box-shadow 0.2s;
+        user-select: none;
+        font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      }
+      .cml-sidebar-tab:hover { box-shadow: -6px 0 20px rgba(0,0,0,0.12); }
+      .cml-sidebar-tab.cml-hidden { opacity: 0; pointer-events: none; }
+      .cml-sidebar-tab-icon {
+        width: 22px;
+        height: 22px;
+        color: #111;
+      }
+      .cml-sidebar-tab-label {
         writing-mode: vertical-rl;
         text-orientation: mixed;
-        background: #111;
-        color: #fff;
-        font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 500;
-        letter-spacing: 0.1em;
-        padding: 18px 10px;
-        cursor: pointer;
-        border-radius: 8px 0 0 8px;
-        box-shadow: -2px 0 12px rgba(0,0,0,0.15);
-        transition: opacity 0.2s;
-        user-select: none;
+        color: #333;
+        letter-spacing: 0.12em;
       }
-      .cml-sidebar-tab:hover { background: #333; }
-      .cml-sidebar-tab.cml-hidden { opacity: 0; pointer-events: none; }
 
       /* ── 사이드바 패널 (오버레이 없이 페이지 옆에 붙음) ── */
       .cml-chat-panel {
@@ -408,27 +421,44 @@
       .cml-chat-panel.cml-open { transform: translateX(0); }
 
       .cml-chat-header {
-        padding: 18px 20px;
-        background: #111;
-        color: #fff;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 0.04em;
+        padding: 16px 20px;
+        background: #fff;
+        border-bottom: 1px solid #EBEBEB;
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-shrink: 0;
       }
+      .cml-chat-header-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .cml-chat-header-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22C55E;
+        flex-shrink: 0;
+      }
+      .cml-chat-header-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #111;
+        letter-spacing: 0.01em;
+      }
       .cml-chat-close {
         background: none;
         border: none;
-        color: rgba(255,255,255,0.7);
+        color: #AAA;
         cursor: pointer;
-        font-size: 20px;
+        font-size: 18px;
         line-height: 1;
-        padding: 0;
+        padding: 4px;
+        border-radius: 4px;
+        transition: color 0.15s, background 0.15s;
       }
-      .cml-chat-close:hover { color: #fff; }
+      .cml-chat-close:hover { color: #333; background: #F4F4F2; }
       .cml-chat-messages {
         flex: 1;
         overflow-y: auto;
@@ -778,8 +808,12 @@
     tab.className = 'cml-sidebar-tab';
     tab.setAttribute('role', 'button');
     tab.setAttribute('aria-label', 'AI 쇼핑 어시스턴트 열기');
-    tab.style.background = accentColor;
-    tab.textContent = 'AI 쇼핑 도우미';
+    tab.innerHTML = `
+      <svg class="cml-sidebar-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span class="cml-sidebar-tab-label">AI 도우미</span>
+    `;
     document.body.appendChild(tab);
 
 
@@ -789,7 +823,10 @@
     panel.className = 'cml-chat-panel';
     panel.innerHTML = `
       <div class="cml-chat-header">
-        <span>AI 쇼핑 도우미</span>
+        <div class="cml-chat-header-left">
+          <span class="cml-chat-header-dot"></span>
+          <span class="cml-chat-header-title">AI 쇼핑 도우미</span>
+        </div>
         <button class="cml-chat-close" id="cml-chat-close" aria-label="닫기">✕</button>
       </div>
       <div class="cml-chat-messages" id="cml-chat-messages">
