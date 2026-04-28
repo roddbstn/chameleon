@@ -363,7 +363,7 @@
       .cml-ask-btn:hover { opacity: 0.85; }
       .cml-ask-btn:disabled { opacity: 0.4; cursor: default; }
 
-      /* ── 사이드바 탭 (항상 보이는 트리거) ── */
+      /* ── 사이드바 탭 (닫혔을 때 트리거) ── */
       .cml-sidebar-tab {
         position: fixed;
         top: 50%;
@@ -382,40 +382,30 @@
         cursor: pointer;
         border-radius: 8px 0 0 8px;
         box-shadow: -2px 0 12px rgba(0,0,0,0.15);
-        transition: background 0.15s, padding 0.15s;
+        transition: opacity 0.2s;
         user-select: none;
       }
-      .cml-sidebar-tab:hover { background: #333; padding-right: 14px; }
+      .cml-sidebar-tab:hover { background: #333; }
+      .cml-sidebar-tab.cml-hidden { opacity: 0; pointer-events: none; }
 
-      /* ── 사이드바 패널 ── */
+      /* ── 사이드바 패널 (오버레이 없이 페이지 옆에 붙음) ── */
       .cml-chat-panel {
         position: fixed;
         top: 0;
-        right: -380px;
-        width: 360px;
+        right: 0;
+        width: 340px;
         height: 100dvh;
-        background: #fff;
-        box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+        background: #fafafa;
+        border-left: 1px solid #E8E8E4;
         display: flex;
         flex-direction: column;
-        z-index: 99998;
+        z-index: 9999;
         font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
         font-size: 13px;
-        transition: right 0.28s cubic-bezier(0.4,0,0.2,1);
+        transform: translateX(100%);
+        transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
       }
-      .cml-chat-panel.cml-open { right: 0; }
-
-      /* ── 딤 오버레이 ── */
-      .cml-sidebar-dim {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.3);
-        z-index: 99997;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.28s;
-      }
-      .cml-sidebar-dim.cml-open { opacity: 1; pointer-events: auto; }
+      .cml-chat-panel.cml-open { transform: translateX(0); }
 
       .cml-chat-header {
         padding: 18px 20px;
@@ -792,11 +782,6 @@
     tab.textContent = 'AI 쇼핑 도우미';
     document.body.appendChild(tab);
 
-    // 딤 오버레이
-    const dim = document.createElement('div');
-    dim.id = 'cml-sidebar-dim';
-    dim.className = 'cml-sidebar-dim';
-    document.body.appendChild(dim);
 
     // 사이드바 패널
     const panel = document.createElement('div');
@@ -835,20 +820,22 @@
 
     const chatHistory = [];
 
+    const SIDEBAR_W = '340px';
+
     function openSidebar() {
       panel.classList.add('cml-open');
-      dim.classList.add('cml-open');
-      tab.style.display = 'none';
+      tab.classList.add('cml-hidden');
+      document.body.style.transition = 'margin-right 0.28s cubic-bezier(0.4,0,0.2,1)';
+      document.body.style.marginRight = SIDEBAR_W;
       inputEl.focus();
     }
     function closeSidebar() {
       panel.classList.remove('cml-open');
-      dim.classList.remove('cml-open');
-      tab.style.display = '';
+      tab.classList.remove('cml-hidden');
+      document.body.style.marginRight = '0';
     }
     tab.addEventListener('click', openSidebar);
     closeBtn.addEventListener('click', closeSidebar);
-    dim.addEventListener('click', closeSidebar);
 
     function addBubble(role, text) {
       const div = document.createElement('div');
