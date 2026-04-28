@@ -206,7 +206,7 @@ async function registerScripttag(mallId, accessToken) {
     {
       request: {
         src: widgetUrl,
-        display_location: ['PRODUCT_DETAIL'],
+        display_location: ['MAIN', 'PRODUCT_LIST', 'PRODUCT_DETAIL', 'MYSHOP', 'BOARD', 'ORDER'],
       },
     },
     { headers: apiHeaders }
