@@ -818,6 +818,81 @@
         transition: border-color 0.12s, color 0.12s;
       }
       .cml-chat-starter-chip:hover { border-color: #888; color: #111; }
+
+      /* ── SneakPeek 말풍선 ── */
+      .cml-sneak-peek {
+        position: fixed;
+        right: 62px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #fff;
+        border: 1px solid #E4E4E0;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-size: 13px;
+        color: #333;
+        font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+        line-height: 1.55;
+        z-index: 99998;
+        box-shadow: -2px 4px 16px rgba(0,0,0,0.10);
+        max-width: 180px;
+        opacity: 0;
+        transition: opacity 0.35s;
+        pointer-events: none;
+      }
+      .cml-sneak-peek.cml-sneak-show { opacity: 1; }
+      .cml-sneak-peek::after {
+        content: '';
+        position: absolute;
+        right: -6px;
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
+        width: 10px;
+        height: 10px;
+        background: #fff;
+        border-right: 1px solid #E4E4E0;
+        border-top: 1px solid #E4E4E0;
+      }
+
+      /* ── 모바일 (≤767px) ── */
+      @media (max-width: 767px) {
+        /* 패널: 전체화면 */
+        .cml-chat-panel { width: 100vw !important; }
+        /* body shift 모바일 비활성 */
+        body.cml-page-shift { margin-right: 0 !important; }
+        /* 탭: 하단 FAB */
+        .cml-sidebar-tab {
+          top: auto;
+          bottom: 20px;
+          right: 16px;
+          transform: none;
+          border-radius: 999px;
+          flex-direction: row;
+          padding: 12px 18px;
+          gap: 8px;
+          border-right: 1px solid #E4E4E0;
+        }
+        .cml-sidebar-tab-label {
+          writing-mode: initial;
+          text-orientation: initial;
+          font-size: 13px;
+          letter-spacing: 0.04em;
+        }
+        /* SneakPeek: 하단 FAB 위 */
+        .cml-sneak-peek {
+          top: auto;
+          bottom: 76px;
+          right: 16px;
+          transform: none;
+          max-width: 220px;
+        }
+        .cml-sneak-peek::after {
+          top: auto;
+          bottom: -6px;
+          right: 24px;
+          transform: rotate(135deg);
+        }
+      }
     `;
     document.head.appendChild(style);
   }
@@ -1207,11 +1282,12 @@
     function openSidebar() {
       panel.classList.add('cml-open');
       tab.classList.add('cml-hidden');
-      if (PANEL_MODE === 'push') {
+      const isMobile = window.innerWidth < 768;
+      if (PANEL_MODE === 'push' && !isMobile) {
         document.body.style.setProperty('--cml-shift-width', `${SIDEBAR_W}px`);
         document.body.classList.add('cml-page-shift');
-      } else {
-        if (backdrop) { backdrop.style.display = 'block'; }
+      } else if (backdrop) {
+        backdrop.style.display = 'block';
       }
       inputEl.focus();
     }
@@ -1511,6 +1587,29 @@
 
     // 패널 생성 직후 이전 세션 복원
     restoreSession();
+
+    // ── SneakPeek: 이전 세션 없을 때만 4초 후 말풍선 표시 ──
+    if (!sessionStorage.getItem(SESSION_KEY)) {
+      const sneakText = branding.sneakPeekText || '소개팅, 출장, 선물...\n어떤 스타일 찾으세요?';
+      const sneakEl = document.createElement('div');
+      sneakEl.className = 'cml-sneak-peek';
+      sneakEl.textContent = sneakText;
+      document.body.appendChild(sneakEl);
+
+      let sneakShowTimer, sneakHideTimer;
+      sneakShowTimer = setTimeout(() => {
+        sneakEl.classList.add('cml-sneak-show');
+        sneakHideTimer = setTimeout(() => sneakEl.classList.remove('cml-sneak-show'), 5000);
+      }, 4000);
+
+      const dismissSneak = () => {
+        clearTimeout(sneakShowTimer);
+        clearTimeout(sneakHideTimer);
+        sneakEl.remove();
+      };
+      // 탭 클릭 시 말풍선 제거
+      tab.addEventListener('click', dismissSneak, { once: true });
+    }
   }
 
   // ── 10. 실행 ────────────────────────────────────
