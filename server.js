@@ -43,8 +43,60 @@ const {
   PORT = 3000,
 } = process.env;
 
-// 토큰 임시 저장 (MVP: 메모리. 실제 서비스에서는 DB 사용)
+// 토큰 저장소 (메모리 + Supabase 영속화)
 const tokenStore = {};
+
+async function saveTokenToDb(mallId, access_token, refresh_token) {
+  try {
+    await supabase.from('store_tokens').upsert(
+      { store_id: mallId, access_token, refresh_token, updated_at: new Date().toISOString() },
+      { onConflict: 'store_id' }
+    );
+  } catch (e) {
+    console.warn('[Token] DB 저장 실패 (store_tokens 테이블 없을 수 있음):', e.message);
+  }
+}
+
+async function loadTokensFromDb() {
+  try {
+    const { data } = await supabase.from('store_tokens').select('store_id, access_token, refresh_token');
+    (data || []).forEach(row => {
+      tokenStore[row.store_id] = { access_token: row.access_token, refresh_token: row.refresh_token };
+    });
+    console.log(`[Token] DB에서 ${(data || []).length}개 스토어 토큰 로드`);
+  } catch (e) {
+    console.warn('[Token] DB 로드 실패 (store_tokens 테이블 없을 수 있음):', e.message);
+  }
+}
+
+async function refreshTokenIfNeeded(mallId) {
+  const stored = tokenStore[mallId];
+  if (!stored?.refresh_token) return null;
+  try {
+    const res = await axios.post(
+      `https://${mallId}.cafe24api.com/api/v2/oauth/token`,
+      new URLSearchParams({ grant_type: 'refresh_token', refresh_token: stored.refresh_token }),
+      { auth: { username: CAFE24_CLIENT_ID, password: CAFE24_CLIENT_SECRET },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
+    const { access_token, refresh_token } = res.data;
+    tokenStore[mallId] = { access_token, refresh_token };
+    await saveTokenToDb(mallId, access_token, refresh_token);
+    console.log(`[Token] ${mallId} 토큰 갱신 완료`);
+    return access_token;
+  } catch (e) {
+    console.error('[Token] 갱신 실패:', e.message);
+    return null;
+  }
+}
+
+// 유효한 액세스 토큰 반환 (만료 시 자동 갱신)
+async function getValidToken(mallId) {
+  const token = tokenStore[mallId]?.access_token;
+  if (!token) return null;
+  // 간단한 검증: API 호출 실패(401)시 상위에서 refresh 처리
+  return token;
+}
 
 // ─────────────────────────────────────────────
 // 스토어별 위젯 설정 (우리가 운영하는 config)
@@ -64,11 +116,13 @@ const storeConfigs = {
       fontFamily: "'Noto Sans KR', sans-serif",
     },
     cart: {
-      // Cafe24 기본 장바구니 엔드포인트
-      // 쇼핑몰마다 다를 경우 여기서 override
       endpoint: '/exec/front/Order/Cart',
-      // 상품번호·옵션코드·수량 파라미터명이 다른 경우 override
       fields: { product_no: 'product_no', option_code: 'option_code', quantity: 'quantity' },
+    },
+    panel: {
+      // 'push'    → 사이트를 좁히고 옆에 AI 패널 (현재 방식)
+      // 'overlay' → 사이트 위에 덮어서 표시 (Macy's 방식)
+      mode: 'push',
     },
   },
   // 다른 고객사 추가 예시:
@@ -99,6 +153,7 @@ const defaultConfig = {
     endpoint: '/exec/front/Order/Cart',
     fields: { product_no: 'product_no', option_code: 'option_code', quantity: 'quantity' },
   },
+  panel: { mode: 'push' },
 };
 
 // ─────────────────────────────────────────────
@@ -168,6 +223,7 @@ app.get('/auth/callback', async (req, res) => {
 
     const { access_token, refresh_token } = tokenRes.data;
     tokenStore[mallId] = { access_token, refresh_token };
+    await saveTokenToDb(mallId, access_token, refresh_token);
     console.log(`[OAuth] Token saved for ${mallId}`);
 
     // ② Scripttag 등록 — 위젯 JS를 스토어 모든 페이지에 자동 삽입
@@ -620,24 +676,41 @@ app.post('/admin/sync/:mallId', async (req, res) => {
 // ─────────────────────────────────────────────
 app.get('/api/options', async (req, res) => {
   const { mallId, productNo } = req.query;
-  if (!mallId || !productNo) return res.json({ options: [], variants: [] });
+  if (!mallId || !productNo) return res.json({ options: [], variants: [], error: 'params_missing' });
 
-  const token = tokenStore[mallId]?.access_token;
-  if (!token) return res.json({ options: [], variants: [] });
+  let token = await getValidToken(mallId);
+  if (!token) return res.json({ options: [], variants: [], error: 'no_token' });
 
-  try {
-    const headers = { Authorization: `Bearer ${token}` };
+  async function fetchOptions(tok) {
+    const headers = { Authorization: `Bearer ${tok}` };
     const [optRes, varRes] = await Promise.all([
       axios.get(`https://${mallId}.cafe24api.com/api/v2/admin/products/${productNo}/options`, { headers }),
       axios.get(`https://${mallId}.cafe24api.com/api/v2/admin/products/${productNo}/variants`, { headers }),
     ]);
-    res.json({
+    return {
       options:  optRes.data.options  || [],
       variants: varRes.data.variants || [],
-    });
+    };
+  }
+
+  try {
+    const data = await fetchOptions(token);
+    res.json(data);
   } catch (err) {
+    // 401이면 토큰 갱신 후 재시도
+    if (err.response?.status === 401) {
+      const newToken = await refreshTokenIfNeeded(mallId);
+      if (newToken) {
+        try {
+          res.json(await fetchOptions(newToken));
+          return;
+        } catch (e2) {
+          console.error('[Options] 갱신 후 재시도 실패:', e2.message);
+        }
+      }
+    }
     console.error('[Options]', err.message);
-    res.json({ options: [], variants: [] });
+    res.json({ options: [], variants: [], error: err.message });
   }
 });
 
@@ -704,6 +777,9 @@ app.get('/dashboard', (req, res) => {
 // ─────────────────────────────────────────────
 // Start
 // ─────────────────────────────────────────────
+// 시작 시 DB에서 토큰 복원
+loadTokensFromDb().catch(() => {});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ╔══════════════════════════════════════════╗

@@ -996,30 +996,56 @@
 
     const chatHistory = [];
 
-    // mall별 장바구니 설정 (config에서 주입, 없으면 Cafe24 기본값)
+    // mall별 장바구니 설정
     const cartConfig = config?.cart || {};
     const CART_ENDPOINT = cartConfig.endpoint || '/exec/front/Order/Cart';
     const CART_FIELDS   = cartConfig.fields   || { product_no: 'product_no', option_code: 'option_code', quantity: 'quantity' };
 
+    // 패널 모드: 'push'(사이트 좁히기) | 'overlay'(사이트 위에 덮기)
+    const PANEL_MODE = config?.panel?.mode || 'push';
+
     const SIDEBAR_W = 340;
     const EASE = 'cubic-bezier(0.4,0,0.2,1)';
+
+    // overlay 모드용 backdrop
+    let backdrop = null;
+    if (PANEL_MODE === 'overlay') {
+      backdrop = document.createElement('div');
+      backdrop.id = 'cml-backdrop';
+      backdrop.style.cssText = `
+        display:none; position:fixed; inset:0;
+        background:rgba(0,0,0,0.3); z-index:9998;
+        transition:opacity 0.28s;
+      `;
+      document.body.appendChild(backdrop);
+      backdrop.addEventListener('click', closeSidebar);
+    }
 
     function openSidebar() {
       panel.classList.add('cml-open');
       tab.classList.add('cml-hidden');
-      const t = `width 0.28s ${EASE}, max-width 0.28s ${EASE}`;
-      document.documentElement.style.transition = t;
-      document.body.style.transition = t;
-      document.documentElement.style.maxWidth = `calc(100vw - ${SIDEBAR_W}px)`;
-      document.documentElement.style.overflowX = 'hidden';
-      document.body.style.width = '100%';
+      if (PANEL_MODE === 'push') {
+        const t = `width 0.28s ${EASE}, max-width 0.28s ${EASE}`;
+        document.documentElement.style.transition = t;
+        document.body.style.transition = t;
+        document.documentElement.style.maxWidth = `calc(100vw - ${SIDEBAR_W}px)`;
+        document.documentElement.style.overflowX = 'hidden';
+        document.body.style.width = '100%';
+      } else {
+        // overlay: 배경 딤 처리만, 페이지 건드리지 않음
+        if (backdrop) { backdrop.style.display = 'block'; }
+      }
       inputEl.focus();
     }
     function closeSidebar() {
       panel.classList.remove('cml-open');
       tab.classList.remove('cml-hidden');
-      document.documentElement.style.maxWidth = '';
-      document.documentElement.style.overflowX = '';
+      if (PANEL_MODE === 'push') {
+        document.documentElement.style.maxWidth = '';
+        document.documentElement.style.overflowX = '';
+      } else {
+        if (backdrop) { backdrop.style.display = 'none'; }
+      }
     }
     tab.addEventListener('click', openSidebar);
     closeBtn.addEventListener('click', closeSidebar);
@@ -1174,10 +1200,18 @@
         cartBtn.textContent = '불러오는 중...';
         cartBtn.disabled = true;
 
-        const { options, variants } = await fetchProductOptions(productId);
+        const result = await fetchProductOptions(productId);
+        const { options, variants } = result;
 
         cartBtn.textContent = '장바구니 담기';
         cartBtn.disabled = false;
+
+        if (result.error === 'no_token') {
+          // 서버 토큰 없음: PDP로 이동 안내
+          showToast('상품 페이지에서 옵션을 선택해주세요.');
+          window.location.href = `/product/detail.html?product_no=${productId}`;
+          return;
+        }
 
         if (!options.length) {
           // 옵션 없는 상품: 바로 담기
