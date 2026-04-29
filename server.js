@@ -124,6 +124,14 @@ const storeConfigs = {
       // 'overlay' → 사이트 위에 덮어서 표시 (Macy's 방식)
       mode: 'push',
     },
+    branding: {
+      chatName:     'AI 쇼핑 도우미',   // 패널 헤더 타이틀
+      buttonLabel:  'AI 도우미',         // 사이드 탭 라벨
+      logoUrl:      null,                // 헤더 로고 이미지 URL (null이면 dot 표시)
+      heroImage:    null,                // 채팅 상단 히어로 이미지 URL
+      welcomeTitle: null,                // 히어로 타이틀 텍스트
+      welcomeBody:  null,                // 히어로 서브 텍스트
+    },
   },
   // 다른 고객사 추가 예시:
   // othermall: {
@@ -154,6 +162,14 @@ const defaultConfig = {
     fields: { product_no: 'product_no', option_code: 'option_code', quantity: 'quantity' },
   },
   panel: { mode: 'push' },
+  branding: {
+    chatName: 'AI 쇼핑 도우미',
+    buttonLabel: 'AI 도우미',
+    logoUrl: null,
+    heroImage: null,
+    welcomeTitle: null,
+    welcomeBody: null,
+  },
 };
 
 // ─────────────────────────────────────────────

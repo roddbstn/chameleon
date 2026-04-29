@@ -401,12 +401,13 @@
         letter-spacing: 0.12em;
       }
 
-      /* ── 사이드바 패널 (오버레이 없이 페이지 옆에 붙음) ── */
+      /* ── 사이드바 패널 ── */
       .cml-chat-panel {
         position: fixed;
         top: 0;
         right: 0;
-        width: 340px;
+        width: 600px;
+        max-width: 100vw;
         height: 100dvh;
         background: #fafafa;
         border-left: 1px solid #E8E8E4;
@@ -417,11 +418,12 @@
         font-size: 13px;
         transform: translateX(100%);
         transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+        box-shadow: -8px 0 40px rgba(0,0,0,0.10);
       }
       .cml-chat-panel.cml-open { transform: translateX(0); }
 
       .cml-chat-header {
-        padding: 16px 20px;
+        padding: 18px 24px;
         background: #fff;
         border-bottom: 1px solid #EBEBEB;
         display: flex;
@@ -432,7 +434,12 @@
       .cml-chat-header-left {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
+      }
+      .cml-chat-header-logo {
+        height: 28px;
+        width: auto;
+        display: block;
       }
       .cml-chat-header-dot {
         width: 8px;
@@ -442,8 +449,8 @@
         flex-shrink: 0;
       }
       .cml-chat-header-title {
-        font-size: 14px;
-        font-weight: 600;
+        font-size: 16px;
+        font-weight: 700;
         color: #111;
         letter-spacing: 0.01em;
       }
@@ -452,25 +459,76 @@
         border: none;
         color: #AAA;
         cursor: pointer;
-        font-size: 18px;
+        font-size: 20px;
         line-height: 1;
-        padding: 4px;
-        border-radius: 4px;
+        padding: 6px;
+        border-radius: 6px;
         transition: color 0.15s, background 0.15s;
       }
       .cml-chat-close:hover { color: #333; background: #F4F4F2; }
+
+      /* ── 히어로 영역 ── */
+      .cml-chat-hero {
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .cml-chat-hero-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+      }
+      .cml-chat-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.52));
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 20px 24px;
+      }
+      .cml-chat-hero-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+        margin-bottom: 4px;
+      }
+      .cml-chat-hero-body {
+        font-size: 13px;
+        color: rgba(255,255,255,0.85);
+        line-height: 1.5;
+      }
+      /* 히어로 없이 텍스트만 있을 때 */
+      .cml-chat-hero-text-only {
+        padding: 20px 24px 0;
+        flex-shrink: 0;
+      }
+      .cml-chat-hero-text-only .cml-chat-hero-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #111;
+        margin-bottom: 4px;
+      }
+      .cml-chat-hero-text-only .cml-chat-hero-body {
+        font-size: 13px;
+        color: #666;
+      }
+
       .cml-chat-messages {
         flex: 1;
         overflow-y: auto;
-        padding: 14px 14px 8px;
+        padding: 16px 20px 8px;
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
       .cml-chat-bubble {
-        max-width: 85%;
-        padding: 10px 14px;
-        border-radius: 12px;
+        max-width: 82%;
+        padding: 12px 16px;
+        border-radius: 14px;
         font-size: 14px;
         line-height: 1.75;
         letter-spacing: 0.01em;
@@ -671,22 +729,31 @@
         gap: 6px;
         align-items: center;
       }
+      .cml-chat-input-row {
+        padding: 14px 20px;
+        border-top: 1px solid #F0F0EE;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        background: #fff;
+      }
       .cml-chat-input {
         flex: 1;
-        border: 1px solid #E0E0DC;
+        border: 1.5px solid #E0E0DC;
         border-radius: 999px;
-        padding: 9px 16px;
-        font-size: 14px;
+        padding: 13px 22px;
+        font-size: 15px;
         outline: none;
         font-family: inherit;
         color: #333;
         background: #FAFAF9;
+        transition: border-color 0.15s;
       }
       .cml-chat-input:focus { border-color: #111; }
       .cml-chat-input::placeholder { color: #bbb; }
       .cml-chat-send {
-        width: 28px;
-        height: 28px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
         background: #111;
         color: #fff;
@@ -703,13 +770,13 @@
       .cml-chat-starter-chips {
         display: flex;
         flex-wrap: wrap;
-        gap: 6px;
-        padding: 0 14px 10px;
+        gap: 8px;
+        padding: 0 20px 14px;
       }
       .cml-chat-starter-chip {
         border: 1px solid #D8D8D4;
         border-radius: 999px;
-        padding: 7px 14px;
+        padding: 9px 18px;
         font-size: 13px;
         color: #555;
         background: #fff;
@@ -936,21 +1003,52 @@
     if (document.getElementById('cml-sidebar-tab')) return;
 
     const accentColor = config?.theme?.accentColor || '#111';
+    const branding    = config?.branding || {};
+    const chatName    = branding.chatName    || 'AI 쇼핑 도우미';
+    const buttonLabel = branding.buttonLabel || 'AI 도우미';
+    const logoUrl     = branding.logoUrl     || null;
+    const heroImage   = branding.heroImage   || null;
+    const welcomeTitle = branding.welcomeTitle || null;
+    const welcomeBody  = branding.welcomeBody  || null;
 
     // 사이드바 탭 (트리거)
     const tab = document.createElement('div');
     tab.id = 'cml-sidebar-tab';
     tab.className = 'cml-sidebar-tab';
     tab.setAttribute('role', 'button');
-    tab.setAttribute('aria-label', 'AI 쇼핑 어시스턴트 열기');
+    tab.setAttribute('aria-label', `${chatName} 열기`);
     tab.innerHTML = `
       <svg class="cml-sidebar-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
       </svg>
-      <span class="cml-sidebar-tab-label">AI 도우미</span>
+      <span class="cml-sidebar-tab-label">${buttonLabel}</span>
     `;
     document.body.appendChild(tab);
 
+    // 히어로 영역 HTML 조립
+    let heroHtml = '';
+    if (heroImage) {
+      heroHtml = `
+        <div class="cml-chat-hero">
+          <img class="cml-chat-hero-img" src="${heroImage}" alt="">
+          ${(welcomeTitle || welcomeBody) ? `
+            <div class="cml-chat-hero-overlay">
+              ${welcomeTitle ? `<div class="cml-chat-hero-title">${welcomeTitle}</div>` : ''}
+              ${welcomeBody  ? `<div class="cml-chat-hero-body">${welcomeBody}</div>`   : ''}
+            </div>` : ''}
+        </div>`;
+    } else if (welcomeTitle || welcomeBody) {
+      heroHtml = `
+        <div class="cml-chat-hero-text-only">
+          ${welcomeTitle ? `<div class="cml-chat-hero-title">${welcomeTitle}</div>` : ''}
+          ${welcomeBody  ? `<div class="cml-chat-hero-body">${welcomeBody}</div>`   : ''}
+        </div>`;
+    }
+
+    // 헤더 왼쪽: 로고 or dot + 이름
+    const headerLeftHtml = logoUrl
+      ? `<img class="cml-chat-header-logo" src="${logoUrl}" alt="${chatName}">`
+      : `<span class="cml-chat-header-dot"></span><span class="cml-chat-header-title">${chatName}</span>`;
 
     // 사이드바 패널
     const panel = document.createElement('div');
@@ -958,12 +1056,10 @@
     panel.className = 'cml-chat-panel';
     panel.innerHTML = `
       <div class="cml-chat-header">
-        <div class="cml-chat-header-left">
-          <span class="cml-chat-header-dot"></span>
-          <span class="cml-chat-header-title">AI 쇼핑 도우미</span>
-        </div>
+        <div class="cml-chat-header-left">${headerLeftHtml}</div>
         <button class="cml-chat-close" id="cml-chat-close" aria-label="닫기">✕</button>
       </div>
+      ${heroHtml}
       <div class="cml-chat-messages" id="cml-chat-messages">
         <div class="cml-chat-bubble assistant">안녕하세요! 원하시는 스타일이나 상황을 말씀해주시면 딱 맞는 아이템 찾아드릴게요 :)</div>
       </div>
@@ -980,7 +1076,7 @@
       <div class="cml-chat-input-row">
         <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="원하는 스타일, 상황을 말해보세요" autocomplete="off" />
         <button class="cml-chat-send" id="cml-chat-send" aria-label="전송">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <svg width="18" height="18" viewBox="0 0 14 14" fill="none">
             <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
@@ -1004,7 +1100,7 @@
     // 패널 모드: 'push'(사이트 좁히기) | 'overlay'(사이트 위에 덮기)
     const PANEL_MODE = config?.panel?.mode || 'push';
 
-    const SIDEBAR_W = 340;
+    const SIDEBAR_W = 600;
     const EASE = 'cubic-bezier(0.4,0,0.2,1)';
 
     // overlay 모드용 backdrop
