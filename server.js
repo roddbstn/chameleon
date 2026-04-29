@@ -14,6 +14,7 @@ const cors    = require('cors');
 const axios   = require('axios');
 const path    = require('path');
 const crypto  = require('crypto');
+const { Pool } = require('pg');
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
@@ -928,8 +929,49 @@ app.get('/dashboard', (req, res) => res.redirect('/admin'));
 // ─────────────────────────────────────────────
 // Start
 // ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// 자동 마이그레이션 (DATABASE_URL 환경변수 필요)
+// Supabase Dashboard → Project Settings → Database → URI
+// ─────────────────────────────────────────────
+const MIGRATIONS = [
+  `CREATE TABLE IF NOT EXISTS chat_logs (
+    id               bigserial PRIMARY KEY,
+    store_id         text NOT NULL,
+    query            text,
+    intent_situation text,
+    intent_needs     text,
+    result_type      text,
+    product_count    int DEFAULT 0,
+    product_ids      text[],
+    created_at       timestamptz DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS chat_logs_store_created_idx
+    ON chat_logs (store_id, created_at DESC)`,
+];
+
+async function runMigrations() {
+  const dbUrl = process.env.DATABASE_URL;
+  if (!dbUrl) {
+    console.warn('[Migration] DATABASE_URL 미설정 — chat_logs 테이블 자동 생성 건너뜀');
+    console.warn('[Migration] Supabase Dashboard → Project Settings → Database → URI 복사 후 Railway 환경변수에 추가하세요.');
+    return;
+  }
+  const pool = new Pool({ connectionString: dbUrl, ssl: { rejectUnauthorized: false } });
+  try {
+    for (const sql of MIGRATIONS) {
+      await pool.query(sql);
+    }
+    console.log('[Migration] ✅ chat_logs 테이블 준비 완료');
+  } catch (e) {
+    console.error('[Migration] 오류:', e.message);
+  } finally {
+    await pool.end();
+  }
+}
+
 // 시작 시 DB에서 토큰 복원
 loadTokensFromDb().catch(() => {});
+runMigrations().catch(() => {});
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`
