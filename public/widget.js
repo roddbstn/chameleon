@@ -351,12 +351,12 @@
       max-width: 82%;
       padding: 12px 16px;
       border-radius: 14px;
-      font-size: 14px;
+      font-size: 15px;
       line-height: 1.75;
       letter-spacing: 0.01em;
       white-space: pre-wrap;
     }
-    .cml-chat-bubble strong { font-weight: 700; font-size: 15px; }
+    .cml-chat-bubble strong { font-weight: 700; font-size: 16px; }
     .cml-chat-bubble.user {
       align-self: flex-end; background: #111; color: #fff; border-bottom-right-radius: 4px;
     }
@@ -426,13 +426,13 @@
       display: flex; flex-direction: column; gap: 3px;
     }
     .cml-shelf-card-name {
-      font-size: 12px; font-weight: 600; color: #111;
+      font-size: 13px; font-weight: 600; color: #111;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
       overflow: hidden; line-height: 1.4;
     }
-    .cml-shelf-card-price { font-size: 12px; color: #444; }
+    .cml-shelf-card-price { font-size: 13px; color: #444; }
     .cml-shelf-card-reason {
-      font-size: 10px; color: #BABAB6; font-weight: 300;
+      font-size: 11px; color: #BABAB6; font-weight: 300;
       line-height: 1.4; letter-spacing: 0.01em;
     }
     .cml-shelf-card-btns { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
@@ -490,12 +490,12 @@
 
     /* ── 입력창 ── */
     .cml-chat-input-row {
-      padding: 14px 20px; border-top: 1px solid #F0F0EE;
+      padding: 14px 20px 32px; border-top: 1px solid #F0F0EE;
       display: flex; gap: 10px; align-items: center; background: #fff;
     }
     .cml-chat-input {
       flex: 1; border: 1.5px solid #E0E0DC; border-radius: 999px;
-      padding: 13px 22px; font-size: 15px; outline: none; font-family: inherit;
+      padding: 13px 22px; font-size: 16px; outline: none; font-family: inherit;
       color: #333; background: #FAFAF9; transition: border-color 0.15s;
     }
     .cml-chat-input:focus { border-color: #111; }
@@ -513,8 +513,8 @@
       display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 14px;
     }
     .cml-chat-starter-chip {
-      border: 1px solid #D8D8D4; border-radius: 999px; padding: 9px 18px;
-      font-size: 13px; color: #555; background: #fff; cursor: pointer;
+      border: 1px solid #D8D8D4; border-radius: 999px; padding: 10px 20px;
+      font-size: 14px; color: #555; background: #fff; cursor: pointer;
       font-family: inherit; transition: border-color 0.12s, color 0.12s;
     }
     .cml-chat-starter-chip:hover { border-color: #888; color: #111; }
