@@ -125,12 +125,13 @@ const storeConfigs = {
       mode: 'push',
     },
     branding: {
-      chatName:     'AI 쇼핑 도우미',   // 패널 헤더 타이틀
-      buttonLabel:  'AI 도우미',         // 사이드 탭 라벨
-      logoUrl:      null,                // 헤더 로고 이미지 URL (null이면 dot 표시)
-      heroImage:    null,                // 채팅 상단 히어로 이미지 URL
-      welcomeTitle: null,                // 히어로 타이틀 텍스트
-      welcomeBody:  null,                // 히어로 서브 텍스트
+      chatName:      'AI 쇼핑 도우미',   // 패널 헤더 타이틀
+      buttonLabel:   'AI 도우미',         // 사이드 탭 라벨
+      logoUrl:       null,                // 헤더 로고 이미지 URL (null이면 dot 표시)
+      heroImage:     null,                // 채팅 상단 히어로 이미지 URL
+      welcomeTitle:  null,                // 히어로 타이틀 텍스트
+      welcomeBody:   null,                // 히어로 서브 텍스트
+      sneakPeekText: null,                // 4초 후 말풍선 텍스트 (null이면 기본값)
     },
   },
   // 다른 고객사 추가 예시:
@@ -169,6 +170,7 @@ const defaultConfig = {
     heroImage: null,
     welcomeTitle: null,
     welcomeBody: null,
+    sneakPeekText: null,
   },
 };
 

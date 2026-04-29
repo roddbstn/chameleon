@@ -365,58 +365,96 @@
     }
     .cml-chat-bubble.loading { color: #aaa; font-style: italic; }
 
-    /* ── 추천 상품 선반 ── */
+    /* ── 추천 상품 카루셀 ── */
     .cml-product-shelf {
       border-top: 1px solid #EBEBEB;
       background: #FAFAF9;
       flex-shrink: 0;
-      max-height: 260px;
-      overflow-y: auto;
     }
     .cml-product-shelf-header {
-      padding: 8px 14px 4px;
+      padding: 10px 16px 6px;
       font-size: 11px; font-weight: 600; color: #999;
       letter-spacing: 0.05em; text-transform: uppercase;
     }
-    .cml-shelf-card {
-      display: flex; align-items: stretch;
-      background: #fff; border-bottom: 1px solid #F2F2F0;
-      transition: background 0.12s; min-height: 90px;
+    #cml-product-shelf-list {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 0 16px 14px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
     }
-    .cml-shelf-card:last-child { border-bottom: none; }
-    .cml-shelf-card:hover { background: #F8F8F6; }
+    #cml-product-shelf-list::-webkit-scrollbar { height: 3px; }
+    #cml-product-shelf-list::-webkit-scrollbar-track { background: transparent; }
+    #cml-product-shelf-list::-webkit-scrollbar-thumb { background: #DDD; border-radius: 2px; }
+    .cml-shelf-card {
+      flex: 0 0 172px;
+      background: #fff;
+      border: 1px solid #EBEBEB;
+      border-radius: 10px;
+      overflow: hidden;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.15s;
+    }
+    .cml-shelf-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
+    .cml-shelf-card-img-wrap {
+      position: relative;
+      width: 172px;
+      height: 229px;
+      flex-shrink: 0;
+    }
+    .cml-shelf-card-img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .cml-shelf-card-img-placeholder {
+      width: 100%; height: 100%; background: #F0F0EE;
+      display: flex; align-items: center; justify-content: center;
+      color: #CCC; font-size: 11px;
+    }
+    .cml-shelf-card-num {
+      position: absolute; top: 8px; left: 8px;
+      width: 22px; height: 22px;
+      background: rgba(0,0,0,0.60); color: #fff;
+      font-size: 11px; font-weight: 700; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
     .cml-shelf-card-info {
-      flex: 1; padding: 10px 8px 10px 14px;
-      display: flex; flex-direction: column; justify-content: space-between; min-width: 0;
+      flex: 1; padding: 10px 10px 8px;
+      display: flex; flex-direction: column; gap: 3px;
     }
     .cml-shelf-card-name {
-      font-size: 12px; font-weight: 600; color: #111; margin-bottom: 3px;
+      font-size: 12px; font-weight: 600; color: #111;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
       overflow: hidden; line-height: 1.4;
     }
-    .cml-shelf-card-price { font-size: 12px; color: #444; margin-bottom: 8px; }
-    .cml-shelf-card-btns { display: flex; gap: 5px; }
+    .cml-shelf-card-price { font-size: 12px; color: #444; }
+    .cml-shelf-card-reason {
+      font-size: 10px; color: #BABAB6; font-weight: 300;
+      line-height: 1.4; letter-spacing: 0.01em;
+    }
+    .cml-shelf-card-btns { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
     .cml-shelf-card-btn {
-      padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 500;
+      padding: 6px 8px; border-radius: 6px; font-size: 11px; font-weight: 500;
       cursor: pointer; border: none; font-family: inherit; text-decoration: none;
-      display: inline-block; transition: opacity 0.15s; text-align: center; white-space: nowrap;
+      display: block; transition: opacity 0.15s; text-align: center; white-space: nowrap;
     }
     .cml-shelf-card-btn:hover { opacity: 0.82; }
     .cml-shelf-card-btn.primary { background: #111; color: #fff; }
     .cml-shelf-card-btn.secondary { background: #EEEEEC; color: #333; }
-    .cml-shelf-card-img {
-      width: 75px; height: 100px; object-fit: cover; flex-shrink: 0;
-      display: block; align-self: center; margin: 8px 8px 8px 0; border-radius: 6px;
+
+    /* ── 드래그 리사이즈 핸들 ── */
+    .cml-resize-handle {
+      position: absolute; left: 0; top: 0;
+      width: 5px; height: 100%;
+      cursor: col-resize; z-index: 10;
+      border-radius: 0 3px 3px 0;
+      transition: background 0.15s;
     }
-    .cml-shelf-card-img-placeholder {
-      width: 75px; height: 100px; flex-shrink: 0; background: #F0F0EE;
-      display: flex; align-items: center; justify-content: center;
-      color: #CCC; font-size: 10px; margin: 8px 8px 8px 0; border-radius: 6px;
-    }
-    .cml-shelf-card-reason {
-      font-size: 10px; color: #BABAB6; font-weight: 300;
-      line-height: 1.45; margin-top: 4px; letter-spacing: 0.01em;
-    }
+    .cml-resize-handle:hover,
+    .cml-resize-handle.cml-dragging { background: rgba(0,0,0,0.10); }
 
     /* ── 옵션 선택 패널 ── */
     .cml-option-panel { margin-top: 8px; display: flex; flex-direction: column; gap: 5px; }
@@ -744,6 +782,7 @@
     panel.id = 'cml-chat-panel';
     panel.className = 'cml-chat-panel';
     panel.innerHTML = `
+      <div class="cml-resize-handle" id="cml-resize-handle"></div>
       <div class="cml-chat-header">
         <div class="cml-chat-header-left">${headerLeftHtml}</div>
         <div class="cml-chat-header-actions">
@@ -866,6 +905,35 @@
       }
     }
 
+    // ── 드래그 리사이즈 ──
+    const resizeHandle = panel.querySelector('#cml-resize-handle');
+    let isResizing = false;
+    let rsStartX = 0;
+    let rsStartW = SIDEBAR_W;
+
+    resizeHandle.addEventListener('mousedown', e => {
+      isResizing = true;
+      rsStartX = e.clientX;
+      rsStartW = panel.offsetWidth;
+      resizeHandle.classList.add('cml-dragging');
+      document.body.classList.add('cml-resizing');
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!isResizing) return;
+      const newW = Math.min(Math.max(rsStartW + (rsStartX - e.clientX), 320), window.innerWidth * 0.92);
+      panel.style.width = `${newW}px`;
+      if (PANEL_MODE === 'push' && window.innerWidth >= 768) {
+        document.body.style.setProperty('--cml-shift-width', `${newW}px`);
+      }
+    });
+    document.addEventListener('mouseup', () => {
+      if (!isResizing) return;
+      isResizing = false;
+      resizeHandle.classList.remove('cml-dragging');
+      document.body.classList.remove('cml-resizing');
+    });
+
     tab.addEventListener('click', openSidebar);
     closeBtn.addEventListener('click', closeSidebar);
     refreshBtn.addEventListener('click', () => {
@@ -912,9 +980,9 @@
         return;
       }
       const pdpBase = '/product/detail.html?product_no=';
-      shelfList.innerHTML = products.map(p => {
+      shelfList.innerHTML = products.map((p, idx) => {
         const pdpUrl = `${pdpBase}${p.id}`;
-        const imgHtml = p.image_url
+        const imgInner = p.image_url
           ? `<img class="cml-shelf-card-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
           : `<div class="cml-shelf-card-img-placeholder">No img</div>`;
         const priceHtml = p.price
@@ -923,19 +991,20 @@
           ? `<div class="cml-shelf-card-reason">${p.reason}</div>` : '';
         return `
           <div class="cml-shelf-card" data-product-id="${p.id}">
+            <div class="cml-shelf-card-img-wrap">
+              ${imgInner}
+              <div class="cml-shelf-card-num">${idx + 1}</div>
+            </div>
             <div class="cml-shelf-card-info">
-              <div>
-                <div class="cml-shelf-card-name">${p.name}</div>
-                ${priceHtml}
-                ${reasonHtml}
-              </div>
+              <div class="cml-shelf-card-name">${p.name}</div>
+              ${priceHtml}
+              ${reasonHtml}
               <div class="cml-shelf-card-btns">
                 <a class="cml-shelf-card-btn primary" href="${pdpUrl}">자세히 보기</a>
                 <button class="cml-shelf-card-btn secondary cml-add-cart-btn">장바구니 담기</button>
               </div>
               <div class="cml-option-panel" style="display:none"></div>
             </div>
-            ${imgHtml}
           </div>`;
       }).join('');
       shelf.style.display = 'block';
