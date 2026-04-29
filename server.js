@@ -598,6 +598,35 @@ app.post('/admin/sync/:mallId', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────
+// 8-B. OPTIONS API — 상품 옵션 + 바리안트 조회 (위젯 장바구니용)
+//
+// GET /api/options?mallId=X&productNo=Y
+// Returns: { options: [...], variants: [...] }
+// ─────────────────────────────────────────────
+app.get('/api/options', async (req, res) => {
+  const { mallId, productNo } = req.query;
+  if (!mallId || !productNo) return res.json({ options: [], variants: [] });
+
+  const token = tokenStore[mallId]?.access_token;
+  if (!token) return res.json({ options: [], variants: [] });
+
+  try {
+    const headers = { Authorization: `Bearer ${token}` };
+    const [optRes, varRes] = await Promise.all([
+      axios.get(`https://${mallId}.cafe24api.com/api/v2/admin/products/${productNo}/options`, { headers }),
+      axios.get(`https://${mallId}.cafe24api.com/api/v2/admin/products/${productNo}/variants`, { headers }),
+    ]);
+    res.json({
+      options:  optRes.data.options  || [],
+      variants: varRes.data.variants || [],
+    });
+  } catch (err) {
+    console.error('[Options]', err.message);
+    res.json({ options: [], variants: [] });
+  }
+});
+
+// ─────────────────────────────────────────────
 // 9. RECOMMEND API — 유저 상황/니즈 → AI 추천
 //
 // POST /api/recommend

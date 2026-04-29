@@ -180,7 +180,11 @@ ${productList}
 - 존댓말 사용 (예: "~해요", "~거예요")
 - "~하시면 됩니다", "~해주세요" 같은 딱딱한 표현 금지
 - 문장을 반드시 완성해서 끝낼 것 — 중간에 절대 끊기지 말 것
-- 모든 상품 나열 금지, 진짜 맞는 것만`;
+- 모든 상품 나열 금지, 진짜 맞는 것만
+
+응답 텍스트 맨 끝(줄바꿈 후)에 반드시 아래 JSON 한 줄을 추가하세요:
+REASONS:{"1":"이 유저 상황에 1번 상품을 추천하는 핵심 이유 (형용사 포함, 40자 이내)","2":"이유","3":"이유(있는 경우만)"}
+(REASONS 줄은 대화 응답과 구분되며 UI에서 별도 파싱됩니다)`;
 
   const res = await callGemini(
     `${GEMINI_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
@@ -275,8 +279,17 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
     .single();
 
   // Agent 2: 추천 생성
-  const message = await generateRecommendation(query, intent, products, brandProfile);
+  const rawMessage = await generateRecommendation(query, intent, products, brandProfile);
   await logApiCost(mallId, 'response_generation', 3000, 600);
+
+  // REASONS JSON 파싱 & 메시지에서 제거
+  let reasons = {};
+  let message = rawMessage;
+  const reasonsMatch = rawMessage.match(/\nREASONS:(\{[^\n]+\})/);
+  if (reasonsMatch) {
+    try { reasons = JSON.parse(reasonsMatch[1]); } catch {}
+    message = rawMessage.replace(reasonsMatch[0], '').trim();
+  }
 
   // 추천에 언급된 상품 인덱스 파싱 (1., 2., 3.) — 중복 인덱스도 제거
   const mentionedIndices = [...new Set(
@@ -292,13 +305,14 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   return {
     type: 'recommendation',
     message,
-    products: recommendedProducts.map(p => ({
+    products: recommendedProducts.map((p, displayIdx) => ({
       id:         p.product_id,
       name:       p.name,
       price:      p.price,
       similarity: p.similarity,
       attributes: p.attributes,
       image_url:  imgMap[p.product_id] || null,
+      reason:     reasons[String(displayIdx + 1)] || null,
     })),
     intent,
   };

@@ -590,6 +590,80 @@
         margin: 8px 8px 8px 0;
         border-radius: 6px;
       }
+      .cml-shelf-card-reason {
+        font-size: 10px;
+        color: #BABAB6;
+        font-weight: 300;
+        line-height: 1.45;
+        margin-top: 4px;
+        letter-spacing: 0.01em;
+      }
+
+      /* ── 옵션 선택 패널 ── */
+      .cml-option-panel {
+        margin-top: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .cml-option-select {
+        width: 100%;
+        border: 1px solid #D8D8D4;
+        border-radius: 6px;
+        padding: 6px 8px;
+        font-size: 11px;
+        color: #333;
+        background: #fff;
+        font-family: inherit;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        padding-right: 24px;
+      }
+      .cml-option-select:focus { border-color: #111; }
+      .cml-option-select.cml-error { border-color: #C0392B; }
+      .cml-cart-confirm-btn {
+        width: 100%;
+        padding: 7px 0;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        background: #111;
+        color: #fff;
+        font-family: inherit;
+        transition: opacity 0.15s;
+        letter-spacing: 0.03em;
+      }
+      .cml-cart-confirm-btn:hover { opacity: 0.82; }
+      .cml-cart-confirm-btn:disabled { opacity: 0.4; cursor: default; }
+
+      /* ── 토스트 ── */
+      .cml-toast {
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: #111;
+        color: #fff;
+        font-size: 13px;
+        font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+        padding: 10px 20px;
+        border-radius: 999px;
+        white-space: nowrap;
+        z-index: 999999;
+        opacity: 0;
+        transition: opacity 0.2s, transform 0.2s;
+        pointer-events: none;
+      }
+      .cml-toast.cml-toast-show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
       .cml-chat-input-row {
         padding: 10px 12px;
         border-top: 1px solid #F0F0EE;
@@ -980,23 +1054,167 @@
           : `<div class="cml-shelf-card-img-placeholder">No img</div>`;
         const priceHtml = p.price
           ? `<div class="cml-shelf-card-price">₩${Number(p.price).toLocaleString()}</div>` : '';
+        const reasonHtml = p.reason
+          ? `<div class="cml-shelf-card-reason">${p.reason}</div>` : '';
         return `
-          <div class="cml-shelf-card">
+          <div class="cml-shelf-card" data-product-id="${p.id}">
             <div class="cml-shelf-card-info">
               <div>
                 <div class="cml-shelf-card-name">${p.name}</div>
                 ${priceHtml}
+                ${reasonHtml}
               </div>
               <div class="cml-shelf-card-btns">
                 <a class="cml-shelf-card-btn primary" href="${pdpUrl}">자세히 보기</a>
-                <a class="cml-shelf-card-btn secondary" href="${pdpUrl}">담기</a>
+                <button class="cml-shelf-card-btn secondary cml-add-cart-btn">장바구니 담기</button>
               </div>
+              <div class="cml-option-panel" style="display:none"></div>
             </div>
             ${imgHtml}
           </div>`;
       }).join('');
       shelf.style.display = 'block';
     }
+
+    // ── 토스트 ──
+    let toastEl = null;
+    let toastTimer = null;
+    function showToast(msg) {
+      if (!toastEl) {
+        toastEl = document.createElement('div');
+        toastEl.className = 'cml-toast';
+        document.body.appendChild(toastEl);
+      }
+      toastEl.textContent = msg;
+      toastEl.classList.add('cml-toast-show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('cml-toast-show'), 2500);
+    }
+
+    // ── 옵션 조회 ──
+    async function fetchProductOptions(productId) {
+      try {
+        const res = await fetch(`${CHAMELEON_SERVER}/api/options?mallId=${MALL_ID}&productNo=${productId}`);
+        return await res.json();
+      } catch {
+        return { options: [], variants: [] };
+      }
+    }
+
+    // ── 장바구니 담기 (Cafe24 storefront cart POST) ──
+    async function submitCart(productId, variantCode) {
+      try {
+        const body = new URLSearchParams({ product_no: String(productId), quantity: '1' });
+        if (variantCode) body.append('option_code', variantCode);
+
+        const res = await fetch(`https://${MALL_ID}.cafe24.com/exec/front/Order/Cart`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString(),
+          credentials: 'include',
+          redirect: 'manual',
+        });
+        // 302 redirect 또는 opaque response = 성공으로 처리
+        if (res.ok || res.type === 'opaqueredirect' || res.status === 0 || res.status === 302) {
+          showToast('장바구니에 담겼어요');
+        } else {
+          showToast('담기에 실패했어요. 상품 페이지에서 시도해주세요.');
+        }
+      } catch {
+        showToast('담기에 실패했어요. 상품 페이지에서 시도해주세요.');
+      }
+    }
+
+    // ── 옵션 패널 표시 ──
+    function showOptionPanel(card, options, variants) {
+      const optPanel = card.querySelector('.cml-option-panel');
+      card.dataset.variants = JSON.stringify(variants);
+
+      optPanel.innerHTML = options.map(opt => `
+        <select class="cml-option-select" data-option-no="${opt.option_no}">
+          <option value="">-- ${opt.option_name} 선택 --</option>
+          ${(opt.option_value || []).map(v =>
+            `<option value="${v.option_value_no}">${v.option_text}</option>`
+          ).join('')}
+        </select>
+      `).join('') + `
+        <button class="cml-cart-confirm-btn">담기 확인</button>
+      `;
+      optPanel.style.display = 'flex';
+    }
+
+    // ── 장바구니 버튼 클릭 이벤트 위임 ──
+    const shelfList = panel.querySelector('#cml-product-shelf-list');
+    shelfList.addEventListener('click', async (e) => {
+      // "장바구니 담기" 버튼
+      const cartBtn = e.target.closest('.cml-add-cart-btn');
+      if (cartBtn) {
+        const card = cartBtn.closest('.cml-shelf-card');
+        const productId = card.dataset.productId;
+        const optPanel = card.querySelector('.cml-option-panel');
+
+        // 이미 열려있으면 닫기
+        if (optPanel.style.display !== 'none') {
+          optPanel.style.display = 'none';
+          return;
+        }
+
+        cartBtn.textContent = '불러오는 중...';
+        cartBtn.disabled = true;
+
+        const { options, variants } = await fetchProductOptions(productId);
+
+        cartBtn.textContent = '장바구니 담기';
+        cartBtn.disabled = false;
+
+        if (!options.length) {
+          // 옵션 없는 상품: 바로 담기
+          await submitCart(productId, null);
+        } else {
+          showOptionPanel(card, options, variants);
+        }
+        return;
+      }
+
+      // "담기 확인" 버튼
+      const confirmBtn = e.target.closest('.cml-cart-confirm-btn');
+      if (confirmBtn) {
+        const card = confirmBtn.closest('.cml-shelf-card');
+        const productId = card.dataset.productId;
+        const selects = card.querySelectorAll('.cml-option-select');
+
+        // 미선택 옵션 체크
+        let allSelected = true;
+        selects.forEach(sel => {
+          sel.classList.remove('cml-error');
+          if (!sel.value) { allSelected = false; sel.classList.add('cml-error'); }
+        });
+        if (!allSelected) return;
+
+        // 선택된 옵션 값 수집
+        const selected = {};
+        selects.forEach(sel => { selected[Number(sel.dataset.optionNo)] = Number(sel.value); });
+
+        // 매칭 variant 찾기
+        const variants = JSON.parse(card.dataset.variants || '[]');
+        const variant = variants.find(v =>
+          (v.options || []).length === Object.keys(selected).length &&
+          (v.options || []).every(o => selected[o.option_no] === o.option_value_no)
+        );
+
+        if (!variant) {
+          showToast('해당 옵션 조합을 찾을 수 없어요.');
+          return;
+        }
+
+        confirmBtn.textContent = '담는 중...';
+        confirmBtn.disabled = true;
+        await submitCart(productId, variant.variant_code);
+        confirmBtn.textContent = '담기 확인';
+        confirmBtn.disabled = false;
+        card.querySelector('.cml-option-panel').style.display = 'none';
+      }
+    });
 
     async function sendChat(query) {
       if (!query.trim()) return;
