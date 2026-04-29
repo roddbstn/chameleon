@@ -996,6 +996,11 @@
 
     const chatHistory = [];
 
+    // mall별 장바구니 설정 (config에서 주입, 없으면 Cafe24 기본값)
+    const cartConfig = config?.cart || {};
+    const CART_ENDPOINT = cartConfig.endpoint || '/exec/front/Order/Cart';
+    const CART_FIELDS   = cartConfig.fields   || { product_no: 'product_no', option_code: 'option_code', quantity: 'quantity' };
+
     const SIDEBAR_W = 340;
     const EASE = 'cubic-bezier(0.4,0,0.2,1)';
 
@@ -1101,13 +1106,20 @@
       }
     }
 
-    // ── 장바구니 담기 (Cafe24 storefront cart POST) ──
+    // ── 장바구니 담기 (mall별 cart config 사용) ──
     async function submitCart(productId, variantCode) {
       try {
-        const body = new URLSearchParams({ product_no: String(productId), quantity: '1' });
-        if (variantCode) body.append('option_code', variantCode);
+        const body = new URLSearchParams();
+        body.append(CART_FIELDS.product_no, String(productId));
+        body.append(CART_FIELDS.quantity, '1');
+        if (variantCode) body.append(CART_FIELDS.option_code, variantCode);
 
-        const res = await fetch(`https://${MALL_ID}.cafe24.com/exec/front/Order/Cart`, {
+        // endpoint가 절대 URL이면 그대로, 상대 경로면 mall 도메인으로 resolve
+        const url = CART_ENDPOINT.startsWith('http')
+          ? CART_ENDPOINT
+          : `https://${MALL_ID}.cafe24.com${CART_ENDPOINT}`;
+
+        const res = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: body.toString(),

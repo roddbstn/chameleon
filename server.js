@@ -54,7 +54,7 @@ const storeConfigs = {
   tndbsrkd: {
     insert: {
       selector: '.xans-product-detail .infoArea .xans-product-action',
-      position: 'afterend',    // 관심상품/장바구니/바로구매 버튼 바로 아래
+      position: 'afterend',
     },
     theme: {
       accentColor: '#C0392B',
@@ -63,11 +63,22 @@ const storeConfigs = {
       borderRadius: '10px',
       fontFamily: "'Noto Sans KR', sans-serif",
     },
+    cart: {
+      // Cafe24 기본 장바구니 엔드포인트
+      // 쇼핑몰마다 다를 경우 여기서 override
+      endpoint: '/exec/front/Order/Cart',
+      // 상품번호·옵션코드·수량 파라미터명이 다른 경우 override
+      fields: { product_no: 'product_no', option_code: 'option_code', quantity: 'quantity' },
+    },
   },
   // 다른 고객사 추가 예시:
   // othermall: {
   //   insert: { selector: '.product-description', position: 'beforebegin' },
   //   theme: { accentColor: '#2563EB', ... },
+  //   cart: {
+  //     endpoint: '/custom/cart/add',
+  //     fields: { product_no: 'prdNo', option_code: 'optCode', quantity: 'qty' },
+  //   },
   // },
 };
 
@@ -83,6 +94,10 @@ const defaultConfig = {
     borderColor: '#F9DDD8',
     borderRadius: '10px',
     fontFamily: "'Noto Sans KR', sans-serif",
+  },
+  cart: {
+    endpoint: '/exec/front/Order/Cart',
+    fields: { product_no: 'product_no', option_code: 'option_code', quantity: 'quantity' },
   },
 };
 
