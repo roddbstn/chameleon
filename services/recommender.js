@@ -182,9 +182,10 @@ ${productList}
 - 문장을 반드시 완성해서 끝낼 것 — 중간에 절대 끊기지 말 것
 - 모든 상품 나열 금지, 진짜 맞는 것만
 
-응답 텍스트 맨 끝(줄바꿈 후)에 반드시 아래 JSON 한 줄을 추가하세요:
-REASONS:{"1":"이 유저 상황에 1번 상품을 추천하는 핵심 이유 (형용사 포함, 40자 이내)","2":"이유","3":"이유(있는 경우만)"}
-(REASONS 줄은 대화 응답과 구분되며 UI에서 별도 파싱됩니다)`;
+응답 텍스트 맨 끝(줄바꿈 후)에 반드시 아래 두 줄을 추가하세요:
+PRODUCTS:[추천한 상품 번호를 응답에 나온 순서대로, 예: 2,1,3]
+REASONS:{"1":"응답에서 첫 번째로 소개한 상품의 핵심 이유 (형용사 포함, 40자 이내)","2":"두 번째 상품 이유","3":"세 번째 상품 이유(있는 경우만)"}
+(PRODUCTS, REASONS 줄은 UI에서 파싱 후 제거되며 대화에 노출되지 않습니다)`;
 
   const res = await callGemini(
     `${GEMINI_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
@@ -282,24 +283,38 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   const rawMessage = await generateRecommendation(query, intent, products, brandProfile);
   await logApiCost(mallId, 'response_generation', 3000, 600);
 
-  // REASONS JSON 파싱 & 메시지에서 제거
+  // PRODUCTS + REASONS 파싱 & 메시지에서 제거
   let reasons = {};
   let message = rawMessage;
-  const reasonsMatch = rawMessage.match(/\nREASONS:(\{[^\n]+\})/);
+
+  const reasonsMatch = message.match(/\nREASONS:(\{[^\n]+\})/);
   if (reasonsMatch) {
     try { reasons = JSON.parse(reasonsMatch[1]); } catch {}
-    message = rawMessage.replace(reasonsMatch[0], '').trim();
+    message = message.replace(reasonsMatch[0], '').trim();
   }
 
-  // 추천에 언급된 상품 인덱스 파싱 (1., 2., 3.) — 중복 인덱스도 제거
-  const mentionedIndices = [...new Set(
-    [...message.matchAll(/^(\d+)\./gm)]
-      .map(m => parseInt(m[1]) - 1)
-      .filter(i => i >= 0 && i < products.length)
-  )];
+  // PRODUCTS:[2,1,3] — LLM이 실제로 선택한 상품 번호(1-based)를 순서대로 명시
+  let selectedIndices = [];
+  const productsMatch = message.match(/\nPRODUCTS:\[([^\]]+)\]/);
+  if (productsMatch) {
+    selectedIndices = productsMatch[1]
+      .split(',')
+      .map(n => parseInt(n.trim()) - 1)
+      .filter(i => i >= 0 && i < products.length);
+    message = message.replace(productsMatch[0], '').trim();
+  }
 
-  const recommendedProducts = mentionedIndices.length
-    ? mentionedIndices.map(i => products[i])
+  // PRODUCTS 파싱 실패 시 fallback: 응답 텍스트의 줄 시작 숫자 파싱
+  if (!selectedIndices.length) {
+    selectedIndices = [...new Set(
+      [...message.matchAll(/^(\d+)\./gm)]
+        .map(m => parseInt(m[1]) - 1)
+        .filter(i => i >= 0 && i < products.length)
+    )];
+  }
+
+  const recommendedProducts = selectedIndices.length
+    ? selectedIndices.map(i => products[i])
     : products.slice(0, 3);
 
   return {
