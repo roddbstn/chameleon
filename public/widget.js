@@ -154,6 +154,28 @@
     const style = document.createElement('style');
     style.id = 'cml-styles';
     style.textContent = `
+      /* ── body margin 방식 page-shift ── */
+      body {
+        transition: margin-right 0.28s cubic-bezier(0.4,0,0.2,1);
+        box-sizing: border-box;
+      }
+      body.cml-page-shift {
+        margin-right: var(--cml-shift-width, 600px) !important;
+      }
+      body.cml-resizing {
+        transition: none !important;
+      }
+      /* 카트 드로어·다이얼로그·드롭다운 — 패널에 가려지지 않도록 */
+      body.cml-page-shift :is(
+        .cart-drawer, .mini-cart, .drawer,
+        .dropdown-menu, .site-nav__dropdown,
+        .predictive-search, .header__submenu,
+        [role="dialog"], [role="menu"], [role="listbox"]
+      ) {
+        max-width: calc(100vw - var(--cml-shift-width, 600px)) !important;
+        box-sizing: border-box;
+      }
+
       .cml-panel {
         margin-top: 20px;
         border-top: 1px solid #E8E8E4;
@@ -454,18 +476,29 @@
         color: #111;
         letter-spacing: 0.01em;
       }
-      .cml-chat-close {
+      .cml-chat-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .cml-chat-close,
+      .cml-chat-refresh {
         background: none;
         border: none;
         color: #AAA;
         cursor: pointer;
-        font-size: 20px;
         line-height: 1;
-        padding: 6px;
-        border-radius: 6px;
+        padding: 7px;
+        border-radius: 7px;
         transition: color 0.15s, background 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .cml-chat-close:hover { color: #333; background: #F4F4F2; }
+      .cml-chat-close { font-size: 18px; }
+      .cml-chat-refresh svg { width: 16px; height: 16px; }
+      .cml-chat-close:hover,
+      .cml-chat-refresh:hover { color: #333; background: #F4F4F2; }
 
       /* ── 히어로 영역 ── */
       .cml-chat-hero {
@@ -1057,7 +1090,15 @@
     panel.innerHTML = `
       <div class="cml-chat-header">
         <div class="cml-chat-header-left">${headerLeftHtml}</div>
-        <button class="cml-chat-close" id="cml-chat-close" aria-label="닫기">✕</button>
+        <div class="cml-chat-header-actions">
+          <button class="cml-chat-refresh" id="cml-chat-refresh" aria-label="대화 초기화" title="대화 초기화">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2.5 8a5.5 5.5 0 1 1 1.1 3.3"/>
+              <polyline points="1 5.5 2.5 8 5 6.5"/>
+            </svg>
+          </button>
+          <button class="cml-chat-close" id="cml-chat-close" aria-label="닫기">✕</button>
+        </div>
       </div>
       ${heroHtml}
       <div class="cml-chat-messages" id="cml-chat-messages">
@@ -1085,12 +1126,58 @@
     document.body.appendChild(panel);
 
     const closeBtn   = panel.querySelector('#cml-chat-close');
+    const refreshBtn = panel.querySelector('#cml-chat-refresh');
     const messagesEl = panel.querySelector('#cml-chat-messages');
     const inputEl    = panel.querySelector('#cml-chat-input');
     const sendBtn    = panel.querySelector('#cml-chat-send');
     const startChips = panel.querySelectorAll('.cml-chat-starter-chip');
 
     const chatHistory = [];
+    let lastProducts  = []; // 세션 저장용
+
+    // ── 세션 유지 (닫기/새로고침 후에도 대화 복원) ──
+    const SESSION_KEY = `cml_session_${MALL_ID}`;
+    const messageLog  = []; // {role, text} 영속화용
+
+    function saveSession(products) {
+      try {
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+          messages: messageLog,
+          history:  chatHistory,
+          products: products || [],
+        }));
+      } catch (e) {}
+    }
+
+    function clearSession() {
+      try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+    }
+
+    function restoreSession() {
+      try {
+        const raw = sessionStorage.getItem(SESSION_KEY);
+        if (!raw) return;
+        const { messages, history, products } = JSON.parse(raw);
+
+        // 초기 웰컴 버블 제거 후 복원
+        messagesEl.innerHTML = '';
+        panel.querySelector('#cml-chat-starters').style.display = 'none';
+
+        (messages || []).forEach(m => {
+          const div = document.createElement('div');
+          div.className = `cml-chat-bubble ${m.role}`;
+          div.innerHTML = m.role === 'assistant' ? parseMd(m.text) : '';
+          if (m.role !== 'assistant') div.textContent = m.text;
+          messagesEl.appendChild(div);
+        });
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+
+        (history || []).forEach(h => chatHistory.push(h));
+        messageLog.push(...(messages || []));
+
+        if (products?.length) addProductCards(products);
+      } catch (e) {}
+    }
 
     // mall별 장바구니 설정
     const cartConfig = config?.cart || {};
@@ -1121,14 +1208,9 @@
       panel.classList.add('cml-open');
       tab.classList.add('cml-hidden');
       if (PANEL_MODE === 'push') {
-        const t = `width 0.28s ${EASE}, max-width 0.28s ${EASE}`;
-        document.documentElement.style.transition = t;
-        document.body.style.transition = t;
-        document.documentElement.style.maxWidth = `calc(100vw - ${SIDEBAR_W}px)`;
-        document.documentElement.style.overflowX = 'hidden';
-        document.body.style.width = '100%';
+        document.body.style.setProperty('--cml-shift-width', `${SIDEBAR_W}px`);
+        document.body.classList.add('cml-page-shift');
       } else {
-        // overlay: 배경 딤 처리만, 페이지 건드리지 않음
         if (backdrop) { backdrop.style.display = 'block'; }
       }
       inputEl.focus();
@@ -1137,14 +1219,25 @@
       panel.classList.remove('cml-open');
       tab.classList.remove('cml-hidden');
       if (PANEL_MODE === 'push') {
-        document.documentElement.style.maxWidth = '';
-        document.documentElement.style.overflowX = '';
+        document.body.classList.remove('cml-page-shift');
       } else {
         if (backdrop) { backdrop.style.display = 'none'; }
       }
     }
     tab.addEventListener('click', openSidebar);
     closeBtn.addEventListener('click', closeSidebar);
+    refreshBtn.addEventListener('click', () => {
+      clearSession();
+      messageLog.splice(0);
+      chatHistory.splice(0);
+      lastProducts = [];
+      messagesEl.innerHTML = '<div class="cml-chat-bubble assistant">안녕하세요! 원하시는 스타일이나 상황을 말씀해주시면 딱 맞는 아이템 찾아드릴게요 :)</div>';
+      panel.querySelector('#cml-chat-starters').style.display = '';
+      const _shelf = panel.querySelector('#cml-product-shelf');
+      const _shelfList = panel.querySelector('#cml-product-shelf-list');
+      _shelf.style.display = 'none';
+      _shelfList.innerHTML = '';
+    });
 
     function parseMd(text) {
       return text
@@ -1162,15 +1255,22 @@
       }
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
+      // 로딩 버블 제외하고 세션에 저장
+      if (role === 'user' || role === 'assistant') {
+        messageLog.push({ role, text });
+        saveSession(lastProducts);
+      }
       return div;
     }
 
     function addProductCards(products) {
+      lastProducts = products || [];
       const shelf = panel.querySelector('#cml-product-shelf');
       const shelfList = panel.querySelector('#cml-product-shelf-list');
       if (!products?.length) {
         shelf.style.display = 'none';
         shelfList.innerHTML = '';
+        saveSession([]);
         return;
       }
       const pdpBase = '/product/detail.html?product_no=';
@@ -1201,6 +1301,7 @@
           </div>`;
       }).join('');
       shelf.style.display = 'block';
+      saveSession(lastProducts);
     }
 
     // ── 토스트 ──
@@ -1407,6 +1508,9 @@
     startChips.forEach(chip => {
       chip.addEventListener('click', () => sendChat(chip.dataset.q));
     });
+
+    // 패널 생성 직후 이전 세션 복원
+    restoreSession();
   }
 
   // ── 10. 실행 ────────────────────────────────────
