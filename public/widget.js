@@ -781,6 +781,18 @@
     const panel = document.createElement('div');
     panel.id = 'cml-chat-panel';
     panel.className = 'cml-chat-panel';
+    // ── 스타터 칩 (config 또는 기본값) ──
+    const defaultChips = [
+      { label: '요즘 트렌드', query: '요즘 트렌디한 아이템 뭐 있어요?' },
+      { label: '소개팅 룩',  query: '소개팅에 입기 좋은 옷 추천해주세요' },
+      { label: '여름 아이템', query: '여름에 시원하게 입을 수 있는 옷 있나요?' },
+      { label: '선물 추천',  query: '친구한테 선물하기 좋은 거 있어요?' },
+    ];
+    const starterChips = branding.starterChips || defaultChips;
+    const starterChipsHtml = starterChips
+      .map(c => `<button class="cml-chat-starter-chip" data-q="${c.query}">${c.label}</button>`)
+      .join('');
+
     panel.innerHTML = `
       <div class="cml-resize-handle" id="cml-resize-handle"></div>
       <div class="cml-chat-header">
@@ -800,10 +812,7 @@
         <div class="cml-chat-bubble assistant">안녕하세요! 원하시는 스타일이나 상황을 말씀해주시면 딱 맞는 아이템 찾아드릴게요 :)</div>
       </div>
       <div class="cml-chat-starter-chips" id="cml-chat-starters">
-        <button class="cml-chat-starter-chip" data-q="요즘 트렌디한 아이템 뭐 있어요?">요즘 트렌드</button>
-        <button class="cml-chat-starter-chip" data-q="소개팅에 입기 좋은 옷 추천해주세요">소개팅 룩</button>
-        <button class="cml-chat-starter-chip" data-q="여름에 시원하게 입을 수 있는 옷 있나요?">여름 아이템</button>
-        <button class="cml-chat-starter-chip" data-q="친구한테 선물하기 좋은 거 있어요?">선물 추천</button>
+        ${starterChipsHtml}
       </div>
       <div class="cml-product-shelf" id="cml-product-shelf" style="display:none">
         <div class="cml-product-shelf-header">추천 상품</div>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chameleon Widget — Demo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Apple SD Gothic Neo', -apple-system, 'Noto Sans KR', sans-serif;
+      background: #fff;
+      color: #111;
+    }
+
+    /* ── 상점 헤더 ── */
+    .store-header {
+      border-bottom: 1px solid #EBEBEB;
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 100;
+    }
+    .store-logo { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; }
+    .store-nav { display: flex; gap: 28px; }
+    .store-nav a { font-size: 13px; color: #333; text-decoration: none; letter-spacing: 0.02em; }
+    .store-nav a:hover { color: #000; }
+    .store-header-icons { display: flex; gap: 18px; font-size: 20px; cursor: pointer; }
+
+    /* ── 브레드크럼 ── */
+    .breadcrumb {
+      padding: 14px 40px;
+      font-size: 12px;
+      color: #AAA;
+      border-bottom: 1px solid #F5F5F3;
+      letter-spacing: 0.02em;
+    }
+    .breadcrumb span { color: #555; }
+
+    /* ── 상품 상세 ── */
+    .product-page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      gap: 60px;
+    }
+
+    /* 이미지 갤러리 */
+    .product-gallery { position: sticky; top: 80px; }
+    .product-main-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: #F0F0EE;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .product-main-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .product-thumb-row { display: flex; gap: 8px; }
+    .product-thumb {
+      width: 72px;
+      height: 96px;
+      background: #F5F5F3;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .product-thumb.active { border-color: #111; }
+
+    /* 상품 정보 */
+    .product-info { padding-top: 4px; }
+    .product-brand { font-size: 12px; color: #AAA; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .product-name { font-size: 22px; font-weight: 700; line-height: 1.35; letter-spacing: -0.01em; margin-bottom: 16px; }
+    .product-price { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .product-price-retail { font-size: 14px; color: #AAA; text-decoration: line-through; margin-bottom: 20px; }
+    .product-divider { height: 1px; background: #F0F0EE; margin: 20px 0; }
+
+    /* 옵션 */
+    .option-label { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 8px; color: #555; }
+    .size-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .size-btn {
+      width: 48px; height: 40px;
+      border: 1px solid #DDD;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.12s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .size-btn:hover, .size-btn.active { border-color: #111; background: #111; color: #fff; }
+    .size-btn.sold-out { color: #CCC; cursor: not-allowed; }
+
+    /* 장바구니 버튼 */
+    .xans-product-action { margin-top: 20px; }
+    .cart-btn {
+      width: 100%;
+      height: 52px;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: opacity 0.15s;
+      margin-bottom: 10px;
+    }
+    .cart-btn:hover { opacity: 0.85; }
+    .wishlist-btn {
+      width: 100%;
+      height: 48px;
+      background: #fff;
+      color: #111;
+      border: 1px solid #DDD;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: border-color 0.15s;
+    }
+    .wishlist-btn:hover { border-color: #111; }
+
+    /* 상품 설명 */
+    .product-desc { margin-top: 32px; }
+    .product-desc h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; letter-spacing: 0.02em; }
+    .product-desc p { font-size: 13px; line-height: 1.85; color: #444; letter-spacing: 0.02em; }
+    .product-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .product-tag {
+      padding: 4px 12px;
+      background: #F5F5F3;
+      border-radius: 999px;
+      font-size: 11px;
+      color: #555;
+    }
+
+    /* ── 데모 안내 배너 ── */
+    .demo-banner {
+      background: linear-gradient(135deg, #111 0%, #333 100%);
+      color: #fff;
+      text-align: center;
+      padding: 12px 20px;
+      font-size: 13px;
+    }
+    .demo-banner strong { color: #A8FF78; }
+    .demo-banner a { color: rgba(255,255,255,0.7); font-size: 12px; margin-left: 16px; text-decoration: underline; cursor: pointer; }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      .store-nav { display: none; }
+      .product-page { grid-template-columns: 1fr; gap: 28px; padding: 20px; }
+      .product-gallery { position: static; }
+      .store-header { padding: 0 20px; }
+      .breadcrumb { padding: 12px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 데모 안내 -->
+<div class="demo-banner">
+  <strong>Chameleon Widget Demo</strong> — 우측의 AI 도우미 탭을 클릭해보세요!
+  <a href="/admin">어드민 대시보드 →</a>
+</div>
+
+<!-- 상점 헤더 -->
+<header class="store-header">
+  <div class="store-logo">SOLID</div>
+  <nav class="store-nav">
+    <a href="#">NEW</a>
+    <a href="#">BEST</a>
+    <a href="#">OUTER</a>
+    <a href="#">TOP</a>
+    <a href="#">BOTTOM</a>
+    <a href="#">SALE</a>
+  </nav>
+  <div class="store-header-icons">
+    <span>🔍</span>
+    <span>♡</span>
+    <span>🛍</span>
+  </div>
+</header>
+
+<!-- 브레드크럼 -->
+<div class="breadcrumb">
+  HOME &nbsp;/&nbsp; TOP &nbsp;/&nbsp; <span>TERRY BANDING SHORTS</span>
+</div>
+
+<!-- 상품 상세 -->
+<div class="product-page">
+
+  <!-- 이미지 갤러리 -->
+  <div class="product-gallery">
+    <div class="product-main-img">
+      <!-- 플레이스홀더 이미지 (실제 상품 이미지로 교체 가능) -->
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="120" height="120" fill="#E8E8E4"/>
+        <path d="M40 80 L60 40 L80 80" stroke="#BBB" stroke-width="2" fill="none"/>
+        <circle cx="60" cy="36" r="6" fill="#BBB"/>
+        <text x="60" y="96" text-anchor="middle" fill="#BBB" font-size="11" font-family="sans-serif">PRODUCT</text>
+      </svg>
+    </div>
+    <div class="product-thumb-row">
+      <div class="product-thumb active"></div>
+      <div class="product-thumb"></div>
+      <div class="product-thumb"></div>
+      <div class="product-thumb"></div>
+    </div>
+  </div>
+
+  <!-- 상품 정보 -->
+  <div class="product-info">
+    <div class="product-brand">SOLID HOMME</div>
+    <h1 class="product-name">테리 밴딩 쇼츠<br>Terry Banding Shorts</h1>
+    <div class="product-price">₩89,000</div>
+    <div class="product-price-retail">₩109,000</div>
+
+    <div class="product-divider"></div>
+
+    <!-- 색상 옵션 -->
+    <div class="option-label">COLOR — BLACK</div>
+    <div class="size-grid" style="margin-bottom:20px;">
+      <div style="width:32px;height:32px;background:#111;border-radius:50%;border:2px solid #111;box-shadow:0 0 0 2px #fff,0 0 0 3px #111;"></div>
+      <div style="width:32px;height:32px;background:#F5F0E8;border-radius:50%;border:1px solid #DDD;cursor:pointer;"></div>
+      <div style="width:32px;height:32px;background:#2C3E50;border-radius:50%;border:1px solid #DDD;cursor:pointer;"></div>
+    </div>
+
+    <!-- 사이즈 옵션 -->
+    <div class="option-label">SIZE</div>
+    <div class="size-grid">
+      <div class="size-btn sold-out">28</div>
+      <div class="size-btn">30</div>
+      <div class="size-btn active">32</div>
+      <div class="size-btn">34</div>
+      <div class="size-btn">36</div>
+    </div>
+
+    <!-- 장바구니 / Chameleon 삽입 위치 -->
+    <div class="xans-product-action">
+      <button class="cart-btn">장바구니 담기</button>
+      <button class="wishlist-btn">♡ 위시리스트</button>
+    </div>
+
+    <!-- 상품 설명 -->
+    <div class="product-desc">
+      <h3>PRODUCT DETAIL</h3>
+      <p>
+        일본산 테리 원단의 리치한 텍스처와 밴딩 디테일이 만들어내는 구조적인 실루엣.
+        중량감 있는 소재가 캐주얼과 세미포멀의 경계를 자연스럽게 허물어줍니다.
+        일상은 물론 가벼운 외출까지 폭넓게 활용할 수 있는 시즌 핵심 아이템입니다.
+      </p>
+      <div class="product-tags">
+        <span class="product-tag">일본산 원단</span>
+        <span class="product-tag">테리 소재</span>
+        <span class="product-tag">밴딩 허리</span>
+        <span class="product-tag">세미 오버핏</span>
+        <span class="product-tag">28-36 사이즈</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chameleon Widget 로드 -->
+<script>
+  // CAFE24 글로벌 객체 모킹 (실제 카페24 환경에서는 자동으로 존재)
+  window.CAFE24 = { SHOP: { MALL_ID: 'tndbsrkd' } };
+</script>
+<script src="/widget.js"></script>
+
+</body>
+</html>

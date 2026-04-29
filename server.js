@@ -13,6 +13,7 @@ const express = require('express');
 const cors    = require('cors');
 const axios   = require('axios');
 const path    = require('path');
+const crypto  = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
@@ -99,6 +100,23 @@ async function getValidToken(mallId) {
 }
 
 // ─────────────────────────────────────────────
+// [Supabase 필수 테이블 — SQL Editor에서 실행]
+//
+// CREATE TABLE IF NOT EXISTS chat_logs (
+//   id               bigserial PRIMARY KEY,
+//   store_id         text NOT NULL,
+//   query            text,
+//   intent_situation text,
+//   intent_needs     text,
+//   result_type      text,          -- 'recommendation' | 'clarification' | 'no_results'
+//   product_count    int DEFAULT 0,
+//   product_ids      text[],
+//   created_at       timestamptz DEFAULT now()
+// );
+// CREATE INDEX ON chat_logs (store_id, created_at DESC);
+// ─────────────────────────────────────────────
+
+// ─────────────────────────────────────────────
 // 스토어별 위젯 설정 (우리가 운영하는 config)
 // 고객사 온보딩 시 이 값을 세팅해주면 됨
 // ─────────────────────────────────────────────
@@ -132,6 +150,7 @@ const storeConfigs = {
       welcomeTitle:  null,                // 히어로 타이틀 텍스트
       welcomeBody:   null,                // 히어로 서브 텍스트
       sneakPeekText: null,                // 4초 후 말풍선 텍스트 (null이면 기본값)
+      starterChips: null,                 // 스타터 칩 배열 [{label, query}] (null이면 기본값)
     },
   },
   // 다른 고객사 추가 예시:
@@ -171,6 +190,7 @@ const defaultConfig = {
     welcomeTitle: null,
     welcomeBody: null,
     sneakPeekText: null,
+    starterChips: null,
   },
 };
 
@@ -777,20 +797,133 @@ app.post('/admin/embed/:mallId', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────
-// 6. 간단한 대시보드 — 수집된 이벤트 확인용
+// 6. ADMIN 대시보드 UI
 // ─────────────────────────────────────────────
-app.get('/dashboard', (req, res) => {
-  const summary = eventLog.reduce((acc, e) => {
-    acc[e.persona] = (acc[e.persona] || 0) + 1;
-    return acc;
-  }, {});
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
 
-  res.json({
-    total_events: eventLog.length,
-    persona_breakdown: summary,
-    recent: eventLog.slice(-10).reverse(),
+// ─────────────────────────────────────────────
+// 6-A. STATS API — 어드민 대시보드용 통계
+// GET /api/stats?mallId=tndbsrkd
+// ─────────────────────────────────────────────
+app.get('/api/stats', async (req, res) => {
+  const { mallId } = req.query;
+  const monthStart = new Date();
+  monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
+
+  try {
+    // 이번 달 API 비용
+    let costQ = supabase.from('api_events').select('cost_usd').gte('occurred_at', monthStart.toISOString());
+    if (mallId) costQ = costQ.eq('store_id', mallId);
+    const { data: costData } = await costQ;
+    const totalCost = (costData || []).reduce((s, r) => s + (r.cost_usd || 0), 0);
+
+    // 이번 달 대화 수 + 최근 로그
+    let logQ = supabase.from('chat_logs').select('*').order('created_at', { ascending: false }).limit(50);
+    if (mallId) logQ = logQ.eq('store_id', mallId);
+    const { data: logData } = await logQ;
+
+    // 이번 달 분만 카운트
+    const monthLogs = (logData || []).filter(l => new Date(l.created_at) >= monthStart);
+
+    // 등록 상품 수
+    let prodQ = supabase.from('products').select('product_id', { count: 'exact', head: true }).eq('status', 'active');
+    if (mallId) prodQ = prodQ.eq('store_id', mallId);
+    const { count: productCount } = await prodQ;
+
+    // 결과 유형별 집계
+    const byType = monthLogs.reduce((acc, l) => {
+      acc[l.result_type] = (acc[l.result_type] || 0) + 1;
+      return acc;
+    }, {});
+
+    res.json({
+      period: `${monthStart.toISOString().slice(0, 10)} ~ 오늘`,
+      total_cost_usd: parseFloat(totalCost.toFixed(4)),
+      chat_count: monthLogs.length,
+      product_count: productCount || 0,
+      by_type: byType,
+      recent_chats: logData || [],
+    });
+  } catch (e) {
+    console.error('[Stats]', e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ─────────────────────────────────────────────
+// 6-B. PRODUCT WEBHOOK — 카페24 상품 변경 시 자동 동기화
+// POST /api/webhook/product
+// Cafe24 → 상품 생성/수정/삭제 이벤트 수신 → DB upsert + 임베딩
+// ─────────────────────────────────────────────
+app.post('/api/webhook/product', express.raw({ type: '*/*' }), async (req, res) => {
+  // 서명 검증 (CAFE24_WEBHOOK_SECRET 설정 시)
+  const secret = process.env.CAFE24_WEBHOOK_SECRET;
+  const sig    = req.headers['x-cafe24-signature'];
+  if (secret && sig) {
+    const expected = crypto.createHmac('sha256', secret).update(req.body).digest('hex');
+    if (!sig.includes(expected)) return res.status(401).json({ error: 'invalid signature' });
+  }
+
+  let body;
+  try { body = JSON.parse(req.body); } catch { return res.status(400).json({ error: 'invalid json' }); }
+
+  const { resource_id: productNo, mall_id: mallId } = body;
+  console.log(`[Webhook] ${mallId} product:${productNo} event received`);
+  res.json({ received: true }); // 즉시 200 응답
+
+  // 비동기 처리 (webhook timeout 방지)
+  setImmediate(async () => {
+    try {
+      const token = tokenStore[mallId]?.access_token;
+      if (!token || !productNo) return;
+
+      const pRes = await axios.get(
+        `https://${mallId}.cafe24api.com/api/v2/admin/products/${productNo}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const p = pRes.data.product;
+      const description = stripHtml(p.description || '');
+      const material    = p.product_material || '';
+      const embedText   = [p.product_name, material, description].filter(Boolean).join(' | ').slice(0, 3000);
+
+      // products 테이블 upsert
+      await supabase.from('products').upsert({
+        store_id:   mallId,
+        product_id: String(p.product_no),
+        name:       p.product_name,
+        price:      parseInt(p.price) || 0,
+        status:     p.display === 'T' ? 'active' : 'deleted',
+        attributes: { material: material || null },
+        raw_data:   p,
+        embed_text: embedText,
+        synced_at:  new Date().toISOString(),
+      }, { onConflict: 'store_id,product_id' });
+
+      // 임베딩 재생성 (해당 상품만)
+      const { data: row } = await supabase.from('products').select('id').eq('store_id', mallId).eq('product_id', String(productNo)).single();
+      if (row?.id && embedText) {
+        const embedRes = await axios.post(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${process.env.GOOGLE_AI_API_KEY}`,
+          { model: 'models/gemini-embedding-001', content: { parts: [{ text: embedText }] } }
+        );
+        const embedding = embedRes.data.embedding.values;
+        await supabase.from('product_embeddings').upsert(
+          { product_id: row.id, store_id: mallId, embedding: JSON.stringify(embedding), updated_at: new Date().toISOString() },
+          { onConflict: 'product_id' }
+        );
+      }
+
+      console.log(`[Webhook] ${mallId} product:${productNo} synced + embedded`);
+    } catch (e) {
+      console.error('[Webhook] Error:', e.message);
+    }
   });
 });
+
+// 기존 대시보드 (이전 버전 호환)
+app.get('/dashboard', (req, res) => res.redirect('/admin'));
 
 // ─────────────────────────────────────────────
 // Start

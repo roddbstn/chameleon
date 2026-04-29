@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chameleon Admin</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Apple SD Gothic Neo', -apple-system, 'Noto Sans KR', sans-serif;
+      background: #F5F5F3;
+      color: #111;
+      min-height: 100vh;
+    }
+
+    /* ── 헤더 ── */
+    .header {
+      background: #111;
+      color: #fff;
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .header-logo span { color: #A8FF78; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+
+    /* ── mall selector ── */
+    .mall-select {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+    }
+    .mall-select option { background: #222; color: #fff; }
+
+    .btn {
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover { opacity: 0.82; }
+    .btn-primary { background: #fff; color: #111; }
+    .btn-ghost { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+    .btn-sm { padding: 5px 12px; font-size: 12px; }
+    .btn-danger { background: #FEE2E2; color: #991B1B; }
+
+    /* ── 메인 레이아웃 ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+
+    /* ── 섹션 타이틀 ── */
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #666;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    /* ── 통계 카드 ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px 22px;
+      border: 1px solid #EBEBEB;
+    }
+    .stat-label { font-size: 12px; color: #888; margin-bottom: 8px; letter-spacing: 0.02em; }
+    .stat-value { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+    .stat-sub { font-size: 11px; color: #AAA; margin-top: 4px; }
+    .stat-card.accent { background: #111; border-color: #111; }
+    .stat-card.accent .stat-label { color: rgba(255,255,255,0.6); }
+    .stat-card.accent .stat-value { color: #A8FF78; }
+    .stat-card.accent .stat-sub { color: rgba(255,255,255,0.4); }
+
+    /* ── 퀵 액션 ── */
+    .actions-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .action-card {
+      background: #fff;
+      border: 1px solid #EBEBEB;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 200px;
+      flex: 1;
+    }
+    .action-icon {
+      width: 38px; height: 38px;
+      background: #F5F5F3;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .action-info { flex: 1; min-width: 0; }
+    .action-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .action-desc { font-size: 11px; color: #888; }
+
+    /* ── 로그 테이블 ── */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #EBEBEB;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #F0F0EE;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-title { font-size: 14px; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: #888;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      border-bottom: 1px solid #F0F0EE;
+      background: #FAFAF9;
+    }
+    td {
+      padding: 11px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid #F8F8F6;
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #FAFAF9; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .badge-green { background: #DCFCE7; color: #166534; }
+    .badge-yellow { background: #FEF9C3; color: #854D0E; }
+    .badge-red { background: #FEE2E2; color: #991B1B; }
+    .badge-gray { background: #F1F5F9; color: #475569; }
+    .query-text {
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #333;
+    }
+    .time-text { color: #AAA; font-size: 12px; white-space: nowrap; }
+
+    /* ── 비용 바 차트 ── */
+    .cost-bar-wrap { padding: 16px 20px 20px; }
+    .cost-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .cost-bar-label { font-size: 12px; color: #555; width: 80px; flex-shrink: 0; }
+    .cost-bar-bg { flex: 1; height: 8px; background: #F0F0EE; border-radius: 4px; overflow: hidden; }
+    .cost-bar-fill { height: 100%; border-radius: 4px; background: #111; transition: width 0.4s; }
+    .cost-bar-val { font-size: 12px; color: #333; width: 60px; text-align: right; flex-shrink: 0; }
+
+    /* ── 로딩 ── */
+    .loading { color: #AAA; font-size: 13px; padding: 24px; text-align: center; }
+    .empty { color: #CCC; font-size: 13px; padding: 32px; text-align: center; }
+
+    /* ── 토스트 ── */
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px);
+      background: #111; color: #fff; font-size: 13px; padding: 10px 20px;
+      border-radius: 999px; white-space: nowrap; z-index: 9999;
+      opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 640px) {
+      .main { padding: 16px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ── 헤더 ── -->
+<header class="header">
+  <div class="header-logo">Chame<span>leon</span></div>
+  <div class="header-right">
+    <select class="mall-select" id="mall-select" onchange="onMallChange()">
+      <option value="">전체 스토어</option>
+      <option value="tndbsrkd" selected>tndbsrkd</option>
+    </select>
+    <button class="btn btn-ghost btn-sm" onclick="loadAll()">↻ 새로고침</button>
+  </div>
+</header>
+
+<!-- ── 메인 ── -->
+<main class="main">
+
+  <!-- 통계 카드 -->
+  <div class="section-title">이번 달 현황</div>
+  <div class="stats-grid">
+    <div class="stat-card accent">
+      <div class="stat-label">API 비용</div>
+      <div class="stat-value" id="stat-cost">—</div>
+      <div class="stat-sub" id="stat-period">로딩 중...</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">총 대화 수</div>
+      <div class="stat-value" id="stat-chats">—</div>
+      <div class="stat-sub">이번 달</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">등록 상품 수</div>
+      <div class="stat-value" id="stat-products">—</div>
+      <div class="stat-sub">활성 상품</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">추천 성공률</div>
+      <div class="stat-value" id="stat-success">—</div>
+      <div class="stat-sub">recommendation / 전체</div>
+    </div>
+  </div>
+
+  <!-- 퀵 액션 -->
+  <div class="section-title">빠른 작업</div>
+  <div class="actions-row" style="margin-bottom:32px;">
+    <div class="action-card">
+      <div class="action-icon">🔄</div>
+      <div class="action-info">
+        <div class="action-name">상품 동기화</div>
+        <div class="action-desc">카페24 → Supabase 전체 동기화</div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="runSync()">실행</button>
+    </div>
+    <div class="action-card">
+      <div class="action-icon">🧬</div>
+      <div class="action-info">
+        <div class="action-name">임베딩 생성</div>
+        <div class="action-desc">미임베딩 상품 벡터화</div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="runEmbed()">실행</button>
+    </div>
+    <div class="action-card">
+      <div class="action-icon">🔗</div>
+      <div class="action-info">
+        <div class="action-name">위젯 데모</div>
+        <div class="action-desc">현재 위젯 미리보기</div>
+      </div>
+      <a class="btn btn-primary btn-sm" href="/demo" target="_blank">열기</a>
+    </div>
+  </div>
+
+  <!-- 대화 결과 유형 분포 -->
+  <div class="section-title">결과 유형 분포</div>
+  <div class="card" style="margin-bottom:32px;">
+    <div class="cost-bar-wrap" id="type-bars">
+      <div class="loading">로딩 중...</div>
+    </div>
+  </div>
+
+  <!-- 최근 대화 로그 -->
+  <div class="section-title">최근 대화 로그</div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Chat Logs</div>
+      <span id="log-count" style="font-size:12px;color:#AAA;"></span>
+    </div>
+    <div id="log-table-wrap">
+      <div class="loading">로딩 중...</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const SERVER = '';
+  let currentMallId = document.getElementById('mall-select').value;
+
+  function onMallChange() {
+    currentMallId = document.getElementById('mall-select').value;
+    loadAll();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function timeAgo(iso) {
+    const diff = Date.now() - new Date(iso).getTime();
+    const m = Math.floor(diff / 60000);
+    const h = Math.floor(m / 60);
+    const d = Math.floor(h / 24);
+    if (d > 0) return `${d}일 전`;
+    if (h > 0) return `${h}시간 전`;
+    if (m > 0) return `${m}분 전`;
+    return '방금 전';
+  }
+
+  function typeBadge(t) {
+    if (t === 'recommendation') return '<span class="badge badge-green">추천</span>';
+    if (t === 'clarification')  return '<span class="badge badge-yellow">질문</span>';
+    if (t === 'no_results')     return '<span class="badge badge-red">결과없음</span>';
+    return `<span class="badge badge-gray">${t||'?'}</span>`;
+  }
+
+  async function loadAll() {
+    const url = SERVER + '/api/stats' + (currentMallId ? `?mallId=${currentMallId}` : '');
+    try {
+      const r = await fetch(url);
+      const d = await r.json();
+
+      document.getElementById('stat-cost').textContent = `$${d.total_cost_usd.toFixed(4)}`;
+      document.getElementById('stat-period').textContent = d.period;
+      document.getElementById('stat-chats').textContent = d.chat_count.toLocaleString();
+      document.getElementById('stat-products').textContent = d.product_count.toLocaleString();
+
+      const total = d.chat_count || 1;
+      const rec = d.by_type?.recommendation || 0;
+      const pct = total ? Math.round((rec / total) * 100) : 0;
+      document.getElementById('stat-success').textContent = `${pct}%`;
+
+      // 유형 분포 바
+      const types = [
+        { key: 'recommendation', label: '추천', color: '#111' },
+        { key: 'clarification',  label: '질문',  color: '#FBBF24' },
+        { key: 'no_results',     label: '결과없음', color: '#F87171' },
+      ];
+      const maxVal = Math.max(...types.map(t => d.by_type?.[t.key] || 0), 1);
+      document.getElementById('type-bars').innerHTML = types.map(t => {
+        const val = d.by_type?.[t.key] || 0;
+        const w = Math.round((val / maxVal) * 100);
+        return `
+          <div class="cost-bar-row">
+            <div class="cost-bar-label">${t.label}</div>
+            <div class="cost-bar-bg"><div class="cost-bar-fill" style="width:${w}%;background:${t.color}"></div></div>
+            <div class="cost-bar-val">${val}회</div>
+          </div>`;
+      }).join('');
+
+      // 로그 테이블
+      const logs = d.recent_chats || [];
+      document.getElementById('log-count').textContent = `최근 ${logs.length}건`;
+      if (!logs.length) {
+        document.getElementById('log-table-wrap').innerHTML = '<div class="empty">아직 대화 로그가 없어요.<br>채팅을 시작하면 여기에 기록됩니다.</div>';
+        return;
+      }
+      document.getElementById('log-table-wrap').innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>시간</th>
+              <th>스토어</th>
+              <th>쿼리</th>
+              <th>상황</th>
+              <th>결과</th>
+              <th>상품 수</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${logs.map(l => `
+              <tr>
+                <td class="time-text">${timeAgo(l.created_at)}</td>
+                <td><code style="font-size:11px;color:#555;">${l.store_id||''}</code></td>
+                <td><div class="query-text">${l.query||''}</div></td>
+                <td style="font-size:12px;color:#666;">${l.intent_situation||'—'}</td>
+                <td>${typeBadge(l.result_type)}</td>
+                <td style="text-align:center;">${l.product_count ?? '—'}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>`;
+    } catch (e) {
+      console.error(e);
+      showToast('통계 로드 실패: ' + e.message);
+    }
+  }
+
+  async function runSync() {
+    const mall = currentMallId || prompt('동기화할 mall_id를 입력하세요');
+    if (!mall) return;
+    showToast(`${mall} 동기화 시작...`);
+    try {
+      const r = await fetch(`${SERVER}/admin/sync/${mall}`, { method: 'POST' });
+      const d = await r.json();
+      showToast(d.message || d.error || '완료');
+      loadAll();
+    } catch (e) { showToast('오류: ' + e.message); }
+  }
+
+  async function runEmbed() {
+    const mall = currentMallId || prompt('임베딩할 mall_id를 입력하세요');
+    if (!mall) return;
+    showToast(`${mall} 임베딩 시작... (시간이 걸릴 수 있어요)`);
+    try {
+      const r = await fetch(`${SERVER}/admin/embed/${mall}`, { method: 'POST' });
+      const d = await r.json();
+      showToast(d.message || d.error || '완료');
+      loadAll();
+    } catch (e) { showToast('오류: ' + e.message); }
+  }
+
+  loadAll();
+  setInterval(loadAll, 30000); // 30초마다 자동 갱신
+</script>
+</body>
+</html>

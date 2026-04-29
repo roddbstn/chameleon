@@ -211,6 +211,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
 
   // 명확화 질문이 필요한 경우 바로 반환
   if (intent.clarification_needed && intent.clarification_question) {
+    supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'clarification', product_count: 0 }).catch(() => {});
     return {
       type: 'clarification',
       message: intent.clarification_question,
@@ -232,6 +233,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   });
 
   if (!products.length) {
+    supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'no_results', product_count: 0 }).catch(() => {});
     return {
       type: 'no_results',
       message: '아직 등록된 상품 중에서는 딱 맞는 걸 못 찾았어요. 다르게 설명해주시면 다시 찾아볼게요!',
@@ -316,6 +318,17 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   const recommendedProducts = selectedIndices.length
     ? selectedIndices.map(i => products[i])
     : products.slice(0, 3);
+
+  // 대화 로그 저장
+  supabase.from('chat_logs').insert({
+    store_id:          mallId,
+    query,
+    intent_situation:  intent.situation || null,
+    intent_needs:      intent.needs || null,
+    result_type:       'recommendation',
+    product_count:     recommendedProducts.length,
+    product_ids:       recommendedProducts.map(p => String(p.product_id)),
+  }).catch(() => {});
 
   return {
     type: 'recommendation',
