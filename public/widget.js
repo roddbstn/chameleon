@@ -496,82 +496,99 @@
         color: #aaa;
         font-style: italic;
       }
-      .cml-chat-products {
+      /* ── 추천 상품 선반 (입력창 위 고정 영역) ── */
+      .cml-product-shelf {
+        border-top: 1px solid #EBEBEB;
+        background: #FAFAF9;
+        flex-shrink: 0;
+        max-height: 260px;
+        overflow-y: auto;
+      }
+      .cml-product-shelf-header {
+        padding: 8px 14px 4px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #999;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .cml-shelf-card {
+        display: flex;
+        align-items: stretch;
+        background: #fff;
+        border-bottom: 1px solid #F2F2F0;
+        transition: background 0.12s;
+        min-height: 90px;
+      }
+      .cml-shelf-card:last-child { border-bottom: none; }
+      .cml-shelf-card:hover { background: #F8F8F6; }
+      .cml-shelf-card-info {
+        flex: 1;
+        padding: 10px 8px 10px 14px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        align-self: stretch;
-        width: 100%;
+        justify-content: space-between;
+        min-width: 0;
       }
-      .cml-chat-product-card {
-        background: #fff;
-        border: 1px solid #E8E8E4;
-        border-radius: 10px;
-        overflow: hidden;
+      .cml-shelf-card-name {
         font-size: 12px;
-        transition: box-shadow 0.15s;
+        font-weight: 600;
+        color: #111;
+        margin-bottom: 3px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
       }
-      .cml-chat-product-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-      .cml-chat-product-img {
-        width: 100%;
-        height: 160px;
+      .cml-shelf-card-price {
+        font-size: 12px;
+        color: #444;
+        margin-bottom: 8px;
+      }
+      .cml-shelf-card-btns {
+        display: flex;
+        gap: 5px;
+      }
+      .cml-shelf-card-btn {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        font-family: inherit;
+        text-decoration: none;
+        display: inline-block;
+        transition: opacity 0.15s;
+        text-align: center;
+        white-space: nowrap;
+      }
+      .cml-shelf-card-btn:hover { opacity: 0.82; }
+      .cml-shelf-card-btn.primary { background: #111; color: #fff; }
+      .cml-shelf-card-btn.secondary { background: #EEEEEC; color: #333; }
+      .cml-shelf-card-img {
+        width: 75px;
+        height: 100px;
         object-fit: cover;
+        flex-shrink: 0;
         display: block;
-        background: #F4F4F2;
+        align-self: center;
+        margin: 8px 8px 8px 0;
+        border-radius: 6px;
       }
-      .cml-chat-product-img-placeholder {
-        width: 100%;
-        height: 160px;
-        background: #F4F4F2;
+      .cml-shelf-card-img-placeholder {
+        width: 75px;
+        height: 100px;
+        flex-shrink: 0;
+        background: #F0F0EE;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #CCC;
-        font-size: 11px;
-      }
-      .cml-chat-product-body {
-        padding: 10px 12px 12px;
-      }
-      .cml-chat-product-name {
-        font-weight: 600;
-        color: #111;
-        font-size: 14px;
-        margin-bottom: 3px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .cml-chat-product-price {
-        font-size: 13px;
-        color: #444;
-        margin-bottom: 10px;
-      }
-      .cml-chat-product-btns {
-        display: flex;
-        gap: 6px;
-      }
-      .cml-chat-product-btn {
-        flex: 1;
-        padding: 8px 0;
+        font-size: 10px;
+        margin: 8px 8px 8px 0;
         border-radius: 6px;
-        font-size: 12px;
-        font-weight: 500;
-        cursor: pointer;
-        text-align: center;
-        text-decoration: none;
-        display: block;
-        font-family: inherit;
-        border: none;
-        transition: opacity 0.15s;
-      }
-      .cml-chat-product-btn:hover { opacity: 0.82; }
-      .cml-chat-product-btn.primary {
-        background: #111;
-        color: #fff;
-      }
-      .cml-chat-product-btn.secondary {
-        background: #F0F0EE;
-        color: #333;
       }
       .cml-chat-input-row {
         padding: 10px 12px;
@@ -882,6 +899,10 @@
         <button class="cml-chat-starter-chip" data-q="여름에 시원하게 입을 수 있는 옷 있나요?">여름 아이템</button>
         <button class="cml-chat-starter-chip" data-q="친구한테 선물하기 좋은 거 있어요?">선물 추천</button>
       </div>
+      <div class="cml-product-shelf" id="cml-product-shelf" style="display:none">
+        <div class="cml-product-shelf-header">추천 상품</div>
+        <div id="cml-product-shelf-list"></div>
+      </div>
       <div class="cml-chat-input-row">
         <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="원하는 스타일, 상황을 말해보세요" autocomplete="off" />
         <button class="cml-chat-send" id="cml-chat-send" aria-label="전송">
@@ -944,32 +965,37 @@
     }
 
     function addProductCards(products) {
-      if (!products?.length) return;
-      const wrap = document.createElement('div');
-      wrap.className = 'cml-chat-products';
+      const shelf = panel.querySelector('#cml-product-shelf');
+      const shelfList = panel.querySelector('#cml-product-shelf-list');
+      if (!products?.length) {
+        shelf.style.display = 'none';
+        shelfList.innerHTML = '';
+        return;
+      }
       const pdpBase = '/product/detail.html?product_no=';
-      wrap.innerHTML = products.map(p => {
+      shelfList.innerHTML = products.map(p => {
         const pdpUrl = `${pdpBase}${p.id}`;
         const imgHtml = p.image_url
-          ? `<img class="cml-chat-product-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
-          : `<div class="cml-chat-product-img-placeholder">이미지 없음</div>`;
+          ? `<img class="cml-shelf-card-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
+          : `<div class="cml-shelf-card-img-placeholder">No img</div>`;
         const priceHtml = p.price
-          ? `<div class="cml-chat-product-price">₩${Number(p.price).toLocaleString()}</div>` : '';
+          ? `<div class="cml-shelf-card-price">₩${Number(p.price).toLocaleString()}</div>` : '';
         return `
-          <div class="cml-chat-product-card">
-            ${imgHtml}
-            <div class="cml-chat-product-body">
-              <div class="cml-chat-product-name">${p.name}</div>
-              ${priceHtml}
-              <div class="cml-chat-product-btns">
-                <a class="cml-chat-product-btn primary" href="${pdpUrl}">자세히 보기</a>
-                <a class="cml-chat-product-btn secondary" href="${pdpUrl}">장바구니 담기</a>
+          <div class="cml-shelf-card">
+            <div class="cml-shelf-card-info">
+              <div>
+                <div class="cml-shelf-card-name">${p.name}</div>
+                ${priceHtml}
+              </div>
+              <div class="cml-shelf-card-btns">
+                <a class="cml-shelf-card-btn primary" href="${pdpUrl}">자세히 보기</a>
+                <a class="cml-shelf-card-btn secondary" href="${pdpUrl}">담기</a>
               </div>
             </div>
+            ${imgHtml}
           </div>`;
       }).join('');
-      messagesEl.appendChild(wrap);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+      shelf.style.display = 'block';
     }
 
     async function sendChat(query) {

@@ -102,6 +102,10 @@ async function analyzeIntent(query, conversationHistory = []) {
   "constraints": "제약 조건 (예산, 사이즈, 색상, 제외 조건 등)",
   "assumptions": "합리적으로 추측할 수 있는 것들",
   "search_query": "벡터 검색에 최적화된 확장된 검색 쿼리 (한국어, 최대 200자)",
+  "color_filter": {
+    "include": ["유저가 원하는 색상 키워드 배열 (예: 화이트, 베이지, 라이트 블루). 색상 언급 없으면 빈 배열"],
+    "exclude": ["유저가 명시적으로 피하거나, 밝은 색 요청 시 어두운 색 계열 키워드 (예: 블랙, 네이비, 다크). 없으면 빈 배열"]
+  },
   "clarification_needed": true/false,
   "clarification_question": "꼭 필요한 경우에만 질문 1개 (아니면 null)"
 }
@@ -110,6 +114,7 @@ async function analyzeIntent(query, conversationHistory = []) {
 - clarification_needed는 정말 모호해서 추천 자체가 불가능할 때만 true
 - 가정을 세울 수 있다면 질문 없이 추천하는 쪽을 선택
 - search_query는 상황, 감정, 스타일, 소재, 핏, 계절 등을 모두 포함해 풍부하게 작성
+- color_filter.exclude: "밝은 색" 요청이면 블랙/차콜/네이비/다크 계열 추가, "어두운 색" 요청이면 화이트/크림/베이지 계열 추가
 
 JSON만 응답하세요.`;
 
@@ -139,7 +144,7 @@ async function generateRecommendation(query, intent, products, brandProfile = nu
 
   const productList = products.slice(0, 5).map((p, i) => {
     const attrs = p.attributes || {};
-    return `[${i + 1}] ${p.name}
+    return `${i + 1}. ${p.name}
 가격: ${p.price?.toLocaleString()}원
 소재/핏: ${attrs.material || ''}
 설명: ${p.embed_text?.slice(0, 300) || ''}
@@ -165,7 +170,7 @@ ${productList}
 응답 형식:
 1. 유저 상황을 한 문장으로 공감 (인사말 없이 바로 시작)
 2. 상품 2~3개 추천, 각각:
-   - [1], [2] 등 번호로 시작
+   - 1., 2. 등 번호로 시작
    - 이 상황에 왜 이 상품인지 구체적 이유
    - 솔직한 장단점
 3. 마지막에 짧은 한 마디 (필요한 경우에만 질문 1개)
@@ -215,7 +220,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
 
   // product_id 기준 중복 제거
   const seen = new Set();
-  const products = rawProducts.filter(p => {
+  let products = rawProducts.filter(p => {
     if (seen.has(p.product_id)) return false;
     seen.add(p.product_id);
     return true;
@@ -227,6 +232,28 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
       message: '아직 등록된 상품 중에서는 딱 맞는 걸 못 찾았어요. 다르게 설명해주시면 다시 찾아볼게요!',
       products: [],
     };
+  }
+
+  // 색상 필터링: 제외 색상 키워드가 있으면 상품명/설명에서 필터링
+  const colorFilter = intent.color_filter || {};
+  const excludeColors = (colorFilter.exclude || []).map(c => c.toLowerCase());
+  const includeColors = (colorFilter.include || []).map(c => c.toLowerCase());
+
+  if (excludeColors.length) {
+    const filtered = products.filter(p => {
+      const text = ((p.name || '') + ' ' + (p.embed_text || '')).toLowerCase();
+      return !excludeColors.some(c => text.includes(c));
+    });
+    // 필터링 후 상품이 2개 이상이면 적용, 아니면 원본 유지 (너무 많이 걸러지면 무시)
+    if (filtered.length >= 2) products = filtered;
+  }
+
+  if (includeColors.length && products.length > 3) {
+    const matched = products.filter(p => {
+      const text = ((p.name || '') + ' ' + (p.embed_text || '')).toLowerCase();
+      return includeColors.some(c => text.includes(c));
+    });
+    if (matched.length >= 2) products = matched;
   }
 
   // 이미지 URL 일괄 조회 (raw_data.list_image)
@@ -251,9 +278,9 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   const message = await generateRecommendation(query, intent, products, brandProfile);
   await logApiCost(mallId, 'response_generation', 3000, 600);
 
-  // 추천에 언급된 상품 인덱스 파싱 ([1], [2], [3]) — 중복 인덱스도 제거
+  // 추천에 언급된 상품 인덱스 파싱 (1., 2., 3.) — 중복 인덱스도 제거
   const mentionedIndices = [...new Set(
-    [...message.matchAll(/\[(\d+)\]/g)]
+    [...message.matchAll(/^(\d+)\./gm)]
       .map(m => parseInt(m[1]) - 1)
       .filter(i => i >= 0 && i < products.length)
   )];
