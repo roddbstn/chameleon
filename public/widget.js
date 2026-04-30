@@ -467,7 +467,7 @@
       display: flex; gap: 10px; align-items: center; background: #fff;
     }
     .cml-powered-by {
-      text-align: center; padding: 0 0 14px;
+      text-align: center; padding: 10px 0 20px;
       font-size: 10px; color: #C8C8C4; letter-spacing: 0.05em;
       flex-shrink: 0; background: #fff;
     }

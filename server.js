@@ -24,6 +24,32 @@ const supabase = createClient(
 
 const app = express();
 app.use(cors());
+
+// ── Gemini 폴백 체인 (503 → 다음 모델, 429 → 재시도) ──
+const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+async function callGemini(body, startModel = 'gemini-2.5-flash') {
+  const startIdx = GEMINI_MODELS.indexOf(startModel);
+  const models   = GEMINI_MODELS.slice(startIdx < 0 ? 0 : startIdx);
+  for (const model of models) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`;
+    for (let retry = 0; retry < 2; retry++) {
+      try {
+        const res = await axios.post(url, body);
+        if (model !== startModel) console.log(`[Gemini] fallback 성공: ${model}`);
+        return res;
+      } catch (e) {
+        const status = e.response?.status;
+        if (status === 429) {
+          await new Promise(r => setTimeout(r, (retry + 1) * 5000));
+        } else if (status === 503) {
+          console.warn(`[Gemini] ${model} 503, 다음 모델 시도...`);
+          break;
+        } else { throw e; }
+      }
+    }
+  }
+  throw new Error('All Gemini models unavailable');
+}
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res) => {
@@ -427,13 +453,10 @@ app.post('/api/chips', async (req, res) => {
 - 한 질문당 15자 이내로 짧게
 - JSON 배열만 응답: ["질문1", "질문2", "질문3"]`;
 
-    const geminiRes = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`,
-      {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 120, thinkingConfig: { thinkingBudget: 0 } },
-      }
-    );
+    const geminiRes = await callGemini({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 120, thinkingConfig: { thinkingBudget: 0 } },
+    });
 
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
     const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -520,13 +543,10 @@ chips 작성 규칙:
 - 답변을 들으면 구매를 결정할 수 있는 질문 우선`;
 
   try {
-    const geminiRes = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`,
-      {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } },
-      }
-    );
+    const geminiRes = await callGemini({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } },
+    });
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
     const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     const content = JSON.parse(cleaned);
@@ -604,21 +624,17 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
 - 정보가 없을 경우에도 소재·디자인에서 추론하여 솔직하게 안내할 것
 - 2~3문장, 간결하게`;
 
-    const geminiRes = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`,
-      {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } },
-      }
-    );
+    const geminiRes = await callGemini({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } },
+    });
 
     const answer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text
       || '죄송해요, 다시 시도해주세요.';
     res.json({ answer });
   } catch (err) {
-    const detail = err.response?.data || err.message;
-    console.error('[Ask API Error]', JSON.stringify(detail));
-    res.json({ answer: `[DEBUG] ${JSON.stringify(detail).slice(0, 300)}` });
+    console.error('[Ask API Error]', err.response?.data || err.message);
+    res.status(500).json({ answer: '죄송해요, 지금 답변을 생성할 수 없어요. 잠시 후 다시 시도해주세요.' });
   }
 });
 

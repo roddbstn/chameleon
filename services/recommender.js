@@ -33,30 +33,51 @@ async function logApiCost(storeId, agentType, tokensIn, tokensOut) {
   });
 }
 
-async function callGemini(url, body, retries = 3) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const res = await axios.post(url, body);
-      return res;
-    } catch (e) {
-      if (e.response?.status === 429 && i < retries - 1) {
-        const wait = (i + 1) * 5000;
-        console.log(`[Gemini] 429 rate limit, ${wait/1000}초 후 재시도...`);
-        await new Promise(r => setTimeout(r, wait));
-      } else {
-        throw e;
+const GEMINI_MODELS = [
+  'gemini-2.5-flash',
+  'gemini-2.0-flash',
+  'gemini-1.5-flash',
+];
+const EMBED_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent';
+
+function geminiUrl(model) {
+  return `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+}
+
+// 429 → 재시도, 503 → 다음 모델로 폴백
+async function callGemini(url, body) {
+  // url에서 모델 추출해 fallback 체인 시작점 결정
+  const urlModel = url.match(/models\/([^:]+)/)?.[1] || GEMINI_MODELS[0];
+  const startIdx = GEMINI_MODELS.indexOf(urlModel);
+  const models   = GEMINI_MODELS.slice(startIdx < 0 ? 0 : startIdx);
+
+  for (const model of models) {
+    const endpoint = geminiUrl(model) + '?key=' + process.env.GOOGLE_AI_API_KEY;
+    for (let retry = 0; retry < 2; retry++) {
+      try {
+        const res = await axios.post(endpoint, body);
+        if (model !== urlModel) console.log(`[Gemini] fallback 성공: ${model}`);
+        return res;
+      } catch (e) {
+        const status = e.response?.status;
+        if (status === 429) {
+          const wait = (retry + 1) * 5000;
+          console.log(`[Gemini] ${model} 429, ${wait/1000}초 후 재시도...`);
+          await new Promise(r => setTimeout(r, wait));
+        } else if (status === 503) {
+          console.warn(`[Gemini] ${model} 503, 다음 모델 시도...`);
+          break; // 이 모델 포기, 다음 모델로
+        } else {
+          throw e;
+        }
       }
     }
   }
+  throw new Error('All Gemini models unavailable');
 }
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
-
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
-const EMBED_URL  = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent';
+// GEMINI_URL은 하위 호환용 (callGemini가 모델 체인 처리)
+const GEMINI_URL = geminiUrl(GEMINI_MODELS[0]);
 
 // ─────────────────────────────────────────────
 // 유저 쿼리 → 벡터
