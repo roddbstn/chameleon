@@ -26,7 +26,7 @@ const app = express();
 app.use(cors());
 
 // ── Gemini 폴백 체인 (503 → 다음 모델, 429 → 재시도) ──
-const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash-latest'];
 async function callGemini(body, startModel = 'gemini-2.5-flash') {
   const startIdx = GEMINI_MODELS.indexOf(startModel);
   const models   = GEMINI_MODELS.slice(startIdx < 0 ? 0 : startIdx);
