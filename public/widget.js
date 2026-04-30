@@ -491,6 +491,38 @@
     }
     .cml-chat-starter-chip:hover { border-color: #888; color: #111; }
 
+    /* ── 팔로업 질문 트레이 ── */
+    .cml-follow-chips-tray {
+      flex-shrink: 0;
+      padding: 10px 0 6px;
+      border-top: 1px solid #F0F0EE;
+    }
+    .cml-follow-chips-scroll {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 8px;
+      padding: 2px 16px 4px;
+      scrollbar-width: none;
+    }
+    .cml-follow-chips-scroll::-webkit-scrollbar { display: none; }
+    .cml-follow-chip {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      border: 1px solid #D0D0CC;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: #444;
+      white-space: nowrap;
+      cursor: pointer;
+      background: #fff;
+      font-family: inherit;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .cml-follow-chip:hover { border-color: #888; color: #111; }
+
     /* ── backdrop (overlay 모드) ── */
     #cml-backdrop {
       display: none; position: fixed; inset: 0;
@@ -574,9 +606,10 @@
       document.dispatchEvent(new CustomEvent('chameleon:ask', {
         detail: {
           query: chip.dataset.q,
-          mode: 'product_qa',                      // 일반 추천이 아닌 상품 특정 Q&A
+          mode: 'product_qa',
           productNo:   productCtx?.productNo   || '',
           productName: productCtx?.productName || '',
+          fullChips:   content?.chips          || [],  // 전체 7개 칩 풀 전달
         },
       }));
     });
@@ -687,6 +720,9 @@
         <div class="cml-product-shelf-header">추천 상품</div>
         <div id="cml-product-shelf-list"></div>
       </div>
+      <div class="cml-follow-chips-tray" id="cml-follow-chips-tray" style="display:none">
+        <div class="cml-follow-chips-scroll" id="cml-follow-chips-scroll"></div>
+      </div>
       <div class="cml-chat-input-row">
         <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="원하는 스타일, 상황을 말해보세요" autocomplete="off" />
         <button class="cml-chat-send" id="cml-chat-send" aria-label="전송">
@@ -707,6 +743,56 @@
 
     const chatHistory = [];
     let lastProducts  = [];
+
+    // PDP 칩 풀 + 컨텍스트 (product_qa 모드 전용)
+    let _pdpChips      = [];
+    let _pdpProductNo  = '';
+    let _pdpProductName = '';
+    let _stopAutoScroll = null;
+
+    // ── 팔로업 칩 트레이 ──
+    const followTray   = panel.querySelector('#cml-follow-chips-tray');
+    const followScroll = panel.querySelector('#cml-follow-chips-scroll');
+
+    function startChipAutoScroll(el) {
+      let paused = false;
+      const pause  = () => { paused = true; };
+      const resume = () => { setTimeout(() => { paused = false; }, 1500); };
+      el.addEventListener('touchstart', pause,  { passive: true });
+      el.addEventListener('mousedown',  pause);
+      el.addEventListener('touchend',  resume,  { passive: true });
+      el.addEventListener('mouseup',   resume);
+      let rafId;
+      function tick() {
+        if (!paused) {
+          const max = el.scrollWidth - el.clientWidth;
+          if (el.scrollLeft < max) el.scrollLeft += 0.45;
+        }
+        rafId = requestAnimationFrame(tick);
+      }
+      rafId = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(rafId);
+    }
+
+    function showFollowUpChips(askedQuery) {
+      const remaining = _pdpChips.filter(c => c !== askedQuery);
+      if (!remaining.length) { followTray.style.display = 'none'; return; }
+      followScroll.innerHTML = remaining.map(c =>
+        `<button class="cml-follow-chip" data-q="${c}">${c}</button>`
+      ).join('');
+      followTray.style.display = 'block';
+      followScroll.scrollLeft = 0;
+      if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
+      _stopAutoScroll = startChipAutoScroll(followScroll);
+    }
+
+    followScroll.addEventListener('click', e => {
+      const chip = e.target.closest('.cml-follow-chip');
+      if (!chip) return;
+      const q = chip.dataset.q;
+      showFollowUpChips(q);
+      sendProductQA(q, _pdpProductNo, _pdpProductName);
+    });
 
     // ── 세션 유지 ──
     const SESSION_KEY = `cml_session_${MALL_ID}`;
@@ -825,6 +911,9 @@
       const _shelfList = panel.querySelector('#cml-product-shelf-list');
       _shelf.style.display = 'none';
       _shelfList.innerHTML = '';
+      followTray.style.display = 'none';
+      followScroll.innerHTML = '';
+      if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
     });
 
     function parseMd(text) {
@@ -1062,6 +1151,8 @@
         chatHistory.push({ role: 'user', content: query });
         chatHistory.push({ role: 'assistant', content: data.answer || '' });
         if (chatHistory.length > 20) chatHistory.splice(0, 2);
+        // 답변 후 팔로업 질문 트레이 표시
+        showFollowUpChips(query);
       } catch {
         loadingBubble.remove();
         addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
@@ -1074,8 +1165,16 @@
     // PDP 인라인 패널의 질문 칩 클릭 이벤트 수신
     document.addEventListener('chameleon:ask', e => {
       openSidebar();
-      const { query, mode, productNo, productName } = e.detail;
+      const { query, mode, productNo, productName, fullChips } = e.detail;
       if (mode === 'product_qa') {
+        // 이 상품 전용 컨텍스트 저장
+        _pdpProductNo   = productNo   || '';
+        _pdpProductName = productName || '';
+        _pdpChips       = fullChips   || [];
+        // 팔로업 트레이 초기화
+        followTray.style.display = 'none';
+        followScroll.innerHTML   = '';
+        if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
         // 이 상품에 특정된 Q&A → /api/ask
         setTimeout(() => sendProductQA(query, productNo, productName), 160);
       } else {
