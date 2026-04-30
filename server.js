@@ -26,23 +26,25 @@ const app = express();
 app.use(cors());
 
 // ── Gemini 폴백 체인 (503 → 다음 모델, 429 → 재시도) ──
-const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash-8b'];
-async function callGemini(body, startModel = 'gemini-2.5-flash') {
-  const startIdx = GEMINI_MODELS.indexOf(startModel);
-  const models   = GEMINI_MODELS.slice(startIdx < 0 ? 0 : startIdx);
-  for (const model of models) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`;
+// v1beta = preview/experimental, v1 = stable
+const GEMINI_CHAIN = [
+  { model: 'gemini-2.5-flash', api: 'v1beta' },
+  { model: 'gemini-1.5-flash', api: 'v1'     },
+];
+async function callGemini(body) {
+  for (const { model, api } of GEMINI_CHAIN) {
+    const url = `https://generativelanguage.googleapis.com/${api}/models/${model}:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`;
     for (let retry = 0; retry < 2; retry++) {
       try {
         const res = await axios.post(url, body);
-        if (model !== startModel) console.log(`[Gemini] fallback 성공: ${model}`);
+        if (model !== GEMINI_CHAIN[0].model) console.log(`[Gemini] fallback 성공: ${model} (${api})`);
         return res;
       } catch (e) {
         const status = e.response?.status;
         if (status === 429) {
           await new Promise(r => setTimeout(r, (retry + 1) * 5000));
-        } else if (status === 503) {
-          console.warn(`[Gemini] ${model} 503, 다음 모델 시도...`);
+        } else if (status === 503 || status === 404) {
+          console.warn(`[Gemini] ${model} ${status}, 다음 모델 시도...`);
           break;
         } else { throw e; }
       }

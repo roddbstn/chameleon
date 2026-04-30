@@ -38,31 +38,27 @@ async function logApiCost(storeId, agentType, tokensIn, tokensOut) {
   });
 }
 
-const GEMINI_MODELS = [
-  'gemini-2.5-flash',
-  'gemini-1.5-flash-8b',
+const GEMINI_CHAIN = [
+  { model: 'gemini-2.5-flash', api: 'v1beta' },
+  { model: 'gemini-1.5-flash', api: 'v1'     },
 ];
 const EMBED_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent';
 
-function geminiUrl(model) {
-  return `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-}
-
-// generateContent 전용 — 429 재시도, 503 다음 모델 폴백
+// generateContent 전용 — 429 재시도, 503/404 다음 모델 폴백
 async function callGemini(body) {
-  for (const model of GEMINI_MODELS) {
-    const endpoint = `${geminiUrl(model)}?key=${process.env.GOOGLE_AI_API_KEY}`;
+  for (const { model, api } of GEMINI_CHAIN) {
+    const endpoint = `https://generativelanguage.googleapis.com/${api}/models/${model}:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`;
     for (let retry = 0; retry < 2; retry++) {
       try {
         const res = await axios.post(endpoint, body);
-        if (model !== GEMINI_MODELS[0]) console.log(`[Gemini] fallback 성공: ${model}`);
+        if (model !== GEMINI_CHAIN[0].model) console.log(`[Gemini] fallback 성공: ${model} (${api})`);
         return res;
       } catch (e) {
         const status = e.response?.status;
         if (status === 429) {
           await new Promise(r => setTimeout(r, (retry + 1) * 5000));
-        } else if (status === 503) {
-          console.warn(`[Gemini] ${model} 503, 다음 모델 시도...`);
+        } else if (status === 503 || status === 404) {
+          console.warn(`[Gemini] ${model} ${status}, 다음 모델 시도...`);
           break;
         } else {
           throw e;
