@@ -40,7 +40,7 @@ async function logApiCost(storeId, agentType, tokensIn, tokensOut) {
 
 const GEMINI_MODELS = [
   'gemini-2.5-flash',
-  'gemini-1.5-flash-latest',
+  'gemini-1.5-flash-8b',
 ];
 const EMBED_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent';
 
