@@ -345,9 +345,9 @@
       flex-shrink: 0;
     }
     .cml-product-shelf-header {
-      padding: 10px 16px 6px;
-      font-size: 11px; font-weight: 600; color: #999;
-      letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 12px 16px 6px;
+      font-size: 14px; font-weight: 700; color: #555;
+      letter-spacing: 0.02em;
     }
     #cml-product-shelf-list {
       display: flex;
@@ -405,18 +405,96 @@
     }
     .cml-shelf-card-price { font-size: 13px; color: #444; }
     .cml-shelf-card-reason {
-      font-size: 11px; color: #BABAB6; font-weight: 300;
+      font-size: 12px; color: #888; font-weight: 400;
       line-height: 1.4; letter-spacing: 0.01em;
     }
-    .cml-shelf-card-btns { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+    .cml-shelf-card-btns { display: flex; flex-direction: column; gap: 5px; margin-top: 8px; }
     .cml-shelf-card-btn {
-      padding: 6px 8px; border-radius: 6px; font-size: 11px; font-weight: 500;
+      padding: 9px 8px; border-radius: 7px; font-size: 13px; font-weight: 600;
       cursor: pointer; border: none; font-family: inherit; text-decoration: none;
       display: block; transition: opacity 0.15s; text-align: center; white-space: nowrap;
     }
     .cml-shelf-card-btn:hover { opacity: 0.82; }
     .cml-shelf-card-btn.primary { background: #111; color: #fff; }
     .cml-shelf-card-btn.secondary { background: #EEEEEC; color: #333; }
+
+    /* ── 인라인 추천 상품 카드 ── */
+    .cml-inline-card {
+      border: 1px solid #E8E8E4; border-radius: 12px;
+      overflow: hidden; margin: 6px 0 10px;
+      background: #fff; font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+    }
+    .cml-inline-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px; cursor: pointer; user-select: none;
+      transition: background 0.12s;
+    }
+    .cml-inline-card-header:hover { background: #FAFAF9; }
+    .cml-inline-card-header-left { flex: 1; min-width: 0; }
+    .cml-inline-card-name {
+      font-size: 14px; font-weight: 700; color: #111;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .cml-inline-card-price { font-size: 14px; color: #333; font-weight: 600; }
+    .cml-inline-card-toggle {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid #E4E4E0; background: #F5F5F3;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-left: 10px;
+    }
+    .cml-inline-card-toggle svg { transition: transform 0.25s; }
+    .cml-inline-card-toggle.open svg { transform: rotate(180deg); }
+    .cml-inline-card-body {
+      display: flex; overflow: hidden;
+      max-height: 0; transition: max-height 0.3s ease;
+      border-top: 0px solid #F0F0EE;
+    }
+    .cml-inline-card-body.open {
+      max-height: 220px;
+      border-top-width: 1px;
+    }
+    .cml-inline-card-img-wrap {
+      width: 116px; flex-shrink: 0; background: #F0F0EE; align-self: stretch;
+    }
+    .cml-inline-card-img { width: 116px; height: 100%; object-fit: cover; display: block; }
+    .cml-inline-card-img-placeholder {
+      width: 100%; height: 100%; min-height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      color: #CCC; font-size: 11px;
+    }
+    .cml-inline-card-info {
+      flex: 1; padding: 11px 13px;
+      display: flex; flex-direction: column; gap: 7px; min-width: 0;
+    }
+    .cml-inline-card-reason {
+      font-size: 12px; color: #888; line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cml-inline-card-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .cml-inline-card-chip {
+      border: 1px solid #E0E0DC; border-radius: 999px;
+      padding: 4px 10px; font-size: 11px; color: #555;
+      background: #FAFAF9; cursor: pointer; font-family: inherit;
+      white-space: nowrap; transition: border-color 0.12s, color 0.12s;
+    }
+    .cml-inline-card-chip:hover { border-color: #999; color: #111; }
+    .cml-inline-card-btns { display: flex; gap: 6px; margin-top: auto; }
+    .cml-inline-card-btn {
+      flex: 1; padding: 9px 6px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      border: none; font-family: inherit; text-decoration: none;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.15s; white-space: nowrap;
+    }
+    .cml-inline-card-btn:hover { opacity: 0.82; }
+    .cml-inline-card-btn.primary { background: #111; color: #fff; }
+    .cml-inline-card-btn.secondary { background: #EEEEEC; color: #333; }
+    .cml-inline-option-panel {
+      margin-top: 6px; display: none; flex-direction: column; gap: 5px;
+    }
+    .cml-inline-option-panel.open { display: flex; }
 
     /* ── 드래그 리사이즈 핸들 ── */
     .cml-resize-handle {
@@ -1120,6 +1198,154 @@
       }
     });
 
+    // ── 추천 메시지 → 텍스트+카드 인라인 렌더링 ──
+    function parseRecommendationSegments(message) {
+      const segments = [];
+      const parts = message.split(/(?=\n\d+[.)]\s)/);
+      parts.forEach(part => {
+        const trimmed = part.replace(/^\n/, '').trim();
+        if (!trimmed) return;
+        const match = trimmed.match(/^(\d+)[.)]\s/);
+        if (match) {
+          segments.push({ type: 'product', idx: parseInt(match[1]) - 1, content: trimmed });
+        } else {
+          segments.push({ type: 'text', content: trimmed });
+        }
+      });
+      return segments;
+    }
+
+    function createInlineCard(product) {
+      const pdpBase = '/product/detail.html?product_no=';
+      const pdpUrl  = `${pdpBase}${product.id}`;
+      const priceText = product.price ? `₩${Number(product.price).toLocaleString()}` : '';
+      const imgHtml = product.image_url
+        ? `<img class="cml-inline-card-img" src="${product.image_url}" alt="${product.name}" loading="lazy">`
+        : `<div class="cml-inline-card-img-placeholder">이미지 없음</div>`;
+      const reasonHtml = product.reason
+        ? `<div class="cml-inline-card-reason">${product.reason}</div>` : '';
+      const chipLabels = ['소재가 어떻게 되나요?', '핏이 어떤가요?', '다른 색상도 있나요?'];
+      const chipsHtml = chipLabels.map(c =>
+        `<button class="cml-inline-card-chip"
+           data-q="${c}" data-pid="${product.id}" data-pname="${product.name}">${c}</button>`
+      ).join('');
+
+      const card = document.createElement('div');
+      card.className = 'cml-inline-card';
+      card.dataset.productId = product.id;
+      card.innerHTML = `
+        <div class="cml-inline-card-header">
+          <div class="cml-inline-card-header-left">
+            <div class="cml-inline-card-name">${product.name}</div>
+            ${priceText ? `<div class="cml-inline-card-price">${priceText}</div>` : ''}
+          </div>
+          <div class="cml-inline-card-toggle open">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 5l5 5 5-5" stroke="#666" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="cml-inline-card-body open">
+          <div class="cml-inline-card-img-wrap">${imgHtml}</div>
+          <div class="cml-inline-card-info">
+            ${reasonHtml}
+            <div class="cml-inline-card-chips">${chipsHtml}</div>
+            <div class="cml-inline-card-btns">
+              <a class="cml-inline-card-btn primary" href="${pdpUrl}">자세히 보기</a>
+              <button class="cml-inline-card-btn secondary cml-inline-cart-btn">장바구니</button>
+            </div>
+            <div class="cml-inline-option-panel"></div>
+          </div>
+        </div>`;
+
+      // 헤더 클릭 → 열기/닫기
+      const header = card.querySelector('.cml-inline-card-header');
+      const toggle = card.querySelector('.cml-inline-card-toggle');
+      const body   = card.querySelector('.cml-inline-card-body');
+      header.addEventListener('click', () => {
+        const isOpen = body.classList.toggle('open');
+        toggle.classList.toggle('open', isOpen);
+      });
+
+      // 칩 클릭 → 사이드바 Q&A
+      card.querySelectorAll('.cml-inline-card-chip').forEach(chip => {
+        chip.addEventListener('click', e => {
+          e.stopPropagation();
+          document.dispatchEvent(new CustomEvent('chameleon:ask', {
+            detail: {
+              query: chip.dataset.q,
+              mode: 'product_qa',
+              productNo:   chip.dataset.pid,
+              productName: chip.dataset.pname,
+              fullChips:   chipLabels,
+            },
+          }));
+        });
+      });
+
+      // 장바구니 버튼
+      const cartBtn   = card.querySelector('.cml-inline-cart-btn');
+      const optPanel  = card.querySelector('.cml-inline-option-panel');
+      cartBtn.addEventListener('click', async e => {
+        e.stopPropagation();
+        if (optPanel.classList.contains('open')) { optPanel.classList.remove('open'); return; }
+        cartBtn.textContent = '불러오는 중...'; cartBtn.disabled = true;
+        const result = await fetchProductOptions(product.id);
+        cartBtn.textContent = '장바구니'; cartBtn.disabled = false;
+        if (result.error === 'no_token') {
+          showToast('상품 페이지에서 옵션을 선택해주세요.');
+          window.location.href = pdpUrl; return;
+        }
+        if (!result.options?.length) { await submitCart(product.id, null); return; }
+        // 옵션 셀렉트 렌더
+        optPanel.innerHTML = result.options.map(opt => `
+          <select class="cml-option-select" data-option-no="${opt.option_no}">
+            <option value="">-- ${opt.option_name} 선택 --</option>
+            ${(opt.option_value || []).map(v =>
+              `<option value="${v.option_value_no}">${v.option_text}</option>`
+            ).join('')}
+          </select>`).join('') +
+          `<button class="cml-cart-confirm-btn">담기 확인</button>`;
+        optPanel.dataset.variants = JSON.stringify(result.variants);
+        optPanel.classList.add('open');
+        optPanel.querySelector('.cml-cart-confirm-btn')?.addEventListener('click', async () => {
+          const selects = optPanel.querySelectorAll('.cml-option-select');
+          let allSelected = true;
+          selects.forEach(s => { s.classList.remove('cml-error'); if (!s.value) { allSelected = false; s.classList.add('cml-error'); } });
+          if (!allSelected) return;
+          const selected = {};
+          selects.forEach(s => { selected[Number(s.dataset.optionNo)] = Number(s.value); });
+          const variants = JSON.parse(optPanel.dataset.variants || '[]');
+          const variant = variants.find(v =>
+            (v.options || []).length === Object.keys(selected).length &&
+            (v.options || []).every(o => selected[o.option_no] === o.option_value_no)
+          );
+          if (!variant) { showToast('해당 옵션 조합을 찾을 수 없어요.'); return; }
+          await submitCart(product.id, variant.variant_code);
+          optPanel.classList.remove('open');
+        });
+      });
+
+      return card;
+    }
+
+    function renderInlineRecommendation(message, products) {
+      const segments = parseRecommendationSegments(message);
+      segments.forEach(seg => {
+        if (!seg.content) return;
+        addBubble('assistant', seg.content);
+        if (seg.type === 'product') {
+          const product = products[seg.idx];
+          if (product) {
+            const card = createInlineCard(product);
+            messagesEl.appendChild(card);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+          }
+        }
+      });
+    }
+
     // ── 채팅 전송 ──
     async function sendChat(query) {
       if (!query.trim()) return;
@@ -1135,16 +1361,14 @@
         const data = await res.json();
         loadingBubble.remove();
         const msg = data.message || data.error || '죄송해요, 다시 시도해주세요.';
-        addBubble('assistant', msg);
-        if (data.type === 'recommendation') {
-          addProductCards(data.products);
-          chatHistory.push({ role: 'user', content: query });
-          chatHistory.push({ role: 'assistant', content: msg });
-          if (chatHistory.length > 20) chatHistory.splice(0, 2);
-        } else if (data.type === 'clarification') {
-          chatHistory.push({ role: 'user', content: query });
-          chatHistory.push({ role: 'assistant', content: msg });
+        if (data.type === 'recommendation' && data.products?.length) {
+          renderInlineRecommendation(msg, data.products);
+        } else {
+          addBubble('assistant', msg);
         }
+        chatHistory.push({ role: 'user', content: query });
+        chatHistory.push({ role: 'assistant', content: msg });
+        if (chatHistory.length > 20) chatHistory.splice(0, 2);
       } catch {
         loadingBubble.remove();
         addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
