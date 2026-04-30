@@ -616,8 +616,9 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
       || '죄송해요, 다시 시도해주세요.';
     res.json({ answer });
   } catch (err) {
-    console.error('[Ask API Error]', err.response?.data || err.message);
-    res.status(500).json({ answer: '죄송해요, 지금 답변을 생성할 수 없어요. 잠시 후 다시 시도해주세요.' });
+    const detail = err.response?.data || err.message;
+    console.error('[Ask API Error]', JSON.stringify(detail));
+    res.json({ answer: `[DEBUG] ${JSON.stringify(detail).slice(0, 300)}` });
   }
 });
 
