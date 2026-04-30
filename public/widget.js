@@ -209,6 +209,7 @@
 
   // ── 사이드바 Shadow DOM용 CSS ─────────────────────────
   const SIDEBAR_CSS = `
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&display=swap');
     :host { all: initial; }
 
     /* ── 사이드바 탭 (닫혔을 때 트리거) ── */
@@ -462,8 +463,18 @@
 
     /* ── 입력창 ── */
     .cml-chat-input-row {
-      padding: 14px 20px 32px; border-top: 1px solid #F0F0EE;
+      padding: 14px 20px 10px; border-top: 1px solid #F0F0EE;
       display: flex; gap: 10px; align-items: center; background: #fff;
+    }
+    .cml-powered-by {
+      text-align: center; padding: 0 0 14px;
+      font-size: 10px; color: #C8C8C4; letter-spacing: 0.05em;
+      flex-shrink: 0; background: #fff;
+    }
+    .cml-powered-logo {
+      font-family: 'Cormorant Garamond', 'Georgia', serif;
+      font-style: italic; font-weight: 600;
+      font-size: 13px; color: #AAAAA6; letter-spacing: 0.01em;
     }
     .cml-chat-input {
       flex: 1; border: 1.5px solid #E0E0DC; border-radius: 999px;
@@ -711,7 +722,7 @@
       </div>
       ${heroHtml}
       <div class="cml-chat-messages" id="cml-chat-messages">
-        <div class="cml-chat-bubble assistant">안녕하세요! 원하시는 스타일이나 상황을 말씀해주시면 딱 맞는 아이템 찾아드릴게요 :)</div>
+        <div class="cml-chat-bubble assistant">안녕하세요. 원하시는 스타일이나 상황을 말씀해 주시면 잘 맞는 아이템을 찾아드릴게요.</div>
       </div>
       <div class="cml-chat-starter-chips" id="cml-chat-starters">
         ${starterChipsHtml}
@@ -731,6 +742,7 @@
           </svg>
         </button>
       </div>
+      <div class="cml-powered-by">Powered by <span class="cml-powered-logo">Chameleon</span></div>
     `;
     shadow.appendChild(panel);
 
@@ -898,6 +910,21 @@
       document.body.classList.remove('cml-resizing');
     });
 
+    // ── 호버로 열기 (스크롤바 드래그 중에는 차단) ──
+    let _mouseIsDown = false;
+    let _hoverTimer  = null;
+    document.addEventListener('mousedown', () => { _mouseIsDown = true; });
+    document.addEventListener('mouseup',   () => { _mouseIsDown = false; });
+
+    tab.addEventListener('mouseenter', () => {
+      if (_mouseIsDown) return;
+      _hoverTimer = setTimeout(() => {
+        if (!_mouseIsDown) openSidebar();
+      }, 200);
+    });
+    tab.addEventListener('mouseleave', () => {
+      clearTimeout(_hoverTimer);
+    });
     tab.addEventListener('click', openSidebar);
     closeBtn.addEventListener('click', closeSidebar);
     refreshBtn.addEventListener('click', () => {
@@ -905,7 +932,7 @@
       messageLog.splice(0);
       chatHistory.splice(0);
       lastProducts = [];
-      messagesEl.innerHTML = '<div class="cml-chat-bubble assistant">안녕하세요! 원하시는 스타일이나 상황을 말씀해주시면 딱 맞는 아이템 찾아드릴게요 :)</div>';
+      messagesEl.innerHTML = '<div class="cml-chat-bubble assistant">안녕하세요. 원하시는 스타일이나 상황을 말씀해 주시면 잘 맞는 아이템을 찾아드릴게요.</div>';
       panel.querySelector('#cml-chat-starters').style.display = '';
       const _shelf = panel.querySelector('#cml-product-shelf');
       const _shelfList = panel.querySelector('#cml-product-shelf-list');

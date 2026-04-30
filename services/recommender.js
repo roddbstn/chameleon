@@ -140,7 +140,7 @@ JSON만 응답하세요.`;
 // 검색 결과를 유저 상황에 맞게 재해석하고 설명
 // ─────────────────────────────────────────────
 async function generateRecommendation(query, intent, products, brandProfile = null) {
-  const brandTone = brandProfile?.system_prompt || '친근하고 따뜻하게, 진짜 친구처럼 솔직하게 말해주세요.';
+  const brandTone = brandProfile?.system_prompt || '고급 패션 매장의 숙련된 어드바이저처럼, 정중하고 섬세하며 따뜻한 존댓말로 응대하세요. 유머나 가벼운 말투는 금지이며, 신뢰감 있는 전문가 톤을 유지하세요.';
 
   const productList = products.slice(0, 5).map((p, i) => {
     const attrs = p.attributes || {};
@@ -177,8 +177,9 @@ ${productList}
 
 말투 규칙:
 - "안녕하세요", "야", "안녕" 같은 인사로 절대 시작하지 말 것
-- 존댓말 사용 (예: "~해요", "~거예요")
-- "~하시면 됩니다", "~해주세요" 같은 딱딱한 표현 금지
+- 존댓말 사용: "~해요", "~거예요", "~답니다" (부드럽고 자연스럽게)
+- "~하시면 됩니다", "~해주시기 바랍니다" 같은 사무적·딱딱한 표현 금지
+- 유머, 이모지, 가볍거나 친구 같은 말투 금지 — 신뢰감 있는 전문가 톤 유지
 - 문장을 반드시 완성해서 끝낼 것 — 중간에 절대 끊기지 말 것
 - 모든 상품 나열 금지, 진짜 맞는 것만
 
