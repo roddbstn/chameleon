@@ -322,6 +322,16 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
     )];
   }
 
+  // 메시지에 언급된 번호(1., 2., ...) 개수만큼 products 보장
+  // LLM이 PRODUCTS 태그에 일부만 나열하더라도 카드가 빠지지 않도록 보완
+  const numberedInMsg = [...message.matchAll(/^\d+[.)]/gm)].length;
+  if (selectedIndices.length < numberedInMsg) {
+    const usedSet = new Set(selectedIndices);
+    for (let i = 0; i < products.length && selectedIndices.length < numberedInMsg; i++) {
+      if (!usedSet.has(i)) { selectedIndices.push(i); usedSet.add(i); }
+    }
+  }
+
   const recommendedProducts = selectedIndices.length
     ? selectedIndices.map(i => products[i])
     : products.slice(0, 3);

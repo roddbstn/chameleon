@@ -348,7 +348,17 @@
       padding: 12px 16px 6px;
       font-size: 14px; font-weight: 700; color: #555;
       letter-spacing: 0.02em;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; user-select: none;
     }
+    .cml-shelf-toggle {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1px solid #E4E4E0; background: #F0F0EE;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .cml-shelf-toggle svg { transition: transform 0.25s; }
+    .cml-product-shelf.collapsed .cml-shelf-toggle svg { transform: rotate(180deg); }
+    .cml-product-shelf.collapsed #cml-product-shelf-list { display: none; }
     #cml-product-shelf-list {
       display: flex;
       flex-direction: row;
@@ -806,7 +816,14 @@
         ${starterChipsHtml}
       </div>
       <div class="cml-product-shelf" id="cml-product-shelf" style="display:none">
-        <div class="cml-product-shelf-header">추천 상품</div>
+        <div class="cml-product-shelf-header" id="cml-shelf-header">
+          <span>추천 상품</span>
+          <div class="cml-shelf-toggle">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 4l4 4 4-4" stroke="#666" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
         <div id="cml-product-shelf-list"></div>
       </div>
       <div class="cml-follow-chips-tray" id="cml-follow-chips-tray" style="display:none">
@@ -1080,8 +1097,15 @@
           </div>`;
       }).join('');
       shelf.style.display = 'block';
+      shelf.classList.remove('collapsed');
       saveSession(lastProducts);
     }
+
+    // ── Shelf 토글 ──
+    panel.querySelector('#cml-shelf-header').addEventListener('click', () => {
+      const shelf = panel.querySelector('#cml-product-shelf');
+      shelf.classList.toggle('collapsed');
+    });
 
     // ── 토스트 ──
     let toastEl = null;
@@ -1332,11 +1356,12 @@
 
     function renderInlineRecommendation(message, products) {
       const segments = parseRecommendationSegments(message);
+      let productCursor = 0; // sequential: 1번째 product 세그먼트 → products[0], 2번째 → products[1]
       segments.forEach(seg => {
         if (!seg.content) return;
         addBubble('assistant', seg.content);
         if (seg.type === 'product') {
-          const product = products[seg.idx];
+          const product = products[productCursor++];
           if (product) {
             const card = createInlineCard(product);
             messagesEl.appendChild(card);
