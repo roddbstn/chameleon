@@ -48,29 +48,22 @@ function geminiUrl(model) {
   return `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 }
 
-// 429 → 재시도, 503 → 다음 모델로 폴백
-async function callGemini(url, body) {
-  // url에서 모델 추출해 fallback 체인 시작점 결정
-  const urlModel = url.match(/models\/([^:]+)/)?.[1] || GEMINI_MODELS[0];
-  const startIdx = GEMINI_MODELS.indexOf(urlModel);
-  const models   = GEMINI_MODELS.slice(startIdx < 0 ? 0 : startIdx);
-
-  for (const model of models) {
-    const endpoint = geminiUrl(model) + '?key=' + process.env.GOOGLE_AI_API_KEY;
+// generateContent 전용 — 429 재시도, 503 다음 모델 폴백
+async function callGemini(body) {
+  for (const model of GEMINI_MODELS) {
+    const endpoint = `${geminiUrl(model)}?key=${process.env.GOOGLE_AI_API_KEY}`;
     for (let retry = 0; retry < 2; retry++) {
       try {
         const res = await axios.post(endpoint, body);
-        if (model !== urlModel) console.log(`[Gemini] fallback 성공: ${model}`);
+        if (model !== GEMINI_MODELS[0]) console.log(`[Gemini] fallback 성공: ${model}`);
         return res;
       } catch (e) {
         const status = e.response?.status;
         if (status === 429) {
-          const wait = (retry + 1) * 5000;
-          console.log(`[Gemini] ${model} 429, ${wait/1000}초 후 재시도...`);
-          await new Promise(r => setTimeout(r, wait));
+          await new Promise(r => setTimeout(r, (retry + 1) * 5000));
         } else if (status === 503) {
           console.warn(`[Gemini] ${model} 503, 다음 모델 시도...`);
-          break; // 이 모델 포기, 다음 모델로
+          break;
         } else {
           throw e;
         }
@@ -80,17 +73,12 @@ async function callGemini(url, body) {
   throw new Error('All Gemini models unavailable');
 }
 
-// GEMINI_URL은 하위 호환용 (callGemini가 모델 체인 처리)
-const GEMINI_URL = geminiUrl(GEMINI_MODELS[0]);
-
 // ─────────────────────────────────────────────
-// 유저 쿼리 → 벡터
+// 유저 쿼리 → 벡터 (embedding은 fallback 체인 없이 직접 호출)
 // ─────────────────────────────────────────────
 async function embedQuery(text) {
-  const res = await callGemini(
-    `${EMBED_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
-    { model: 'models/gemini-embedding-001', content: { parts: [{ text }] } }
-  );
+  const url = `${EMBED_URL}?key=${process.env.GOOGLE_AI_API_KEY}`;
+  const res = await axios.post(url, { model: 'models/gemini-embedding-001', content: { parts: [{ text }] } });
   return res.data.embedding.values;
 }
 
@@ -143,9 +131,7 @@ async function analyzeIntent(query, conversationHistory = []) {
 
 JSON만 응답하세요.`;
 
-  const res = await callGemini(
-    `${GEMINI_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
-    {
+  const res = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } },
     }
@@ -213,13 +199,10 @@ PRODUCTS:[추천한 상품 번호를 응답에 나온 순서대로, 예: 2,1,3]
 REASONS:{"1":"응답에서 첫 번째로 소개한 상품의 핵심 이유 (형용사 포함, 40자 이내)","2":"두 번째 상품 이유","3":"세 번째 상품 이유(있는 경우만)"}
 (PRODUCTS, REASONS 줄은 UI에서 파싱 후 제거되며 대화에 노출되지 않습니다)`;
 
-  const res = await callGemini(
-    `${GEMINI_URL}?key=${process.env.GOOGLE_AI_API_KEY}`,
-    {
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 1000, thinkingConfig: { thinkingBudget: 0 } },
-    }
-  );
+  const res = await callGemini({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { maxOutputTokens: 1000, thinkingConfig: { thinkingBudget: 0 } },
+  });
 
   return res.data.candidates?.[0]?.content?.parts?.[0]?.text || '죄송해요, 다시 시도해주세요.';
 }
