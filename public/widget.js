@@ -17,7 +17,8 @@
   // ── 상품 상세 페이지인지 확인 ────────────────
   const path = location.pathname;
   const isSeoProduct = /^\/product\/[^/]+\/\d+\//.test(path);
-  const isPDP = path.includes('/product/detail.html') ||
+  const isPDP = window.__CHAMELEON_DEMO ||
+                path.includes('/product/detail.html') ||
                 (path.includes('/product/') && location.search.includes('product_no')) ||
                 isSeoProduct;
 
@@ -41,79 +42,48 @@
     const name  = document.querySelector('.xans-product-detail .product-name, [class*="product-name"]')?.textContent?.trim() || '';
     const price = document.querySelector('[id*="price_text"], .product-price')?.textContent?.trim() || '';
     const code  = document.querySelector('.product-code, [class*="product-code"]')?.textContent?.trim() || '';
-    return { name, price, code };
+    const desc  = document.querySelector('[class*="product-desc"] p, .product-desc p, .xans-product-detail p')?.textContent?.trim() || '';
+    return { name, price, code, desc };
   }
 
-  // ── 3. Intent API 호출 ─────────────────────────
-  async function fetchPersona(signals) {
+  // ── 3. 상품별 AI 콘텐츠 로딩 ────────────────────
+  async function fetchPdpContent(productNo, productName, productDesc) {
     try {
-      const res = await fetch(`${CHAMELEON_SERVER}/api/intent`, {
+      const res = await fetch(`${CHAMELEON_SERVER}/api/pdp-content`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(signals),
+        body: JSON.stringify({ mallId: MALL_ID, productNo, productName, productDesc }),
       });
       const data = await res.json();
-      return data.persona || 'fashion';
-    } catch { return 'fashion'; }
+      return data;
+    } catch { return null; }
   }
 
-  // ── 4. 페르소나별 컨텐츠 ─────────────────────────
-  const PERSONA_DATA = {
-    fashion: {
-      theme: 'cml-theme-fashion', badge: '시즌 키 아이템',
-      title: '이번 시즌 룩을 완성하는 아이템',
-      body: '테리 패브릭의 리치한 텍스처와 밴딩 디테일이 만들어내는 구조적인 실루엣. 일본산 원단 특유의 중량감이 캐주얼과 세미포멀의 경계를 허문다.\n스타일링 만족도 4.7/5.',
-      chips: ['어떤 상의와 매칭해요?', '일본 원단 퀄리티는?', '세탁 후 수축 있나요?'],
-      upsell: '이 상품과 함께 구매한 고객: 블랙 크루 삭스 + 모노 슬립온',
-    },
-    gift: {
-      theme: 'cml-theme-gift', badge: '선물 추천',
-      title: '받는 사람이 더 좋아할 선물',
-      body: '무난한 블랙 컬러에 고급스러운 테리 소재 — 취향을 타지 않아요. 밴딩 핏이라 사이즈 걱정 없이 고를 수 있습니다.\n2일 이내 배송 · 브랜드 쇼핑백 포함 · 60일 교환 보장.',
-      chips: ['사이즈 교환 되나요?', '선물 포장 가능한가요?', '영수증 없이 교환 되나요?'],
-      upsell: '선물세트로 구성하기: 상품 + 솔리드홈므 에코백 (+₩18,000)',
-    },
-    repeat: {
-      theme: 'cml-theme-repeat', badge: '재방문 고객',
-      title: '지난 시즌 쇼츠의 업데이트 버전입니다',
-      body: '기존 핏 그대로 — 소재만 일본산으로 업그레이드되었습니다. 현재 30, 32 사이즈 재고 있음.\n재구매 시 무료배송 + 로열티 포인트 2배 적립.',
-      chips: ['이전 버전과 핏 같나요?', '포인트 적립 언제 되나요?', '같은 시즌 다른 아이템은?'],
-      upsell: '이전 구매 고객 검증 완료 — 동일 핏으로 리오더하기',
-    },
-  };
-
-  // ── 5. 패널 HTML 생성 ──────────────────────────
-  function buildPanelHTML(persona, config) {
-    const p = PERSONA_DATA[persona];
+  // ── 4. 패널 HTML 생성 ──────────────────────────
+  function buildPanelHTML(content, config) {
     const t = config?.theme || {};
+    const accentColor = content?.accentColor || t.accentColor || '#C0392B';
     const cssVars = `
-      --cml-accent: ${t.accentColor || '#C0392B'};
-      --cml-bg: ${t.backgroundColor || '#FEF8F7'};
-      --cml-border: ${t.borderColor || '#F9DDD8'};
+      --cml-accent: ${accentColor};
+      --cml-bg: color-mix(in srgb, ${accentColor} 5%, white);
+      --cml-border: color-mix(in srgb, ${accentColor} 18%, white);
       --cml-radius: ${t.borderRadius || '10px'};
       --cml-font: ${t.fontFamily || "'Noto Sans KR', sans-serif"};
     `;
+    const badge = content?.badge || 'AI 쇼핑 도우미';
+    const title = content?.title || '';
+    const body  = content?.body  || '';
+    const chips = content?.chips || ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'];
     return `
-      <div class="cml-panel ${p.theme}" id="cml-panel" style="${cssVars}">
-        <div class="cml-badge"><span class="cml-dot"></span>${p.badge}</div>
+      <div class="cml-panel" id="cml-panel" style="${cssVars}">
+        <div class="cml-badge"><span class="cml-dot"></span>${badge}</div>
+        ${title || body ? `
         <div class="cml-card">
-          <div class="cml-card-header">
-            <span class="cml-card-icon"></span>
-            <span class="cml-card-title">${p.title}</span>
-          </div>
-          <div class="cml-card-body">${p.body.replace(/\n/g, '<br>')}</div>
-        </div>
+          ${title ? `<div class="cml-card-header"><span class="cml-card-icon"></span><span class="cml-card-title">${title}</span></div>` : ''}
+          ${body  ? `<div class="cml-card-body">${body.replace(/\n/g, '<br>')}</div>` : ''}
+        </div>` : ''}
+        <div class="cml-chips-label">클릭하면 AI가 바로 답해드려요 →</div>
         <div class="cml-chips">
-          ${p.chips.map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`).join('')}
-        </div>
-        <div class="cml-upsell">💡 ${p.upsell}</div>
-        <div class="cml-answer" id="cml-answer" style="display:none;"></div>
-        <div class="cml-ask">
-          <input class="cml-ask-input" id="cml-ask-input" type="text" placeholder="원하는 스타일이나 상황을 말해보세요" autocomplete="off" />
-          <button class="cml-ask-btn" id="cml-ask-btn" aria-label="질문하기">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
+          ${chips.map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`).join('')}
         </div>
       </div>
     `;
@@ -155,7 +125,7 @@
         padding-top: 18px;
         animation: cmlFadeUp 0.35s ease;
         font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
-        font-size: 12px;
+        font-size: 14px;
       }
       @keyframes cmlFadeUp {
         from { opacity: 0; transform: translateY(8px); }
@@ -163,8 +133,8 @@
       }
       .cml-badge {
         display: inline-flex; align-items: center; gap: 6px;
-        padding: 4px 10px; border-radius: 999px;
-        font-size: 10px; letter-spacing: 0.06em; margin-bottom: 12px;
+        padding: 4px 12px; border-radius: 999px;
+        font-size: 12px; letter-spacing: 0.06em; margin-bottom: 12px;
       }
       .cml-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
       .cml-panel .cml-badge  { background: color-mix(in srgb, var(--cml-accent) 10%, white); color: var(--cml-accent); }
@@ -175,23 +145,22 @@
       .cml-card { border: 1px solid; border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
       .cml-card-header { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
       .cml-card-icon { width: 13px; height: 13px; border-radius: 50%; border: 2px solid; flex-shrink: 0; }
-      .cml-card-title { font-size: 12px; font-weight: 500; letter-spacing: 0.04em; }
-      .cml-card-body { font-size: 11px; line-height: 1.85; color: #444; letter-spacing: 0.03em; }
-      .cml-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+      .cml-card-title { font-size: 14px; font-weight: 600; letter-spacing: 0.02em; }
+      .cml-card-body { font-size: 13px; line-height: 1.85; color: #444; letter-spacing: 0.02em; }
+      .cml-chips-label {
+        font-size: 11px; color: #999; letter-spacing: 0.04em; margin-bottom: 8px;
+      }
+      .cml-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 4px; }
       .cml-chip {
-        border: 1px solid #D0D0CC; border-radius: 999px; padding: 5px 12px;
-        font-size: 10px; letter-spacing: 0.03em; color: #555; background: #fff;
+        border: 1px solid #D0D0CC; border-radius: 999px; padding: 7px 14px;
+        font-size: 12px; letter-spacing: 0.02em; color: #444; background: #fff;
         cursor: pointer; transition: all 0.15s; font-family: inherit;
       }
-      .cml-chip:hover { border-color: #888; color: #222; }
-      .cml-upsell {
-        background: #F8F8F6; border-radius: 8px; padding: 10px 14px;
-        font-size: 10px; letter-spacing: 0.04em; color: #555; line-height: 1.6; margin-bottom: 12px;
-      }
+      .cml-chip:hover { border-color: var(--cml-accent); color: var(--cml-accent); background: var(--cml-bg); }
       .cml-answer {
         background: #fff; border: 1px solid #E8E8E4; border-radius: 8px;
-        padding: 12px 14px; font-size: 11px; line-height: 1.85; color: #333;
-        letter-spacing: 0.03em; margin-bottom: 10px; white-space: pre-wrap;
+        padding: 12px 14px; font-size: 13px; line-height: 1.85; color: #333;
+        letter-spacing: 0.02em; margin-bottom: 10px; white-space: pre-wrap;
       }
       .cml-answer.loading { color: #aaa; font-style: italic; }
       .cml-product-cards { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
@@ -204,14 +173,14 @@
       .cml-product-card:hover { border-color: var(--cml-accent); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
       .cml-product-card-info { flex: 1; min-width: 0; }
       .cml-product-card-name {
-        font-size: 11px; font-weight: 500; color: #222; letter-spacing: 0.03em;
+        font-size: 13px; font-weight: 500; color: #222; letter-spacing: 0.02em;
         margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       }
-      .cml-product-card-price { font-size: 11px; color: #555; }
+      .cml-product-card-price { font-size: 13px; color: #555; }
       .cml-product-card-badge {
-        font-size: 10px; color: var(--cml-accent);
+        font-size: 12px; color: var(--cml-accent);
         background: color-mix(in srgb, var(--cml-accent) 10%, white);
-        border-radius: 999px; padding: 2px 8px; flex-shrink: 0; margin-left: 8px;
+        border-radius: 999px; padding: 2px 10px; flex-shrink: 0; margin-left: 8px;
       }
       .cml-ask {
         display: flex; align-items: center; gap: 6px;
@@ -220,8 +189,8 @@
       }
       .cml-ask:focus-within { border-color: var(--cml-accent); }
       .cml-ask-input {
-        flex: 1; border: none; outline: none; font-size: 11px; color: #333;
-        background: transparent; font-family: inherit; letter-spacing: 0.03em;
+        flex: 1; border: none; outline: none; font-size: 13px; color: #333;
+        background: transparent; font-family: inherit; letter-spacing: 0.02em;
       }
       .cml-ask-input::placeholder { color: #aaa; }
       .cml-ask-btn {
@@ -583,134 +552,24 @@
   }
 
   // ── 8. 패널 렌더링 (PDP 인라인) ──────────────────────
-  function renderPanel(persona, config) {
+  function renderPanel(content, config) {
     document.getElementById('cml-panel')?.remove();
     const target = findInsertTarget(config);
     if (!target) { console.warn('[Chameleon] 삽입 위치를 찾지 못했습니다.'); return; }
 
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = buildPanelHTML(persona, config);
+    wrapper.innerHTML = buildPanelHTML(content, config);
     const panel = wrapper.firstElementChild;
 
     const position = config?.insert?.position || 'afterend';
     target.insertAdjacentElement(position, panel);
 
-    const answerEl = panel.querySelector('#cml-answer');
-    const inputEl  = panel.querySelector('#cml-ask-input');
-    const btnEl    = panel.querySelector('#cml-ask-btn');
-    const conversationHistory = [];
-
-    function renderProductCards(products) {
-      let cardsEl = panel.querySelector('.cml-product-cards');
-      if (cardsEl) cardsEl.remove();
-      if (!products || !products.length) return;
-      const pdpBase = '/product/detail.html?product_no=';
-      cardsEl = document.createElement('div');
-      cardsEl.className = 'cml-product-cards';
-      cardsEl.innerHTML = products.map(p => {
-        const pdpUrl = `${pdpBase}${p.id}`;
-        const imgHtml = p.image_url
-          ? `<img class="cml-chat-product-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
-          : `<div class="cml-chat-product-img-placeholder">이미지 없음</div>`;
-        const priceHtml = p.price
-          ? `<div class="cml-chat-product-price">₩${Number(p.price).toLocaleString()}</div>` : '';
-        return `
-          <div class="cml-chat-product-card">
-            ${imgHtml}
-            <div class="cml-chat-product-body">
-              <div class="cml-chat-product-name">${p.name}</div>
-              ${priceHtml}
-              <div class="cml-chat-product-btns">
-                <a class="cml-chat-product-btn primary" href="${pdpUrl}">자세히 보기</a>
-                <a class="cml-chat-product-btn secondary" href="${pdpUrl}">장바구니 담기</a>
-              </div>
-            </div>
-          </div>`;
-      }).join('');
-      answerEl.insertAdjacentElement('afterend', cardsEl);
-    }
-
-    async function askProductQuestion(question) {
-      if (!question.trim()) return;
-      answerEl.textContent = '답변을 생성하고 있어요...';
-      answerEl.className = 'cml-answer loading';
-      answerEl.style.display = 'block';
-      btnEl.disabled = true;
-      panel.querySelector('.cml-product-cards')?.remove();
-      try {
-        const res = await fetch(`${CHAMELEON_SERVER}/api/ask`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mallId: MALL_ID, productNo: collectSignals().productNo, question }),
-        });
-        const data = await res.json();
-        answerEl.textContent = data.answer || '죄송해요, 다시 시도해주세요.';
-        answerEl.className = 'cml-answer';
-      } catch {
-        answerEl.textContent = '네트워크 오류가 발생했어요.';
-        answerEl.className = 'cml-answer';
-      } finally { btnEl.disabled = false; }
-    }
-
-    async function sendRecommend(query) {
-      if (!query.trim()) return;
-      answerEl.textContent = '추천을 찾고 있어요...';
-      answerEl.className = 'cml-answer loading';
-      answerEl.style.display = 'block';
-      btnEl.disabled = true;
-      panel.querySelector('.cml-product-cards')?.remove();
-      try {
-        const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mallId: MALL_ID, query, conversationHistory }),
-        });
-        const data = await res.json();
-        if (data.type === 'clarification') {
-          answerEl.textContent = data.message; answerEl.className = 'cml-answer';
-          conversationHistory.push({ role: 'user', content: query });
-          conversationHistory.push({ role: 'assistant', content: data.message });
-        } else if (data.type === 'recommendation') {
-          answerEl.textContent = data.message; answerEl.className = 'cml-answer';
-          renderProductCards(data.products);
-          conversationHistory.push({ role: 'user', content: query });
-          conversationHistory.push({ role: 'assistant', content: data.message });
-          if (conversationHistory.length > 20) conversationHistory.splice(0, 2);
-        } else if (data.type === 'no_results') {
-          answerEl.textContent = data.message; answerEl.className = 'cml-answer';
-        } else {
-          answerEl.textContent = data.message || data.error || '죄송해요, 다시 시도해주세요.';
-          answerEl.className = 'cml-answer';
-        }
-      } catch {
-        answerEl.textContent = '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
-        answerEl.className = 'cml-answer';
-      } finally { btnEl.disabled = false; }
-    }
-
+    // 칩 클릭 → 사이드바 열기 + 해당 질문 전송
     panel.querySelector('.cml-chips').addEventListener('click', e => {
       const chip = e.target.closest('.cml-chip');
       if (!chip) return;
-      inputEl.value = chip.dataset.q;
-      askProductQuestion(chip.dataset.q);
+      document.dispatchEvent(new CustomEvent('chameleon:ask', { detail: { query: chip.dataset.q } }));
     });
-    btnEl.addEventListener('click', () => { const q = inputEl.value; inputEl.value = ''; sendRecommend(q); });
-    inputEl.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.isComposing) { const q = inputEl.value; inputEl.value = ''; sendRecommend(q); }
-    });
-  }
-
-  // ── 9. 동적 FAQ 칩 교체 ─────────────────────────
-  async function fetchDynamicChips(productNo, persona) {
-    try {
-      const res = await fetch(`${CHAMELEON_SERVER}/api/chips`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mallId: MALL_ID, productNo, persona }),
-      });
-      const data = await res.json();
-      if (!data.chips?.length) return;
-      const chipsEl = document.querySelector('#cml-panel .cml-chips');
-      if (!chipsEl) return;
-      chipsEl.innerHTML = data.chips.map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`).join('');
-    } catch { /* 실패해도 기본 칩 유지 */ }
   }
 
   // ── 10. 사이드바 채팅 (Shadow DOM 격리) ──────────────
@@ -1175,6 +1034,12 @@
     });
     startChips.forEach(chip => { chip.addEventListener('click', () => sendChat(chip.dataset.q)); });
 
+    // PDP 인라인 패널의 질문 칩 클릭 이벤트 수신 → 사이드바 열기 + 질문 전송
+    document.addEventListener('chameleon:ask', e => {
+      openSidebar();
+      setTimeout(() => sendChat(e.detail.query), 160);
+    });
+
     // 패널 생성 후 세션 복원
     restoreSession();
 
@@ -1205,21 +1070,17 @@
   async function init() {
     injectStyles();
 
-    const [config, signals] = await Promise.all([
-      fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`).then(r => r.json()).catch(() => null),
-      Promise.resolve(collectSignals()),
-    ]);
+    const config = await fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)
+      .then(r => r.json()).catch(() => null);
 
     renderFab(config);
 
     if (isPDP) {
-      signals.scrollDepth = Math.round(
-        (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
-      );
-      const persona = await fetchPersona(signals);
-      console.log('[Chameleon] Persona:', persona);
-      renderPanel(persona, config);
-      fetchDynamicChips(signals.productNo, persona);
+      const signals = collectSignals();
+      const productInfo = getProductInfo();
+      const pdpContent = await fetchPdpContent(signals.productNo, productInfo.name, productInfo.desc);
+      console.log('[Chameleon] PDP content:', pdpContent);
+      renderPanel(pdpContent, config);
     }
   }
 

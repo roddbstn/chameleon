@@ -374,10 +374,7 @@ function classifyIntent(signals) {
 
   const all = [referrer, utmSource, utmCampaign, searchQuery].join(' ').toLowerCase();
 
-  // 1순위: 재방문 고객
-  if (isReturn) return 'repeat';
-
-  // 2순위: 선물 구매자 신호
+  // 1순위: 선물 구매자 신호
   const giftKeywords = ['선물', 'gift', '생일', 'birthday', '기념일', 'anniversary', '이벤트'];
   if (giftKeywords.some(k => all.includes(k))) return 'gift';
 
@@ -446,6 +443,98 @@ app.post('/api/chips', async (req, res) => {
   } catch (err) {
     console.error('[Chips Error]', err.message);
     res.json({ chips: [] });
+  }
+});
+
+// ─────────────────────────────────────────────
+// 5-B. PDP CONTENT API — 상품별 AI UX 라이팅 생성
+// POST /api/pdp-content  { mallId, productNo, productName, productDesc }
+// ─────────────────────────────────────────────
+const pdpContentCache = new Map(); // 상품별 캐시 (재시작 전까지 유효)
+
+app.post('/api/pdp-content', async (req, res) => {
+  const { mallId, productNo, productName, productDesc } = req.body;
+
+  // 캐시 확인
+  const cacheKey = `${mallId}__${productNo}__${productName}`;
+  if (pdpContentCache.has(cacheKey)) {
+    return res.json(pdpContentCache.get(cacheKey));
+  }
+
+  // Supabase에서 상품 정보 보강 (없으면 DOM에서 받은 정보 사용)
+  let enrichedName = productName || '';
+  let enrichedDesc = productDesc || '';
+  if (mallId && productNo) {
+    try {
+      const { data: product } = await supabase
+        .from('products')
+        .select('name, attributes, embed_text')
+        .eq('store_id', mallId)
+        .eq('product_id', String(productNo))
+        .single();
+      if (product) {
+        enrichedName = product.name || enrichedName;
+        enrichedDesc = product.embed_text || enrichedDesc;
+      }
+    } catch {}
+  }
+
+  if (!enrichedName && !enrichedDesc) {
+    return res.json({
+      badge: 'AI 쇼핑 도우미',
+      title: '',
+      body: '',
+      chips: ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'],
+      accentColor: '#2C3E50',
+    });
+  }
+
+  const prompt = `당신은 한국 패션 브랜드의 시니어 UX 라이터입니다.
+
+상품명: ${enrichedName}
+상품 설명: ${enrichedDesc.slice(0, 600)}
+
+이 상품을 보고 있는 고객이 구매를 결정하도록 유도하는 콘텐츠를 작성하세요.
+
+규칙:
+- 이 상품만의 고유한 특성(소재·디자인·용도·착용감)에서 출발할 것
+- '추천', '좋아요', '좋은' 같은 모호한 단어 금지
+- 구체적이고 감각적인 언어로 구매 욕구를 직접 자극할 것
+- chips는 이 상품을 보는 고객이 실제로 구매 전에 궁금해할 질문으로 구성
+- accentColor는 상품의 분위기(소재·색상·용도)에 어울리는 HEX 색상
+
+반드시 아래 JSON만 응답 (다른 텍스트 없이):
+{
+  "badge": "15자 이내, 구매 행동을 유도하는 강렬한 배지",
+  "title": "20자 이내, 이 상품의 핵심 가치를 담은 헤드라인",
+  "body": "2~3문장, 소재·핏·착용 상황을 감각적으로 묘사하여 구매 욕구 자극",
+  "chips": ["질문1 (15자 이내)", "질문2 (15자 이내)", "질문3 (15자 이내)"],
+  "accentColor": "#HEX"
+}`;
+
+  try {
+    const geminiRes = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`,
+      {
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } },
+      }
+    );
+    const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+    const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    const content = JSON.parse(cleaned);
+    console.log(`[PdpContent] ${mallId} product:${productNo} →`, content.badge, content.accentColor);
+    pdpContentCache.set(cacheKey, content);
+    res.json(content);
+  } catch (err) {
+    console.error('[PdpContent Error]', err.message);
+    res.json({
+      badge: '이 상품 알아보기',
+      title: enrichedName,
+      body: enrichedDesc.slice(0, 120),
+      chips: ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'],
+      accentColor: '#2C3E50',
+    });
   }
 });
 
