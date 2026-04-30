@@ -292,7 +292,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   const rawMessage = await generateRecommendation(query, intent, products, brandProfile);
   await logApiCost(mallId, 'response_generation', 3000, 600);
 
-  // PRODUCTS + REASONS 파싱 & 메시지에서 제거
+  // REASONS 태그 파싱 & 메시지에서 제거
   let reasons = {};
   let message = rawMessage;
 
@@ -302,39 +302,31 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
     message = message.replace(reasonsMatch[0], '').trim();
   }
 
-  // PRODUCTS:[2,1,3] — LLM이 실제로 선택한 상품 번호(1-based)를 순서대로 명시
-  let selectedIndices = [];
-  const productsMatch = message.match(/\nPRODUCTS:\[([^\]]+)\]/);
-  if (productsMatch) {
-    selectedIndices = productsMatch[1]
-      .split(',')
-      .map(n => parseInt(n.trim()) - 1)
-      .filter(i => i >= 0 && i < products.length);
-    message = message.replace(productsMatch[0], '').trim();
-  }
+  // PRODUCTS 태그는 메시지에서 제거만 (표시 안 함)
+  const productsTagMatch = message.match(/\nPRODUCTS:\[[^\]]*\]/);
+  if (productsTagMatch) message = message.replace(productsTagMatch[0], '').trim();
 
-  // PRODUCTS 파싱 실패 시 fallback: 응답 텍스트의 줄 시작 숫자 파싱
-  if (!selectedIndices.length) {
-    selectedIndices = [...new Set(
+  // ★ 핵심: AI 메시지 텍스트에서 실제로 언급된 상품명을 벡터 풀에서 직접 매칭
+  // → PRODUCTS 태그 의존을 제거하여 텍스트-카드 불일치 방지
+  const msgLower = message.toLowerCase();
+  const mentionedByName = products
+    .filter(p => msgLower.includes(p.name.toLowerCase()))
+    .sort((a, b) =>
+      msgLower.indexOf(a.name.toLowerCase()) - msgLower.indexOf(b.name.toLowerCase())
+    );
+
+  // fallback: 메시지에 이름이 없으면 줄 시작 숫자 파싱 → 그것도 없으면 상위 3개
+  let recommendedProducts;
+  if (mentionedByName.length) {
+    recommendedProducts = mentionedByName;
+  } else {
+    const indexedFallback = [...new Set(
       [...message.matchAll(/^(\d+)\./gm)]
         .map(m => parseInt(m[1]) - 1)
         .filter(i => i >= 0 && i < products.length)
-    )];
+    )].map(i => products[i]);
+    recommendedProducts = indexedFallback.length ? indexedFallback : products.slice(0, 3);
   }
-
-  // 메시지에 언급된 번호(1., 2., ...) 개수만큼 products 보장
-  // LLM이 PRODUCTS 태그에 일부만 나열하더라도 카드가 빠지지 않도록 보완
-  const numberedInMsg = [...message.matchAll(/^\d+[.)]/gm)].length;
-  if (selectedIndices.length < numberedInMsg) {
-    const usedSet = new Set(selectedIndices);
-    for (let i = 0; i < products.length && selectedIndices.length < numberedInMsg; i++) {
-      if (!usedSet.has(i)) { selectedIndices.push(i); usedSet.add(i); }
-    }
-  }
-
-  const recommendedProducts = selectedIndices.length
-    ? selectedIndices.map(i => products[i])
-    : products.slice(0, 3);
 
   // 대화 로그 저장
   Promise.resolve(supabase.from('chat_logs').insert({
