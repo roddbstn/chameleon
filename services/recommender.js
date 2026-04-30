@@ -268,15 +268,17 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
     if (matched.length >= 2) products = matched;
   }
 
-  // 이미지 URL 일괄 조회 (raw_data.list_image)
+  // 이미지 URL + 가격 일괄 조회
   const productIds = products.map(p => p.product_id);
   const { data: imgRows } = await supabase
     .from('products')
-    .select('product_id, raw_data')
+    .select('product_id, price, raw_data')
     .in('product_id', productIds);
   const imgMap = {};
+  const priceMap = {};
   (imgRows || []).forEach(r => {
     imgMap[r.product_id] = r.raw_data?.list_image || r.raw_data?.detail_image || null;
+    if (r.price) priceMap[r.product_id] = r.price;
   });
 
   // 브랜드 프로필 조회
@@ -341,7 +343,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
     products: recommendedProducts.map((p, displayIdx) => ({
       id:         p.product_id,
       name:       p.name,
-      price:      p.price,
+      price:      priceMap[p.product_id] ?? p.price ?? null,
       similarity: p.similarity,
       attributes: p.attributes,
       image_url:  imgMap[p.product_id] || null,
