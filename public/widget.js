@@ -72,7 +72,10 @@
     const badge = content?.badge || 'AI 쇼핑 도우미';
     const title = content?.title || '';
     const body  = content?.body  || '';
-    const chips = content?.chips || ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'];
+    // 칩 풀에서 3개 무작위 선택 — 새로고침마다 다른 조합
+    const allChips = (content?.chips?.length >= 3)
+      ? content.chips.slice().sort(() => Math.random() - 0.5).slice(0, 3)
+      : (content?.chips || ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?']);
     return `
       <div class="cml-panel" id="cml-panel" style="${cssVars}">
         <div class="cml-badge"><span class="cml-dot"></span>${badge}</div>
@@ -83,7 +86,7 @@
         </div>` : ''}
         <div class="cml-chips-label">클릭하면 AI가 바로 답해드려요 →</div>
         <div class="cml-chips">
-          ${chips.map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`).join('')}
+          ${allChips.map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`).join('')}
         </div>
       </div>
     `;
@@ -552,7 +555,7 @@
   }
 
   // ── 8. 패널 렌더링 (PDP 인라인) ──────────────────────
-  function renderPanel(content, config) {
+  function renderPanel(content, config, productCtx) {
     document.getElementById('cml-panel')?.remove();
     const target = findInsertTarget(config);
     if (!target) { console.warn('[Chameleon] 삽입 위치를 찾지 못했습니다.'); return; }
@@ -564,11 +567,18 @@
     const position = config?.insert?.position || 'afterend';
     target.insertAdjacentElement(position, panel);
 
-    // 칩 클릭 → 사이드바 열기 + 해당 질문 전송
+    // 칩 클릭 → 사이드바 열기 + 이 상품에 특정된 Q&A 요청
     panel.querySelector('.cml-chips').addEventListener('click', e => {
       const chip = e.target.closest('.cml-chip');
       if (!chip) return;
-      document.dispatchEvent(new CustomEvent('chameleon:ask', { detail: { query: chip.dataset.q } }));
+      document.dispatchEvent(new CustomEvent('chameleon:ask', {
+        detail: {
+          query: chip.dataset.q,
+          mode: 'product_qa',                      // 일반 추천이 아닌 상품 특정 Q&A
+          productNo:   productCtx?.productNo   || '',
+          productName: productCtx?.productName || '',
+        },
+      }));
     });
   }
 
@@ -1034,10 +1044,44 @@
     });
     startChips.forEach(chip => { chip.addEventListener('click', () => sendChat(chip.dataset.q)); });
 
-    // PDP 인라인 패널의 질문 칩 클릭 이벤트 수신 → 사이드바 열기 + 질문 전송
+    // ── 상품 특정 Q&A (PDP 칩 클릭 전용) ──
+    async function sendProductQA(query, productNo, productName) {
+      if (!query.trim()) return;
+      panel.querySelector('#cml-chat-starters').style.display = 'none';
+      addBubble('user', query);
+      const loadingBubble = addBubble('assistant loading', '이 상품에 대해 알아보는 중...');
+      sendBtn.disabled = true;
+      try {
+        const res = await fetch(`${CHAMELEON_SERVER}/api/ask`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mallId: MALL_ID, productNo, productName, question: query }),
+        });
+        const data = await res.json();
+        loadingBubble.remove();
+        addBubble('assistant', data.answer || '죄송해요, 다시 시도해주세요.');
+        chatHistory.push({ role: 'user', content: query });
+        chatHistory.push({ role: 'assistant', content: data.answer || '' });
+        if (chatHistory.length > 20) chatHistory.splice(0, 2);
+      } catch {
+        loadingBubble.remove();
+        addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
+      } finally {
+        sendBtn.disabled = false;
+        inputEl.focus();
+      }
+    }
+
+    // PDP 인라인 패널의 질문 칩 클릭 이벤트 수신
     document.addEventListener('chameleon:ask', e => {
       openSidebar();
-      setTimeout(() => sendChat(e.detail.query), 160);
+      const { query, mode, productNo, productName } = e.detail;
+      if (mode === 'product_qa') {
+        // 이 상품에 특정된 Q&A → /api/ask
+        setTimeout(() => sendProductQA(query, productNo, productName), 160);
+      } else {
+        // 일반 추천 플로우 → /api/recommend
+        setTimeout(() => sendChat(query), 160);
+      }
     });
 
     // 패널 생성 후 세션 복원
@@ -1080,7 +1124,7 @@
       const productInfo = getProductInfo();
       const pdpContent = await fetchPdpContent(signals.productNo, productInfo.name, productInfo.desc);
       console.log('[Chameleon] PDP content:', pdpContent);
-      renderPanel(pdpContent, config);
+      renderPanel(pdpContent, config, { productNo: signals.productNo, productName: productInfo.name });
     }
   }
 

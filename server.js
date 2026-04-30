@@ -508,22 +508,29 @@ app.post('/api/pdp-content', async (req, res) => {
   "badge": "15자 이내, 구매 행동을 유도하는 강렬한 배지",
   "title": "20자 이내, 이 상품의 핵심 가치를 담은 헤드라인",
   "body": "2~3문장, 소재·핏·착용 상황을 감각적으로 묘사하여 구매 욕구 자극",
-  "chips": ["질문1 (15자 이내)", "질문2 (15자 이내)", "질문3 (15자 이내)"],
+  "chips": ["질문1", "질문2", "질문3", "질문4", "질문5", "질문6", "질문7"],
   "accentColor": "#HEX"
-}`;
+}
+
+chips 작성 규칙:
+- 반드시 7개 작성 (매 페이지 로드마다 3개씩 무작위 노출됨)
+- 각 질문은 15자 이내
+- 이 상품을 구매할지 고민 중인 고객이 실제로 물어볼 질문만
+- 소재·핏·착용감·세탁·코디·재고·사이즈 등 다양한 각도로 구성
+- 답변을 들으면 구매를 결정할 수 있는 질문 우선`;
 
   try {
     const geminiRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`,
       {
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } },
+        generationConfig: { maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } },
       }
     );
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
     const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     const content = JSON.parse(cleaned);
-    console.log(`[PdpContent] ${mallId} product:${productNo} →`, content.badge, content.accentColor);
+    console.log(`[PdpContent] ${mallId} product:${productNo} → ${content.badge} chips:${content.chips?.length}`);
     pdpContentCache.set(cacheKey, content);
     res.json(content);
   } catch (err) {
@@ -542,7 +549,7 @@ app.post('/api/pdp-content', async (req, res) => {
 // 5. ASK API — 상품 관련 자유 질문 → Claude 응답
 // ─────────────────────────────────────────────
 app.post('/api/ask', async (req, res) => {
-  const { mallId, productNo, question } = req.body;
+  const { mallId, productNo, productName: domProductName, question } = req.body;
   if (!question) return res.status(400).json({ error: 'question required' });
 
   if (!process.env.GOOGLE_AI_API_KEY) {
@@ -575,18 +582,24 @@ app.post('/api/ask', async (req, res) => {
       }
     }
 
+    // DOM에서 받은 상품명을 Supabase 데이터가 없을 때 fallback으로 사용
+    if (!productContext && domProductName) {
+      productContext = `상품명: ${domProductName}`;
+    }
+
     const prompt = `당신은 패션을 잘 아는 친한 친구처럼 솔직하고 따뜻하게 말해주는 쇼핑 어시스턴트입니다.
 
-${productContext ? `[상품 정보]\n${productContext}\n` : ''}
+${productContext ? `[현재 보고 있는 상품]\n${productContext}\n` : ''}
 고객 질문: "${question}"
 
-위 상품 정보를 바탕으로 질문에 직접 답해주세요.
+이 상품에 대한 질문에 직접 답해주세요. 절대로 다른 상품 추천이나 "어떤 상황에 입으실 건가요?" 같은 반문을 하지 마세요.
 
 규칙:
+- 반드시 이 상품에 대해서만 답할 것 — 다른 상품 추천 절대 금지
 - 상품 정보에 있는 내용을 근거로 구체적으로 답할 것
 - "~하시면 됩니다", "~해주시면" 같은 딱딱한 말투 금지
 - 다른 페이지나 링크로 유도하지 말 것 — 지금 여기서 바로 답할 것
-- 정보가 없는 경우에도 "페이지에서 확인하세요" 대신, 소재/디자인에서 추론해서 솔직하게 말해줄 것
+- 정보가 없는 경우에도 소재/디자인에서 추론해서 솔직하게 말해줄 것
 - 2~3문장, 간결하게`;
 
     const geminiRes = await axios.post(
