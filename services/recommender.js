@@ -1,6 +1,11 @@
 const axios = require('axios');
 const { createClient } = require('@supabase/supabase-js');
 
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+);
+
 // ─────────────────────────────────────────────
 // 월 비용 한도 체크
 // ─────────────────────────────────────────────
@@ -77,11 +82,6 @@ async function callGemini(url, body) {
 
 // GEMINI_URL은 하위 호환용 (callGemini가 모델 체인 처리)
 const GEMINI_URL = geminiUrl(GEMINI_MODELS[0]);
-
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
 
 // ─────────────────────────────────────────────
 // 유저 쿼리 → 벡터
