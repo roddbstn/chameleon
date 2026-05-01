@@ -99,26 +99,42 @@
     const style = document.createElement('style');
     style.id = 'cml-styles';
     style.textContent = `
-      /* ── body margin 방식 page-shift ── */
-      body {
-        transition: margin-right 0.28s cubic-bezier(0.4,0,0.2,1);
+      /* ── body push (page-shift) ── */
+      html, body {
+        transition: margin-right 0.28s cubic-bezier(0.4,0,0.2,1) !important;
         box-sizing: border-box;
       }
       body.cml-page-shift {
-        margin-right: var(--cml-shift-width, 600px) !important;
+        margin-right: var(--cml-shift-width, 380px) !important;
+        overflow-x: hidden;
       }
-      body.cml-resizing { transition: none !important; }
+      body.cml-resizing, body.cml-resizing * { transition: none !important; }
+
+      /* Cafe24 / 일반 고정 헤더: 오른쪽 경계도 함께 좁혀줌 */
+      body.cml-page-shift :is(
+        header, #header, .header, .xans-layout-header,
+        [class*="gnb"], [class*="GNB"], [class*="Header"],
+        .sticky-header, .fixed-header, [data-sticky]
+      ) {
+        right: var(--cml-shift-width, 380px) !important;
+        transition: right 0.28s cubic-bezier(0.4,0,0.2,1) !important;
+      }
+      /* 오버레이 레이어(장바구니 드로어 등)는 새 뷰포트에 맞게 */
       body.cml-page-shift :is(
         .cart-drawer, .mini-cart, .drawer,
         .dropdown-menu, .site-nav__dropdown,
-        .predictive-search, .header__submenu,
-        [role="dialog"], [role="menu"], [role="listbox"]
+        .predictive-search, [role="dialog"], [role="menu"]
       ) {
-        max-width: calc(100vw - var(--cml-shift-width, 600px)) !important;
+        max-width: calc(100vw - var(--cml-shift-width, 380px)) !important;
         box-sizing: border-box;
       }
       @media (max-width: 767px) {
         body.cml-page-shift { margin-right: 0 !important; }
+        body.cml-page-shift :is(header, #header, .header, .xans-layout-header,
+          [class*="gnb"], [class*="GNB"], [class*="Header"],
+          .sticky-header, .fixed-header, [data-sticky]) {
+          right: 0 !important;
+        }
       }
 
       /* ── PDP 인라인 패널 ── */
@@ -250,7 +266,7 @@
     .cml-chat-panel {
       position: fixed;
       top: 0; right: 0;
-      width: 600px;
+      width: 380px;
       max-width: 100vw;
       height: 100dvh;
       background: #fafafa;
@@ -1039,17 +1055,10 @@
     const cartConfig    = config?.cart || {};
     const CART_ENDPOINT = cartConfig.endpoint || '/exec/front/Order/Cart';
     const CART_FIELDS   = cartConfig.fields   || { product_no: 'product_no', option_code: 'option_code', quantity: 'quantity' };
-    const PANEL_MODE    = config?.panel?.mode || 'push';
-    const SIDEBAR_W     = 600;
-
-    // overlay 모드용 backdrop
-    let backdrop = null;
-    if (PANEL_MODE === 'overlay') {
-      backdrop = document.createElement('div');
-      backdrop.id = 'cml-backdrop';
-      shadow.appendChild(backdrop);
-      backdrop.addEventListener('click', closeSidebar);
-    }
+    // 항상 push 모드 — 사이트를 좁히면서 옆에 붙는 방식
+    const PANEL_MODE = 'push';
+    const SIDEBAR_W  = config?.panel?.width || 380;
+    const backdrop   = null; // overlay 모드 사용 안 함
 
     function openSidebar() {
       panel.classList.add('cml-open');
