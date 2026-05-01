@@ -1341,7 +1341,8 @@
     // ── 추천 메시지 → 텍스트+카드 인라인 렌더링 ──
     function parseRecommendationSegments(message) {
       const segments = [];
-      const parts = message.split(/(?=\n\d+[.)]\s)/);
+      // ① 줄바꿈 + 번호 패턴으로 분할 (기존) + 메시지 첫 줄이 번호인 경우도 포함
+      const parts = message.split(/(?=(?:^|\n)\d+[.)]\s)/);
       parts.forEach(part => {
         const trimmed = part.replace(/^\n/, '').trim();
         if (!trimmed) return;
@@ -1352,6 +1353,10 @@
           segments.push({ type: 'text', content: trimmed });
         }
       });
+
+      console.log('[Chameleon] Parsed segments:', segments.map(s =>
+        ({ type: s.type, idx: s.idx, snippet: s.content?.slice(0, 60) })));
+
       return segments;
     }
 
@@ -1627,7 +1632,11 @@
     function renderInlineRecommendation(message, products) {
       const segments = parseRecommendationSegments(message);
       const productSegments = matchProductsToSegments(segments, products);
+
+      // 인라인 카드가 실제로 렌더링된 상품 수 추적
       let productCounter = 0;
+      let inlineRendered = 0;
+
       segments.forEach((seg, sIdx) => {
         if (!seg.content) return;
         addBubble('assistant', seg.content);
@@ -1635,10 +1644,20 @@
         if (segProds && segProds.length) {
           const container = renderMsgProductCards(segProds, productCounter);
           productCounter += segProds.length;
+          inlineRendered += segProds.length;
           messagesEl.appendChild(container);
           messagesEl.scrollTop = messagesEl.scrollHeight;
         }
       });
+
+      // 인라인 카드가 하나도 렌더링되지 않았다면 모든 상품을 마지막에 표시
+      if (inlineRendered === 0 && products.length > 0) {
+        console.log('[Chameleon] No inline cards matched — rendering all products after text');
+        const container = renderMsgProductCards(products, 0);
+        messagesEl.appendChild(container);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+
       // 하단 shelf도 함께 표시
       addProductCards(products);
     }
