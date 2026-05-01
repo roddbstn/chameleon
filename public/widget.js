@@ -1157,9 +1157,7 @@
               ${reasonHtml}
               <div class="cml-shelf-card-btns">
                 <a class="cml-shelf-card-btn primary" href="${pdpUrl}">자세히 보기</a>
-                <button class="cml-shelf-card-btn secondary cml-add-cart-btn">장바구니 담기</button>
               </div>
-              <div class="cml-option-panel" style="display:none"></div>
             </div>
           </div>`;
       }).join('');
@@ -1168,22 +1166,36 @@
       saveSession(lastProducts);
     }
 
-    // ── Shelf 상단 드래그 리사이즈 ──
-    // 최솟값 = 핸들(8px) + 헤더(~47px) → 항상 보여서 다시 올릴 수 있음
-    // 최댓값 = 460px
+    // ── Shelf 핸들: 클릭 토글 + 드래그 리사이즈 ──
     (function () {
-      const handle   = panel.querySelector('#cml-shelf-resize-handle');
-      const shelf    = panel.querySelector('#cml-product-shelf');
-      const SHELF_MIN = 55;   // 핸들 + "추천 상품" 헤더만 보이는 높이
-      const SHELF_MAX = 460;
+      const handle    = panel.querySelector('#cml-shelf-resize-handle');
+      const shelf     = panel.querySelector('#cml-product-shelf');
+      const SHELF_MIN = 55;   // 헤더만 보이는 최솟값(px)
+      const SHELF_MAX = 460;  // 완전히 열린 최댓값(px)
+      const DRAG_THRESHOLD = 4; // 이 픽셀 이상 움직이면 드래그로 간주
 
-      let dragging = false;
-      let startY   = 0;
-      let startH   = 0;
+      let dragging  = false;
+      let moved     = false;  // mousedown 후 실제로 움직였는지
+      let startY    = 0;
+      let startH    = 0;
+      // 현재 상태: 'open' | 'closed'
+      let shelfState = 'open';
+
+      function setOpen() {
+        shelf.style.height   = '';
+        shelf.style.overflow = '';
+        shelfState = 'open';
+      }
+      function setClosed() {
+        shelf.style.height   = SHELF_MIN + 'px';
+        shelf.style.overflow = 'hidden';
+        shelfState = 'closed';
+      }
 
       handle.addEventListener('mousedown', e => {
         e.preventDefault();
         dragging = true;
+        moved    = false;
         startY   = e.clientY;
         startH   = shelf.offsetHeight;
         document.addEventListener('mousemove', onMove);
@@ -1192,21 +1204,35 @@
 
       function onMove(e) {
         if (!dragging) return;
-        const delta = startY - e.clientY; // 위로 드래그 → 양수 → 높이 증가
-        const newH  = Math.min(SHELF_MAX, Math.max(SHELF_MIN, startH + delta));
+        const delta = Math.abs(e.clientY - startY);
+        if (!moved && delta < DRAG_THRESHOLD) return; // 아직 클릭 판정 유지
+        moved = true;
+        const dy   = startY - e.clientY; // 위로 드래그 → 양수
+        const newH = Math.min(SHELF_MAX, Math.max(SHELF_MIN, startH + dy));
         shelf.style.height   = newH + 'px';
         shelf.style.overflow = 'hidden';
       }
 
       function onUp() {
-        dragging = false;
         document.removeEventListener('mousemove', onMove);
         document.removeEventListener('mouseup', onUp);
-        // 최대 근접 시 height 해제 → 자연스러운 auto 높이
-        if (shelf.offsetHeight >= SHELF_MAX - 10) {
-          shelf.style.height   = '';
-          shelf.style.overflow = '';
+
+        if (!moved) {
+          // 클릭: 상태 토글
+          if (shelfState === 'closed') setOpen();
+          else setClosed();
+        } else {
+          // 드래그 끝: 위치로 상태 결정
+          if (shelf.offsetHeight >= SHELF_MAX - 10) {
+            setOpen();
+          } else if (shelf.offsetHeight <= SHELF_MIN + 5) {
+            setClosed();
+          } else {
+            shelfState = 'open'; // 중간이면 open 취급
+          }
         }
+        dragging = false;
+        moved    = false;
       }
     })();
 
@@ -1273,57 +1299,7 @@
       optPanel.style.display = 'flex';
     }
 
-    // ── 장바구니 버튼 이벤트 위임 ──
-    const shelfList = panel.querySelector('#cml-product-shelf-list');
-    shelfList.addEventListener('click', async (e) => {
-      const cartBtn = e.target.closest('.cml-add-cart-btn');
-      if (cartBtn) {
-        const card = cartBtn.closest('.cml-shelf-card');
-        const productId = card.dataset.productId;
-        const optPanel = card.querySelector('.cml-option-panel');
-        if (optPanel.style.display !== 'none') { optPanel.style.display = 'none'; return; }
-        cartBtn.textContent = '불러오는 중...';
-        cartBtn.disabled = true;
-        const result = await fetchProductOptions(productId);
-        const { options, variants } = result;
-        cartBtn.textContent = '장바구니 담기';
-        cartBtn.disabled = false;
-        if (result.error === 'no_token') {
-          showToast('상품 페이지에서 옵션을 선택해주세요.');
-          window.location.href = `/product/detail.html?product_no=${productId}`;
-          return;
-        }
-        if (!options.length) { await submitCart(productId, null); }
-        else { showOptionPanel(card, options, variants); }
-        return;
-      }
-      const confirmBtn = e.target.closest('.cml-cart-confirm-btn');
-      if (confirmBtn) {
-        const card = confirmBtn.closest('.cml-shelf-card');
-        const productId = card.dataset.productId;
-        const selects = card.querySelectorAll('.cml-option-select');
-        let allSelected = true;
-        selects.forEach(sel => {
-          sel.classList.remove('cml-error');
-          if (!sel.value) { allSelected = false; sel.classList.add('cml-error'); }
-        });
-        if (!allSelected) return;
-        const selected = {};
-        selects.forEach(sel => { selected[Number(sel.dataset.optionNo)] = Number(sel.value); });
-        const variants = JSON.parse(card.dataset.variants || '[]');
-        const variant = variants.find(v =>
-          (v.options || []).length === Object.keys(selected).length &&
-          (v.options || []).every(o => selected[o.option_no] === o.option_value_no)
-        );
-        if (!variant) { showToast('해당 옵션 조합을 찾을 수 없어요.'); return; }
-        confirmBtn.textContent = '담는 중...';
-        confirmBtn.disabled = true;
-        await submitCart(productId, variant.variant_code);
-        confirmBtn.textContent = '담기 확인';
-        confirmBtn.disabled = false;
-        card.querySelector('.cml-option-panel').style.display = 'none';
-      }
-    });
+    // (shelf 장바구니 버튼 제거됨 — 이벤트 위임 불필요)
 
     // ── 추천 메시지 → 텍스트+카드 인라인 렌더링 ──
     function parseRecommendationSegments(message) {
