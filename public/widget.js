@@ -596,6 +596,37 @@
     }
     .cml-chat-starter-chip:hover { border-color: #888; color: #111; }
 
+    /* ── PDP 웰컴 칩 트레이 (상품 상세 진입 시 자동 표시) ── */
+    .cml-pdp-welcome-tray {
+      flex-shrink: 0;
+      overflow: hidden;
+      padding: 6px 0 10px;
+      border-bottom: 1px solid #F0F0EE;
+    }
+    .cml-pdp-welcome-scroll {
+      display: flex;
+      gap: 8px;
+      padding: 4px 16px 2px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      white-space: nowrap;
+    }
+    .cml-pdp-welcome-scroll::-webkit-scrollbar { display: none; }
+    .cml-pdp-welcome-chip {
+      flex: 0 0 auto;
+      border: 1px solid #D0D0CC;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: #444;
+      white-space: nowrap;
+      cursor: pointer;
+      background: #fff;
+      font-family: inherit;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .cml-pdp-welcome-chip:hover { border-color: #888; color: #111; }
+
     /* ── 팔로업 질문 트레이 ── */
     .cml-follow-chips-tray {
       flex-shrink: 0;
@@ -878,6 +909,9 @@
       ${heroHtml}
       <div class="cml-chat-messages" id="cml-chat-messages">
         <div class="cml-chat-bubble assistant">안녕하세요. 원하시는 스타일이나 상황을 말씀해 주시면 잘 맞는 아이템을 찾아드릴게요.</div>
+      </div>
+      <div class="cml-pdp-welcome-tray" id="cml-pdp-welcome-tray" style="display:none">
+        <div class="cml-pdp-welcome-scroll" id="cml-pdp-welcome-scroll"></div>
       </div>
       <div class="cml-chat-starter-chips" id="cml-chat-starters">
         ${starterChipsHtml}
@@ -1682,6 +1716,71 @@
       };
       tab.addEventListener('click', dismissSneak, { once: true });
     }
+
+    // ── PDP 웰컴 UX ──
+    // 세션 없을 때만: 인사말 변경 + 칩 자동스크롤 + 사이드바 자동 오픈
+    function setupPdpWelcome(productName, chips, productNo) {
+      if (sessionStorage.getItem(SESSION_KEY)) return; // 기존 대화 있으면 건드리지 않음
+
+      // 인사말 변경
+      const greetEl = messagesEl.querySelector('.cml-chat-bubble.assistant');
+      if (greetEl) {
+        greetEl.innerHTML = `지금 <strong>${productName}</strong>을(를) 보고 계시네요.<br>이 상품에 대해 무엇이든 물어보세요.`;
+      }
+
+      // 기본 스타터 칩 숨기기
+      panel.querySelector('#cml-chat-starters').style.display = 'none';
+
+      // PDP 웰컴 칩 트레이 구성
+      const tray = panel.querySelector('#cml-pdp-welcome-tray');
+      const scroll = panel.querySelector('#cml-pdp-welcome-scroll');
+      const chipPool = chips?.length ? chips : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '관리 방법이 어떻게 되나요?'];
+      // 칩 2벌 이어붙여 무한 스크롤처럼 보이게
+      const doubled = [...chipPool, ...chipPool];
+      scroll.innerHTML = doubled.map(c =>
+        `<button class="cml-pdp-welcome-chip" data-q="${c}" data-pid="${productNo}" data-pname="${productName}">${c}</button>`
+      ).join('');
+      tray.style.display = 'block';
+
+      // 칩 클릭 → product_qa
+      scroll.addEventListener('click', e => {
+        const chip = e.target.closest('.cml-pdp-welcome-chip');
+        if (!chip) return;
+        document.dispatchEvent(new CustomEvent('chameleon:ask', {
+          detail: {
+            query:       chip.dataset.q,
+            mode:        'product_qa',
+            productNo:   chip.dataset.pid,
+            productName: chip.dataset.pname,
+            fullChips:   chipPool,
+          },
+        }));
+      });
+
+      // rAF 기반 좌측 자동스크롤 (0.4px/frame, 터치/클릭 시 일시정지)
+      let paused = false;
+      let rafId;
+      const speed = 0.4;
+      let half = 0; // 패널이 열린 후 첫 프레임에서 측정
+      const raf = () => {
+        if (!paused) {
+          if (!half) half = scroll.scrollWidth / 2; // lazy: 레이아웃 완료 후 측정
+          scroll.scrollLeft += speed;
+          if (half > 0 && scroll.scrollLeft >= half) scroll.scrollLeft = 0;
+        }
+        rafId = requestAnimationFrame(raf);
+      };
+      rafId = requestAnimationFrame(raf);
+      scroll.addEventListener('mouseenter', () => { paused = true; });
+      scroll.addEventListener('mouseleave', () => { paused = false; });
+      scroll.addEventListener('touchstart',  () => { paused = true; }, { passive: true });
+      scroll.addEventListener('touchend',    () => { paused = false; });
+
+      // SneakPeek 억제 후 사이드바 자동 오픈
+      setTimeout(() => openSidebar(), 600);
+    }
+
+    return { setupPdpWelcome };
   }
 
   // ── 11. 실행 ────────────────────────────────────
@@ -1691,7 +1790,7 @@
     const config = await fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)
       .then(r => r.json()).catch(() => null);
 
-    renderFab(config);
+    const fab = renderFab(config);
 
     if (isPDP) {
       const signals = collectSignals();
@@ -1699,6 +1798,10 @@
       const pdpContent = await fetchPdpContent(signals.productNo, productInfo.name, productInfo.desc);
       console.log('[Chameleon] PDP content:', pdpContent);
       renderPanel(pdpContent, config, { productNo: signals.productNo, productName: productInfo.name });
+      // 세션 없을 때만 PDP 웰컴 UX (인사말+칩 자동스크롤+자동오픈)
+      if (fab?.setupPdpWelcome && productInfo.name) {
+        fab.setupPdpWelcome(productInfo.name, pdpContent?.chips || [], signals.productNo);
+      }
     }
   }
 
