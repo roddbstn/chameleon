@@ -364,15 +364,7 @@
       display: flex; align-items: center; justify-content: space-between;
       cursor: pointer; user-select: none;
     }
-    .cml-shelf-toggle {
-      width: 24px; height: 24px; border-radius: 50%;
-      border: 1px solid #E4E4E0; background: #F0F0EE;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .cml-shelf-toggle svg { transition: transform 0.25s; }
-    .cml-product-shelf.collapsed .cml-shelf-toggle svg { transform: rotate(180deg); }
-    .cml-product-shelf.collapsed #cml-product-shelf-list { display: none; }
-    .cml-product-shelf.collapsed .cml-shelf-resize-handle { display: none; }
+    .cml-product-shelf-header { cursor: default; }
     #cml-product-shelf-list {
       display: flex;
       flex-direction: row;
@@ -898,11 +890,6 @@
         <div class="cml-shelf-resize-handle" id="cml-shelf-resize-handle"></div>
         <div class="cml-product-shelf-header" id="cml-shelf-header">
           <span>추천 상품</span>
-          <div class="cml-shelf-toggle">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M2 4l4 4 4-4" stroke="#666" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
         </div>
         <div id="cml-product-shelf-list"></div>
       </div>
@@ -1177,42 +1164,41 @@
           </div>`;
       }).join('');
       shelf.style.display = 'block';
-      shelf.classList.remove('collapsed');
+      shelf.style.height  = '';
       saveSession(lastProducts);
     }
 
-    // ── Shelf 토글 ──
-    panel.querySelector('#cml-shelf-header').addEventListener('click', () => {
-      const shelf = panel.querySelector('#cml-product-shelf');
-      shelf.classList.toggle('collapsed');
-    });
-
-    // ── Shelf 상단 드래그 리사이즈 ──
+    // ── Shelf 상단 드래그 리사이즈 (0px = 완전 숨김 ~ SHELF_MAX = 완전 열림) ──
     (function () {
-      const handle = panel.querySelector('#cml-shelf-resize-handle');
-      const shelf  = panel.querySelector('#cml-product-shelf');
-      const sidebar = panel.closest ? panel : panel.querySelector('.cml-sidebar') || panel;
-      const SHELF_MIN = 80;   // 최소 높이(px)
-      const SHELF_MAX = 420;  // 최대 높이(px)
+      const handle  = panel.querySelector('#cml-shelf-resize-handle');
+      const shelf   = panel.querySelector('#cml-product-shelf');
+      // 완전히 닫혔을 때 display:none으로 전환할 임계값(px)
+      const SNAP_CLOSE = 24;
+      const SHELF_MAX  = 460;
 
       let dragging = false;
-      let startY = 0;
-      let startH = 0;
+      let startY   = 0;
+      let startH   = 0;
 
       handle.addEventListener('mousedown', e => {
         e.preventDefault();
+        // 숨겨진 상태면 일단 높이 0으로 열어서 드래그 시작
+        if (shelf.style.display === 'none') {
+          shelf.style.display = 'block';
+          shelf.style.height  = '0px';
+        }
         dragging = true;
-        startY = e.clientY;
-        startH = shelf.offsetHeight;
+        startY   = e.clientY;
+        startH   = shelf.offsetHeight;
         document.addEventListener('mousemove', onMove);
         document.addEventListener('mouseup', onUp);
       });
 
       function onMove(e) {
         if (!dragging) return;
-        const delta = startY - e.clientY; // 위로 드래그 → delta 양수 → 높이 증가
-        const newH = Math.min(SHELF_MAX, Math.max(SHELF_MIN, startH + delta));
-        shelf.style.height = newH + 'px';
+        const delta = startY - e.clientY; // 위로 드래그 → 양수 → 높이 증가
+        const newH  = Math.min(SHELF_MAX, Math.max(0, startH + delta));
+        shelf.style.height   = newH + 'px';
         shelf.style.overflow = 'hidden';
       }
 
@@ -1220,6 +1206,14 @@
         dragging = false;
         document.removeEventListener('mousemove', onMove);
         document.removeEventListener('mouseup', onUp);
+        // 임계값 이하면 완전히 숨김
+        if (shelf.offsetHeight <= SNAP_CLOSE) {
+          shelf.style.display = 'none';
+          shelf.style.height  = '';
+        } else if (shelf.offsetHeight >= SHELF_MAX - 10) {
+          // 최대에 가까우면 height 제한 해제 (자연스러운 auto 높이)
+          shelf.style.height = '';
+        }
       }
     })();
 
