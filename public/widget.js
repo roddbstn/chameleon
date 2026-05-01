@@ -896,7 +896,7 @@
         <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="원하는 스타일, 상황을 말해보세요" autocomplete="off" />
         <button class="cml-chat-send" id="cml-chat-send" aria-label="전송">
           <svg width="18" height="18" viewBox="0 0 14 14" fill="none">
-            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 13V1M1 7l6-6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
       </div>
@@ -1166,7 +1166,7 @@
     (function () {
       const handle    = panel.querySelector('#cml-shelf-resize-handle');
       const shelf     = panel.querySelector('#cml-product-shelf');
-      const SHELF_MIN = 55;   // 헤더만 보이는 최솟값(px)
+      const SHELF_MIN = 44;   // 헤더만 보이는 최솟값(px) — 사진 안 보이게
       const SHELF_MAX = 460;  // 완전히 열린 최댓값(px)
       const DRAG_THRESHOLD = 4; // 이 픽셀 이상 움직이면 드래그로 간주
 
