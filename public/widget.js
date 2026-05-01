@@ -1219,13 +1219,16 @@
       let startH    = 0;
       // 현재 상태: 'open' | 'closed'
       let shelfState = 'open';
+      const shelfList = panel.querySelector('#cml-product-shelf-list');
 
       function setOpen() {
+        shelfList.style.display = '';
         shelf.style.height   = '';
         shelf.style.overflow = '';
         shelfState = 'open';
       }
       function setClosed() {
+        shelfList.style.display = 'none';
         shelf.style.height   = SHELF_MIN + 'px';
         shelf.style.overflow = 'hidden';
         shelfState = 'closed';
@@ -1250,6 +1253,8 @@
         const newH = Math.min(SHELF_MAX, Math.max(SHELF_MIN, startH + dy));
         shelf.style.height   = newH + 'px';
         shelf.style.overflow = 'hidden';
+        // 최소 높이 근처면 상품 리스트 숨기기 (이미지 찔끔 보이는 현상 방지)
+        shelfList.style.display = (newH <= SHELF_MIN + 10) ? 'none' : '';
       }
 
       function onUp() {
