@@ -100,13 +100,16 @@
     style.id = 'cml-styles';
     style.textContent = `
       /* ── body push (page-shift) ── */
-      html, body {
-        transition: margin-right 0.28s cubic-bezier(0.4,0,0.2,1) !important;
+      html {
+        overflow-x: hidden;
+      }
+      body {
+        transition: margin-right 0.32s cubic-bezier(0.4,0,0.2,1), width 0.32s cubic-bezier(0.4,0,0.2,1) !important;
         box-sizing: border-box;
       }
       body.cml-page-shift {
+        width: calc(100% - var(--cml-shift-width, 380px)) !important;
         margin-right: var(--cml-shift-width, 380px) !important;
-        overflow-x: hidden;
       }
       body.cml-resizing, body.cml-resizing * { transition: none !important; }
 
@@ -116,8 +119,9 @@
         [class*="gnb"], [class*="GNB"], [class*="Header"],
         .sticky-header, .fixed-header, [data-sticky]
       ) {
+        width: calc(100% - var(--cml-shift-width, 380px)) !important;
         right: var(--cml-shift-width, 380px) !important;
-        transition: right 0.28s cubic-bezier(0.4,0,0.2,1) !important;
+        transition: width 0.32s cubic-bezier(0.4,0,0.2,1), right 0.32s cubic-bezier(0.4,0,0.2,1) !important;
       }
       /* 오버레이 레이어(장바구니 드로어 등)는 새 뷰포트에 맞게 */
       body.cml-page-shift :is(
@@ -273,11 +277,11 @@
       border-left: 1px solid #E8E8E4;
       display: flex;
       flex-direction: column;
-      z-index: 9999;
+      z-index: 999999; /* Z-index up for overlay items */
       font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
       font-size: 13px;
       transform: translateX(100%);
-      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), width 0.32s cubic-bezier(0.4,0,0.2,1);
       box-shadow: -8px 0 40px rgba(0,0,0,0.10);
     }
     .cml-chat-panel.cml-open { transform: translateX(0); }
