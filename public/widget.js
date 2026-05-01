@@ -1168,13 +1168,14 @@
       saveSession(lastProducts);
     }
 
-    // ── Shelf 상단 드래그 리사이즈 (0px = 완전 숨김 ~ SHELF_MAX = 완전 열림) ──
+    // ── Shelf 상단 드래그 리사이즈 ──
+    // 최솟값 = 핸들(8px) + 헤더(~47px) → 항상 보여서 다시 올릴 수 있음
+    // 최댓값 = 460px
     (function () {
-      const handle  = panel.querySelector('#cml-shelf-resize-handle');
-      const shelf   = panel.querySelector('#cml-product-shelf');
-      // 완전히 닫혔을 때 display:none으로 전환할 임계값(px)
-      const SNAP_CLOSE = 24;
-      const SHELF_MAX  = 460;
+      const handle   = panel.querySelector('#cml-shelf-resize-handle');
+      const shelf    = panel.querySelector('#cml-product-shelf');
+      const SHELF_MIN = 55;   // 핸들 + "추천 상품" 헤더만 보이는 높이
+      const SHELF_MAX = 460;
 
       let dragging = false;
       let startY   = 0;
@@ -1182,11 +1183,6 @@
 
       handle.addEventListener('mousedown', e => {
         e.preventDefault();
-        // 숨겨진 상태면 일단 높이 0으로 열어서 드래그 시작
-        if (shelf.style.display === 'none') {
-          shelf.style.display = 'block';
-          shelf.style.height  = '0px';
-        }
         dragging = true;
         startY   = e.clientY;
         startH   = shelf.offsetHeight;
@@ -1197,7 +1193,7 @@
       function onMove(e) {
         if (!dragging) return;
         const delta = startY - e.clientY; // 위로 드래그 → 양수 → 높이 증가
-        const newH  = Math.min(SHELF_MAX, Math.max(0, startH + delta));
+        const newH  = Math.min(SHELF_MAX, Math.max(SHELF_MIN, startH + delta));
         shelf.style.height   = newH + 'px';
         shelf.style.overflow = 'hidden';
       }
@@ -1206,13 +1202,10 @@
         dragging = false;
         document.removeEventListener('mousemove', onMove);
         document.removeEventListener('mouseup', onUp);
-        // 임계값 이하면 완전히 숨김
-        if (shelf.offsetHeight <= SNAP_CLOSE) {
-          shelf.style.display = 'none';
-          shelf.style.height  = '';
-        } else if (shelf.offsetHeight >= SHELF_MAX - 10) {
-          // 최대에 가까우면 height 제한 해제 (자연스러운 auto 높이)
-          shelf.style.height = '';
+        // 최대 근접 시 height 해제 → 자연스러운 auto 높이
+        if (shelf.offsetHeight >= SHELF_MAX - 10) {
+          shelf.style.height   = '';
+          shelf.style.overflow = '';
         }
       }
     })();
