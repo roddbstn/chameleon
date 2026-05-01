@@ -1355,34 +1355,68 @@
       return segments;
     }
 
-    // 각 product 세그먼트에 어떤 상품이 속하는지 이름 매칭으로 결정
+    // 각 product 세그먼트에 어떤 상품이 속하는지 결정
+    // 전략: ① 세그먼트 번호(1., 2., 3.) → products 배열 순서 매핑
+    //       ② 이름 기반 매칭 보조
+    //       ③ 남은 상품은 빈 product 세그먼트에 순서대로 배분
     function matchProductsToSegments(segments, products) {
       const productSegments = segments.map(() => []);
-      const usedIndices = new Set();
+      const usedProductIndices = new Set();
+      const assignedSegIndices = new Set();
+
+      // ① 세그먼트 idx 기반 매핑 (가장 우선)
+      // AI 응답의 "1.", "2.", "3."은 products 배열의 순서와 대응
       segments.forEach((seg, sIdx) => {
         if (seg.type !== 'product') return;
-        // 마크다운 제거 후 비교
-        const cleanText = seg.content.replace(/\*\*/g, '').replace(/\*/g, '').replace(/\s+/g, ' ');
+        const productIdx = seg.idx; // 0-based (parseRecommendationSegments에서 -1 처리됨)
+        if (productIdx >= 0 && productIdx < products.length && !usedProductIndices.has(productIdx)) {
+          productSegments[sIdx].push(products[productIdx]);
+          usedProductIndices.add(productIdx);
+          assignedSegIndices.add(sIdx);
+        }
+      });
+
+      // ② 이름 매칭 보조 (idx 매핑에서 빠진 세그먼트)
+      segments.forEach((seg, sIdx) => {
+        if (seg.type !== 'product' || assignedSegIndices.has(sIdx)) return;
+        const cleanText = seg.content.replace(/\*\*/g, '').replace(/\*/g, '').replace(/\s+/g, ' ').toLowerCase();
+        let bestMatch = -1;
+        let bestScore = 0;
         products.forEach((p, pIdx) => {
-          if (usedIndices.has(pIdx)) return;
-          const words = p.name.split(/[\s()[\]/·]+/).filter(w => w.length > 1);
-          const matchCount = words.filter(w => cleanText.includes(w)).length;
-          if (words.length > 0 && matchCount / words.length >= 0.6) {
-            productSegments[sIdx].push(p);
-            usedIndices.add(pIdx);
+          if (usedProductIndices.has(pIdx)) return;
+          const words = p.name.split(/[\s()[\]/·,]+/).filter(w => w.length > 1);
+          if (!words.length) return;
+          const matchCount = words.filter(w => cleanText.includes(w.toLowerCase())).length;
+          const score = matchCount / words.length;
+          if (score > bestScore && score >= 0.4) {
+            bestScore = score;
+            bestMatch = pIdx;
           }
         });
+        if (bestMatch >= 0) {
+          productSegments[sIdx].push(products[bestMatch]);
+          usedProductIndices.add(bestMatch);
+          assignedSegIndices.add(sIdx);
+        }
       });
-      // 이름 매칭에서 빠진 상품은 product 세그먼트에 순서대로 배분
-      const productSegIdxs = segments
-        .map((s, i) => (s.type === 'product' ? i : -1))
+
+      // ③ 남은 상품 → 아직 비어있는 product 세그먼트에 순서대로 배분
+      const emptyProductSegIdxs = segments
+        .map((s, i) => (s.type === 'product' && !assignedSegIndices.has(i) ? i : -1))
         .filter(i => i !== -1);
       let cur = 0;
       products.forEach((p, pIdx) => {
-        if (!usedIndices.has(pIdx) && cur < productSegIdxs.length) {
-          productSegments[productSegIdxs[cur++]].push(p);
+        if (!usedProductIndices.has(pIdx) && cur < emptyProductSegIdxs.length) {
+          productSegments[emptyProductSegIdxs[cur++]].push(p);
         }
       });
+
+      console.log('[Chameleon] Product-segment matching:', {
+        segments: segments.map(s => ({ type: s.type, idx: s.idx, snippet: s.content?.slice(0, 50) })),
+        products: products.map(p => p.name),
+        result: productSegments.map((ps, i) => ({ seg: i, products: ps.map(p => p.name) })),
+      });
+
       return productSegments;
     }
 
