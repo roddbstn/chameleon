@@ -303,8 +303,10 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   }
 
   // PRODUCTS 태그는 메시지에서 제거만 (표시 안 함)
-  const productsTagMatch = message.match(/\nPRODUCTS:\[[^\]]*\]/);
-  if (productsTagMatch) message = message.replace(productsTagMatch[0], '').trim();
+  // AI가 PRODUCTS:[1,2,3] 또는 PRODUCTS:1,2 등 다양한 형태로 출력
+  message = message.replace(/\n?PRODUCTS:\[?[^\]\n]*\]?/g, '').trim();
+  // Goodbye, REASONS 뒤 남은 잔여물도 제거
+  message = message.replace(/\n?Goodbye\.?$/i, '').trim();
 
   // ★ 핵심: AI 메시지 텍스트에서 실제로 언급된 상품명을 벡터 풀에서 직접 매칭
   // → PRODUCTS 태그 의존을 제거하여 텍스트-카드 불일치 방지
