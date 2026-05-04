@@ -100,44 +100,62 @@
     style.id = 'cml-styles';
     style.textContent = `
       /* ── body push (page-shift) ── */
-      html {
-        overflow-x: hidden;
+      html.cml-page-shift-active {
+        overflow-x: hidden !important;
       }
       body {
-        transition: margin-right 0.32s cubic-bezier(0.4,0,0.2,1), width 0.32s cubic-bezier(0.4,0,0.2,1) !important;
+        transition: width 0.32s cubic-bezier(0.4,0,0.2,1) !important;
         box-sizing: border-box;
       }
       body.cml-page-shift {
-        width: calc(100% - var(--cml-shift-width, 380px)) !important;
-        margin-right: var(--cml-shift-width, 380px) !important;
+        /* margin-right 없이 width만 줄임 → 브라우저 창 좁힌 것과 동일하게 리플로우 */
+        width: calc(100vw - var(--cml-shift-width, 380px)) !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+        margin-right: 0 !important;
       }
       body.cml-resizing, body.cml-resizing * { transition: none !important; }
 
-      /* Cafe24 / 일반 고정 헤더: 오른쪽 경계도 함께 좁혀줌 */
+      /* 고정 헤더: 뷰포트 기준이므로 명시적 너비 지정 */
       body.cml-page-shift :is(
         header, #header, .header, .xans-layout-header,
-        [class*="gnb"], [class*="GNB"], [class*="Header"],
+        .fixed_header, [class*="gnb"], [class*="GNB"], [class*="Header"],
         .sticky-header, .fixed-header, [data-sticky]
       ) {
-        width: calc(100% - var(--cml-shift-width, 380px)) !important;
-        right: var(--cml-shift-width, 380px) !important;
-        transition: width 0.32s cubic-bezier(0.4,0,0.2,1), right 0.32s cubic-bezier(0.4,0,0.2,1) !important;
+        width: calc(100vw - var(--cml-shift-width, 380px)) !important;
+        max-width: calc(100vw - var(--cml-shift-width, 380px)) !important;
+        transition: width 0.32s cubic-bezier(0.4,0,0.2,1) !important;
       }
-      /* 오버레이 레이어(장바구니 드로어 등)는 새 뷰포트에 맞게 */
+
+      /* Cafe24 내부 컨테이너: min-width 제거해 실제로 좁혀지게 */
+      body.cml-page-shift #wrap,
+      body.cml-page-shift #container,
+      body.cml-page-shift #contents,
+      body.cml-page-shift .inner,
+      body.cml-page-shift .xans-layout-contentwrap {
+        min-width: 0 !important;
+        max-width: 100% !important;
+      }
+
+      /* 오버레이 레이어 */
       body.cml-page-shift :is(
         .cart-drawer, .mini-cart, .drawer,
-        .dropdown-menu, .site-nav__dropdown,
-        .predictive-search, [role="dialog"], [role="menu"]
+        .dropdown-menu, [role="dialog"], [role="menu"]
       ) {
         max-width: calc(100vw - var(--cml-shift-width, 380px)) !important;
         box-sizing: border-box;
       }
+
       @media (max-width: 767px) {
-        body.cml-page-shift { margin-right: 0 !important; }
+        body.cml-page-shift {
+          width: 100vw !important;
+          min-width: 0 !important;
+        }
         body.cml-page-shift :is(header, #header, .header, .xans-layout-header,
-          [class*="gnb"], [class*="GNB"], [class*="Header"],
+          .fixed_header, [class*="gnb"], [class*="GNB"], [class*="Header"],
           .sticky-header, .fixed-header, [data-sticky]) {
-          right: 0 !important;
+          width: 100vw !important;
+          max-width: 100vw !important;
         }
       }
 
@@ -1083,6 +1101,7 @@
       if (PANEL_MODE === 'push' && !isMobile) {
         document.body.style.setProperty('--cml-shift-width', `${SIDEBAR_W}px`);
         document.body.classList.add('cml-page-shift');
+        document.documentElement.classList.add('cml-page-shift-active');
       } else if (backdrop) {
         backdrop.style.display = 'block';
       }
@@ -1093,6 +1112,7 @@
       tab.classList.remove('cml-hidden');
       if (PANEL_MODE === 'push') {
         document.body.classList.remove('cml-page-shift');
+        document.documentElement.classList.remove('cml-page-shift-active');
       } else {
         if (backdrop) backdrop.style.display = 'none';
       }

@@ -1,0 +1,247 @@
+/* ============================================================
+   ownist.kr 스타일 커스텀 CSS
+   적용 위치: /layout/basic/css/custom.css 맨 아래에 붙여넣기
+   ============================================================ */
+
+/* ── 디자인 토큰 ── */
+:root {
+  --ow-brown:      #5E4637;
+  --ow-latte:      #F0E4D3;
+  --ow-text:       #111111;
+  --ow-sub:        #888888;
+  --ow-border:     rgba(0, 0, 0, 0.08);
+  --ow-bg:         #ffffff;
+  --ow-bg-card:    #F7F5F3;
+  --ow-transition: 0.35s ease;
+}
+
+/* ============================================================
+   1. 전체 폰트
+   ============================================================ */
+body {
+  font-family: 'Apple SD Gothic Neo', -apple-system, 'Noto Sans KR',
+               'Malgun Gothic', sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+/* ============================================================
+   2. 헤더 — 라떼 배경 + 검정 텍스트
+   ============================================================ */
+#header,
+#header.header_bg,
+.fixed_header #header {
+  background: var(--ow-latte) !important;
+  background-color: var(--ow-latte) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+}
+
+/* 모든 헤더 텍스트 검정 */
+#header *,
+#header.header_bg * {
+  color: #111 !important;
+}
+
+/* SVG 아이콘 검정 */
+#header svg,
+#header.header_bg svg {
+  fill: #111 !important;
+  stroke: #111 !important;
+}
+
+/* 장바구니 카운트 뱃지 */
+#header .count {
+  background-color: #111 !important;
+}
+#header .count span {
+  color: #fff !important;
+}
+
+/* ============================================================
+   3. 상품 목록 그리드
+   ============================================================ */
+ul.prdList {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 36px 16px !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 4열 */
+ul.prdList > li {
+  width: calc((100% - 48px) / 4) !important;
+  min-width: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+/* 태블릿 3열 */
+@media (max-width: 1024px) {
+  ul.prdList { gap: 28px 12px !important; }
+  ul.prdList > li { width: calc((100% - 24px) / 3) !important; }
+}
+
+/* 모바일 2열 */
+@media (max-width: 640px) {
+  ul.prdList { gap: 20px 10px !important; }
+  ul.prdList > li { width: calc((100% - 10px) / 2) !important; }
+}
+
+/* ============================================================
+   4. 카드 — 썸네일
+   ============================================================ */
+ul.prdList li .thumbnail {
+  position: relative !important;
+  overflow: hidden !important;
+  background: var(--ow-bg-card) !important;
+  aspect-ratio: 3 / 4 !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* prdImg: 절대 위치로 aspect-ratio 컨테이너를 꽉 채움 */
+ul.prdList li .thumbnail .prdImg {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+ul.prdList li .thumbnail .prdImg a {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+ul.prdList li .thumbnail .prdImg img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  transition: transform var(--ow-transition) !important;
+}
+
+/* 호버 확대 */
+ul.prdList li:hover .thumbnail .prdImg img {
+  transform: scale(1.045) !important;
+}
+
+/* wish 스팬이 이미지 위에 겹치지 않도록 */
+ul.prdList li .thumbnail .prdImg span.wish {
+  position: absolute !important;
+  bottom: 8px !important;
+  right: 8px !important;
+}
+
+/* ── 아이콘 박스 ── */
+ul.prdList li .icon__box {
+  position: absolute !important;
+  bottom: 12px !important;
+  right: 10px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  opacity: 0 !important;
+  transition: opacity 0.22s ease !important;
+  z-index: 2 !important;
+}
+
+ul.prdList li:hover .icon__box {
+  opacity: 1 !important;
+}
+
+ul.prdList li .icon__box .wish,
+ul.prdList li .icon__box .cart {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  background: rgba(255,255,255,0.90) !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* ============================================================
+   5. 카드 — 상품 정보
+   ============================================================ */
+ul.prdList li .description {
+  padding: 10px 2px 0 !important;
+  text-align: left !important;
+}
+
+/* 상품명 */
+ul.prdList li .description a.name {
+  display: block !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: var(--ow-text) !important;
+  text-decoration: none !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.5 !important;
+  /* 2줄 말줄임 */
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  margin-bottom: 4px !important;
+}
+
+ul.prdList li .description a.name:hover {
+  color: var(--ow-brown) !important;
+}
+
+/* 스펙 리스트 */
+ul.prdList li ul.spec {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 판매가 */
+ul.prdList li ul.spec li.sale_price span,
+ul.prdList li ul.spec li.product_price span {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--ow-text) !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* 원가 (취소선) */
+ul.prdList li ul.spec li.consumer_price span {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  color: var(--ow-sub) !important;
+  text-decoration: line-through !important;
+}
+
+/* 불필요 요소 숨기기 */
+ul.prdList li .description .option { display: none !important; }
+ul.prdList li .likeButton         { display: none !important; }
+
+/* ============================================================
+   6. 상품 상세 페이지 — 구매 버튼
+   ============================================================ */
+#btnBasket, #btnOrder {
+  background: var(--ow-brown) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 3px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: opacity 0.2s !important;
+}
+#btnBasket:hover, #btnOrder:hover { opacity: 0.80 !important; }
+
+/* ============================================================
+   7. 푸터
+   ============================================================ */
+#footer {
+  border-top: 1px solid var(--ow-border) !important;
+  background: #fff !important;
+}
+#footer, #footer a {
+  color: var(--ow-sub) !important;
+  font-size: 12px !important;
+}
