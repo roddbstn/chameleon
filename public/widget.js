@@ -397,23 +397,25 @@
     #cml-product-shelf-list::-webkit-scrollbar { height: 3px; }
     #cml-product-shelf-list::-webkit-scrollbar-track { background: transparent; }
     #cml-product-shelf-list::-webkit-scrollbar-thumb { background: #DDD; border-radius: 2px; }
+    /* 가로형 shelf 카드 — 이미지 왼쪽, 정보 오른쪽 */
     .cml-shelf-card {
-      flex: 0 0 172px;
+      flex: 0 0 280px;
+      height: 88px;
       background: #fff;
-      border: 1px solid #EBEBEB;
-      border-radius: 10px;
+      border: 1px solid #E8E8E4;
+      border-radius: 12px;
       overflow: hidden;
       scroll-snap-align: start;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       transition: box-shadow 0.15s;
     }
-    .cml-shelf-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
+    .cml-shelf-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.08); }
     .cml-shelf-card-img-wrap {
       position: relative;
-      width: 172px;
-      height: 229px;
+      width: 72px;
       flex-shrink: 0;
+      background: #F0F0EE;
     }
     .cml-shelf-card-img {
       width: 100%; height: 100%; object-fit: cover; display: block;
@@ -421,34 +423,36 @@
     .cml-shelf-card-img-placeholder {
       width: 100%; height: 100%; background: #F0F0EE;
       display: flex; align-items: center; justify-content: center;
-      color: #CCC; font-size: 11px;
+      color: #CCC; font-size: 10px;
     }
     .cml-shelf-card-num {
-      position: absolute; top: 8px; left: 8px;
-      width: 22px; height: 22px;
-      background: rgba(0,0,0,0.60); color: #fff;
-      font-size: 11px; font-weight: 700; border-radius: 50%;
+      position: absolute; top: 5px; left: 5px;
+      width: 18px; height: 18px;
+      background: rgba(0,0,0,0.55); color: #fff;
+      font-size: 10px; font-weight: 700; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
     .cml-shelf-card-info {
-      flex: 1; padding: 10px 10px 8px;
-      display: flex; flex-direction: column; gap: 3px;
+      flex: 1; padding: 9px 10px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-width: 0;
     }
     .cml-shelf-card-name {
-      font-size: 13px; font-weight: 600; color: #111;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; line-height: 1.4;
+      font-size: 12px; font-weight: 700; color: #111;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      line-height: 1.3;
     }
-    .cml-shelf-card-price { font-size: 13px; color: #444; }
+    .cml-shelf-card-price { font-size: 12px; color: #444; font-weight: 600; }
     .cml-shelf-card-reason {
-      font-size: 12px; color: #888; font-weight: 400;
-      line-height: 1.4; letter-spacing: 0.01em;
+      font-size: 11px; color: #888;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      line-height: 1.3;
     }
-    .cml-shelf-card-btns { display: flex; flex-direction: column; gap: 5px; margin-top: 8px; }
+    .cml-shelf-card-btns { display: flex; gap: 5px; margin-top: 4px; }
     .cml-shelf-card-btn {
-      padding: 9px 8px; border-radius: 7px; font-size: 13px; font-weight: 600;
+      padding: 5px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;
       cursor: pointer; border: none; font-family: inherit; text-decoration: none;
-      display: block; transition: opacity 0.15s; text-align: center; white-space: nowrap;
+      display: inline-block; transition: opacity 0.15s; text-align: center; white-space: nowrap;
     }
     .cml-shelf-card-btn:hover { opacity: 0.82; }
     .cml-shelf-card-btn.primary { background: #111; color: #fff; }
