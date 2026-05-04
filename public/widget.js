@@ -578,7 +578,10 @@
     /* ── 입력창 ── */
     .cml-chat-input-row {
       padding: 14px 20px 10px; border-top: 1px solid #F0F0EE;
-      display: flex; gap: 10px; align-items: center; background: #fff;
+      background: #fff;
+    }
+    .cml-chat-input-wrap {
+      position: relative; display: flex; align-items: center;
     }
     .cml-powered-by {
       text-align: center; padding: 10px 0 20px;
@@ -591,18 +594,21 @@
       font-size: 13px; color: #AAAAA6; letter-spacing: 0.01em;
     }
     .cml-chat-input {
-      flex: 1; border: 1.5px solid #E0E0DC; border-radius: 999px;
-      padding: 13px 22px; font-size: 16px; outline: none; font-family: inherit;
+      width: 100%; border: 1.5px solid #E8E8E4; border-radius: 16px;
+      padding: 13px 56px 13px 18px; font-size: 15px; outline: none; font-family: inherit;
       color: #333; background: #FAFAF9; transition: border-color 0.15s;
+      box-sizing: border-box;
     }
-    .cml-chat-input:focus { border-color: #111; }
-    .cml-chat-input::placeholder { color: #bbb; }
+    .cml-chat-input:focus { border-color: #ccc; }
+    .cml-chat-input::placeholder { color: #BBB; }
     .cml-chat-send {
-      width: 42px; height: 42px; border-radius: 50%; background: #111; color: #fff;
+      position: absolute; right: 6px;
+      width: 36px; height: 36px; border-radius: 10px;
+      background: #EEECEA; color: #555;
       border: none; cursor: pointer; display: flex; align-items: center;
-      justify-content: center; flex-shrink: 0; transition: opacity 0.15s;
+      justify-content: center; flex-shrink: 0; transition: background 0.15s, opacity 0.15s;
     }
-    .cml-chat-send:hover { opacity: 0.8; }
+    .cml-chat-send:hover { background: #E0DED9; }
     .cml-chat-send:disabled { opacity: 0.35; cursor: default; }
 
     /* ── 스타터 칩 ── */
@@ -947,12 +953,14 @@
         <div class="cml-follow-chips-scroll" id="cml-follow-chips-scroll"></div>
       </div>
       <div class="cml-chat-input-row">
-        <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="원하는 스타일, 상황을 말해보세요" autocomplete="off" />
-        <button class="cml-chat-send" id="cml-chat-send" aria-label="전송">
-          <svg width="18" height="18" viewBox="0 0 14 14" fill="none">
-            <path d="M7 13V1M1 7l6-6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
+        <div class="cml-chat-input-wrap">
+          <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="무엇을 도와드릴까요?" autocomplete="off" />
+          <button class="cml-chat-send" id="cml-chat-send" aria-label="전송">
+            <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+              <path d="M7 13V1M1 7l6-6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
       <div class="cml-powered-by">Powered by <span class="cml-powered-logo">Chameleon</span></div>
     `;
@@ -1805,21 +1813,35 @@
   async function init() {
     injectStyles();
 
-    const config = await fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)
+    // config + pdpContent 요청을 동시에 시작 (직렬 await 제거)
+    const configPromise = fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)
       .then(r => r.json()).catch(() => null);
 
-    const fab = renderFab(config);
+    // FAB은 config 기다리지 않고 즉시 기본값으로 렌더
+    const fab = renderFab(null);
 
     if (isPDP) {
-      const signals = collectSignals();
+      const signals     = collectSignals();
       const productInfo = getProductInfo();
-      const pdpContent = await fetchPdpContent(signals.productNo, productInfo.name, productInfo.desc);
-      console.log('[Chameleon] PDP content:', pdpContent);
-      renderPanel(pdpContent, config, { productNo: signals.productNo, productName: productInfo.name });
-      // 세션 없을 때만 PDP 웰컴 UX (인사말+칩 자동스크롤+자동오픈)
-      if (fab?.setupPdpWelcome && productInfo.name) {
-        fab.setupPdpWelcome(productInfo.name, pdpContent?.chips || [], signals.productNo);
-      }
+
+      // PHASE 1 — 즉시 렌더 (<50ms): AI 콘텐츠 없이 기본 칩으로 패널 표시
+      renderPanel(null, null, { productNo: signals.productNo, productName: productInfo.name });
+
+      // PHASE 2 — config + AI 콘텐츠 병렬 대기 후 패널 교체
+      const pdpPromise = fetchPdpContent(signals.productNo, productInfo.name, productInfo.desc);
+      Promise.all([configPromise, pdpPromise]).then(([config, pdpContent]) => {
+        if (!config && !pdpContent) return; // 둘 다 없으면 기본 패널 유지
+        const panel = document.getElementById('cml-panel');
+        if (panel) { panel.style.transition = 'opacity 0.2s'; panel.style.opacity = '0'; }
+        requestAnimationFrame(() => {
+          renderPanel(pdpContent, config, { productNo: signals.productNo, productName: productInfo.name });
+          const updated = document.getElementById('cml-panel');
+          if (updated) { updated.style.transition = 'opacity 0.2s'; updated.style.opacity = '1'; }
+          if (fab?.setupPdpWelcome && productInfo.name) {
+            fab.setupPdpWelcome(productInfo.name, pdpContent?.chips || [], signals.productNo);
+          }
+        });
+      });
     }
   }
 
