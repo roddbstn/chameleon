@@ -6,16 +6,18 @@
   <title>Chameleon Widget — Demo</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    html, body {
       font-family: 'Apple SD Gothic Neo', -apple-system, 'Noto Sans KR', sans-serif;
       background: #fff;
       color: #111;
+      overflow-x: hidden; /* 가로 삐져나감 방지 */
+      width: 100%;
     }
 
     /* ── 상점 헤더 ── */
     .store-header {
       border-bottom: 1px solid #EBEBEB;
-      padding: 0 40px;
+      padding: 0 clamp(16px, 4vw, 40px);
       height: 60px;
       display: flex;
       align-items: center;
@@ -24,6 +26,7 @@
       top: 0;
       background: #fff;
       z-index: 100;
+      min-width: 0;
     }
     .store-logo { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; }
     .store-nav { display: flex; gap: 28px; }
@@ -33,7 +36,7 @@
 
     /* ── 브레드크럼 ── */
     .breadcrumb {
-      padding: 14px 40px;
+      padding: 14px clamp(16px, 4vw, 40px);
       font-size: 12px;
       color: #AAA;
       border-bottom: 1px solid #F5F5F3;
@@ -45,11 +48,13 @@
     .product-page {
       max-width: 1080px;
       margin: 0 auto;
-      padding: 40px;
+      padding: clamp(20px, 4vw, 40px);
       display: grid;
-      grid-template-columns: 1fr 440px;
-      gap: 60px;
+      grid-template-columns: 1fr min(440px, 44%);
+      gap: clamp(24px, 4vw, 60px);
+      min-width: 0;
     }
+    .product-gallery, .product-info { min-width: 0; }
 
     /* 이미지 갤러리 */
     .product-gallery { position: sticky; top: 80px; }
@@ -161,13 +166,17 @@
     .demo-banner strong { color: #A8FF78; }
     .demo-banner a { color: rgba(255,255,255,0.7); font-size: 12px; margin-left: 16px; text-decoration: underline; cursor: pointer; }
 
-    /* 모바일 */
-    @media (max-width: 768px) {
+    /* 태블릿 */
+    @media (max-width: 900px) {
       .store-nav { display: none; }
-      .product-page { grid-template-columns: 1fr; gap: 28px; padding: 20px; }
+      .product-page { grid-template-columns: 1fr 1fr; gap: 28px; }
+    }
+    /* 모바일 */
+    @media (max-width: 600px) {
+      .product-page { grid-template-columns: 1fr; gap: 20px; }
       .product-gallery { position: static; }
-      .store-header { padding: 0 20px; }
-      .breadcrumb { padding: 12px 20px; }
+      .product-name { font-size: 18px; }
+      .product-price { font-size: 18px; }
     }
   </style>
 </head>
