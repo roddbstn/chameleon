@@ -100,8 +100,11 @@ async function analyzeIntent(query, conversationHistory = []) {
     ? '이전 대화:\n' + conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n') + '\n\n'
     : '';
 
-  // 이미 이 대화에서 clarification을 한 번이라도 했으면 다시는 묻지 않음
-  const alreadyClarified = conversationHistory.some(m => m.role === 'assistant' && m.content?.includes('?'));
+  // 대화 히스토리에서 성별 언급 여부 확인
+  const fullHistory = conversationHistory.map(m => m.content || '').join(' ');
+  const genderKnown = /남성|여성|남자|여자|남|여|men|women|man|woman|he|she/i.test(fullHistory + ' ' + query);
+  // 이미 질문을 한 번이라도 했으면 다시는 묻지 않음
+  const alreadyAsked = conversationHistory.some(m => m.role === 'assistant' && m.content?.includes('?'));
 
   const prompt = `${historyText}유저 메시지: "${query}"
 
@@ -115,20 +118,23 @@ async function analyzeIntent(query, conversationHistory = []) {
   "assumptions": "합리적으로 추측할 수 있는 것들",
   "search_query": "벡터 검색에 최적화된 확장된 검색 쿼리 (한국어, 최대 200자)",
   "color_filter": {
-    "include": ["유저가 원하는 색상 키워드 배열 (예: 화이트, 베이지, 라이트 블루). 색상 언급 없으면 빈 배열"],
-    "exclude": ["유저가 명시적으로 피하거나, 밝은 색 요청 시 어두운 색 계열 키워드 (예: 블랙, 네이비, 다크). 없으면 빈 배열"]
+    "include": ["유저가 원하는 색상 키워드 배열. 색상 언급 없으면 빈 배열"],
+    "exclude": ["유저가 피하는 색상. 없으면 빈 배열"]
   },
-  "clarification_needed": false,
-  "clarification_question": null
+  "clarification_needed": true/false,
+  "clarification_question": "질문 (아니면 null)"
 }
 
-★ 핵심 원칙 — 반드시 지킬 것:
-- clarification_needed는 항상 false. 이 필드를 true로 설정하는 것은 금지
-- 소재(뱀피, 린넨, 데님…), 카테고리(상의, 팬츠…), 색상, 상황 중 하나라도 단서가 있으면 즉시 추천
-- 성별, 선호 스타일, 코디 조합 등을 되묻는 clarification_question 절대 금지
-- 모르는 정보는 가정(assumptions)으로 채우고 추천으로 넘어갈 것
-- ${alreadyClarified ? '이미 대화에서 질문을 했음 — clarification_needed는 반드시 false, clarification_question은 반드시 null' : '가정을 세워서 바로 추천'}
-- search_query는 상황, 감정, 스타일, 소재, 핏, 계절 등을 모두 포함해 풍부하게 작성
+★ clarification 규칙 — 엄격히 따를 것:
+${alreadyAsked
+  ? '- 이미 이 대화에서 질문을 했음. clarification_needed는 반드시 false, clarification_question은 반드시 null'
+  : genderKnown
+    ? '- 성별이 이미 파악됨. clarification_needed는 false, 바로 추천'
+    : `- 의류 추천에서 성별이 없으면 clarification_needed=true, clarification_question="어떤 분을 위한 상품인가요? (남성/여성)" 허용
+- 단, 성별 이외의 질문(선호 스타일, 코디 조합, 취향 등)은 절대 금지`
+}
+- 소재·카테고리·색상·상황 중 하나라도 있으면 성별 외 추가 질문 금지
+- search_query는 상황, 스타일, 소재, 핏, 계절 등을 모두 포함해 풍부하게 작성
 - color_filter.exclude: "밝은 색" 요청이면 블랙/차콜/네이비/다크 계열 추가
 
 JSON만 응답하세요.`;
@@ -226,12 +232,16 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   const intent = await analyzeIntent(query, conversationHistory);
   await logApiCost(mallId, 'intent_analysis', 2000, 500);
 
-  // clarification 분기는 대화 중 처음이고, 진짜 아무 단서도 없을 때만 허용
-  // (소재·카테고리·색상·상황 중 하나라도 있으면 바로 추천)
-  const hasAnyClue = /소재|원단|색|카테고리|상의|하의|아우터|팬츠|셔츠|니트|후드|맨투맨|자켓|코트|원피스|뱀피|린넨|데님|캐시미어|울|면|폴리|실크|가죽|스웨이드|체크|스트라이프|플로럴|캐주얼|포멀|스트릿|미니멀|빈티지|클래식|모던|트렌디/i.test(query);
-  const alreadyAsked = conversationHistory.some(m => m.role === 'assistant' && m.content?.includes('?'));
+  // clarification 허용 조건:
+  // 1. AI가 실제로 clarification_needed=true를 반환했고
+  // 2. 이 대화에서 아직 한 번도 질문하지 않았고
+  // 3. 질문이 성별에 관한 것 (스타일/취향/코디 조합 질문은 차단)
+  const alreadyAskedInPipeline = conversationHistory.some(m => m.role === 'assistant' && m.content?.includes('?'));
+  const isGenderQuestion = /남성|여성|남자|여자|어떤 분|누구|gender/i.test(intent.clarification_question || '');
+  const isStyleQuestion = /스타일|코디|조합|취향|선호|좋아하|어떤 스타일|캐주얼|포멀/i.test(intent.clarification_question || '');
 
-  if (intent.clarification_needed && intent.clarification_question && !hasAnyClue && !alreadyAsked) {
+  if (intent.clarification_needed && intent.clarification_question
+      && !alreadyAskedInPipeline && isGenderQuestion && !isStyleQuestion) {
     Promise.resolve(supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'clarification', product_count: 0 })).catch(() => {});
     return {
       type: 'clarification',
