@@ -130,7 +130,8 @@ ${alreadyAsked
   ? '- 이미 이 대화에서 질문을 했음. clarification_needed는 반드시 false, clarification_question은 반드시 null'
   : genderKnown
     ? '- 성별이 이미 파악됨. clarification_needed는 false, 바로 추천'
-    : `- 의류 추천에서 성별이 없으면 clarification_needed=true, clarification_question="어떤 분을 위한 상품인가요? (남성/여성)" 허용
+    : `- clarification_needed는 항상 false — 성별을 포함한 모든 사전 질문 금지
+- 성별이 없으면 남녀공용 또는 보편적 추천으로 시작하고, 추천 어드바이저가 마지막에 자연스럽게 물어봄
 - 단, 성별 이외의 질문(선호 스타일, 코디 조합, 취향 등)은 절대 금지`
 }
 - 소재·카테고리·색상·상황 중 하나라도 있으면 성별 외 추가 질문 금지
@@ -163,8 +164,14 @@ async function generateRecommendation(query, intent, products, brandProfile = nu
 
   const productList = products.slice(0, 5).map((p, i) => {
     const attrs = p.attributes || {};
+    const text = (p.name + ' ' + (p.embed_text || '')).toLowerCase();
+    // 상품명·설명에서 성별 타겟 자동 추론
+    const genderHint =
+      /여성|우먼|women|girl|lady|she/.test(text) ? '여성 타겟' :
+      /남성|맨즈|men|guy|man\b|he\b/.test(text) ? '남성 타겟' : '남녀공용';
     return `${i + 1}. ${p.name}
 가격: ${p.price?.toLocaleString()}원
+성별 타겟: ${genderHint}
 소재/핏: ${attrs.material || ''}
 설명: ${p.embed_text?.slice(0, 300) || ''}
 유사도: ${(p.similarity * 100).toFixed(0)}%`;
@@ -191,14 +198,21 @@ ${productList}
 2. 상품 2~3개 추천, 각각:
    - 1., 2. 등 번호로 시작
    - 상품명을 정확히 포함할 것 (카드 매칭에 사용됨)
+   - 성별 타겟 정보를 활용해 맥락에 맞게 설명
    - 이 상황에 왜 이 상품인지 구체적 이유
    - 소재·핏·착용감 등 실질적 정보
-3. 짧고 자신 있는 마무리 문장 (질문 없이)
+3. 마지막에 — 로 이어지는 짧은 자연스러운 후속 질문 1개 (선택사항)
+
+후속 질문 규칙:
+- 추천을 먼저 완성한 뒤, 끝에 딱 한 문장으로 "— 어떤 분께 드리실 건가요?" 처럼 자연스럽게
+- 추천을 더 좁혀줄 수 있는 질문만 허용 (예: 받으시는 분 연령대, 선물 상황, 남성용/여성용 여부)
+- "어떤 스타일이 좋으세요?", "선호하시는 핏이 있나요?" 같이 유저를 고민하게 만드는 질문 금지
+- 이미 성별·상황·스타일이 모두 파악됐으면 후속 질문 없이 추천으로만 마무리
 
 ★ 절대 금지:
-- "어떤 스타일이 좋으세요?", "성별이 어떻게 되세요?", "코디 스타일이 있으신가요?" 같은 역질문 일체 금지
-- 추천 후 질문으로 끝내는 것 금지 — 추천 내용으로만 마무리
-- 유저가 더 물어보면 그때 답하면 됨
+- 추천보다 질문을 먼저 하는 것
+- "어떤 스타일이 좋으세요?", "코디 스타일이 있으신가요?" 같은 취향·스타일 역질문
+- 2개 이상의 질문 나열
 
 말투 규칙:
 - "안녕하세요", "야", "안녕" 같은 인사로 절대 시작하지 말 것
@@ -232,23 +246,9 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   const intent = await analyzeIntent(query, conversationHistory);
   await logApiCost(mallId, 'intent_analysis', 2000, 500);
 
-  // clarification 허용 조건:
-  // 1. AI가 실제로 clarification_needed=true를 반환했고
-  // 2. 이 대화에서 아직 한 번도 질문하지 않았고
-  // 3. 질문이 성별에 관한 것 (스타일/취향/코디 조합 질문은 차단)
-  const alreadyAskedInPipeline = conversationHistory.some(m => m.role === 'assistant' && m.content?.includes('?'));
-  const isGenderQuestion = /남성|여성|남자|여자|어떤 분|누구|gender/i.test(intent.clarification_question || '');
-  const isStyleQuestion = /스타일|코디|조합|취향|선호|좋아하|어떤 스타일|캐주얼|포멀/i.test(intent.clarification_question || '');
-
-  if (intent.clarification_needed && intent.clarification_question
-      && !alreadyAskedInPipeline && isGenderQuestion && !isStyleQuestion) {
-    Promise.resolve(supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'clarification', product_count: 0 })).catch(() => {});
-    return {
-      type: 'clarification',
-      message: intent.clarification_question,
-      products: [],
-    };
-  }
+  // 사전 clarification 분기 제거:
+  // 성별 포함 모든 사전 질문을 없애고, 추천 후 자연스러운 후속 질문으로 처리
+  // (LLM이 recommendations 마지막에 "— 어떤 분께 드리실 건가요?" 형태로 물어봄)
 
   // 벡터 검색
   const searchQuery = intent.search_query || query;
