@@ -100,6 +100,9 @@ async function analyzeIntent(query, conversationHistory = []) {
     ? '이전 대화:\n' + conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n') + '\n\n'
     : '';
 
+  // 이미 이 대화에서 clarification을 한 번이라도 했으면 다시는 묻지 않음
+  const alreadyClarified = conversationHistory.some(m => m.role === 'assistant' && m.content?.includes('?'));
+
   const prompt = `${historyText}유저 메시지: "${query}"
 
 당신은 패션 쇼핑몰의 인텐트 분석 전문가입니다.
@@ -115,15 +118,18 @@ async function analyzeIntent(query, conversationHistory = []) {
     "include": ["유저가 원하는 색상 키워드 배열 (예: 화이트, 베이지, 라이트 블루). 색상 언급 없으면 빈 배열"],
     "exclude": ["유저가 명시적으로 피하거나, 밝은 색 요청 시 어두운 색 계열 키워드 (예: 블랙, 네이비, 다크). 없으면 빈 배열"]
   },
-  "clarification_needed": true/false,
-  "clarification_question": "꼭 필요한 경우에만 질문 1개 (아니면 null)"
+  "clarification_needed": false,
+  "clarification_question": null
 }
 
-규칙:
-- clarification_needed는 정말 모호해서 추천 자체가 불가능할 때만 true
-- 가정을 세울 수 있다면 질문 없이 추천하는 쪽을 선택
+★ 핵심 원칙 — 반드시 지킬 것:
+- clarification_needed는 항상 false. 이 필드를 true로 설정하는 것은 금지
+- 소재(뱀피, 린넨, 데님…), 카테고리(상의, 팬츠…), 색상, 상황 중 하나라도 단서가 있으면 즉시 추천
+- 성별, 선호 스타일, 코디 조합 등을 되묻는 clarification_question 절대 금지
+- 모르는 정보는 가정(assumptions)으로 채우고 추천으로 넘어갈 것
+- ${alreadyClarified ? '이미 대화에서 질문을 했음 — clarification_needed는 반드시 false, clarification_question은 반드시 null' : '가정을 세워서 바로 추천'}
 - search_query는 상황, 감정, 스타일, 소재, 핏, 계절 등을 모두 포함해 풍부하게 작성
-- color_filter.exclude: "밝은 색" 요청이면 블랙/차콜/네이비/다크 계열 추가, "어두운 색" 요청이면 화이트/크림/베이지 계열 추가
+- color_filter.exclude: "밝은 색" 요청이면 블랙/차콜/네이비/다크 계열 추가
 
 JSON만 응답하세요.`;
 
@@ -158,8 +164,8 @@ async function generateRecommendation(query, intent, products, brandProfile = nu
 유사도: ${(p.similarity * 100).toFixed(0)}%`;
   }).join('\n\n');
 
-  const prompt = `당신은 패션을 잘 아는 쇼핑 어드바이저입니다.
-유저의 말 뒤에 숨은 진짜 니즈를 이해하고, "나를 제대로 이해해 주었어"라는 반응이 나오도록 추천해주세요.
+  const prompt = `당신은 패션 확신이 있는 쇼핑 어드바이저입니다.
+유저가 요청한 즉시 상품을 추천하세요. "어떤 스타일이 좋으세요?"처럼 유저를 생각하게 만드는 역질문은 전문성 포기입니다.
 
 브랜드 톤 가이드: ${brandTone}
 
@@ -175,12 +181,18 @@ async function generateRecommendation(query, intent, products, brandProfile = nu
 ${productList}
 
 응답 형식:
-1. 유저 상황을 한 문장으로 공감 (인사말 없이 바로 시작)
+1. 유저 니즈를 한 문장으로 짚기 (인사말 없이 바로 시작)
 2. 상품 2~3개 추천, 각각:
    - 1., 2. 등 번호로 시작
+   - 상품명을 정확히 포함할 것 (카드 매칭에 사용됨)
    - 이 상황에 왜 이 상품인지 구체적 이유
-   - 솔직한 장단점
-3. 마지막에 짧은 한 마디 (필요한 경우에만 질문 1개)
+   - 소재·핏·착용감 등 실질적 정보
+3. 짧고 자신 있는 마무리 문장 (질문 없이)
+
+★ 절대 금지:
+- "어떤 스타일이 좋으세요?", "성별이 어떻게 되세요?", "코디 스타일이 있으신가요?" 같은 역질문 일체 금지
+- 추천 후 질문으로 끝내는 것 금지 — 추천 내용으로만 마무리
+- 유저가 더 물어보면 그때 답하면 됨
 
 말투 규칙:
 - "안녕하세요", "야", "안녕" 같은 인사로 절대 시작하지 말 것
@@ -214,8 +226,12 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   const intent = await analyzeIntent(query, conversationHistory);
   await logApiCost(mallId, 'intent_analysis', 2000, 500);
 
-  // 명확화 질문이 필요한 경우 바로 반환
-  if (intent.clarification_needed && intent.clarification_question) {
+  // clarification 분기는 대화 중 처음이고, 진짜 아무 단서도 없을 때만 허용
+  // (소재·카테고리·색상·상황 중 하나라도 있으면 바로 추천)
+  const hasAnyClue = /소재|원단|색|카테고리|상의|하의|아우터|팬츠|셔츠|니트|후드|맨투맨|자켓|코트|원피스|뱀피|린넨|데님|캐시미어|울|면|폴리|실크|가죽|스웨이드|체크|스트라이프|플로럴|캐주얼|포멀|스트릿|미니멀|빈티지|클래식|모던|트렌디/i.test(query);
+  const alreadyAsked = conversationHistory.some(m => m.role === 'assistant' && m.content?.includes('?'));
+
+  if (intent.clarification_needed && intent.clarification_question && !hasAnyClue && !alreadyAsked) {
     Promise.resolve(supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'clarification', product_count: 0 })).catch(() => {});
     return {
       type: 'clarification',
