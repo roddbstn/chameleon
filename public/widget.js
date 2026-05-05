@@ -61,7 +61,7 @@
   // ── 4. 패널 HTML 생성 ──────────────────────────
   function buildPanelHTML(content, config) {
     const t = config?.theme || {};
-    const accentColor = content?.accentColor || t.accentColor || '#C0392B';
+    const accentColor = content?.accentColor || t.accentColor || '#5E4637';
     const cssVars = `
       --cml-accent: ${accentColor};
       --cml-bg: color-mix(in srgb, ${accentColor} 5%, white);
@@ -262,25 +262,25 @@
       align-items: center;
       gap: 10px;
       background: #fff;
-      border: 1px solid #E4E4E0;
+      border: 1px solid rgba(94,70,55,0.15);
       border-right: none;
       border-radius: 12px 0 0 12px;
       padding: 16px 10px;
       cursor: pointer;
-      box-shadow: -4px 0 16px rgba(0,0,0,0.07);
+      box-shadow: -4px 0 16px rgba(94,70,55,0.08);
       transition: opacity 0.2s, box-shadow 0.2s;
       user-select: none;
-      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
     }
-    .cml-sidebar-tab:hover { box-shadow: -6px 0 20px rgba(0,0,0,0.12); }
+    .cml-sidebar-tab:hover { box-shadow: -6px 0 22px rgba(94,70,55,0.14); }
     .cml-sidebar-tab.cml-hidden { opacity: 0; pointer-events: none; }
-    .cml-sidebar-tab-icon { width: 22px; height: 22px; color: #111; }
+    .cml-sidebar-tab-icon { width: 22px; height: 22px; color: #5E4637; }
     .cml-sidebar-tab-label {
       writing-mode: vertical-rl;
       text-orientation: mixed;
       font-size: 11px;
       font-weight: 500;
-      color: #333;
+      color: #5E4637;
       letter-spacing: 0.12em;
     }
 
@@ -291,23 +291,23 @@
       width: 380px;
       max-width: 100vw;
       height: 100dvh;
-      background: #fafafa;
-      border-left: 1px solid #E8E8E4;
+      background: #fff;
+      border-left: 1px solid rgba(94,70,55,0.10);
       display: flex;
       flex-direction: column;
-      z-index: 999999; /* Z-index up for overlay items */
-      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      z-index: 999999;
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
       font-size: 13px;
       transform: translateX(100%);
       transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), width 0.32s cubic-bezier(0.4,0,0.2,1);
-      box-shadow: -8px 0 40px rgba(0,0,0,0.10);
+      box-shadow: -8px 0 40px rgba(94,70,55,0.10);
     }
     .cml-chat-panel.cml-open { transform: translateX(0); }
 
     .cml-chat-header {
       padding: 18px 24px;
-      background: #fff;
-      border-bottom: 1px solid #EBEBEB;
+      background: #F0E4D3;
+      border-bottom: 1px solid rgba(94,70,55,0.12);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -319,11 +319,11 @@
       width: 8px; height: 8px; border-radius: 50%;
       background: #22C55E; flex-shrink: 0;
     }
-    .cml-chat-header-title { font-size: 16px; font-weight: 700; color: #111; letter-spacing: 0.01em; }
+    .cml-chat-header-title { font-size: 16px; font-weight: 700; color: #5E4637; letter-spacing: 0.01em; }
     .cml-chat-header-actions { display: flex; align-items: center; gap: 2px; }
     .cml-chat-close,
     .cml-chat-refresh {
-      background: none; border: none; color: #AAA; cursor: pointer;
+      background: none; border: none; color: #A08070; cursor: pointer;
       line-height: 1; padding: 7px; border-radius: 7px;
       transition: color 0.15s, background 0.15s;
       display: flex; align-items: center; justify-content: center;
@@ -331,7 +331,7 @@
     .cml-chat-close { font-size: 18px; }
     .cml-chat-refresh svg { width: 16px; height: 16px; }
     .cml-chat-close:hover,
-    .cml-chat-refresh:hover { color: #333; background: #F4F4F2; }
+    .cml-chat-refresh:hover { color: #5E4637; background: rgba(94,70,55,0.08); }
 
     /* ── 히어로 영역 ── */
     .cml-chat-hero { flex-shrink: 0; position: relative; overflow: hidden; }
@@ -357,28 +357,31 @@
       flex: 1; overflow-y: auto;
       padding: 16px 20px 8px;
       display: flex; flex-direction: column; gap: 10px;
+      background: #fff;
     }
     .cml-chat-bubble {
       max-width: 82%;
       padding: 12px 16px;
       border-radius: 14px;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.75;
       letter-spacing: 0.01em;
       white-space: pre-wrap;
     }
-    .cml-chat-bubble strong { font-weight: 700; font-size: 16px; }
+    .cml-chat-bubble strong { font-weight: 700; font-size: 15px; }
     .cml-chat-bubble.user {
-      align-self: flex-end; background: #111; color: #fff; border-bottom-right-radius: 4px;
+      align-self: flex-end; background: #5E4637; color: #fff; border-bottom-right-radius: 4px;
     }
     .cml-chat-bubble.assistant {
-      align-self: flex-start; background: #F4F4F2; color: #222; border-bottom-left-radius: 4px;
+      align-self: flex-start; background: #F7F5F3; color: #222; border-bottom-left-radius: 4px;
+      border: 1px solid rgba(94,70,55,0.08);
     }
-    .cml-chat-bubble.loading { color: #aaa; font-style: italic; }
+    .cml-chat-bubble.loading { color: #A08070; font-style: italic; }
 
     /* ── 추천 상품 카루셀 ── */
     .cml-product-shelf {
-      background: #FAFAF9;
+      background: #F7F5F3;
+      border-top: 1px solid rgba(94,70,55,0.10);
       flex-shrink: 0;
       position: relative;
       overflow: hidden;
@@ -391,13 +394,13 @@
     .cml-shelf-resize-handle::after {
       content: ''; display: block;
       width: 32px; height: 3px; border-radius: 2px;
-      background: #DDD; margin-top: 2px;
+      background: rgba(94,70,55,0.20); margin-top: 2px;
       transition: background 0.15s;
     }
-    .cml-shelf-resize-handle:hover::after { background: #AAA; }
+    .cml-shelf-resize-handle:hover::after { background: rgba(94,70,55,0.45); }
     .cml-product-shelf-header {
       padding: 14px 16px 8px;
-      font-size: 15px; font-weight: 700; color: #555;
+      font-size: 15px; font-weight: 700; color: #5E4637;
       letter-spacing: 0.02em;
       display: flex; align-items: center; justify-content: space-between;
       cursor: pointer; user-select: none;
@@ -420,15 +423,15 @@
       flex: 0 0 280px;
       height: 88px;
       background: #fff;
-      border: 1px solid #E8E8E4;
-      border-radius: 12px;
+      border: 1px solid rgba(94,70,55,0.12);
+      border-radius: 10px;
       overflow: hidden;
       scroll-snap-align: start;
       display: flex;
       flex-direction: row;
-      transition: box-shadow 0.15s;
+      transition: box-shadow 0.15s, border-color 0.15s;
     }
-    .cml-shelf-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.08); }
+    .cml-shelf-card:hover { box-shadow: 0 3px 12px rgba(94,70,55,0.10); border-color: rgba(94,70,55,0.25); }
     .cml-shelf-card-img-wrap {
       position: relative;
       width: 72px;
@@ -456,13 +459,13 @@
       min-width: 0;
     }
     .cml-shelf-card-name {
-      font-size: 12px; font-weight: 700; color: #111;
+      font-size: 12px; font-weight: 600; color: #111;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       line-height: 1.3;
     }
-    .cml-shelf-card-price { font-size: 12px; color: #444; font-weight: 600; }
+    .cml-shelf-card-price { font-size: 12px; color: #5E4637; font-weight: 600; }
     .cml-shelf-card-reason {
-      font-size: 11px; color: #888;
+      font-size: 11px; color: #A08070;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       line-height: 1.3;
     }
@@ -473,14 +476,14 @@
       display: inline-block; transition: opacity 0.15s; text-align: center; white-space: nowrap;
     }
     .cml-shelf-card-btn:hover { opacity: 0.82; }
-    .cml-shelf-card-btn.primary { background: #111; color: #fff; }
-    .cml-shelf-card-btn.secondary { background: #EEEEEC; color: #333; }
+    .cml-shelf-card-btn.primary { background: #5E4637; color: #fff; }
+    .cml-shelf-card-btn.secondary { background: #F0EBE5; color: #5E4637; }
 
     /* ── 인라인 추천 상품 카드 ── */
     .cml-inline-card {
-      border: 1px solid #E8E8E4; border-radius: 12px;
+      border: 1px solid rgba(94,70,55,0.14); border-radius: 10px;
       overflow: hidden; margin: 6px 0 10px;
-      background: #fff; font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      background: #fff; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
     }
     .cml-inline-card-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -616,21 +619,21 @@
       font-size: 13px; color: #AAAAA6; letter-spacing: 0.01em;
     }
     .cml-chat-input {
-      width: 100%; border: 1.5px solid #E8E8E4; border-radius: 16px;
-      padding: 13px 56px 13px 18px; font-size: 15px; outline: none; font-family: inherit;
-      color: #333; background: #FAFAF9; transition: border-color 0.15s;
+      width: 100%; border: 1.5px solid rgba(94,70,55,0.18); border-radius: 16px;
+      padding: 13px 56px 13px 18px; font-size: 14px; outline: none; font-family: inherit;
+      color: #333; background: #fff; transition: border-color 0.15s;
       box-sizing: border-box;
     }
-    .cml-chat-input:focus { border-color: #ccc; }
-    .cml-chat-input::placeholder { color: #BBB; }
+    .cml-chat-input:focus { border-color: rgba(94,70,55,0.45); }
+    .cml-chat-input::placeholder { color: #C0A898; }
     .cml-chat-send {
       position: absolute; right: 6px;
       width: 36px; height: 36px; border-radius: 10px;
-      background: #EEECEA; color: #555;
+      background: #F0EBE5; color: #5E4637;
       border: none; cursor: pointer; display: flex; align-items: center;
       justify-content: center; flex-shrink: 0; transition: background 0.15s, opacity 0.15s;
     }
-    .cml-chat-send:hover { background: #E0DED9; }
+    .cml-chat-send:hover { background: #E8DDD4; }
     .cml-chat-send:disabled { opacity: 0.35; cursor: default; }
 
     /* ── 스타터 칩 ── */
@@ -638,11 +641,11 @@
       display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 14px;
     }
     .cml-chat-starter-chip {
-      border: 1px solid #D8D8D4; border-radius: 999px; padding: 10px 20px;
-      font-size: 14px; color: #555; background: #fff; cursor: pointer;
-      font-family: inherit; transition: border-color 0.12s, color 0.12s;
+      border: 1px solid rgba(94,70,55,0.20); border-radius: 999px; padding: 10px 20px;
+      font-size: 13px; color: #5E4637; background: #fff; cursor: pointer;
+      font-family: inherit; transition: border-color 0.12s, background 0.12s;
     }
-    .cml-chat-starter-chip:hover { border-color: #888; color: #111; }
+    .cml-chat-starter-chip:hover { border-color: #5E4637; background: rgba(94,70,55,0.05); }
 
     /* ── PDP 웰컴 칩 트레이 (상품 상세 진입 시 자동 표시) ── */
     .cml-pdp-welcome-tray {
@@ -662,18 +665,18 @@
     .cml-pdp-welcome-scroll::-webkit-scrollbar { display: none; }
     .cml-pdp-welcome-chip {
       flex: 0 0 auto;
-      border: 1px solid #D0D0CC;
+      border: 1px solid rgba(94,70,55,0.20);
       border-radius: 999px;
       padding: 8px 16px;
       font-size: 13px;
-      color: #444;
+      color: #5E4637;
       white-space: nowrap;
       cursor: pointer;
       background: #fff;
       font-family: inherit;
-      transition: border-color 0.15s, color 0.15s;
+      transition: border-color 0.15s, background 0.15s;
     }
-    .cml-pdp-welcome-chip:hover { border-color: #888; color: #111; }
+    .cml-pdp-welcome-chip:hover { border-color: #5E4637; background: rgba(94,70,55,0.05); }
 
     /* ── 팔로업 질문 트레이 ── */
     .cml-follow-chips-tray {
@@ -694,18 +697,18 @@
     .cml-follow-chip {
       flex: 0 0 auto;
       scroll-snap-align: start;
-      border: 1px solid #D0D0CC;
+      border: 1px solid rgba(94,70,55,0.20);
       border-radius: 999px;
       padding: 8px 16px;
       font-size: 13px;
-      color: #444;
+      color: #5E4637;
       white-space: nowrap;
       cursor: pointer;
       background: #fff;
       font-family: inherit;
-      transition: border-color 0.15s, color 0.15s;
+      transition: border-color 0.15s, background 0.15s;
     }
-    .cml-follow-chip:hover { border-color: #888; color: #111; }
+    .cml-follow-chip:hover { border-color: #5E4637; background: rgba(94,70,55,0.05); }
 
     /* ── backdrop (overlay 모드) ── */
     #cml-backdrop {
@@ -716,11 +719,11 @@
     /* ── SneakPeek 말풍선 ── */
     .cml-sneak-peek {
       position: fixed; right: 62px; top: 50%; transform: translateY(-50%);
-      background: #fff; border: 1px solid #E4E4E0; border-radius: 12px;
-      padding: 10px 14px; font-size: 13px; color: #333;
-      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      background: #fff; border: 1px solid rgba(94,70,55,0.15); border-radius: 12px;
+      padding: 10px 14px; font-size: 13px; color: #5E4637;
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
       line-height: 1.55; z-index: 99998;
-      box-shadow: -2px 4px 16px rgba(0,0,0,0.10); max-width: 180px;
+      box-shadow: -2px 4px 16px rgba(94,70,55,0.10); max-width: 180px;
       opacity: 0; transition: opacity 0.35s; pointer-events: none;
     }
     .cml-sneak-peek.cml-sneak-show { opacity: 1; }
@@ -759,12 +762,12 @@
     }
     .cml-msg-product-card {
       display: flex; flex-direction: row;
-      background: #F5F5F3; border: 1px solid #EBEBEB;
-      border-radius: 12px; overflow: hidden;
+      background: #F7F5F3; border: 1px solid rgba(94,70,55,0.12);
+      border-radius: 10px; overflow: hidden;
       transition: box-shadow 0.15s, border-color 0.15s;
     }
     .cml-msg-product-card:hover {
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 12px rgba(94,70,55,0.10);
       border-color: #D0D0CC;
     }
     .cml-msg-product-img-wrap {
