@@ -112,31 +112,29 @@ async function analyzeIntent(query, conversationHistory = []) {
 유저가 말한 것에서 다음을 JSON으로 추출하세요:
 
 {
-  "situation": "유저가 처한 상황 (예: 소개팅, 출장, 일상, 선물 구매 등)",
-  "needs": "진짜 필요한 것 (외모, 기능, 감정적 니즈 포함)",
-  "constraints": "제약 조건 (예산, 사이즈, 색상, 제외 조건 등)",
+  "intent_type": "specific | discovery | refinement",
+  "situation": "유저가 처한 상황",
+  "needs": "진짜 필요한 것",
+  "constraints": "제약 조건 (없으면 null)",
   "assumptions": "합리적으로 추측할 수 있는 것들",
-  "search_query": "벡터 검색에 최적화된 확장된 검색 쿼리 (한국어, 최대 200자)",
+  "search_query": "벡터 검색에 최적화된 검색 쿼리 (한국어, 최대 200자)",
   "color_filter": {
-    "include": ["유저가 원하는 색상 키워드 배열. 색상 언급 없으면 빈 배열"],
-    "exclude": ["유저가 피하는 색상. 없으면 빈 배열"]
+    "include": ["원하는 색상 키워드. 없으면 빈 배열"],
+    "exclude": ["피하는 색상. 없으면 빈 배열"]
   },
-  "clarification_needed": true/false,
-  "clarification_question": "질문 (아니면 null)"
+  "clarification_needed": false,
+  "clarification_question": null
 }
 
-★ clarification 규칙 — 엄격히 따를 것:
-${alreadyAsked
-  ? '- 이미 이 대화에서 질문을 했음. clarification_needed는 반드시 false, clarification_question은 반드시 null'
-  : genderKnown
-    ? '- 성별이 이미 파악됨. clarification_needed는 false, 바로 추천'
-    : `- clarification_needed는 항상 false — 성별을 포함한 모든 사전 질문 금지
-- 성별이 없으면 남녀공용 또는 보편적 추천으로 시작하고, 추천 어드바이저가 마지막에 자연스럽게 물어봄
-- 단, 성별 이외의 질문(선호 스타일, 코디 조합, 취향 등)은 절대 금지`
-}
-- 소재·카테고리·색상·상황 중 하나라도 있으면 성별 외 추가 질문 금지
-- search_query는 상황, 스타일, 소재, 핏, 계절 등을 모두 포함해 풍부하게 작성
-- color_filter.exclude: "밝은 색" 요청이면 블랙/차콜/네이비/다크 계열 추가
+intent_type 판단 기준:
+- "specific": 소재·카테고리·색상·상황·상품명 등 구체적 단서가 있음 (예: "뱀피 상의", "검정 팬츠", "소개팅 코디")
+- "discovery": 자기 스타일을 모르거나 막연하게 탐색 중 (예: "뭘 사야 할지 모르겠어", "요즘 유행하는 게 뭐야", "어떤 옷이 어울릴까", "옷 추천해줘" 처럼 카테고리·소재·상황 단서가 전혀 없음)
+- "refinement": 이전 추천에 대한 반응·수정 요청 (예: "이런 거 말고", "더 캐주얼하게", "비슷한데 다른 색으로")
+
+${alreadyAsked ? '이미 이 대화에서 질문을 했으므로 clarification_needed는 항상 false.' : ''}
+clarification_needed는 항상 false, clarification_question은 항상 null.
+search_query는 상황·스타일·소재·핏·계절 등을 포함해 풍부하게 작성.
+color_filter.exclude: "밝은 색" 요청이면 블랙/차콜/네이비/다크 계열 추가.
 
 JSON만 응답하세요.`;
 
@@ -156,10 +154,49 @@ JSON만 응답하세요.`;
 }
 
 // ─────────────────────────────────────────────
-// Agent 2 — 추천 생성
-// 검색 결과를 유저 상황에 맞게 재해석하고 설명
+// Discovery 모드 — 스타일 버킷별 병렬 벡터 검색
+// 스타일이 서로 다른 3개 방향에서 각 1~2개 상품을 가져와
+// 유저가 "이게 좋아요/싫어요"로 반응할 수 있는 팔레트를 구성
 // ─────────────────────────────────────────────
-async function generateRecommendation(query, intent, products, brandProfile = null) {
+const STYLE_BUCKETS = [
+  { label: '미니멀/클린',   query: '미니멀 베이직 클린 심플 모던 뉴트럴 톤 깔끔한 실루엣' },
+  { label: '캐주얼/스트릿', query: '캐주얼 스트릿 오버핏 루즈 편안한 데일리 후드 맨투맨' },
+  { label: '트렌디/유니크', query: '트렌디 포인트 유니크 개성 프린트 컬러 감각적인 시즌' },
+];
+
+async function discoverySearch(mallId) {
+  // 3개 스타일 버킷 병렬 임베딩 + 검색
+  const results = await Promise.all(
+    STYLE_BUCKETS.map(async (bucket) => {
+      try {
+        const embedding = await embedQuery(bucket.query);
+        const hits = await vectorSearch(embedding, mallId, 4);
+        return { bucket: bucket.label, hits };
+      } catch {
+        return { bucket: bucket.label, hits: [] };
+      }
+    })
+  );
+
+  // 버킷별 상위 2개씩, 전체 중복 제거
+  const seen = new Set();
+  const palette = [];
+  for (const { bucket, hits } of results) {
+    let count = 0;
+    for (const p of hits) {
+      if (seen.has(p.product_id)) continue;
+      seen.add(p.product_id);
+      palette.push({ ...p, styleBucket: bucket });
+      if (++count >= 2) break;
+    }
+  }
+  return palette; // 최대 6개, 3가지 스타일 방향
+}
+
+// ─────────────────────────────────────────────
+// Agent 2 — 추천 생성
+// ─────────────────────────────────────────────
+async function generateRecommendation(query, intent, products, brandProfile = null, mode = 'specific') {
   const brandTone = brandProfile?.system_prompt || '고급 패션 매장의 숙련된 어드바이저처럼, 정중하고 섬세하며 따뜻한 존댓말로 응대하세요. 유머나 가벼운 말투는 금지이며, 신뢰감 있는 전문가 톤을 유지하세요.';
 
   const productList = products.slice(0, 5).map((p, i) => {
@@ -177,8 +214,43 @@ async function generateRecommendation(query, intent, products, brandProfile = nu
 유사도: ${(p.similarity * 100).toFixed(0)}%`;
   }).join('\n\n');
 
+  const isDiscovery = mode === 'discovery';
+  const isRefinement = mode === 'refinement';
+
+  const modeInstruction = isDiscovery ? `
+【스타일 발견 모드】
+유저가 자신의 스타일을 모르는 상태입니다. 말로 설명하게 하지 말고, 스타일이 서로 다른 실제 상품을 보여줘서 반응을 이끌어내세요.
+
+응답 형식:
+1. "스타일이 다른 몇 가지를 가져왔어요. 어떤 느낌이 끌리시는지 반응해주시면 바로 좁혀드릴게요." (한 문장)
+2. 상품 3개를 각각 다른 스타일로 소개:
+   - 스타일 방향 레이블 표시 (예: **미니멀/클린**, **캐주얼/스트릿**, **트렌디/유니크**)
+   - 상품명 정확히 포함
+   - 이 스타일이 어떤 사람/상황에 어울리는지 2문장 이내로
+3. 마지막: "마음에 드는 방향이 있으신가요, 아니면 다른 느낌을 원하세요?" (한 문장)
+` : isRefinement ? `
+【취향 반영 모드】
+유저가 이전 추천에 반응하거나 방향을 수정 중입니다. 그 피드백을 정확히 반영해 새 추천을 주세요.
+
+응답 형식:
+1. 유저의 피드백을 한 문장으로 반영 ("더 캐주얼한 방향으로 골라봤어요." 등)
+2. 수정된 방향의 상품 2~3개
+3. 필요하면 짧은 후속 질문 1개 (없어도 됨)
+` : `
+【구체적 추천 모드】
+응답 형식:
+1. 유저 니즈를 한 문장으로 짚기 (인사말 없이 바로 시작)
+2. 상품 2~3개 추천, 각각:
+   - 1., 2. 등 번호로 시작
+   - 상품명을 정확히 포함할 것
+   - 성별 타겟 정보를 활용해 맥락에 맞게 설명
+   - 이 상황에 왜 이 상품인지 구체적 이유
+   - 소재·핏·착용감 등 실질적 정보
+3. 마지막에 — 로 이어지는 짧은 자연스러운 후속 질문 1개 (선택사항, 추천을 좁혀줄 수 있는 경우만)
+`;
+
   const prompt = `당신은 패션 확신이 있는 쇼핑 어드바이저입니다.
-유저가 요청한 즉시 상품을 추천하세요. "어떤 스타일이 좋으세요?"처럼 유저를 생각하게 만드는 역질문은 전문성 포기입니다.
+${modeInstruction}
 
 브랜드 톤 가이드: ${brandTone}
 
@@ -193,34 +265,17 @@ async function generateRecommendation(query, intent, products, brandProfile = nu
 검색된 상품들:
 ${productList}
 
-응답 형식:
-1. 유저 니즈를 한 문장으로 짚기 (인사말 없이 바로 시작)
-2. 상품 2~3개 추천, 각각:
-   - 1., 2. 등 번호로 시작
-   - 상품명을 정확히 포함할 것 (카드 매칭에 사용됨)
-   - 성별 타겟 정보를 활용해 맥락에 맞게 설명
-   - 이 상황에 왜 이 상품인지 구체적 이유
-   - 소재·핏·착용감 등 실질적 정보
-3. 마지막에 — 로 이어지는 짧은 자연스러운 후속 질문 1개 (선택사항)
-
-후속 질문 규칙:
-- 추천을 먼저 완성한 뒤, 끝에 딱 한 문장으로 "— 어떤 분께 드리실 건가요?" 처럼 자연스럽게
-- 추천을 더 좁혀줄 수 있는 질문만 허용 (예: 받으시는 분 연령대, 선물 상황, 남성용/여성용 여부)
-- "어떤 스타일이 좋으세요?", "선호하시는 핏이 있나요?" 같이 유저를 고민하게 만드는 질문 금지
-- 이미 성별·상황·스타일이 모두 파악됐으면 후속 질문 없이 추천으로만 마무리
-
-★ 절대 금지:
+★ 모든 모드에서 절대 금지:
 - 추천보다 질문을 먼저 하는 것
-- "어떤 스타일이 좋으세요?", "코디 스타일이 있으신가요?" 같은 취향·스타일 역질문
+- "어떤 스타일이 좋으세요?", "코디 스타일이 있으신가요?" 같은 추상적 취향 역질문
 - 2개 이상의 질문 나열
 
 말투 규칙:
 - "안녕하세요", "야", "안녕" 같은 인사로 절대 시작하지 말 것
 - 존댓말 사용: "~해요", "~거예요", "~답니다" (부드럽고 자연스럽게)
-- "~하시면 됩니다", "~해주시기 바랍니다" 같은 사무적·딱딱한 표현 금지
-- 유머, 이모지, 가볍거나 친구 같은 말투 금지 — 신뢰감 있는 전문가 톤 유지
-- 문장을 반드시 완성해서 끝낼 것 — 중간에 절대 끊기지 말 것
-- 모든 상품 나열 금지, 진짜 맞는 것만
+- "~하시면 됩니다", "~해주시기 바랍니다" 같은 사무적 표현 금지
+- 유머, 이모지, 가볍거나 친구 같은 말투 금지 — 신뢰감 있는 전문가 톤
+- 문장을 반드시 완성해서 끝낼 것
 
 응답 텍스트 맨 끝(줄바꿈 후)에 반드시 아래 두 줄을 추가하세요:
 PRODUCTS:[추천한 상품 번호를 응답에 나온 순서대로, 예: 2,1,3]
@@ -246,11 +301,47 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   const intent = await analyzeIntent(query, conversationHistory);
   await logApiCost(mallId, 'intent_analysis', 2000, 500);
 
-  // 사전 clarification 분기 제거:
-  // 성별 포함 모든 사전 질문을 없애고, 추천 후 자연스러운 후속 질문으로 처리
-  // (LLM이 recommendations 마지막에 "— 어떤 분께 드리실 건가요?" 형태로 물어봄)
+  // 모드 결정: discovery / refinement / specific
+  const mode = intent.intent_type || 'specific';
 
-  // 벡터 검색
+  // ── Discovery 모드: 스타일 팔레트 병렬 검색 ──
+  if (mode === 'discovery') {
+    const palette = await discoverySearch(mallId);
+    if (!palette.length) {
+      return { type: 'no_results', message: '등록된 상품을 불러오는 데 문제가 생겼어요. 잠시 후 다시 시도해주세요.', products: [] };
+    }
+
+    // 이미지·가격 보강
+    const palIds = palette.map(p => p.product_id);
+    const { data: palRows } = await supabase.from('products').select('product_id, price, raw_data').in('product_id', palIds);
+    const palImgMap = {}, palPriceMap = {};
+    (palRows || []).forEach(r => {
+      palImgMap[r.product_id] = r.raw_data?.list_image || r.raw_data?.detail_image || null;
+      if (r.price) palPriceMap[r.product_id] = r.price;
+    });
+    const enrichedPalette = palette.map(p => ({
+      ...p,
+      price: palPriceMap[p.product_id] || p.price,
+      image: palImgMap[p.product_id] || null,
+      url: p.product_id ? `/product/detail.html?product_no=${p.product_id}` : null,
+    }));
+
+    const { data: brandProfile } = await supabase.from('brand_profiles').select('system_prompt, tone_keywords').eq('store_id', mallId).single();
+    const rawMessage = await generateRecommendation(query, intent, enrichedPalette, brandProfile, 'discovery');
+    await logApiCost(mallId, 'response_generation', 3000, 600);
+
+    let message = rawMessage.replace(/\n?PRODUCTS:\[?[^\]\n]*\]?/g, '').replace(/\n?REASONS:\{[^\n]+\}/g, '').trim();
+    const msgLower = message.toLowerCase();
+    const mentionedProducts = enrichedPalette
+      .filter(p => msgLower.includes(p.name.toLowerCase()))
+      .sort((a, b) => msgLower.indexOf(a.name.toLowerCase()) - msgLower.indexOf(b.name.toLowerCase()));
+    const recommendedProducts = mentionedProducts.length ? mentionedProducts : enrichedPalette.slice(0, 3);
+
+    Promise.resolve(supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'discovery', product_count: recommendedProducts.length })).catch(() => {});
+    return { type: 'recommendation', message, products: recommendedProducts };
+  }
+
+  // ── Specific / Refinement 모드: 일반 벡터 검색 ──
   const searchQuery = intent.search_query || query;
   const queryEmbedding = await embedQuery(searchQuery);
   const rawProducts = await vectorSearch(queryEmbedding, mallId);
@@ -315,7 +406,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
     .single();
 
   // Agent 2: 추천 생성
-  const rawMessage = await generateRecommendation(query, intent, products, brandProfile);
+  const rawMessage = await generateRecommendation(query, intent, products, brandProfile, mode);
   await logApiCost(mallId, 'response_generation', 3000, 600);
 
   // REASONS 태그 파싱 & 메시지에서 제거
