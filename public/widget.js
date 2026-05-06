@@ -62,20 +62,24 @@
   function buildPanelHTML(content, config) {
     const t = config?.theme || {};
     const accentColor = content?.accentColor || t.accentColor || '#5E4637';
+    const chipSpeed    = config?.chipScrollSpeed || 5;
+    const chipDuration = `${(11 - chipSpeed) * 3}s`;
     const cssVars = `
       --cml-accent: ${accentColor};
       --cml-bg: color-mix(in srgb, ${accentColor} 5%, white);
       --cml-border: color-mix(in srgb, ${accentColor} 18%, white);
       --cml-radius: ${t.borderRadius || '10px'};
       --cml-font: ${t.fontFamily || "'Noto Sans KR', sans-serif"};
+      --cml-chips-duration: ${chipDuration};
     `;
     const badge = content?.badge || 'AI 쇼핑 도우미';
     const title = content?.title || '';
     const body  = content?.body  || '';
-    // 칩 풀에서 3개 무작위 선택 — 새로고침마다 다른 조합
-    const allChips = (content?.chips?.length >= 3)
-      ? content.chips.slice().sort(() => Math.random() - 0.5).slice(0, 3)
-      : (content?.chips || ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?']);
+    // 전체 칩을 무한 스크롤 ticker로 표시
+    const allChips = content?.chips?.length
+      ? content.chips
+      : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'];
+    const chipsHTML = allChips.map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`).join('');
     return `
       <div class="cml-panel" id="cml-panel" style="${cssVars}">
         <div class="cml-badge"><span class="cml-dot"></span>${badge}</div>
@@ -84,9 +88,12 @@
           ${title ? `<div class="cml-card-header"><span class="cml-card-icon"></span><span class="cml-card-title">${title}</span></div>` : ''}
           ${body  ? `<div class="cml-card-body">${body.replace(/\n/g, '<br>')}</div>` : ''}
         </div>` : ''}
-        <div class="cml-chips-label">클릭하면 AI가 바로 답해드려요 →</div>
-        <div class="cml-chips">
-          ${allChips.map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`).join('')}
+        <div class="cml-chips-label">원하는 질문을 클릭하세요 →</div>
+        <div class="cml-chips-wrap">
+          <div class="cml-chips-track">
+            <div class="cml-chips-set">${chipsHTML}</div>
+            <div class="cml-chips-set" aria-hidden="true">${allChips.map(c => `<button class="cml-chip" data-q="${c}" tabindex="-1">${c}</button>`).join('')}</div>
+          </div>
         </div>
       </div>
     `;
@@ -159,11 +166,26 @@
       .cml-chips-label {
         font-size: 11px; color: #999; letter-spacing: 0.04em; margin-bottom: 8px;
       }
-      .cml-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 4px; }
+      .cml-chips-wrap {
+        overflow: hidden; margin-bottom: 4px;
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+        mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+      }
+      .cml-chips-track {
+        display: flex; width: max-content;
+        animation: cml-chips-scroll var(--cml-chips-duration, 18s) linear infinite;
+      }
+      .cml-chips-wrap:hover .cml-chips-track { animation-play-state: paused; }
+      .cml-chips-set { display: flex; gap: 7px; padding-right: 7px; }
+      @keyframes cml-chips-scroll {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+      }
       .cml-chip {
         border: 1px solid #D0D0CC; border-radius: 999px; padding: 7px 14px;
         font-size: 12px; letter-spacing: 0.02em; color: #444; background: #fff;
         cursor: pointer; transition: all 0.15s; font-family: inherit;
+        white-space: nowrap; flex-shrink: 0;
       }
       .cml-chip:hover { border-color: var(--cml-accent); color: var(--cml-accent); background: var(--cml-bg); }
       .cml-answer {
@@ -816,7 +838,7 @@
     target.insertAdjacentElement(position, panel);
 
     // 칩 클릭 → 사이드바 열기 + 이 상품에 특정된 Q&A 요청
-    panel.querySelector('.cml-chips').addEventListener('click', e => {
+    panel.querySelector('.cml-chips-wrap').addEventListener('click', e => {
       const chip = e.target.closest('.cml-chip');
       if (!chip) return;
       document.dispatchEvent(new CustomEvent('chameleon:ask', {

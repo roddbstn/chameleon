@@ -233,6 +233,23 @@
       margin-top: 16px; height: 40px; border-radius: 8px; background: #111;
     }
 
+    /* ── 프리뷰: 칩 ticker ── */
+    .prev-widget-chips {
+      padding: 0 0 10px; flex-shrink: 0; overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 14px), transparent);
+      mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 14px), transparent);
+    }
+    .prev-chips-track {
+      display: flex; width: max-content;
+      animation: prev-chips-scroll var(--prev-chips-duration, 18s) linear infinite;
+    }
+    .prev-widget-chips:hover .prev-chips-track { animation-play-state: paused; }
+    .prev-chips-set { display: flex; gap: 6px; padding-right: 6px; }
+    @keyframes prev-chips-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
     /* ── 프리뷰: 위젯 패널 ── */
     .prev-widget {
       width: var(--prev-width, 320px);
@@ -313,7 +330,7 @@
       border-radius: 999px; padding: 5px 11px;
       font-size: 11px; color: var(--prev-accent, #5E4637);
       background: var(--prev-accent-06, #F5F0EE);
-      white-space: nowrap;
+      white-space: nowrap; flex-shrink: 0;
     }
 
     /* 입력창 */
@@ -459,6 +476,16 @@
       <div class="section-label">스타터 칩 <span style="color:#CCC;font-weight:400;font-size:10px;text-transform:none;letter-spacing:0;">— 로드 시 3개 랜덤 노출</span></div>
       <div class="chip-list" id="chip-list"></div>
       <button class="btn-add-chip" id="btn-add-chip">+ 칩 추가 (최대 7개)</button>
+
+      <div class="field" style="margin-top:18px; margin-bottom:0;">
+        <label class="field-label">스크롤 속도</label>
+        <div class="slider-row">
+          <span style="font-size:11px;color:#CCC;width:24px;flex-shrink:0;">느림</span>
+          <input type="range" id="f-chip-speed" min="1" max="10" value="5" step="1">
+          <span style="font-size:11px;color:#CCC;width:24px;flex-shrink:0;text-align:right;">빠름</span>
+          <div class="slider-val"><span id="val-chip-speed">5</span></div>
+        </div>
+      </div>
     </div>
 
     <!-- 패널 설정 -->
@@ -576,19 +603,20 @@
 <script>
   // ── 상태 ──────────────────────────────────────────────
   const state = {
-    mallId:       '',
-    brandName:    '',
-    accentColor:  '#5E4637',
-    bgColor:      '#FAFAF8',
-    fontFamily:   "'Noto Sans KR', sans-serif",
-    logoUrl:      '',
-    chatName:     'AI 쇼핑 도우미',
-    buttonLabel:  'AI 도우미',
-    welcomeTitle: '안녕하세요! 무엇을 찾으세요?',
-    welcomeBody:  '상품에 대해 궁금한 점을 물어보세요.',
-    chips:        ['소재 알려줘', '사이즈 어떻게 골라?', '이 옷 어디에 어울려?'],
-    panelWidth:   380,
-    defaultOpen:  false,
+    mallId:          '',
+    brandName:       '',
+    accentColor:     '#5E4637',
+    bgColor:         '#FAFAF8',
+    fontFamily:      "'Noto Sans KR', sans-serif",
+    logoUrl:         '',
+    chatName:        'AI 쇼핑 도우미',
+    buttonLabel:     'AI 도우미',
+    welcomeTitle:    '안녕하세요! 무엇을 찾으세요?',
+    welcomeBody:     '상품에 대해 궁금한 점을 물어보세요.',
+    chips:           ['소재 알려줘', '사이즈 어떻게 골라?', '이 옷 어디에 어울려?'],
+    chipScrollSpeed: 5,
+    panelWidth:      380,
+    defaultOpen:     false,
   };
 
   // 폰트 이름 → Google Fonts / CDN URL 매핑
@@ -652,6 +680,11 @@
       if (c.panelWidth)    { state.panelWidth = c.panelWidth; document.getElementById('f-panel-width').value = c.panelWidth; document.getElementById('val-panel-width').textContent = c.panelWidth; }
       if (c.defaultOpen !== undefined) { state.defaultOpen = c.defaultOpen; document.getElementById('f-default-open').checked = c.defaultOpen; }
       if (c.starterChips?.length) { state.chips = c.starterChips; }
+      if (c.chipScrollSpeed) {
+        state.chipScrollSpeed = c.chipScrollSpeed;
+        document.getElementById('f-chip-speed').value = c.chipScrollSpeed;
+        document.getElementById('val-chip-speed').textContent = c.chipScrollSpeed;
+      }
       if (c.fontFamily) {
         state.fontFamily = c.fontFamily;
         const sel = document.getElementById('f-font-family');
@@ -721,6 +754,13 @@
     document.getElementById('f-font-custom').addEventListener('input', e => {
       const val = e.target.value.trim();
       if (val) { state.fontFamily = val; updatePreview(); }
+    });
+
+    // 칩 스크롤 속도
+    document.getElementById('f-chip-speed').addEventListener('input', e => {
+      state.chipScrollSpeed = +e.target.value;
+      document.getElementById('val-chip-speed').textContent = state.chipScrollSpeed;
+      updatePreview();
     });
     bind('f-chat-name',     v => { state.chatName = v; updatePreview(); });
     bind('f-button-label',  v => { state.buttonLabel = v; });
@@ -804,12 +844,21 @@
       logoWrap.innerHTML = `<div class="prev-header-logo-dot" style="background:${hexMix(state.accentColor,'#000000',0.8)}"></div>`;
     }
 
-    // 칩
+    // 칩 ticker
     const chipsEl = document.getElementById('prev-chips');
-    const visibleChips = state.chips.filter(Boolean).slice(0, 5);
-    chipsEl.innerHTML = visibleChips.map(c =>
-      `<div class="prev-chip">${escHtml(c)}</div>`
-    ).join('');
+    const duration = (11 - state.chipScrollSpeed) * 3;
+    chipsEl.style.setProperty('--prev-chips-duration', duration + 's');
+    const visibleChips = state.chips.filter(Boolean);
+    if (visibleChips.length > 0) {
+      const setHTML = visibleChips.map(c => `<div class="prev-chip">${escHtml(c)}</div>`).join('');
+      chipsEl.innerHTML = `
+        <div class="prev-chips-track">
+          <div class="prev-chips-set">${setHTML}</div>
+          <div class="prev-chips-set" aria-hidden="true">${setHTML}</div>
+        </div>`;
+    } else {
+      chipsEl.innerHTML = '';
+    }
   }
 
   // ── 색상 유틸 ─────────────────────────────────────────
