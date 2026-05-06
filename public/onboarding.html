@@ -357,17 +357,29 @@
       margin-bottom: 14px;
     }
 
-    /* 칩 (히어로 바로 아래, 가운데 정렬) */
+    /* 칩 티커 (히어로 바로 아래, 가로 무한 스크롤) */
     .prev-hero-chips {
-      display: flex; flex-wrap: wrap; gap: 6px;
-      justify-content: center; padding: 0 4px;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+      mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+    }
+    .prev-hero-chips-track {
+      display: flex;
+      width: max-content;
+      animation: hero-chips-scroll var(--hero-chips-duration, 16s) linear infinite;
+    }
+    .prev-hero-chips:hover .prev-hero-chips-track { animation-play-state: paused; }
+    .prev-hero-chips-set { display: flex; gap: 6px; padding-right: 6px; }
+    @keyframes hero-chips-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
     .prev-hero-chip {
       border: 1px solid var(--prev-accent-15, #D5C8C3);
       border-radius: 999px; padding: 5px 12px;
       font-size: 11px; color: var(--prev-accent, #5E4637);
       background: var(--prev-accent-06, #F5F0EE);
-      white-space: nowrap;
+      white-space: nowrap; flex-shrink: 0;
     }
 
     /* 메시지 영역 */
@@ -699,11 +711,20 @@
         <div class="prev-widget-hero">
           <div class="prev-hero-title" id="prev-welcome-title">안녕하세요! 무엇을 찾고 있으신가요?</div>
           <div class="prev-hero-body" id="prev-welcome-body">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
-          <!-- 스타터 칩: 환영 메시지 바로 아래, 가운데 정렬 -->
+          <!-- 스타터 칩: 환영 메시지 바로 아래, 가로 무한 스크롤 티커 -->
           <div class="prev-hero-chips" id="prev-chips">
-            <div class="prev-hero-chip">소재 알려줘</div>
-            <div class="prev-hero-chip">사이즈 어떻게 골라?</div>
-            <div class="prev-hero-chip">이 옷 어디에 어울려?</div>
+            <div class="prev-hero-chips-track">
+              <div class="prev-hero-chips-set">
+                <div class="prev-hero-chip">소재 알려줘</div>
+                <div class="prev-hero-chip">사이즈 어떻게 골라?</div>
+                <div class="prev-hero-chip">이 옷 어디에 어울려?</div>
+              </div>
+              <div class="prev-hero-chips-set" aria-hidden="true">
+                <div class="prev-hero-chip">소재 알려줘</div>
+                <div class="prev-hero-chip">사이즈 어떻게 골라?</div>
+                <div class="prev-hero-chip">이 옷 어디에 어울려?</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1077,11 +1098,18 @@
       logoWrap.innerHTML = `<div class="prev-header-logo-dot" style="background:${hexMix(state.accentColor,'#000000',0.8)}"></div>`;
     }
 
-    // 칩 → 히어로 아래 가운데 정렬
+    // 칩 → 히어로 아래 가로 무한 스크롤 티커
     const chipsEl = document.getElementById('prev-chips');
     const visibleChips = state.chips.filter(Boolean);
     if (visibleChips.length > 0) {
-      chipsEl.innerHTML = visibleChips.map(c => `<div class="prev-hero-chip">${escHtml(c)}</div>`).join('');
+      const duration = (11 - state.chipScrollSpeed) * 3;
+      chipsEl.style.setProperty('--hero-chips-duration', duration + 's');
+      const setHTML = visibleChips.map(c => `<div class="prev-hero-chip">${escHtml(c)}</div>`).join('');
+      chipsEl.innerHTML = `
+        <div class="prev-hero-chips-track">
+          <div class="prev-hero-chips-set">${setHTML}</div>
+          <div class="prev-hero-chips-set" aria-hidden="true">${setHTML}</div>
+        </div>`;
     } else {
       chipsEl.innerHTML = '';
     }
