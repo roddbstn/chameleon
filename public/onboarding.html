@@ -28,7 +28,7 @@
     /* ── 레이아웃 ── */
     .layout {
       display: grid;
-      grid-template-columns: 420px 1fr;
+      grid-template-columns: 440px 1fr;
       height: calc(100vh - 52px);
     }
 
@@ -152,7 +152,7 @@
 
     /* ── 저장 버튼 ── */
     .save-bar {
-      position: fixed; bottom: 0; left: 0; width: 420px;
+      position: fixed; bottom: 0; left: 0; width: 440px;
       background: #fff; border-top: 1px solid #E8E8E4;
       padding: 16px 24px;
       display: flex; align-items: center; gap: 12px;
@@ -169,23 +169,70 @@
     .btn-save:disabled { opacity: 0.4; cursor: default; }
     .save-status { font-size: 12px; color: #AAA; white-space: nowrap; }
 
+    /* ── 파일 업로드 ── */
+    .upload-area {
+      border: 1.5px dashed #D0D0CC; border-radius: 8px;
+      padding: 12px 14px; display: flex; align-items: center; gap: 10px;
+      cursor: pointer; transition: border-color 0.15s, background 0.15s;
+      background: #FAFAF8;
+    }
+    .upload-area:hover { border-color: #888; background: #F5F5F3; }
+    .upload-area input[type="file"] { display: none; }
+    .upload-icon { font-size: 18px; flex-shrink: 0; }
+    .upload-text { font-size: 12px; color: #777; line-height: 1.4; }
+    .upload-text strong { color: #333; display: block; font-weight: 500; }
+    .logo-preview-wrap {
+      margin-top: 8px; display: none; align-items: center; gap: 10px;
+    }
+    .logo-preview-wrap.visible { display: flex; }
+    .logo-preview-img {
+      height: 32px; max-width: 120px; object-fit: contain;
+      border: 1px solid #E8E8E4; border-radius: 6px; padding: 4px 8px; background: #fff;
+    }
+    .logo-clear-btn {
+      font-size: 11px; color: #F87171; cursor: pointer; border: none;
+      background: none; padding: 0; font-family: inherit;
+    }
+    .logo-clear-btn:hover { text-decoration: underline; }
+    .url-or-divider {
+      display: flex; align-items: center; gap: 8px; margin: 8px 0;
+      font-size: 11px; color: #CCC;
+    }
+    .url-or-divider::before, .url-or-divider::after {
+      content: ''; flex: 1; height: 1px; background: #E8E8E4;
+    }
+
+    /* ── 체크박스 토글 (테두리 유무) ── */
+    .border-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 8px;
+    }
+    .border-row input[type="checkbox"] {
+      width: 16px; height: 16px; cursor: pointer;
+      accent-color: #111; flex-shrink: 0;
+    }
+    .border-row label { font-size: 12px; color: #555; cursor: pointer; }
+    .border-color-sub {
+      margin-top: 8px; display: none;
+    }
+    .border-color-sub.visible { display: block; }
+
     /* ── 오른쪽: 프리뷰 ── */
     .preview-area {
       background: #EAEAE6;
-      display: flex; align-items: center; justify-content: center;
+      display: flex; align-items: stretch; justify-content: stretch;
       overflow: hidden; position: relative;
     }
     .preview-label {
-      position: absolute; top: 16px; left: 20px;
+      position: absolute; top: 12px; left: 16px;
       font-size: 11px; color: #AAA; letter-spacing: 0.06em;
-      text-transform: uppercase;
+      text-transform: uppercase; z-index: 10;
     }
 
-    /* ── 프리뷰: 브라우저 프레임 ── */
+    /* ── 프리뷰: 브라우저 프레임 (full-size) ── */
     .preview-frame {
-      width: 880px; height: 580px;
-      background: #fff; border-radius: 12px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.16);
+      width: 100%; height: 100%;
+      background: #fff;
       overflow: hidden; display: flex;
       position: relative;
     }
@@ -294,15 +341,32 @@
       color: var(--prev-header-text, #111); opacity: 0.6;
     }
 
-    /* 히어로 텍스트 */
+    /* 히어로 텍스트 (가운데 정렬, 넉넉한 여백) */
     .prev-widget-hero {
-      padding: 16px 18px 0; flex-shrink: 0;
+      padding: 36px 22px 20px; flex-shrink: 0;
+      text-align: center;
     }
     .prev-hero-title {
-      font-size: 16px; font-weight: 700; color: #111;
-      line-height: 1.35; margin-bottom: 4px;
+      font-size: 18px; font-weight: 700; color: #111;
+      line-height: 1.35; margin-bottom: 8px;
     }
-    .prev-hero-body { font-size: 12px; color: #888; line-height: 1.5; }
+    .prev-hero-body {
+      font-size: 12px; color: #888; line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    /* 칩 (히어로 바로 아래, 가운데 정렬) */
+    .prev-hero-chips {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      justify-content: center; padding: 0 4px;
+    }
+    .prev-hero-chip {
+      border: 1px solid var(--prev-accent-15, #D5C8C3);
+      border-radius: 999px; padding: 5px 12px;
+      font-size: 11px; color: var(--prev-accent, #5E4637);
+      background: var(--prev-accent-06, #F5F0EE);
+      white-space: nowrap;
+    }
 
     /* 메시지 영역 */
     .prev-widget-messages {
@@ -313,25 +377,22 @@
       font-size: 12px; line-height: 1.6; max-width: 82%;
     }
     .prev-bubble.ai {
-      background: #F5F3F1; color: #333; align-self: flex-start;
-      border-bottom-left-radius: 3px; border: 1px solid #E8E8E4;
+      background: var(--prev-ai-bg, #F5F3F1);
+      color: var(--prev-ai-text, #333);
+      align-self: flex-start;
+      border-bottom-left-radius: 3px;
+      border: var(--prev-ai-border, 1px solid #E8E8E4);
     }
     .prev-bubble.user {
-      background: var(--prev-accent, #5E4637); color: #fff;
-      align-self: flex-end; border-bottom-right-radius: 3px;
+      background: var(--prev-user-bg, var(--prev-accent, #5E4637));
+      color: var(--prev-user-text, #fff);
+      align-self: flex-end;
+      border-bottom-right-radius: 3px;
+      border: var(--prev-user-border, none);
     }
 
-    /* 칩 영역 */
-    .prev-widget-chips {
-      padding: 0 14px 10px; display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0;
-    }
-    .prev-chip {
-      border: 1px solid var(--prev-accent-15, #D5C8C3);
-      border-radius: 999px; padding: 5px 11px;
-      font-size: 11px; color: var(--prev-accent, #5E4637);
-      background: var(--prev-accent-06, #F5F0EE);
-      white-space: nowrap; flex-shrink: 0;
-    }
+    /* 하단 칩 영역 (사용 안 함 - 히어로로 이동) */
+    .prev-widget-chips { display: none; }
 
     /* 입력창 */
     .prev-widget-input {
@@ -353,14 +414,14 @@
     }
 
     /* ── 반응형 ── */
-    @media (max-width: 1100px) {
-      .layout { grid-template-columns: 380px 1fr; }
-      .save-bar { width: 380px; }
+    @media (max-width: 1200px) {
+      .layout { grid-template-columns: 420px 1fr; }
+      .save-bar { width: 420px; }
     }
     @media (max-width: 900px) {
       .layout { grid-template-columns: 1fr; height: auto; }
       .settings { height: auto; }
-      .preview-area { height: 500px; }
+      .preview-area { height: 600px; }
       .save-bar { width: 100%; }
     }
   </style>
@@ -391,9 +452,23 @@
         <input type="text" id="f-brand-name" placeholder="예: SOLIDHOMME" maxlength="40">
       </div>
       <div class="field">
-        <label class="field-label">로고 이미지 URL <span style="color:#CCC;font-weight:400;">(선택)</span></label>
+        <label class="field-label">로고 이미지 <span style="color:#F87171;font-size:10px;">★ 필수</span></label>
+        <!-- 파일 업로드 -->
+        <div class="upload-area" id="logo-upload-area" onclick="document.getElementById('f-logo-file').click()">
+          <input type="file" id="f-logo-file" accept="image/*">
+          <span class="upload-icon">🖼️</span>
+          <div class="upload-text">
+            <strong>파일 선택 또는 여기에 드래그</strong>
+            PNG, SVG, WebP · 최대 2MB
+          </div>
+        </div>
+        <div class="logo-preview-wrap" id="logo-preview-wrap">
+          <img class="logo-preview-img" id="logo-preview-img" src="" alt="로고 미리보기">
+          <button class="logo-clear-btn" onclick="clearLogo()">파일 제거</button>
+        </div>
+        <div class="url-or-divider">URL로 직접 입력</div>
         <input type="url" id="f-logo-url" placeholder="https://yourstore.com/logo.png">
-        <div class="field-hint">없으면 브랜드 컬러 점(•)으로 표시됩니다</div>
+        <div class="field-hint">파일 업로드 또는 URL 입력 중 하나를 선택하세요</div>
       </div>
     </div>
 
@@ -409,7 +484,7 @@
           </div>
           <input type="text" class="color-hex" id="f-accent" value="#5E4637" placeholder="#5E4637" maxlength="7">
         </div>
-        <div class="field-hint">버튼, 칩, 강조 텍스트에 사용됩니다</div>
+        <div class="field-hint">입력창 버튼, 칩 강조색에 사용됩니다</div>
       </div>
 
       <div class="field">
@@ -420,9 +495,62 @@
           </div>
           <input type="text" class="color-hex" id="f-bg" value="#FAFAF8" placeholder="#FAFAF8" maxlength="7">
         </div>
-        <div class="field-hint">위젯 패널의 배경색입니다 (밝은 색 권장)</div>
+        <div class="field-hint">위젯 패널의 배경색 (밝은 색 권장)</div>
+      </div>
+
+      <!-- 에이전트 말풍선 -->
+      <div class="field">
+        <label class="field-label">에이전트 말풍선</label>
+        <div style="font-size:11px;color:#AAA;margin-bottom:6px;">배경 컬러</div>
+        <div class="color-row">
+          <div class="color-preview-swatch" id="swatch-ai-bg"><input type="color" id="cp-ai-bg" value="#F5F3F1"></div>
+          <input type="text" class="color-hex" id="f-ai-bg" value="#F5F3F1" placeholder="#F5F3F1" maxlength="7">
+        </div>
+        <div style="font-size:11px;color:#AAA;margin:8px 0 6px;">텍스트 컬러</div>
+        <div class="color-row">
+          <div class="color-preview-swatch" id="swatch-ai-text"><input type="color" id="cp-ai-text" value="#333333"></div>
+          <input type="text" class="color-hex" id="f-ai-text" value="#333333" placeholder="#333333" maxlength="7">
+        </div>
+        <div class="border-row">
+          <input type="checkbox" id="f-ai-border" checked>
+          <label for="f-ai-border">테두리 표시</label>
+        </div>
+        <div class="border-color-sub visible" id="ai-border-sub">
+          <div style="font-size:11px;color:#AAA;margin-bottom:6px;">테두리 컬러</div>
+          <div class="color-row">
+            <div class="color-preview-swatch" id="swatch-ai-border"><input type="color" id="cp-ai-border" value="#E8E8E4"></div>
+            <input type="text" class="color-hex" id="f-ai-border-color" value="#E8E8E4" placeholder="#E8E8E4" maxlength="7">
+          </div>
+        </div>
+      </div>
+
+      <!-- 유저 말풍선 -->
+      <div class="field">
+        <label class="field-label">유저 말풍선</label>
+        <div style="font-size:11px;color:#AAA;margin-bottom:6px;">배경 컬러</div>
+        <div class="color-row">
+          <div class="color-preview-swatch" id="swatch-user-bg"><input type="color" id="cp-user-bg" value="#5E4637"></div>
+          <input type="text" class="color-hex" id="f-user-bg" value="#5E4637" placeholder="#5E4637" maxlength="7">
+        </div>
+        <div style="font-size:11px;color:#AAA;margin:8px 0 6px;">텍스트 컬러</div>
+        <div class="color-row">
+          <div class="color-preview-swatch" id="swatch-user-text"><input type="color" id="cp-user-text" value="#FFFFFF"></div>
+          <input type="text" class="color-hex" id="f-user-text" value="#FFFFFF" placeholder="#FFFFFF" maxlength="7">
+        </div>
+        <div class="border-row">
+          <input type="checkbox" id="f-user-border">
+          <label for="f-user-border">테두리 표시</label>
+        </div>
+        <div class="border-color-sub" id="user-border-sub">
+          <div style="font-size:11px;color:#AAA;margin-bottom:6px;">테두리 컬러</div>
+          <div class="color-row">
+            <div class="color-preview-swatch" id="swatch-user-border"><input type="color" id="cp-user-border" value="#E0E0DC"></div>
+            <input type="text" class="color-hex" id="f-user-border-color" value="#E0E0DC" placeholder="#E0E0DC" maxlength="7">
+          </div>
+        </div>
       </div>
     </div>
+
 
     <!-- 글꼴 -->
     <div class="settings-section">
@@ -452,22 +580,22 @@
       <div class="section-label">위젯 텍스트</div>
 
       <div class="field">
-        <label class="field-label">패널 타이틀</label>
-        <input type="text" id="f-chat-name" value="AI 쇼핑 도우미" placeholder="AI 쇼핑 도우미" maxlength="20">
-        <div class="field-hint">패널 상단 헤더에 표시됩니다</div>
+        <label class="field-label">사이드 탭 돋보기 컬러</label>
+        <div class="color-row">
+          <div class="color-preview-swatch" id="swatch-tab-icon">
+            <input type="color" id="cp-tab-icon" value="#FFFFFF">
+          </div>
+          <input type="text" class="color-hex" id="f-tab-icon" value="#FFFFFF" placeholder="#FFFFFF" maxlength="7">
+        </div>
+        <div class="field-hint">사이드 탭 배경은 자동으로 브랜드 메인 컬러로 설정됩니다</div>
       </div>
       <div class="field">
-        <label class="field-label">사이드 탭 라벨</label>
-        <input type="text" id="f-button-label" value="AI 도우미" placeholder="AI 도우미" maxlength="12">
-        <div class="field-hint">패널이 닫혀 있을 때 오른쪽 탭에 표시됩니다</div>
-      </div>
-      <div class="field">
-        <label class="field-label">환영 메시지 제목</label>
-        <input type="text" id="f-welcome-title" value="안녕하세요! 무엇을 찾으세요?" placeholder="안녕하세요! 무엇을 찾으세요?" maxlength="40">
+        <label class="field-label">환영 문구</label>
+        <input type="text" id="f-welcome-title" value="안녕하세요! 무엇을 찾고 있으신가요?" placeholder="안녕하세요! 무엇을 찾고 있으신가요?" maxlength="40">
       </div>
       <div class="field">
         <label class="field-label">환영 메시지 본문</label>
-        <textarea id="f-welcome-body" placeholder="상품에 대해 궁금한 점을 물어보세요." maxlength="120">상품에 대해 궁금한 점을 물어보세요.</textarea>
+        <textarea id="f-welcome-body" placeholder="상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요" maxlength="120">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</textarea>
       </div>
     </div>
 
@@ -561,26 +689,26 @@
             <div id="prev-logo-wrap">
               <div class="prev-header-logo-dot"></div>
             </div>
-            <div class="prev-header-title" id="prev-chat-name">AI 쇼핑 도우미</div>
+            <!-- 패널 타이틀 제거: 로고만 표시 -->
           </div>
           <div class="prev-header-close"></div>
         </div>
 
         <div class="prev-widget-hero">
-          <div class="prev-hero-title" id="prev-welcome-title">안녕하세요! 무엇을 찾으세요?</div>
-          <div class="prev-hero-body" id="prev-welcome-body">상품에 대해 궁금한 점을 물어보세요.</div>
+          <div class="prev-hero-title" id="prev-welcome-title">안녕하세요! 무엇을 찾고 있으신가요?</div>
+          <div class="prev-hero-body" id="prev-welcome-body">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
+          <!-- 스타터 칩: 환영 메시지 바로 아래, 가운데 정렬 -->
+          <div class="prev-hero-chips" id="prev-chips">
+            <div class="prev-hero-chip">소재 알려줘</div>
+            <div class="prev-hero-chip">사이즈 어떻게 골라?</div>
+            <div class="prev-hero-chip">이 옷 어디에 어울려?</div>
+          </div>
         </div>
 
         <div class="prev-widget-messages">
           <div class="prev-bubble ai">소재가 면 100%라서 여름에도 시원하게 입을 수 있어요.</div>
           <div class="prev-bubble user">세탁은 어떻게 해요?</div>
           <div class="prev-bubble ai">찬물 단독 세탁을 권장해요. 드라이 클리닝도 가능합니다.</div>
-        </div>
-
-        <div class="prev-widget-chips" id="prev-chips">
-          <div class="prev-chip">소재 알려줘</div>
-          <div class="prev-chip">사이즈 어떻게 골라?</div>
-          <div class="prev-chip">이 옷 어디에 어울려?</div>
         </div>
 
         <div class="prev-widget-input">
@@ -609,14 +737,24 @@
     bgColor:         '#FAFAF8',
     fontFamily:      "'Noto Sans KR', sans-serif",
     logoUrl:         '',
-    chatName:        'AI 쇼핑 도우미',
-    buttonLabel:     'AI 도우미',
-    welcomeTitle:    '안녕하세요! 무엇을 찾으세요?',
-    welcomeBody:     '상품에 대해 궁금한 점을 물어보세요.',
+    logoDataUrl:     '', // 파일 업로드 시 base64
+    welcomeTitle:    '안녕하세요! 무엇을 찾고 있으신가요?',
+    welcomeBody:     '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요',
     chips:           ['소재 알려줘', '사이즈 어떻게 골라?', '이 옷 어디에 어울려?'],
     chipScrollSpeed: 5,
     panelWidth:      380,
     defaultOpen:     false,
+    // 말풍선 색상
+    aiBubbleBg:      '#F5F3F1',
+    aiBubbleText:    '#333333',
+    aiBubbleBorder:  true,
+    aiBubbleBorderColor: '#E8E8E4',
+    userBubbleBg:    '#5E4637',
+    userBubbleText:  '#FFFFFF',
+    userBubbleBorder: false,
+    userBubbleBorderColor: '#E0E0DC',
+    // 사이드 탭 돋보기 색
+    tabIconColor:    '#FFFFFF',
   };
 
   // 폰트 이름 → Google Fonts / CDN URL 매핑
@@ -673,8 +811,6 @@
       if (c.accentColor)   { state.accentColor = c.accentColor; document.getElementById('f-accent').value = c.accentColor; document.getElementById('cp-accent').value = c.accentColor; }
       if (c.bgColor)       { state.bgColor = c.bgColor; document.getElementById('f-bg').value = c.bgColor; document.getElementById('cp-bg').value = c.bgColor; }
       if (c.logoUrl)       { state.logoUrl = c.logoUrl; document.getElementById('f-logo-url').value = c.logoUrl; }
-      if (c.chatName)      { state.chatName = c.chatName; document.getElementById('f-chat-name').value = c.chatName; }
-      if (c.buttonLabel)   { state.buttonLabel = c.buttonLabel; document.getElementById('f-button-label').value = c.buttonLabel; }
       if (c.welcomeTitle)  { state.welcomeTitle = c.welcomeTitle; document.getElementById('f-welcome-title').value = c.welcomeTitle; }
       if (c.welcomeBody)   { state.welcomeBody = c.welcomeBody; document.getElementById('f-welcome-body').value = c.welcomeBody; }
       if (c.panelWidth)    { state.panelWidth = c.panelWidth; document.getElementById('f-panel-width').value = c.panelWidth; document.getElementById('val-panel-width').textContent = c.panelWidth; }
@@ -692,6 +828,31 @@
         if (opt) { sel.value = c.fontFamily; }
         else { sel.value = 'custom'; document.getElementById('f-font-custom').value = c.fontFamily; document.getElementById('field-custom-font').style.display = 'block'; }
         loadFont(c.fontFamily);
+      }
+      // 말풍선 색상 로드
+      function loadColor(key, fieldId, pickerId, swatchId) {
+        if (!c[key]) return;
+        state[key] = c[key];
+        document.getElementById(fieldId).value = c[key];
+        document.getElementById(pickerId).value = c[key];
+        document.getElementById(swatchId).style.background = c[key];
+      }
+      loadColor('aiBubbleBg',          'f-ai-bg',          'cp-ai-bg',          'swatch-ai-bg');
+      loadColor('aiBubbleText',         'f-ai-text',         'cp-ai-text',         'swatch-ai-text');
+      loadColor('aiBubbleBorderColor',  'f-ai-border-color', 'cp-ai-border',       'swatch-ai-border');
+      loadColor('userBubbleBg',         'f-user-bg',         'cp-user-bg',         'swatch-user-bg');
+      loadColor('userBubbleText',       'f-user-text',       'cp-user-text',       'swatch-user-text');
+      loadColor('userBubbleBorderColor','f-user-border-color','cp-user-border',    'swatch-user-border');
+      loadColor('tabIconColor',         'f-tab-icon',        'cp-tab-icon',        'swatch-tab-icon');
+      if (c.aiBubbleBorder !== undefined) {
+        state.aiBubbleBorder = c.aiBubbleBorder;
+        document.getElementById('f-ai-border').checked = c.aiBubbleBorder;
+        document.getElementById('ai-border-sub').classList.toggle('visible', c.aiBubbleBorder);
+      }
+      if (c.userBubbleBorder !== undefined) {
+        state.userBubbleBorder = c.userBubbleBorder;
+        document.getElementById('f-user-border').checked = c.userBubbleBorder;
+        document.getElementById('user-border-sub').classList.toggle('visible', c.userBubbleBorder);
       }
       document.getElementById('save-status').textContent = '기존 설정 불러옴';
       setTimeout(() => { document.getElementById('save-status').textContent = ''; }, 3000);
@@ -762,14 +923,65 @@
       document.getElementById('val-chip-speed').textContent = state.chipScrollSpeed;
       updatePreview();
     });
-    bind('f-chat-name',     v => { state.chatName = v; updatePreview(); });
-    bind('f-button-label',  v => { state.buttonLabel = v; });
     bind('f-welcome-title', v => { state.welcomeTitle = v; updatePreview(); });
     bind('f-welcome-body',  v => { state.welcomeBody = v; updatePreview(); });
 
     // 색상 — 컬러 피커 ↔ HEX 입력 양방향
-    bindColor('accent', 'f-accent', 'cp-accent', v => { state.accentColor = v; updatePreview(); });
-    bindColor('bg',     'f-bg',     'cp-bg',     v => { state.bgColor = v; updatePreview(); });
+    bindColor('accent',      'f-accent',           'cp-accent',      v => { state.accentColor = v; updatePreview(); });
+    bindColor('bg',          'f-bg',               'cp-bg',          v => { state.bgColor = v; updatePreview(); });
+    bindColor('ai-bg',       'f-ai-bg',            'cp-ai-bg',       v => { state.aiBubbleBg = v; updatePreview(); });
+    bindColor('ai-text',     'f-ai-text',          'cp-ai-text',     v => { state.aiBubbleText = v; updatePreview(); });
+    bindColor('ai-border',   'f-ai-border-color',  'cp-ai-border',   v => { state.aiBubbleBorderColor = v; updatePreview(); });
+    bindColor('user-bg',     'f-user-bg',          'cp-user-bg',     v => { state.userBubbleBg = v; updatePreview(); });
+    bindColor('user-text',   'f-user-text',        'cp-user-text',   v => { state.userBubbleText = v; updatePreview(); });
+    bindColor('user-border', 'f-user-border-color','cp-user-border', v => { state.userBubbleBorderColor = v; updatePreview(); });
+    bindColor('tab-icon',    'f-tab-icon',         'cp-tab-icon',    v => { state.tabIconColor = v; });
+
+    // 테두리 체크박스
+    document.getElementById('f-ai-border').addEventListener('change', e => {
+      state.aiBubbleBorder = e.target.checked;
+      document.getElementById('ai-border-sub').classList.toggle('visible', e.target.checked);
+      updatePreview();
+    });
+    document.getElementById('f-user-border').addEventListener('change', e => {
+      state.userBubbleBorder = e.target.checked;
+      document.getElementById('user-border-sub').classList.toggle('visible', e.target.checked);
+      updatePreview();
+    });
+
+    // 로고 URL 직접 입력
+    bind('f-logo-url', v => { state.logoUrl = v; state.logoDataUrl = ''; updatePreview(); });
+
+    // 로고 파일 업로드
+    const fileInput = document.getElementById('f-logo-file');
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { alert('파일 크기가 2MB를 초과합니다.'); return; }
+      const reader = new FileReader();
+      reader.onload = ev => {
+        state.logoDataUrl = ev.target.result;
+        state.logoUrl = '';
+        document.getElementById('f-logo-url').value = '';
+        document.getElementById('logo-preview-img').src = ev.target.result;
+        document.getElementById('logo-preview-wrap').classList.add('visible');
+        updatePreview();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // 드래그&드롭
+    const uploadArea = document.getElementById('logo-upload-area');
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.style.borderColor = '#555'; });
+    uploadArea.addEventListener('dragleave', () => { uploadArea.style.borderColor = ''; });
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault(); uploadArea.style.borderColor = '';
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const dt = new DataTransfer(); dt.items.add(file); fileInput.files = dt.files;
+        fileInput.dispatchEvent(new Event('change'));
+      }
+    });
 
     // 슬라이더
     document.getElementById('f-panel-width').addEventListener('input', e => {
@@ -782,6 +994,15 @@
     document.getElementById('f-default-open').addEventListener('change', e => {
       state.defaultOpen = e.target.checked;
     });
+  }
+
+  // 로고 파일 제거
+  function clearLogo() {
+    state.logoDataUrl = '';
+    document.getElementById('logo-preview-img').src = '';
+    document.getElementById('logo-preview-wrap').classList.remove('visible');
+    document.getElementById('f-logo-file').value = '';
+    updatePreview();
   }
 
   function bind(id, fn) {
@@ -817,7 +1038,7 @@
   function updatePreview() {
     const widget = document.getElementById('prev-widget');
 
-    // CSS 변수 주입 (Kinect 패턴과 동일)
+    // CSS 변수 주입
     widget.style.setProperty('--prev-accent',    state.accentColor);
     widget.style.setProperty('--prev-bg',        state.bgColor);
     widget.style.setProperty('--prev-width',     state.panelWidth + 'px');
@@ -826,36 +1047,39 @@
     widget.style.setProperty('--prev-accent-15', hexMix(state.accentColor, '#ffffff', 0.85));
     widget.style.setProperty('--prev-accent-06', hexMix(state.accentColor, '#ffffff', 0.94));
 
+    // 말풍선 CSS 변수
+    widget.style.setProperty('--prev-ai-bg',     state.aiBubbleBg);
+    widget.style.setProperty('--prev-ai-text',   state.aiBubbleText);
+    widget.style.setProperty('--prev-ai-border',
+      state.aiBubbleBorder ? `1px solid ${state.aiBubbleBorderColor}` : 'none');
+    widget.style.setProperty('--prev-user-bg',   state.userBubbleBg);
+    widget.style.setProperty('--prev-user-text', state.userBubbleText);
+    widget.style.setProperty('--prev-user-border',
+      state.userBubbleBorder ? `1px solid ${state.userBubbleBorderColor}` : 'none');
+
     // 글꼴
     widget.style.fontFamily = state.fontFamily;
     const fp = document.getElementById('font-preview');
     fp.style.fontFamily = state.fontFamily;
 
     // 텍스트
-    document.getElementById('prev-chat-name').textContent    = state.chatName || 'AI 쇼핑 도우미';
     document.getElementById('prev-welcome-title').textContent = state.welcomeTitle || '';
     document.getElementById('prev-welcome-body').textContent  = state.welcomeBody || '';
 
-    // 로고
+    // 로고 (파일 업로드 우선, URL 차순)
     const logoWrap = document.getElementById('prev-logo-wrap');
-    if (state.logoUrl) {
-      logoWrap.innerHTML = `<img class="prev-header-logo" src="${escHtml(state.logoUrl)}" onerror="this.style.display='none'">`;
+    const logoSrc = state.logoDataUrl || state.logoUrl;
+    if (logoSrc) {
+      logoWrap.innerHTML = `<img class="prev-header-logo" src="${escHtml(logoSrc)}" onerror="this.style.display='none'">`;
     } else {
       logoWrap.innerHTML = `<div class="prev-header-logo-dot" style="background:${hexMix(state.accentColor,'#000000',0.8)}"></div>`;
     }
 
-    // 칩 ticker
+    // 칩 → 히어로 아래 가운데 정렬
     const chipsEl = document.getElementById('prev-chips');
-    const duration = (11 - state.chipScrollSpeed) * 3;
-    chipsEl.style.setProperty('--prev-chips-duration', duration + 's');
     const visibleChips = state.chips.filter(Boolean);
     if (visibleChips.length > 0) {
-      const setHTML = visibleChips.map(c => `<div class="prev-chip">${escHtml(c)}</div>`).join('');
-      chipsEl.innerHTML = `
-        <div class="prev-chips-track">
-          <div class="prev-chips-set">${setHTML}</div>
-          <div class="prev-chips-set" aria-hidden="true">${setHTML}</div>
-        </div>`;
+      chipsEl.innerHTML = visibleChips.map(c => `<div class="prev-hero-chip">${escHtml(c)}</div>`).join('');
     } else {
       chipsEl.innerHTML = '';
     }
@@ -902,17 +1126,25 @@
       mallId,
       brandName: document.getElementById('f-brand-name').value.trim() || state.brandName,
       theme_config: {
-        accentColor:  state.accentColor,
-        bgColor:      state.bgColor,
-        fontFamily:   state.fontFamily,
-        logoUrl:      state.logoUrl,
-        chatName:     state.chatName,
-        buttonLabel:  state.buttonLabel,
-        welcomeTitle: state.welcomeTitle,
-        welcomeBody:  state.welcomeBody,
-        starterChips: state.chips.filter(Boolean),
-        panelWidth:   state.panelWidth,
-        defaultOpen:  state.defaultOpen,
+        accentColor:           state.accentColor,
+        bgColor:               state.bgColor,
+        fontFamily:            state.fontFamily,
+        logoUrl:               state.logoDataUrl || state.logoUrl,
+        welcomeTitle:          state.welcomeTitle,
+        welcomeBody:           state.welcomeBody,
+        starterChips:          state.chips.filter(Boolean),
+        chipScrollSpeed:       state.chipScrollSpeed,
+        panelWidth:            state.panelWidth,
+        defaultOpen:           state.defaultOpen,
+        aiBubbleBg:            state.aiBubbleBg,
+        aiBubbleText:          state.aiBubbleText,
+        aiBubbleBorder:        state.aiBubbleBorder,
+        aiBubbleBorderColor:   state.aiBubbleBorderColor,
+        userBubbleBg:          state.userBubbleBg,
+        userBubbleText:        state.userBubbleText,
+        userBubbleBorder:      state.userBubbleBorder,
+        userBubbleBorderColor: state.userBubbleBorderColor,
+        tabIconColor:          state.tabIconColor,
       },
     };
 
