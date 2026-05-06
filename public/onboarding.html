@@ -14,22 +14,24 @@
       min-height: 100vh;
     }
 
-    /* ── 헤더 ── */
-    .header {
-      background: #111; color: #fff;
-      padding: 0 28px; height: 52px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 200;
-    }
-    .header-logo { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
-    .header-logo span { color: #A8FF78; }
-    .header-mall { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.04em; }
-
     /* ── 레이아웃 ── */
     .layout {
       display: grid;
       grid-template-columns: 440px 1fr;
-      height: calc(100vh - 52px);
+      height: 100vh;
+    }
+
+    /* ── 패널 내 로고 ── */
+    .panel-logo {
+      font-size: 16px; font-weight: 800; letter-spacing: -0.03em;
+      color: #111; margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #F0F0EE;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .panel-logo-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #A8FF78; flex-shrink: 0;
     }
 
     /* ── 왼쪽: 설정 패널 ── */
@@ -428,15 +430,15 @@
 </head>
 <body>
 
-<header class="header">
-  <div class="header-logo">Chame<span>leon</span></div>
-  <div class="header-mall" id="header-mall-id">브랜드 설정</div>
-</header>
-
 <div class="layout">
 
   <!-- ── 왼쪽: 설정 폼 ── -->
   <aside class="settings">
+    <!-- 패널 내 로고 -->
+    <div class="panel-logo">
+      <div class="panel-logo-dot"></div>
+      Chame<span style="color:#111;opacity:0.45;">leon</span>
+    </div>
 
     <!-- 브랜드 정보 -->
     <div class="settings-section">
