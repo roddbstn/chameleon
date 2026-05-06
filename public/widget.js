@@ -99,63 +99,31 @@
     const style = document.createElement('style');
     style.id = 'cml-styles';
     style.textContent = `
-      /* ── body push (page-shift) ── */
-      html.cml-page-shift-active {
-        overflow-x: hidden !important;
-      }
-      body {
+      /* ── push: html 너비 자체를 줄여 브라우저 창 좁힌 것처럼 리플로우 ── */
+      html {
         transition: width 0.32s cubic-bezier(0.4,0,0.2,1) !important;
-        box-sizing: border-box;
       }
-      body.cml-page-shift {
-        /* margin-right 없이 width만 줄임 → 브라우저 창 좁힌 것과 동일하게 리플로우 */
-        width: calc(100vw - var(--cml-shift-width, 380px)) !important;
+      html.cml-push {
+        width: calc(100% - var(--cml-shift-width, 380px)) !important;
         min-width: 0 !important;
         overflow-x: hidden !important;
-        margin-right: 0 !important;
+      }
+      /* body/inner containers: min-width 제거해 실제로 좁혀지게 */
+      html.cml-push body,
+      html.cml-push #wrap,
+      html.cml-push #container,
+      html.cml-push #contents,
+      html.cml-push .inner,
+      html.cml-push [class*="layout-"] {
+        min-width: 0 !important;
+        box-sizing: border-box;
       }
       body.cml-resizing, body.cml-resizing * { transition: none !important; }
 
-      /* 고정 헤더: 뷰포트 기준이므로 명시적 너비 지정 */
-      body.cml-page-shift :is(
-        header, #header, .header, .xans-layout-header,
-        .fixed_header, [class*="gnb"], [class*="GNB"], [class*="Header"],
-        .sticky-header, .fixed-header, [data-sticky]
-      ) {
-        width: calc(100vw - var(--cml-shift-width, 380px)) !important;
-        max-width: calc(100vw - var(--cml-shift-width, 380px)) !important;
-        transition: width 0.32s cubic-bezier(0.4,0,0.2,1) !important;
-      }
-
-      /* Cafe24 내부 컨테이너: min-width 제거해 실제로 좁혀지게 */
-      body.cml-page-shift #wrap,
-      body.cml-page-shift #container,
-      body.cml-page-shift #contents,
-      body.cml-page-shift .inner,
-      body.cml-page-shift .xans-layout-contentwrap {
-        min-width: 0 !important;
-        max-width: 100% !important;
-      }
-
-      /* 오버레이 레이어 */
-      body.cml-page-shift :is(
-        .cart-drawer, .mini-cart, .drawer,
-        .dropdown-menu, [role="dialog"], [role="menu"]
-      ) {
-        max-width: calc(100vw - var(--cml-shift-width, 380px)) !important;
-        box-sizing: border-box;
-      }
-
       @media (max-width: 767px) {
-        body.cml-page-shift {
-          width: 100vw !important;
+        html.cml-push {
+          width: 100% !important;
           min-width: 0 !important;
-        }
-        body.cml-page-shift :is(header, #header, .header, .xans-layout-header,
-          .fixed_header, [class*="gnb"], [class*="GNB"], [class*="Header"],
-          .sticky-header, .fixed-header, [data-sticky]) {
-          width: 100vw !important;
-          max-width: 100vw !important;
         }
       }
 
@@ -1097,28 +1065,41 @@
     const SIDEBAR_W  = config?.panel?.width || 380;
     const backdrop   = null; // overlay 모드 사용 안 함
 
+    // position:fixed 헤더 선택자 (Cafe24 + 일반)
+    const FIXED_HDR_SEL = [
+      'header', '#header', '.header',
+      '.xans-layout-header', '.fixed_header',
+      '[class*="gnb"]', '[class*="GNB"]',
+      '.sticky-header', '.fixed-header',
+    ].join(',');
+
+    function applyFixedHeaderWidth(px) {
+      document.querySelectorAll(FIXED_HDR_SEL).forEach(el => {
+        const pos = getComputedStyle(el).position;
+        if (pos === 'fixed' || pos === 'sticky') {
+          el.style.transition = 'width 0.32s cubic-bezier(0.4,0,0.2,1), max-width 0.32s cubic-bezier(0.4,0,0.2,1)';
+          el.style.width    = px != null ? `calc(100vw - ${px}px)` : '';
+          el.style.maxWidth = px != null ? `calc(100vw - ${px}px)` : '';
+        }
+      });
+    }
+
     function openSidebar() {
       panel.classList.add('cml-open');
       tab.classList.add('cml-hidden');
       const isMobile = window.innerWidth < 768;
-      if (PANEL_MODE === 'push' && !isMobile) {
-        document.body.style.setProperty('--cml-shift-width', `${SIDEBAR_W}px`);
-        document.body.classList.add('cml-page-shift');
-        document.documentElement.classList.add('cml-page-shift-active');
-      } else if (backdrop) {
-        backdrop.style.display = 'block';
+      if (!isMobile) {
+        document.documentElement.style.setProperty('--cml-shift-width', `${SIDEBAR_W}px`);
+        document.documentElement.classList.add('cml-push');
+        applyFixedHeaderWidth(SIDEBAR_W);
       }
       inputEl.focus();
     }
     function closeSidebar() {
       panel.classList.remove('cml-open');
       tab.classList.remove('cml-hidden');
-      if (PANEL_MODE === 'push') {
-        document.body.classList.remove('cml-page-shift');
-        document.documentElement.classList.remove('cml-page-shift-active');
-      } else {
-        if (backdrop) backdrop.style.display = 'none';
-      }
+      document.documentElement.classList.remove('cml-push');
+      applyFixedHeaderWidth(null);
     }
 
     // ── 드래그 리사이즈 ──
@@ -1139,8 +1120,9 @@
       if (!isResizing) return;
       const newW = Math.min(Math.max(rsStartW + (rsStartX - e.clientX), 320), window.innerWidth * 0.92);
       panel.style.width = `${newW}px`;
-      if (PANEL_MODE === 'push' && window.innerWidth >= 768) {
-        document.body.style.setProperty('--cml-shift-width', `${newW}px`);
+      if (window.innerWidth >= 768) {
+        document.documentElement.style.setProperty('--cml-shift-width', `${newW}px`);
+        applyFixedHeaderWidth(newW);
       }
     });
     document.addEventListener('mouseup', () => {
