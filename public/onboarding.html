@@ -64,6 +64,17 @@
       font-family: inherit; background: #fff; outline: none;
       transition: border-color 0.15s;
     }
+    select { cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+    }
+    select:focus { border-color: #999; }
+    .font-preview {
+      margin-top: 10px; padding: 11px 14px;
+      border: 1px solid #E8E8E4; border-radius: 8px;
+      font-size: 15px; color: #444; background: #FAFAF8;
+      letter-spacing: 0.02em; transition: font-family 0.2s;
+    }
     input[type="text"]:focus,
     input[type="url"]:focus,
     textarea:focus { border-color: #999; }
@@ -396,6 +407,29 @@
       </div>
     </div>
 
+    <!-- 글꼴 -->
+    <div class="settings-section">
+      <div class="section-label">글꼴</div>
+      <div class="field">
+        <label class="field-label">위젯 기본 글꼴</label>
+        <select id="f-font-family">
+          <option value="'Noto Sans KR', sans-serif"       data-google="Noto+Sans+KR:wght@400;500;600">Noto Sans KR (추천)</option>
+          <option value="'Pretendard', sans-serif"          data-cdn="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">Pretendard</option>
+          <option value="'Apple SD Gothic Neo', -apple-system, sans-serif">Apple SD Gothic Neo (시스템)</option>
+          <option value="'Spoqa Han Sans Neo', sans-serif"  data-google="Spoqa+Han+Sans+Neo:wght@400;500;700">Spoqa Han Sans Neo</option>
+          <option value="'Gmarket Sans', sans-serif"        data-google="GmarketSans:wght@400;700">Gmarket Sans</option>
+          <option value="'Nanum Gothic', sans-serif"        data-google="Nanum+Gothic:wght@400;700;800">Nanum Gothic</option>
+          <option value="'Nanum Myeongjo', serif"           data-google="Nanum+Myeongjo">Nanum Myeongjo (명조)</option>
+          <option value="custom">직접 입력...</option>
+        </select>
+        <div class="field" id="field-custom-font" style="display:none; margin-top:10px; margin-bottom:0;">
+          <input type="text" id="f-font-custom" placeholder="예: 'Cafe24 Ssurround', sans-serif">
+          <div class="field-hint">CSS font-family 형식으로 입력 (따옴표 포함)</div>
+        </div>
+        <div class="font-preview" id="font-preview">가나다 ABC — 쇼핑몰 AI 도우미</div>
+      </div>
+    </div>
+
     <!-- 위젯 텍스트 -->
     <div class="settings-section">
       <div class="section-label">위젯 텍스트</div>
@@ -546,6 +580,7 @@
     brandName:    '',
     accentColor:  '#5E4637',
     bgColor:      '#FAFAF8',
+    fontFamily:   "'Noto Sans KR', sans-serif",
     logoUrl:      '',
     chatName:     'AI 쇼핑 도우미',
     buttonLabel:  'AI 도우미',
@@ -555,6 +590,32 @@
     panelWidth:   380,
     defaultOpen:  false,
   };
+
+  // 폰트 이름 → Google Fonts / CDN URL 매핑
+  const FONT_SOURCES = {
+    "'Noto Sans KR', sans-serif":                   { google: 'Noto+Sans+KR:wght@400;500;600' },
+    "'Pretendard', sans-serif":                      { cdn: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css' },
+    "'Spoqa Han Sans Neo', sans-serif":              { google: 'Spoqa+Han+Sans+Neo:wght@400;500;700' },
+    "'Gmarket Sans', sans-serif":                    { google: 'GmarketSans:wght@400;700' },
+    "'Nanum Gothic', sans-serif":                    { google: 'Nanum+Gothic:wght@400;700;800' },
+    "'Nanum Myeongjo', serif":                       { google: 'Nanum+Myeongjo' },
+  };
+  const loadedFonts = new Set();
+
+  function loadFont(fontFamily) {
+    if (loadedFonts.has(fontFamily)) return;
+    const src = FONT_SOURCES[fontFamily];
+    if (!src) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    if (src.google) {
+      link.href = `https://fonts.googleapis.com/css2?family=${src.google}&display=swap`;
+    } else if (src.cdn) {
+      link.href = src.cdn;
+    }
+    document.head.appendChild(link);
+    loadedFonts.add(fontFamily);
+  }
 
   // ── URL에서 mall_id 읽기 ──────────────────────────────
   const urlParams = new URLSearchParams(location.search);
@@ -591,6 +652,14 @@
       if (c.panelWidth)    { state.panelWidth = c.panelWidth; document.getElementById('f-panel-width').value = c.panelWidth; document.getElementById('val-panel-width').textContent = c.panelWidth; }
       if (c.defaultOpen !== undefined) { state.defaultOpen = c.defaultOpen; document.getElementById('f-default-open').checked = c.defaultOpen; }
       if (c.starterChips?.length) { state.chips = c.starterChips; }
+      if (c.fontFamily) {
+        state.fontFamily = c.fontFamily;
+        const sel = document.getElementById('f-font-family');
+        const opt = [...sel.options].find(o => o.value === c.fontFamily);
+        if (opt) { sel.value = c.fontFamily; }
+        else { sel.value = 'custom'; document.getElementById('f-font-custom').value = c.fontFamily; document.getElementById('field-custom-font').style.display = 'block'; }
+        loadFont(c.fontFamily);
+      }
       document.getElementById('save-status').textContent = '기존 설정 불러옴';
       setTimeout(() => { document.getElementById('save-status').textContent = ''; }, 3000);
     } catch (e) {
@@ -634,6 +703,25 @@
   function bindEvents() {
     bind('f-brand-name',    v => { state.brandName = v; });
     bind('f-logo-url',      v => { state.logoUrl = v; updatePreview(); });
+
+    // 글꼴 선택
+    document.getElementById('f-font-family').addEventListener('change', e => {
+      const val = e.target.value;
+      const customField = document.getElementById('field-custom-font');
+      if (val === 'custom') {
+        customField.style.display = 'block';
+        document.getElementById('f-font-custom').focus();
+      } else {
+        customField.style.display = 'none';
+        state.fontFamily = val;
+        loadFont(val);
+        updatePreview();
+      }
+    });
+    document.getElementById('f-font-custom').addEventListener('input', e => {
+      const val = e.target.value.trim();
+      if (val) { state.fontFamily = val; updatePreview(); }
+    });
     bind('f-chat-name',     v => { state.chatName = v; updatePreview(); });
     bind('f-button-label',  v => { state.buttonLabel = v; });
     bind('f-welcome-title', v => { state.welcomeTitle = v; updatePreview(); });
@@ -697,6 +785,11 @@
     widget.style.setProperty('--prev-header-text', isDark(state.accentColor) ? '#fff' : '#111');
     widget.style.setProperty('--prev-accent-15', hexMix(state.accentColor, '#ffffff', 0.85));
     widget.style.setProperty('--prev-accent-06', hexMix(state.accentColor, '#ffffff', 0.94));
+
+    // 글꼴
+    widget.style.fontFamily = state.fontFamily;
+    const fp = document.getElementById('font-preview');
+    fp.style.fontFamily = state.fontFamily;
 
     // 텍스트
     document.getElementById('prev-chat-name').textContent    = state.chatName || 'AI 쇼핑 도우미';
@@ -762,6 +855,7 @@
       theme_config: {
         accentColor:  state.accentColor,
         bgColor:      state.bgColor,
+        fontFamily:   state.fontFamily,
         logoUrl:      state.logoUrl,
         chatName:     state.chatName,
         buttonLabel:  state.buttonLabel,
