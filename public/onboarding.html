@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chameleon — 브랜드 설정</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', -apple-system, sans-serif;
+      background: #F5F5F3;
+      color: #111;
+      min-height: 100vh;
+    }
+
+    /* ── 헤더 ── */
+    .header {
+      background: #111; color: #fff;
+      padding: 0 28px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 200;
+    }
+    .header-logo { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+    .header-logo span { color: #A8FF78; }
+    .header-mall { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.04em; }
+
+    /* ── 레이아웃 ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      height: calc(100vh - 52px);
+    }
+
+    /* ── 왼쪽: 설정 패널 ── */
+    .settings {
+      background: #fff;
+      border-right: 1px solid #E8E8E4;
+      overflow-y: auto;
+      padding: 28px 24px 120px;
+    }
+    .settings-section {
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid #F0F0EE;
+    }
+    .settings-section:last-of-type { border-bottom: none; }
+    .section-label {
+      font-size: 11px; font-weight: 600; color: #999;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    /* ── 입력 그룹 ── */
+    .field { margin-bottom: 14px; }
+    .field-label {
+      font-size: 12px; font-weight: 500; color: #555;
+      margin-bottom: 6px; display: block; letter-spacing: 0.02em;
+    }
+    .field-hint { font-size: 11px; color: #AAA; margin-top: 4px; }
+    input[type="text"], input[type="url"], textarea, select {
+      width: 100%; border: 1px solid #E0E0DC; border-radius: 8px;
+      padding: 9px 12px; font-size: 13px; color: #111;
+      font-family: inherit; background: #fff; outline: none;
+      transition: border-color 0.15s;
+    }
+    input[type="text"]:focus,
+    input[type="url"]:focus,
+    textarea:focus { border-color: #999; }
+    input[type="text"]:read-only { background: #F5F5F3; color: #888; cursor: default; }
+    textarea { resize: vertical; min-height: 64px; line-height: 1.6; }
+
+    /* ── 색상 피커 ── */
+    .color-row { display: flex; align-items: center; gap: 10px; }
+    .color-preview-swatch {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1px solid #E0E0DC; cursor: pointer; flex-shrink: 0;
+      position: relative; overflow: hidden;
+    }
+    .color-preview-swatch input[type="color"] {
+      position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px);
+      border: none; padding: 0; cursor: pointer; opacity: 0;
+    }
+    .color-hex { flex: 1; font-family: 'SF Mono', monospace; font-size: 13px; }
+
+    /* ── 칩 리스트 ── */
+    .chip-list { display: flex; flex-direction: column; gap: 8px; }
+    .chip-row { display: flex; align-items: center; gap: 8px; }
+    .chip-row input { flex: 1; }
+    .chip-remove {
+      width: 28px; height: 28px; border-radius: 50%; border: 1px solid #E0E0DC;
+      background: #fff; color: #AAA; cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.15s;
+    }
+    .chip-remove:hover { border-color: #F87171; color: #F87171; }
+    .btn-add-chip {
+      width: 100%; padding: 8px; border: 1px dashed #D0D0CC; border-radius: 8px;
+      background: transparent; color: #AAA; font-size: 12px; cursor: pointer;
+      font-family: inherit; transition: all 0.15s; margin-top: 4px;
+    }
+    .btn-add-chip:hover { border-color: #999; color: #555; }
+
+    /* ── 슬라이더 ── */
+    .slider-row { display: flex; align-items: center; gap: 12px; }
+    input[type="range"] {
+      flex: 1; height: 4px; border-radius: 2px; cursor: pointer;
+      -webkit-appearance: none; background: #E0E0DC; outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 16px; height: 16px;
+      border-radius: 50%; background: #111; cursor: pointer;
+      border: 2px solid #fff; box-shadow: 0 0 0 1px #111;
+    }
+    .slider-val {
+      font-size: 12px; color: #555; width: 40px; text-align: right;
+      font-family: 'SF Mono', monospace; flex-shrink: 0;
+    }
+
+    /* ── 토글 ── */
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; }
+    .toggle-desc { font-size: 13px; color: #333; }
+    .toggle-sub { font-size: 11px; color: #AAA; margin-top: 2px; }
+    .toggle {
+      position: relative; width: 42px; height: 24px; flex-shrink: 0;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0; border-radius: 12px;
+      background: #E0E0DC; cursor: pointer; transition: background 0.2s;
+    }
+    .toggle-track::after {
+      content: ''; position: absolute;
+      top: 3px; left: 3px; width: 18px; height: 18px;
+      border-radius: 50%; background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .toggle input:checked + .toggle-track { background: #111; }
+    .toggle input:checked + .toggle-track::after { transform: translateX(18px); }
+
+    /* ── 저장 버튼 ── */
+    .save-bar {
+      position: fixed; bottom: 0; left: 0; width: 420px;
+      background: #fff; border-top: 1px solid #E8E8E4;
+      padding: 16px 24px;
+      display: flex; align-items: center; gap: 12px;
+      z-index: 100;
+    }
+    .btn-save {
+      flex: 1; padding: 12px; border-radius: 10px;
+      background: #111; color: #fff; border: none;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      font-family: inherit; letter-spacing: 0.02em;
+      transition: opacity 0.15s;
+    }
+    .btn-save:hover { opacity: 0.85; }
+    .btn-save:disabled { opacity: 0.4; cursor: default; }
+    .save-status { font-size: 12px; color: #AAA; white-space: nowrap; }
+
+    /* ── 오른쪽: 프리뷰 ── */
+    .preview-area {
+      background: #EAEAE6;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .preview-label {
+      position: absolute; top: 16px; left: 20px;
+      font-size: 11px; color: #AAA; letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── 프리뷰: 브라우저 프레임 ── */
+    .preview-frame {
+      width: 880px; height: 580px;
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.16);
+      overflow: hidden; display: flex;
+      position: relative;
+    }
+
+    /* ── 프리뷰: 가짜 PDP 배경 ── */
+    .prev-store {
+      flex: 1; min-width: 0;
+      display: flex; padding: 0;
+      flex-direction: column; overflow: hidden;
+    }
+    .prev-store-nav {
+      height: 44px; border-bottom: 1px solid #EBEBEB;
+      display: flex; align-items: center; padding: 0 20px; gap: 16px;
+      flex-shrink: 0;
+    }
+    .prev-nav-logo {
+      width: 80px; height: 12px; border-radius: 3px; background: #E0E0DC;
+    }
+    .prev-nav-links { display: flex; gap: 12px; }
+    .prev-nav-link {
+      width: 40px; height: 8px; border-radius: 2px; background: #EBEBEB;
+    }
+    .prev-store-body {
+      flex: 1; overflow: hidden;
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .prev-product-img {
+      background: #F5F5F3;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .prev-product-img-inner {
+      width: 75%; aspect-ratio: 3/4; background: #E8E8E4; border-radius: 4px;
+    }
+    .prev-product-info {
+      padding: 24px 20px; display: flex; flex-direction: column; gap: 12px;
+    }
+    .prev-info-tag { width: 60px; height: 8px; border-radius: 2px; background: #EBEBEB; }
+    .prev-info-title { width: 100%; height: 16px; border-radius: 3px; background: #E0E0DC; }
+    .prev-info-title2 { width: 70%; height: 16px; border-radius: 3px; background: #E0E0DC; }
+    .prev-info-price { width: 80px; height: 18px; border-radius: 3px; background: #CACAC6; margin-top: 4px; }
+    .prev-info-desc { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+    .prev-info-line { height: 8px; border-radius: 2px; background: #EBEBEB; }
+    .prev-info-line.short { width: 65%; }
+    .prev-info-btn {
+      margin-top: 16px; height: 40px; border-radius: 8px; background: #111;
+    }
+
+    /* ── 프리뷰: 위젯 패널 ── */
+    .prev-widget {
+      width: var(--prev-width, 320px);
+      flex-shrink: 0;
+      display: flex; flex-direction: column;
+      border-left: 1px solid rgba(0,0,0,0.08);
+      background: var(--prev-bg, #FAFAF8);
+      transition: width 0.2s;
+      overflow: hidden;
+    }
+
+    /* 패널 헤더 */
+    .prev-widget-header {
+      padding: 14px 18px;
+      background: var(--prev-header-bg);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .prev-header-left { display: flex; align-items: center; gap: 8px; }
+    .prev-header-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #22C55E; flex-shrink: 0;
+    }
+    .prev-header-logo { height: 24px; object-fit: contain; display: block; }
+    .prev-header-logo-dot {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,0,0,0.12);
+    }
+    .prev-header-title {
+      font-size: 14px; font-weight: 700;
+      color: var(--prev-header-text, #111);
+      letter-spacing: 0.01em;
+    }
+    .prev-header-close {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(0,0,0,0.08);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .prev-header-close::before {
+      content: '×'; font-size: 16px;
+      color: var(--prev-header-text, #111); opacity: 0.6;
+    }
+
+    /* 히어로 텍스트 */
+    .prev-widget-hero {
+      padding: 16px 18px 0; flex-shrink: 0;
+    }
+    .prev-hero-title {
+      font-size: 16px; font-weight: 700; color: #111;
+      line-height: 1.35; margin-bottom: 4px;
+    }
+    .prev-hero-body { font-size: 12px; color: #888; line-height: 1.5; }
+
+    /* 메시지 영역 */
+    .prev-widget-messages {
+      flex: 1; overflow: hidden; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .prev-bubble {
+      padding: 10px 13px; border-radius: 12px;
+      font-size: 12px; line-height: 1.6; max-width: 82%;
+    }
+    .prev-bubble.ai {
+      background: #F5F3F1; color: #333; align-self: flex-start;
+      border-bottom-left-radius: 3px; border: 1px solid #E8E8E4;
+    }
+    .prev-bubble.user {
+      background: var(--prev-accent, #5E4637); color: #fff;
+      align-self: flex-end; border-bottom-right-radius: 3px;
+    }
+
+    /* 칩 영역 */
+    .prev-widget-chips {
+      padding: 0 14px 10px; display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0;
+    }
+    .prev-chip {
+      border: 1px solid var(--prev-accent-15, #D5C8C3);
+      border-radius: 999px; padding: 5px 11px;
+      font-size: 11px; color: var(--prev-accent, #5E4637);
+      background: var(--prev-accent-06, #F5F0EE);
+      white-space: nowrap;
+    }
+
+    /* 입력창 */
+    .prev-widget-input {
+      margin: 0 14px 14px; flex-shrink: 0;
+      border: 1px solid #E0E0DC; border-radius: 999px;
+      padding: 8px 8px 8px 14px; display: flex; align-items: center; gap: 8px;
+      background: #fff;
+    }
+    .prev-input-placeholder {
+      flex: 1; font-size: 12px; color: #CCC;
+    }
+    .prev-input-btn {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--prev-accent, #5E4637);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .prev-input-btn::after {
+      content: '↑'; font-size: 13px; color: #fff; font-weight: 700;
+    }
+
+    /* ── 반응형 ── */
+    @media (max-width: 1100px) {
+      .layout { grid-template-columns: 380px 1fr; }
+      .save-bar { width: 380px; }
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; height: auto; }
+      .settings { height: auto; }
+      .preview-area { height: 500px; }
+      .save-bar { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">Chame<span>leon</span></div>
+  <div class="header-mall" id="header-mall-id">브랜드 설정</div>
+</header>
+
+<div class="layout">
+
+  <!-- ── 왼쪽: 설정 폼 ── -->
+  <aside class="settings">
+
+    <!-- 브랜드 정보 -->
+    <div class="settings-section">
+      <div class="section-label">브랜드 정보</div>
+
+      <div class="field">
+        <label class="field-label">쇼핑몰 ID (Mall ID)</label>
+        <input type="text" id="f-mall-id" placeholder="예: tndbsrkd" readonly>
+        <div class="field-hint">설치 시 자동으로 설정됩니다</div>
+      </div>
+      <div class="field">
+        <label class="field-label">브랜드명</label>
+        <input type="text" id="f-brand-name" placeholder="예: SOLIDHOMME" maxlength="40">
+      </div>
+      <div class="field">
+        <label class="field-label">로고 이미지 URL <span style="color:#CCC;font-weight:400;">(선택)</span></label>
+        <input type="url" id="f-logo-url" placeholder="https://yourstore.com/logo.png">
+        <div class="field-hint">없으면 브랜드 컬러 점(•)으로 표시됩니다</div>
+      </div>
+    </div>
+
+    <!-- 색상 -->
+    <div class="settings-section">
+      <div class="section-label">색상</div>
+
+      <div class="field">
+        <label class="field-label">브랜드 메인 컬러</label>
+        <div class="color-row">
+          <div class="color-preview-swatch" id="swatch-accent">
+            <input type="color" id="cp-accent" value="#5E4637">
+          </div>
+          <input type="text" class="color-hex" id="f-accent" value="#5E4637" placeholder="#5E4637" maxlength="7">
+        </div>
+        <div class="field-hint">버튼, 칩, 강조 텍스트에 사용됩니다</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">패널 배경 컬러</label>
+        <div class="color-row">
+          <div class="color-preview-swatch" id="swatch-bg">
+            <input type="color" id="cp-bg" value="#FAFAF8">
+          </div>
+          <input type="text" class="color-hex" id="f-bg" value="#FAFAF8" placeholder="#FAFAF8" maxlength="7">
+        </div>
+        <div class="field-hint">위젯 패널의 배경색입니다 (밝은 색 권장)</div>
+      </div>
+    </div>
+
+    <!-- 위젯 텍스트 -->
+    <div class="settings-section">
+      <div class="section-label">위젯 텍스트</div>
+
+      <div class="field">
+        <label class="field-label">패널 타이틀</label>
+        <input type="text" id="f-chat-name" value="AI 쇼핑 도우미" placeholder="AI 쇼핑 도우미" maxlength="20">
+        <div class="field-hint">패널 상단 헤더에 표시됩니다</div>
+      </div>
+      <div class="field">
+        <label class="field-label">사이드 탭 라벨</label>
+        <input type="text" id="f-button-label" value="AI 도우미" placeholder="AI 도우미" maxlength="12">
+        <div class="field-hint">패널이 닫혀 있을 때 오른쪽 탭에 표시됩니다</div>
+      </div>
+      <div class="field">
+        <label class="field-label">환영 메시지 제목</label>
+        <input type="text" id="f-welcome-title" value="안녕하세요! 무엇을 찾으세요?" placeholder="안녕하세요! 무엇을 찾으세요?" maxlength="40">
+      </div>
+      <div class="field">
+        <label class="field-label">환영 메시지 본문</label>
+        <textarea id="f-welcome-body" placeholder="상품에 대해 궁금한 점을 물어보세요." maxlength="120">상품에 대해 궁금한 점을 물어보세요.</textarea>
+      </div>
+    </div>
+
+    <!-- 스타터 칩 -->
+    <div class="settings-section">
+      <div class="section-label">스타터 칩 <span style="color:#CCC;font-weight:400;font-size:10px;text-transform:none;letter-spacing:0;">— 로드 시 3개 랜덤 노출</span></div>
+      <div class="chip-list" id="chip-list"></div>
+      <button class="btn-add-chip" id="btn-add-chip">+ 칩 추가 (최대 7개)</button>
+    </div>
+
+    <!-- 패널 설정 -->
+    <div class="settings-section">
+      <div class="section-label">패널 설정</div>
+
+      <div class="field">
+        <label class="field-label">패널 너비</label>
+        <div class="slider-row">
+          <input type="range" id="f-panel-width" min="280" max="480" value="380" step="10">
+          <div class="slider-val"><span id="val-panel-width">380</span>px</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-desc">페이지 방문 시 자동 열기</div>
+            <div class="toggle-sub">꺼두면 오른쪽 탭을 클릭해야 열립니다</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="f-default-open">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── 오른쪽: 프리뷰 ── -->
+  <div class="preview-area">
+    <div class="preview-label">실시간 미리보기</div>
+
+    <div class="preview-frame">
+
+      <!-- 가짜 쇼핑몰 PDP -->
+      <div class="prev-store">
+        <div class="prev-store-nav">
+          <div class="prev-nav-logo"></div>
+          <div class="prev-nav-links">
+            <div class="prev-nav-link"></div>
+            <div class="prev-nav-link"></div>
+            <div class="prev-nav-link"></div>
+          </div>
+        </div>
+        <div class="prev-store-body">
+          <div class="prev-product-img">
+            <div class="prev-product-img-inner"></div>
+          </div>
+          <div class="prev-product-info">
+            <div class="prev-info-tag"></div>
+            <div class="prev-info-title"></div>
+            <div class="prev-info-title2"></div>
+            <div class="prev-info-price"></div>
+            <div class="prev-info-desc">
+              <div class="prev-info-line"></div>
+              <div class="prev-info-line short"></div>
+              <div class="prev-info-line"></div>
+              <div class="prev-info-line short"></div>
+            </div>
+            <div class="prev-info-btn"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 위젯 패널 프리뷰 -->
+      <div class="prev-widget" id="prev-widget">
+
+        <div class="prev-widget-header">
+          <div class="prev-header-left">
+            <div class="prev-header-dot"></div>
+            <div id="prev-logo-wrap">
+              <div class="prev-header-logo-dot"></div>
+            </div>
+            <div class="prev-header-title" id="prev-chat-name">AI 쇼핑 도우미</div>
+          </div>
+          <div class="prev-header-close"></div>
+        </div>
+
+        <div class="prev-widget-hero">
+          <div class="prev-hero-title" id="prev-welcome-title">안녕하세요! 무엇을 찾으세요?</div>
+          <div class="prev-hero-body" id="prev-welcome-body">상품에 대해 궁금한 점을 물어보세요.</div>
+        </div>
+
+        <div class="prev-widget-messages">
+          <div class="prev-bubble ai">소재가 면 100%라서 여름에도 시원하게 입을 수 있어요.</div>
+          <div class="prev-bubble user">세탁은 어떻게 해요?</div>
+          <div class="prev-bubble ai">찬물 단독 세탁을 권장해요. 드라이 클리닝도 가능합니다.</div>
+        </div>
+
+        <div class="prev-widget-chips" id="prev-chips">
+          <div class="prev-chip">소재 알려줘</div>
+          <div class="prev-chip">사이즈 어떻게 골라?</div>
+          <div class="prev-chip">이 옷 어디에 어울려?</div>
+        </div>
+
+        <div class="prev-widget-input">
+          <div class="prev-input-placeholder">궁금한 점을 물어보세요</div>
+          <div class="prev-input-btn"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 저장 바 -->
+<div class="save-bar">
+  <button class="btn-save" id="btn-save" onclick="saveConfig()">저장하기</button>
+  <div class="save-status" id="save-status"></div>
+</div>
+
+<script>
+  // ── 상태 ──────────────────────────────────────────────
+  const state = {
+    mallId:       '',
+    brandName:    '',
+    accentColor:  '#5E4637',
+    bgColor:      '#FAFAF8',
+    logoUrl:      '',
+    chatName:     'AI 쇼핑 도우미',
+    buttonLabel:  'AI 도우미',
+    welcomeTitle: '안녕하세요! 무엇을 찾으세요?',
+    welcomeBody:  '상품에 대해 궁금한 점을 물어보세요.',
+    chips:        ['소재 알려줘', '사이즈 어떻게 골라?', '이 옷 어디에 어울려?'],
+    panelWidth:   380,
+    defaultOpen:  false,
+  };
+
+  // ── URL에서 mall_id 읽기 ──────────────────────────────
+  const urlParams = new URLSearchParams(location.search);
+  const urlMallId = urlParams.get('mall_id') || '';
+
+  // ── 초기화 ────────────────────────────────────────────
+  async function init() {
+    if (urlMallId) {
+      state.mallId = urlMallId;
+      document.getElementById('f-mall-id').value = urlMallId;
+      document.getElementById('header-mall-id').textContent = urlMallId + '.cafe24.com';
+      // 기존 설정 불러오기
+      await loadExisting(urlMallId);
+    }
+    renderChips();
+    bindEvents();
+    updatePreview();
+  }
+
+  async function loadExisting(mallId) {
+    try {
+      const res = await fetch(`/api/shop-config/${mallId}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      const c = data.theme_config || {};
+      if (data.brand_name) { state.brandName = data.brand_name; document.getElementById('f-brand-name').value = data.brand_name; }
+      if (c.accentColor)   { state.accentColor = c.accentColor; document.getElementById('f-accent').value = c.accentColor; document.getElementById('cp-accent').value = c.accentColor; }
+      if (c.bgColor)       { state.bgColor = c.bgColor; document.getElementById('f-bg').value = c.bgColor; document.getElementById('cp-bg').value = c.bgColor; }
+      if (c.logoUrl)       { state.logoUrl = c.logoUrl; document.getElementById('f-logo-url').value = c.logoUrl; }
+      if (c.chatName)      { state.chatName = c.chatName; document.getElementById('f-chat-name').value = c.chatName; }
+      if (c.buttonLabel)   { state.buttonLabel = c.buttonLabel; document.getElementById('f-button-label').value = c.buttonLabel; }
+      if (c.welcomeTitle)  { state.welcomeTitle = c.welcomeTitle; document.getElementById('f-welcome-title').value = c.welcomeTitle; }
+      if (c.welcomeBody)   { state.welcomeBody = c.welcomeBody; document.getElementById('f-welcome-body').value = c.welcomeBody; }
+      if (c.panelWidth)    { state.panelWidth = c.panelWidth; document.getElementById('f-panel-width').value = c.panelWidth; document.getElementById('val-panel-width').textContent = c.panelWidth; }
+      if (c.defaultOpen !== undefined) { state.defaultOpen = c.defaultOpen; document.getElementById('f-default-open').checked = c.defaultOpen; }
+      if (c.starterChips?.length) { state.chips = c.starterChips; }
+      document.getElementById('save-status').textContent = '기존 설정 불러옴';
+      setTimeout(() => { document.getElementById('save-status').textContent = ''; }, 3000);
+    } catch (e) {
+      console.log('[Onboarding] 기존 설정 없음, 기본값 사용');
+    }
+  }
+
+  // ── 칩 렌더링 ─────────────────────────────────────────
+  function renderChips() {
+    const list = document.getElementById('chip-list');
+    list.innerHTML = state.chips.map((chip, i) => `
+      <div class="chip-row" data-idx="${i}">
+        <input type="text" value="${escHtml(chip)}" placeholder="질문 입력 (15자 이내)" maxlength="20"
+          oninput="updateChip(${i}, this.value)">
+        <button class="chip-remove" onclick="removeChip(${i})" title="삭제">×</button>
+      </div>
+    `).join('');
+    document.getElementById('btn-add-chip').style.display =
+      state.chips.length >= 7 ? 'none' : 'block';
+  }
+
+  function updateChip(i, val) {
+    state.chips[i] = val;
+    updatePreview();
+  }
+
+  function removeChip(i) {
+    state.chips.splice(i, 1);
+    renderChips();
+    updatePreview();
+  }
+
+  document.getElementById('btn-add-chip').addEventListener('click', () => {
+    if (state.chips.length >= 7) return;
+    state.chips.push('');
+    renderChips();
+    document.querySelector(`.chip-row[data-idx="${state.chips.length - 1}"] input`)?.focus();
+  });
+
+  // ── 이벤트 바인딩 ─────────────────────────────────────
+  function bindEvents() {
+    bind('f-brand-name',    v => { state.brandName = v; });
+    bind('f-logo-url',      v => { state.logoUrl = v; updatePreview(); });
+    bind('f-chat-name',     v => { state.chatName = v; updatePreview(); });
+    bind('f-button-label',  v => { state.buttonLabel = v; });
+    bind('f-welcome-title', v => { state.welcomeTitle = v; updatePreview(); });
+    bind('f-welcome-body',  v => { state.welcomeBody = v; updatePreview(); });
+
+    // 색상 — 컬러 피커 ↔ HEX 입력 양방향
+    bindColor('accent', 'f-accent', 'cp-accent', v => { state.accentColor = v; updatePreview(); });
+    bindColor('bg',     'f-bg',     'cp-bg',     v => { state.bgColor = v; updatePreview(); });
+
+    // 슬라이더
+    document.getElementById('f-panel-width').addEventListener('input', e => {
+      state.panelWidth = +e.target.value;
+      document.getElementById('val-panel-width').textContent = state.panelWidth;
+      updatePreview();
+    });
+
+    // 토글
+    document.getElementById('f-default-open').addEventListener('change', e => {
+      state.defaultOpen = e.target.checked;
+    });
+  }
+
+  function bind(id, fn) {
+    document.getElementById(id).addEventListener('input', e => fn(e.target.value));
+  }
+
+  function bindColor(key, textId, pickerId, fn) {
+    const textEl  = document.getElementById(textId);
+    const pickEl  = document.getElementById(pickerId);
+    const swatch  = document.getElementById(`swatch-${key}`);
+
+    // 피커 → 텍스트
+    pickEl.addEventListener('input', e => {
+      const v = e.target.value;
+      textEl.value = v;
+      swatch.style.background = v;
+      if (/^#[0-9A-Fa-f]{6}$/.test(v)) fn(v);
+    });
+    // 텍스트 → 피커
+    textEl.addEventListener('input', e => {
+      const v = e.target.value;
+      swatch.style.background = v;
+      if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
+        pickEl.value = v;
+        fn(v);
+      }
+    });
+    // 초기 스와치 색상
+    swatch.style.background = pickEl.value;
+  }
+
+  // ── 프리뷰 업데이트 ────────────────────────────────────
+  function updatePreview() {
+    const widget = document.getElementById('prev-widget');
+
+    // CSS 변수 주입 (Kinect 패턴과 동일)
+    widget.style.setProperty('--prev-accent',    state.accentColor);
+    widget.style.setProperty('--prev-bg',        state.bgColor);
+    widget.style.setProperty('--prev-width',     state.panelWidth + 'px');
+    widget.style.setProperty('--prev-header-bg', hexMix(state.accentColor, '#ffffff', 0.18));
+    widget.style.setProperty('--prev-header-text', isDark(state.accentColor) ? '#fff' : '#111');
+    widget.style.setProperty('--prev-accent-15', hexMix(state.accentColor, '#ffffff', 0.85));
+    widget.style.setProperty('--prev-accent-06', hexMix(state.accentColor, '#ffffff', 0.94));
+
+    // 텍스트
+    document.getElementById('prev-chat-name').textContent    = state.chatName || 'AI 쇼핑 도우미';
+    document.getElementById('prev-welcome-title').textContent = state.welcomeTitle || '';
+    document.getElementById('prev-welcome-body').textContent  = state.welcomeBody || '';
+
+    // 로고
+    const logoWrap = document.getElementById('prev-logo-wrap');
+    if (state.logoUrl) {
+      logoWrap.innerHTML = `<img class="prev-header-logo" src="${escHtml(state.logoUrl)}" onerror="this.style.display='none'">`;
+    } else {
+      logoWrap.innerHTML = `<div class="prev-header-logo-dot" style="background:${hexMix(state.accentColor,'#000000',0.8)}"></div>`;
+    }
+
+    // 칩
+    const chipsEl = document.getElementById('prev-chips');
+    const visibleChips = state.chips.filter(Boolean).slice(0, 5);
+    chipsEl.innerHTML = visibleChips.map(c =>
+      `<div class="prev-chip">${escHtml(c)}</div>`
+    ).join('');
+  }
+
+  // ── 색상 유틸 ─────────────────────────────────────────
+  function hexToRgb(hex) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return [r, g, b];
+  }
+  function hexMix(hex1, hex2, t) {
+    if (!/^#[0-9A-Fa-f]{6}$/.test(hex1)) return hex2;
+    const [r1, g1, b1] = hexToRgb(hex1);
+    const [r2, g2, b2] = hexToRgb(hex2);
+    const r = Math.round(r1 + (r2 - r1) * t);
+    const g = Math.round(g1 + (g2 - g1) * t);
+    const b = Math.round(b1 + (b2 - b1) * t);
+    return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+  }
+  function isDark(hex) {
+    if (!/^#[0-9A-Fa-f]{6}$/.test(hex)) return false;
+    const [r, g, b] = hexToRgb(hex);
+    return (0.299 * r + 0.587 * g + 0.114 * b) < 128;
+  }
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── 저장 ──────────────────────────────────────────────
+  async function saveConfig() {
+    const mallId = state.mallId || document.getElementById('f-mall-id').value.trim();
+    if (!mallId) {
+      document.getElementById('save-status').textContent = '⚠ Mall ID가 필요합니다';
+      return;
+    }
+
+    const btn = document.getElementById('btn-save');
+    btn.disabled = true;
+    btn.textContent = '저장 중...';
+
+    const payload = {
+      mallId,
+      brandName: document.getElementById('f-brand-name').value.trim() || state.brandName,
+      theme_config: {
+        accentColor:  state.accentColor,
+        bgColor:      state.bgColor,
+        logoUrl:      state.logoUrl,
+        chatName:     state.chatName,
+        buttonLabel:  state.buttonLabel,
+        welcomeTitle: state.welcomeTitle,
+        welcomeBody:  state.welcomeBody,
+        starterChips: state.chips.filter(Boolean),
+        panelWidth:   state.panelWidth,
+        defaultOpen:  state.defaultOpen,
+      },
+    };
+
+    try {
+      const res = await fetch('/api/shop-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('save-status').textContent = '✓ 저장 완료';
+        btn.textContent = '저장하기';
+        btn.disabled = false;
+        setTimeout(() => { document.getElementById('save-status').textContent = ''; }, 3000);
+      } else {
+        throw new Error(data.error || '저장 실패');
+      }
+    } catch (e) {
+      document.getElementById('save-status').textContent = '✗ ' + e.message;
+      btn.textContent = '저장하기';
+      btn.disabled = false;
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>

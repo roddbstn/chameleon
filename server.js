@@ -357,9 +357,17 @@ async function registerScripttag(mallId, accessToken) {
 // ─────────────────────────────────────────────
 // 3. CONFIG API — 위젯이 로드될 때 스토어 설정을 fetch
 // ─────────────────────────────────────────────
-app.get('/api/config/:mallId', (req, res) => {
-  const config = storeConfigs[req.params.mallId] || defaultConfig;
-  res.json(config);
+app.get('/api/config/:mallId', async (req, res) => {
+  const { mallId } = req.params;
+  // Supabase shops 테이블 우선 확인 (온보딩 페이지로 저장된 설정)
+  try {
+    const { data } = await supabase.from('shops').select('theme_config').eq('mall_id', mallId).single();
+    if (data?.theme_config && Object.keys(data.theme_config).length > 0) {
+      return res.json(data.theme_config);
+    }
+  } catch {}
+  // 없으면 하드코딩 storeConfigs 폴백
+  res.json(storeConfigs[mallId] || defaultConfig);
 });
 
 // ─────────────────────────────────────────────
@@ -1046,6 +1054,46 @@ app.post('/api/webhook/product', express.raw({ type: '*/*' }), async (req, res) 
   });
 });
 
+// ─────────────────────────────────────────────
+// SHOP CONFIG API — 고객사 브랜드/테마 설정
+// ─────────────────────────────────────────────
+
+// 온보딩 페이지 서빙
+app.get('/onboarding', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'onboarding.html'));
+});
+
+// 설정 조회
+app.get('/api/shop-config/:mallId', async (req, res) => {
+  const { mallId } = req.params;
+  try {
+    const { data } = await supabase
+      .from('shops').select('*').eq('mall_id', mallId).single();
+    if (!data) return res.status(404).json({ error: 'not_found' });
+    res.json(data);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// 설정 저장 (upsert)
+app.post('/api/shop-config', async (req, res) => {
+  const { mallId, brandName, theme_config } = req.body;
+  if (!mallId) return res.status(400).json({ error: 'mallId required' });
+  try {
+    const { error } = await supabase.from('shops').upsert(
+      { mall_id: mallId, brand_name: brandName, theme_config, updated_at: new Date().toISOString() },
+      { onConflict: 'mall_id' }
+    );
+    if (error) throw error;
+    console.log(`[ShopConfig] ${mallId} 설정 저장 완료`);
+    res.json({ success: true });
+  } catch (e) {
+    console.error('[ShopConfig] 저장 실패:', e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // 기존 대시보드 (이전 버전 호환)
 app.get('/dashboard', (req, res) => res.redirect('/admin'));
 
@@ -1070,6 +1118,13 @@ const MIGRATIONS = [
   )`,
   `CREATE INDEX IF NOT EXISTS chat_logs_store_created_idx
     ON chat_logs (store_id, created_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS shops (
+    mall_id      text PRIMARY KEY,
+    brand_name   text,
+    theme_config jsonb NOT NULL DEFAULT '{}',
+    created_at   timestamptz DEFAULT now(),
+    updated_at   timestamptz DEFAULT now()
+  )`,
 ];
 
 async function runMigrations() {
