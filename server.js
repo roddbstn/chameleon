@@ -1243,97 +1243,163 @@ app.post('/api/analyze-site-colors', async (req, res) => {
   let html = '';
   try {
     const r = await axios.get(url, {
-      timeout: 8000,
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ChameleonBot/1.0)' },
+      timeout: 10000,
+      headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' },
       maxRedirects: 5,
     });
-    html = r.data || '';
+    html = typeof r.data === 'string' ? r.data : JSON.stringify(r.data);
   } catch (e) {
     return res.status(502).json({ error: `사이트를 가져올 수 없습니다: ${e.message}` });
   }
 
-  // 2. 색상 추출 (hex, rgb, CSS 변수, meta theme-color)
-  const hexRe   = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g;
-  const rgbRe   = /rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)/gi;
-  const metaRe  = /content=["'](\s*#[0-9A-Fa-f]{3,6}|rgb\([^)]+\))\s*["']/gi;
-
+  // ── 헬퍼 ──
   function toHex6(h) {
     h = h.replace('#','');
     if (h.length === 3) h = h.split('').map(c=>c+c).join('');
     return '#' + h.toUpperCase();
   }
   function rgbToHex(r,g,b) {
-    return '#' + [r,g,b].map(v=>parseInt(v).toString(16).padStart(2,'0')).join('').toUpperCase();
+    return '#' + [r,g,b].map(v => Math.min(255,parseInt(v)).toString(16).padStart(2,'0')).join('').toUpperCase();
   }
   function luminance(hex) {
-    const r = parseInt(hex.slice(1,3),16)/255;
-    const g = parseInt(hex.slice(3,5),16)/255;
-    const b = parseInt(hex.slice(5,7),16)/255;
-    return 0.2126*r + 0.7152*g + 0.0722*b;
+    const rv = parseInt(hex.slice(1,3),16)/255;
+    const gv = parseInt(hex.slice(3,5),16)/255;
+    const bv = parseInt(hex.slice(5,7),16)/255;
+    return 0.2126*rv + 0.7152*gv + 0.0722*bv;
+  }
+  function saturation(hex) {
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    const max = Math.max(r,g,b), min = Math.min(r,g,b);
+    return max === 0 ? 0 : (max-min)/max;
   }
 
-  const freq = {};
-  const bump = (h) => { const k = toHex6(h); freq[k] = (freq[k]||0)+1; };
+  // 흔한 링크/기본 브라우저 색 블랙리스트
+  const LINK_BLACKLIST = new Set([
+    '#226699','#0066CC','#0000FF','#0000EE','#551A8B','#336699',
+    '#003366','#004080','#0055B3','#1A0DAB','#4A90D9','#2A6EBB',
+    '#FFFF00','#FF0000', // 기본 경고색
+  ]);
 
-  let m;
-  while ((m = hexRe.exec(html))  !== null) bump(m[0]);
-  while ((m = rgbRe.exec(html))  !== null) bump(rgbToHex(m[1],m[2],m[3]));
+  // 2. 시맨틱 가중치 기반 색상 추출
+  const score = {}; // hex → weighted score
 
-  // meta theme-color 가중치 높게
+  function addColor(hex, weight) {
+    const k = toHex6(hex);
+    if (LINK_BLACKLIST.has(k)) return;
+    score[k] = (score[k] || 0) + weight;
+  }
+
+  // (A) meta theme-color — 최고 가중치
   const themeColors = [];
-  while ((m = metaRe.exec(html)) !== null) {
-    const v = m[1].trim();
-    if (v.startsWith('#')) { const h = toHex6(v); freq[h] = (freq[h]||0)+20; themeColors.push(h); }
+  const metaThemeRe = /name=["']theme-color["'][^>]*content=["']([^"']+)["']|content=["']([^"']+)["'][^>]*name=["']theme-color["']/gi;
+  let mt;
+  while ((mt = metaThemeRe.exec(html)) !== null) {
+    const v = (mt[1] || mt[2] || '').trim();
+    if (v.startsWith('#')) { addColor(v, 200); themeColors.push(toHex6(v)); }
   }
 
-  // 회색/흰/검정 필터 후 상위 20개
-  const colored = Object.entries(freq)
+  // (B) CSS 변수(브랜드 컬러) — 높은 가중치
+  const cssVarRe = /--(color|brand|primary|accent|main|key|theme|point)[\w-]*\s*:\s*(#[0-9A-Fa-f]{3,6}|rgb\([^)]+\))/gi;
+  let cv;
+  while ((cv = cssVarRe.exec(html)) !== null) {
+    const v = cv[2].trim();
+    if (v.startsWith('#')) addColor(v, 80);
+    else { const m = v.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i); if (m) addColor(rgbToHex(m[1],m[2],m[3]), 80); }
+  }
+
+  // (C) <style> 블록 안 background-color / background / border-color — 중간 가중치
+  const styleBlocks = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map(m => m[1]).join('\n');
+  const bgRe     = /background(?:-color)?\s*:\s*(#[0-9A-Fa-f]{3,6}|rgb\([^)]+\))/gi;
+  const borderRe = /border(?:-color|-top|-right|-bottom|-left|-block|-inline)?(?:-color)?\s*:\s*(#[0-9A-Fa-f]{3,6}|rgb\([^)]+\))/gi;
+  const colorRe  = /(?:^|[;{])\s*color\s*:\s*(#[0-9A-Fa-f]{3,6}|rgb\([^)]+\))/gim;
+
+  function extractFromCss(src, weight) {
+    let m2;
+    const reList = [[bgRe, weight], [borderRe, weight * 0.4], [colorRe, weight * 0.3]];
+    for (const [re, w] of reList) {
+      re.lastIndex = 0;
+      while ((m2 = re.exec(src)) !== null) {
+        const v = m2[1].trim();
+        if (v.startsWith('#')) addColor(v, w);
+        else { const rm = v.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i); if (rm) addColor(rgbToHex(rm[1],rm[2],rm[3]), w); }
+      }
+    }
+  }
+  extractFromCss(styleBlocks, 15);
+
+  // (D) 인라인 style= 속성의 background-color — 중간 가중치
+  const inlineRe = /style=["'][^"']*background(?:-color)?\s*:\s*(#[0-9A-Fa-f]{3,6}|rgb\([^)]+\))[^"']*/gi;
+  let il;
+  while ((il = inlineRe.exec(html)) !== null) {
+    const v = il[1].trim();
+    if (v.startsWith('#')) addColor(v, 10);
+    else { const m3 = v.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i); if (m3) addColor(rgbToHex(m3[1],m3[2],m3[3]), 10); }
+  }
+
+  // (E) 나머지 hex (낮은 가중치, 단 링크 블랙리스트 제외)
+  const hexRe = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g;
+  let hm;
+  while ((hm = hexRe.exec(html)) !== null) addColor(hm[0], 1);
+
+  // 3. 필터: 무채색·너무 연한 색 제거 → 상위 12개
+  const colored = Object.entries(score)
     .filter(([h]) => {
-      const r = parseInt(h.slice(1,3),16);
-      const g = parseInt(h.slice(3,5),16);
-      const b = parseInt(h.slice(5,7),16);
-      const max = Math.max(r,g,b), min = Math.min(r,g,b);
-      const sat = max === 0 ? 0 : (max-min)/max;
+      const sat = saturation(h);
       const lum = luminance(h);
-      return sat > 0.12 && lum > 0.02 && lum < 0.95; // 유채색만
+      return sat > 0.1 && lum > 0.03 && lum < 0.93;
     })
-    .sort((a,b) => b[1]-a[1])
-    .slice(0, 20)
-    .map(([h,cnt]) => ({ hex: h, count: cnt }));
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 12)
+    .map(([hex, sc]) => ({ hex, score: Math.round(sc) }));
+
+  console.log('[analyze-site-colors] top palette:', colored.slice(0,6).map(c=>`${c.hex}(${c.score})`).join(', '));
 
   if (!colored.length) {
-    return res.json({ accentColor: '#818CF8', backgroundColor: '#F5F3FF', rationale: '유채색을 찾지 못해 기본값을 반환합니다.' });
+    return res.json({ accentColor: '#3D2B1F', backgroundColor: '#FAF8F5', rationale: '유채색을 찾지 못해 기본값을 반환합니다.' });
   }
 
-  // 3. Gemini로 최적 색상 조합 결정
-  const palette = colored.map(c => `${c.hex}(${c.count})`).join(', ');
-  const prompt = `당신은 UI/UX 디자이너입니다. 아래는 쇼핑몰 웹사이트(${url})에서 추출한 색상 팔레트(사용 빈도 순)입니다:
+  // 4. Gemini로 최적 색상 조합 결정
+  const paletteStr = colored.map(c => `${c.hex}(점수:${c.score})`).join(', ');
+  const prompt = `You are a professional UI/UX designer specializing in e-commerce.
 
-팔레트: ${palette}
-${themeColors.length ? `브랜드 테마 색상: ${themeColors.join(', ')}` : ''}
+Website: ${url}
+${themeColors.length ? `Meta theme-color (highest priority): ${themeColors.join(', ')}` : ''}
+Extracted color palette (by semantic weight — background/CSS-var colors scored higher than generic hex):
+${paletteStr}
 
-이 사이트에 자연스럽게 어울리는 AI 채팅 위젯의 색상을 추천해주세요.
-- accentColor: 버튼, 헤더, 강조 요소에 쓰이는 색 (사이트 브랜드 컬러 기반, 너무 연하면 안 됨)
-- backgroundColor: 위젯 내부 배경색 (accentColor와 조화롭되 가독성 확보, 보통 매우 연한 색)
+Choose the best colors for an AI chat widget sidebar that feels native to this brand.
+Rules:
+- accentColor: the brand's primary/signature color used for buttons & header. Must have contrast ratio ≥ 4.5:1 on white. Prefer dark/rich tones over pale ones.
+- backgroundColor: a very light, warm or neutral tint that harmonizes with accentColor. Usually near-white with a slight hue from the brand palette.
+- Do NOT pick generic link blue (#226699, #0066cc etc.) unless it clearly dominates the brand palette with high score.
+- Prioritize colors with high scores (they came from background-color or CSS variables).
 
-반드시 아래 JSON만 반환하세요 (설명 없이):
-{"accentColor":"#RRGGBB","backgroundColor":"#RRGGBB","rationale":"한 문장 설명"}`;
+Return ONLY this JSON, no markdown, no explanation:
+{"accentColor":"#RRGGBB","backgroundColor":"#RRGGBB","rationale":"한 문장 한국어 설명"}`;
 
   try {
     const r = await callGemini({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.3, maxOutputTokens: 200 },
+      generationConfig: { temperature: 0.2, maxOutputTokens: 300, responseMimeType: 'application/json' },
     });
-    const raw = r.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('JSON not found in response');
+    const raw = (r.data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
+    const jsonMatch = raw.match(/\{[\s\S]*?\}/);
+    if (!jsonMatch) throw new Error('JSON not found: ' + raw.slice(0, 100));
     const parsed = JSON.parse(jsonMatch[0]);
+    if (!parsed.accentColor || !parsed.backgroundColor) throw new Error('Missing color fields');
     return res.json({ ...parsed, palette: colored.slice(0, 8) });
   } catch (e) {
     console.error('[analyze-site-colors] Gemini error:', e.message);
-    // 폴백: 팔레트 1위 색상 사용
+    // 폴백: 점수 1위 색을 accentColor로, 매우 연한 버전을 bg로
     const accent = colored[0].hex;
-    return res.json({ accentColor: accent, backgroundColor: '#F8F8F8', rationale: 'AI 분석 실패, 사이트 대표 색상 적용', palette: colored.slice(0,8) });
+    // accent의 매우 연한 버전 계산 (luminance 90% 근처로)
+    const r2 = parseInt(accent.slice(1,3),16);
+    const g2 = parseInt(accent.slice(3,5),16);
+    const b2 = parseInt(accent.slice(5,7),16);
+    const bgHex = '#' + [r2,g2,b2].map(c => Math.round(c + (255-c)*0.88).toString(16).padStart(2,'0')).join('').toUpperCase();
+    return res.json({ accentColor: accent, backgroundColor: bgHex, rationale: '사이트 대표 배경/브랜드 색상 기반 적용', palette: colored.slice(0,8) });
   }
 });
 
