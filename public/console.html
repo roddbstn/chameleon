@@ -312,6 +312,14 @@ tr:hover td { background: #FAFAF8; }
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
+.form-section-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
 
 .field { margin-bottom: 16px; }
 .field:last-child { margin-bottom: 0; }
@@ -1034,10 +1042,10 @@ select {
 .wdg-chips-set { display: flex; gap: 5px; padding-right: 5px; }
 @keyframes wdg-chip-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .wdg-chip {
-  border: 1px solid var(--wdg-accent-15, #D5C8C3);
+  border: 1px solid var(--wdg-chip-border, var(--wdg-accent-15, #D5C8C3));
   border-radius: 999px; padding: 4px 10px;
-  font-size: 10px; color: var(--wdg-accent, #5E4637);
-  background: var(--wdg-accent-06, #F5F0EE);
+  font-size: 10px; color: var(--wdg-chip-text, var(--wdg-accent, #5E4637));
+  background: var(--wdg-chip-bg, var(--wdg-accent-06, #F5F0EE));
   white-space: nowrap; flex-shrink: 0;
 }
 .wdg-messages {
@@ -1365,19 +1373,79 @@ select {
 
         <div class="form-section">
           <div class="form-section-title">색상</div>
+          <div class="form-section-subtitle">기본</div>
           <div class="field-row">
             <div class="field">
-              <label class="field-label">강조 색상 (버튼, 칩)</label>
+              <label class="field-label">강조 색상</label>
               <div class="color-field">
                 <input type="color" id="accentColor" value="#C0392B" oninput="syncColorText('accentColor','accentColorText');updateWidgetPreview()">
                 <input type="text" id="accentColorText" value="#C0392B" maxlength="7" placeholder="#C0392B" oninput="syncColorPicker('accentColorText','accentColor');updateWidgetPreview()">
               </div>
             </div>
             <div class="field">
-              <label class="field-label">패널 배경 색상</label>
+              <label class="field-label">패널 배경</label>
               <div class="color-field">
                 <input type="color" id="bgColor" value="#FEF8F7" oninput="syncColorText('bgColor','bgColorText');updateWidgetPreview()">
                 <input type="text" id="bgColorText" value="#FEF8F7" maxlength="7" placeholder="#FEF8F7" oninput="syncColorPicker('bgColorText','bgColor');updateWidgetPreview()">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section-subtitle" style="margin-top:14px;">칩 (Chips)</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">칩 배경</label>
+              <div class="color-field">
+                <input type="color" id="chipBgColor" value="#F5F0EE" oninput="syncColorText('chipBgColor','chipBgColorText');updateWidgetPreview()">
+                <input type="text" id="chipBgColorText" value="#F5F0EE" maxlength="7" placeholder="자동" oninput="syncColorPicker('chipBgColorText','chipBgColor');updateWidgetPreview()">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">칩 글자</label>
+              <div class="color-field">
+                <input type="color" id="chipTextColor" value="#5E4637" oninput="syncColorText('chipTextColor','chipTextColorText');updateWidgetPreview()">
+                <input type="text" id="chipTextColorText" value="#5E4637" maxlength="7" placeholder="자동" oninput="syncColorPicker('chipTextColorText','chipTextColor');updateWidgetPreview()">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">칩 테두리</label>
+              <div class="color-field">
+                <input type="color" id="chipBorderColor" value="#D5C8C3" oninput="syncColorText('chipBorderColor','chipBorderColorText');updateWidgetPreview()">
+                <input type="text" id="chipBorderColorText" value="#D5C8C3" maxlength="7" placeholder="자동" oninput="syncColorPicker('chipBorderColorText','chipBorderColor');updateWidgetPreview()">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section-subtitle" style="margin-top:14px;">말풍선</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">유저 말풍선 배경</label>
+              <div class="color-field">
+                <input type="color" id="userBubbleBg" value="#5E4637" oninput="syncColorText('userBubbleBg','userBubbleBgText');updateWidgetPreview()">
+                <input type="text" id="userBubbleBgText" value="#5E4637" maxlength="7" placeholder="자동" oninput="syncColorPicker('userBubbleBgText','userBubbleBg');updateWidgetPreview()">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">유저 말풍선 글자</label>
+              <div class="color-field">
+                <input type="color" id="userBubbleText" value="#FFFFFF" oninput="syncColorText('userBubbleText','userBubbleTextText');updateWidgetPreview()">
+                <input type="text" id="userBubbleTextText" value="#FFFFFF" maxlength="7" placeholder="자동" oninput="syncColorPicker('userBubbleTextText','userBubbleText');updateWidgetPreview()">
+              </div>
+            </div>
+          </div>
+          <div class="field-row" style="margin-top:8px;">
+            <div class="field">
+              <label class="field-label">AI 말풍선 배경</label>
+              <div class="color-field">
+                <input type="color" id="aiBubbleBg" value="#F5F3F1" oninput="syncColorText('aiBubbleBg','aiBubbleBgText');updateWidgetPreview()">
+                <input type="text" id="aiBubbleBgText" value="#F5F3F1" maxlength="7" placeholder="#F5F3F1" oninput="syncColorPicker('aiBubbleBgText','aiBubbleBg');updateWidgetPreview()">
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">AI 말풍선 글자</label>
+              <div class="color-field">
+                <input type="color" id="aiBubbleText" value="#333333" oninput="syncColorText('aiBubbleText','aiBubbleTextText');updateWidgetPreview()">
+                <input type="text" id="aiBubbleTextText" value="#333333" maxlength="7" placeholder="#333333" oninput="syncColorPicker('aiBubbleTextText','aiBubbleText');updateWidgetPreview()">
               </div>
             </div>
           </div>
@@ -1727,6 +1795,19 @@ function applyConfig(data) {
   document.getElementById('accentColorText').value = accent;
   document.getElementById('bgColor').value         = bg;
   document.getElementById('bgColorText').value     = bg;
+
+  const setColorPair = (pickId, textId, val) => {
+    if (!val) return;
+    const pk = document.getElementById(pickId); if (pk) pk.value = val;
+    const tx = document.getElementById(textId); if (tx) tx.value = val;
+  };
+  setColorPair('chipBgColor',    'chipBgColorText',    tc.theme?.chipBgColor    || '');
+  setColorPair('chipTextColor',  'chipTextColorText',  tc.theme?.chipTextColor  || '');
+  setColorPair('chipBorderColor','chipBorderColorText',tc.theme?.chipBorderColor|| '');
+  setColorPair('userBubbleBg',   'userBubbleBgText',   tc.theme?.userBubbleBg   || '');
+  setColorPair('userBubbleText', 'userBubbleTextText', tc.theme?.userBubbleText || '');
+  setColorPair('aiBubbleBg',     'aiBubbleBgText',     tc.theme?.aiBubbleBg     || '');
+  setColorPair('aiBubbleText',   'aiBubbleTextText',   tc.theme?.aiBubbleText   || '');
   setVal('logoUrl',  br.logoUrl   || '');
   setVal('heroImage', br.heroImage || '');
   setVal('siteUrl',  br.siteUrl   || '');
@@ -1966,8 +2047,15 @@ function buildThemeConfig() {
     ...existing,
     theme: {
       ...(existing.theme || {}),
-      accentColor:     document.getElementById('accentColorText').value,
-      backgroundColor: document.getElementById('bgColorText').value,
+      accentColor:      document.getElementById('accentColorText').value,
+      backgroundColor:  document.getElementById('bgColorText').value,
+      chipBgColor:      document.getElementById('chipBgColorText').value,
+      chipTextColor:    document.getElementById('chipTextColorText').value,
+      chipBorderColor:  document.getElementById('chipBorderColorText').value,
+      userBubbleBg:     document.getElementById('userBubbleBgText').value,
+      userBubbleText:   document.getElementById('userBubbleTextText').value,
+      aiBubbleBg:       document.getElementById('aiBubbleBgText').value,
+      aiBubbleText:     document.getElementById('aiBubbleTextText').value,
     },
     panel: {
       mode: document.getElementById('panelModePush').checked ? 'push' : 'overlay',
@@ -2186,6 +2274,14 @@ function updateWidgetPreview() {
   const title   = document.getElementById('welcomeTitle')?.value  || '안녕하세요! 무엇을 찾고 있으신가요?';
   const body    = document.getElementById('welcomeBody')?.value   || '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요';
 
+  const chipBgColor     = document.getElementById('chipBgColor')?.value     || '';
+  const chipTextColor   = document.getElementById('chipTextColor')?.value   || '';
+  const chipBorderColor = document.getElementById('chipBorderColor')?.value || '';
+  const userBubbleBg    = document.getElementById('userBubbleBg')?.value    || '';
+  const userBubbleText  = document.getElementById('userBubbleText')?.value  || '';
+  const aiBubbleBg      = document.getElementById('aiBubbleBg')?.value      || '';
+  const aiBubbleText    = document.getElementById('aiBubbleText')?.value    || '';
+
   // ── CSS 변수 주입 ──
   const headerBg   = hexMixPrev(accent, '#ffffff', 0.18);
   const headerText = isDarkPrev(accent) ? '#fff' : '#111';
@@ -2195,8 +2291,17 @@ function updateWidgetPreview() {
   panel.style.setProperty('--wdg-header-text',  headerText);
   panel.style.setProperty('--wdg-accent-15',    hexMixPrev(accent, '#ffffff', 0.85));
   panel.style.setProperty('--wdg-accent-06',    hexMixPrev(accent, '#ffffff', 0.94));
-  panel.style.setProperty('--wdg-user-bg',      accent);
-  panel.style.setProperty('--wdg-user-text',    isDarkPrev(accent) ? '#fff' : '#111');
+
+  // 칩 색상 (커스텀 없으면 auto 제거 → 상위 --wdg-accent 변수로 폴백)
+  if (chipBgColor)     panel.style.setProperty('--wdg-chip-bg',     chipBgColor);     else panel.style.removeProperty('--wdg-chip-bg');
+  if (chipTextColor)   panel.style.setProperty('--wdg-chip-text',   chipTextColor);   else panel.style.removeProperty('--wdg-chip-text');
+  if (chipBorderColor) panel.style.setProperty('--wdg-chip-border', chipBorderColor); else panel.style.removeProperty('--wdg-chip-border');
+
+  // 말풍선 색상
+  panel.style.setProperty('--wdg-user-bg',   userBubbleBg   || accent);
+  panel.style.setProperty('--wdg-user-text', userBubbleText || (isDarkPrev(userBubbleBg || accent) ? '#fff' : '#111'));
+  if (aiBubbleBg)   panel.style.setProperty('--wdg-ai-bg',   aiBubbleBg);   else panel.style.removeProperty('--wdg-ai-bg');
+  if (aiBubbleText) panel.style.setProperty('--wdg-ai-text', aiBubbleText); else panel.style.removeProperty('--wdg-ai-text');
 
   // ── 로고 ──
   const logoWrap = document.getElementById('wdg-logo-wrap');

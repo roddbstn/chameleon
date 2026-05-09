@@ -86,11 +86,18 @@
     const chipDuration = `${(11 - chipSpeed) * 3}s`;
     const cssVars = `
       --cml-accent: ${accentColor};
-      --cml-bg: color-mix(in srgb, ${accentColor} 5%, white);
+      --cml-bg: ${t.backgroundColor || `color-mix(in srgb, ${accentColor} 5%, white)`};
       --cml-border: color-mix(in srgb, ${accentColor} 18%, white);
       --cml-radius: ${t.borderRadius || '10px'};
       --cml-font: ${t.fontFamily || "'Noto Sans KR', sans-serif"};
       --cml-chips-duration: ${chipDuration};
+      ${t.chipBgColor     ? `--cml-chip-bg:     ${t.chipBgColor};`     : ''}
+      ${t.chipTextColor   ? `--cml-chip-text:   ${t.chipTextColor};`   : ''}
+      ${t.chipBorderColor ? `--cml-chip-border: ${t.chipBorderColor};` : ''}
+      ${t.userBubbleBg    ? `--cml-user-bg:     ${t.userBubbleBg};`    : ''}
+      ${t.userBubbleText  ? `--cml-user-text:   ${t.userBubbleText};`  : ''}
+      ${t.aiBubbleBg      ? `--cml-ai-bg:       ${t.aiBubbleBg};`      : ''}
+      ${t.aiBubbleText    ? `--cml-ai-text:     ${t.aiBubbleText};`    : ''}
     `;
     const badge = content?.badge || 'AI 쇼핑 도우미';
     const title = content?.title || '';
@@ -202,8 +209,9 @@
         to   { transform: translateX(-50%); }
       }
       .cml-chip {
-        border: 1px solid #D0D0CC; border-radius: 999px; padding: 7px 14px;
-        font-size: 12px; letter-spacing: 0.02em; color: #444; background: #fff;
+        border: 1px solid var(--cml-chip-border, #D0D0CC); border-radius: 999px; padding: 7px 14px;
+        font-size: 12px; letter-spacing: 0.02em;
+        color: var(--cml-chip-text, #444); background: var(--cml-chip-bg, #fff);
         cursor: pointer; transition: all 0.15s; font-family: inherit;
         white-space: nowrap; flex-shrink: 0;
       }
@@ -380,10 +388,14 @@
     }
     .cml-chat-bubble strong { font-weight: 700; font-size: 15px; }
     .cml-chat-bubble.user {
-      align-self: flex-end; background: #5E4637; color: #fff; border-bottom-right-radius: 4px;
+      align-self: flex-end;
+      background: var(--cml-user-bg, #5E4637); color: var(--cml-user-text, #fff);
+      border-bottom-right-radius: 4px;
     }
     .cml-chat-bubble.assistant {
-      align-self: flex-start; background: #F7F5F3; color: #222; border-bottom-left-radius: 4px;
+      align-self: flex-start;
+      background: var(--cml-ai-bg, #F7F5F3); color: var(--cml-ai-text, #222);
+      border-bottom-left-radius: 4px;
       border: 1px solid rgba(94,70,55,0.08);
     }
     .cml-chat-bubble.loading { color: #A08070; font-style: italic; }
