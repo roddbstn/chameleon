@@ -1706,7 +1706,7 @@
       try {
         const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mallId: MALL_ID, query, conversationHistory: chatHistory }),
+          body: JSON.stringify({ mallId: MALL_ID, query, conversationHistory: chatHistory, sessionId: sessionStorage.getItem('cml_sid') || '', pageUrl: location.href }),
         });
         const data = await res.json();
         loadingBubble.remove();
@@ -1749,7 +1749,7 @@
       try {
         const res = await fetch(`${CHAMELEON_SERVER}/api/ask`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mallId: MALL_ID, productNo, productName, question: query }),
+          body: JSON.stringify({ mallId: MALL_ID, productNo, productName, question: query, sessionId: sessionStorage.getItem('cml_sid') || '', pageUrl: location.href }),
         });
         const data = await res.json();
         loadingBubble.remove();

@@ -293,7 +293,7 @@ REASONS:{"1":"응답에서 첫 번째로 소개한 상품의 핵심 이유 (형�
 // ─────────────────────────────────────────────
 // 메인 추천 파이프라인
 // ─────────────────────────────────────────────
-async function recommend({ mallId, query, conversationHistory = [] }) {
+async function recommend({ mallId, query, conversationHistory = [], context = {} }) {
   // 비용 한도 체크
   await checkCostLimit();
 
@@ -337,7 +337,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
       .sort((a, b) => msgLower.indexOf(a.name.toLowerCase()) - msgLower.indexOf(b.name.toLowerCase()));
     const recommendedProducts = mentionedProducts.length ? mentionedProducts : enrichedPalette.slice(0, 3);
 
-    Promise.resolve(supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'discovery', product_count: recommendedProducts.length })).catch(() => {});
+    Promise.resolve(supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'discovery', product_count: recommendedProducts.length, session_id: context.sessionId || null, page_url: context.pageUrl || null, persona: context.persona || null })).catch(() => {});
     return { type: 'recommendation', message, products: recommendedProducts };
   }
 
@@ -355,7 +355,7 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
   });
 
   if (!products.length) {
-    Promise.resolve(supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'no_results', product_count: 0 })).catch(() => {});
+    Promise.resolve(supabase.from('chat_logs').insert({ store_id: mallId, query, result_type: 'no_results', product_count: 0, session_id: context.sessionId || null, page_url: context.pageUrl || null, persona: context.persona || null })).catch(() => {});
     return {
       type: 'no_results',
       message: '아직 등록된 상품 중에서는 딱 맞는 걸 못 찾았어요. 다르게 설명해주시면 다시 찾아볼게요!',
@@ -456,6 +456,9 @@ async function recommend({ mallId, query, conversationHistory = [] }) {
     result_type:       'recommendation',
     product_count:     recommendedProducts.length,
     product_ids:       recommendedProducts.map(p => String(p.product_id)),
+    session_id:        context.sessionId || null,
+    page_url:          context.pageUrl || null,
+    persona:           context.persona || null,
   })).catch(() => {});
 
   return {

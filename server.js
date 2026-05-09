@@ -579,7 +579,7 @@ chips 작성 규칙:
 // 5. ASK API — 상품 관련 자유 질문 → Claude 응답
 // ─────────────────────────────────────────────
 app.post('/api/ask', async (req, res) => {
-  const { mallId, productNo, productName: domProductName, question } = req.body;
+  const { mallId, productNo, productName: domProductName, question, sessionId, pageUrl } = req.body;
   if (!question) return res.status(400).json({ error: 'question required' });
 
   if (!process.env.GOOGLE_AI_API_KEY) {
@@ -641,6 +641,11 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
 
     const answer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text
       || '죄송해요, 다시 시도해주세요.';
+    Promise.resolve(supabase.from('chat_logs').insert({
+      store_id: mallId, query: question, result_type: 'pdp_qa', product_count: 1,
+      product_ids: productNo ? [String(productNo)] : null,
+      session_id: sessionId || null, page_url: pageUrl || null,
+    })).catch(() => {});
     res.json({ answer });
   } catch (err) {
     console.error('[Ask API Error]', err.response?.data || err.message);
@@ -891,13 +896,13 @@ app.get('/api/options', async (req, res) => {
 // { mallId, query, conversationHistory? }
 // ─────────────────────────────────────────────
 app.post('/api/recommend', async (req, res) => {
-  const { mallId, query, conversationHistory } = req.body;
+  const { mallId, query, conversationHistory, sessionId, pageUrl } = req.body;
   if (!mallId || !query) return res.status(400).json({ error: 'mallId, query 필요' });
 
   console.log(`[Recommend] mallId=${mallId} query="${query}"`);
 
   try {
-    const result = await recommend({ mallId, query, conversationHistory });
+    const result = await recommend({ mallId, query, conversationHistory, context: { sessionId, pageUrl } });
     res.json(result);
   } catch (err) {
     console.error('[Recommend Error]', err.message);
@@ -1195,7 +1200,35 @@ app.get('/api/conversations', async (req, res) => {
 
     const { data, error } = await q;
     if (error) throw error;
-    res.json({ conversations: data || [], total: (data || []).length });
+
+    const rows = data || [];
+
+    // session_id가 있는 row들에 대해 최종 액션 조회
+    const sessionIds = [...new Set(rows.map(r => r.session_id).filter(Boolean))];
+    let eventMap = {}; // session_id → final action event_type
+    if (sessionIds.length) {
+      const { data: events } = await supabase
+        .from('widget_events')
+        .select('session_id, event_type, occurred_at')
+        .eq('store_id', mallId)
+        .in('session_id', sessionIds)
+        .order('occurred_at', { ascending: false });
+
+      const priority = { purchase: 4, cart_add: 3, product_click: 2, chip_click: 1 };
+      (events || []).forEach(e => {
+        const cur = eventMap[e.session_id];
+        if (!cur || (priority[e.event_type] || 0) > (priority[cur] || 0)) {
+          eventMap[e.session_id] = e.event_type;
+        }
+      });
+    }
+
+    const enriched = rows.map(r => ({
+      ...r,
+      final_action: r.session_id ? (eventMap[r.session_id] || null) : null,
+    }));
+
+    res.json({ conversations: enriched, total: enriched.length });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -1243,6 +1276,11 @@ const MIGRATIONS = [
   )`,
   `CREATE INDEX IF NOT EXISTS widget_events_store_occurred_idx
     ON widget_events (store_id, occurred_at DESC)`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS session_id text`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS page_url   text`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS persona    text`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS referrer   text`,
+  `CREATE INDEX IF NOT EXISTS chat_logs_session_idx ON chat_logs (session_id)`,
 ];
 
 async function runMigrations() {

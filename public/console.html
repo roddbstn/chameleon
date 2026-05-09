@@ -976,13 +976,15 @@ select {
             <tr>
               <th>시간</th>
               <th>질문</th>
+              <th>유저</th>
+              <th>화면</th>
               <th>결과 유형</th>
+              <th>최종 액션</th>
               <th>추천 상품 수</th>
-              <th>상품 ID</th>
             </tr>
           </thead>
           <tbody id="convTable">
-            <tr><td colspan="5" class="loading">데이터를 불러오는 중...</td></tr>
+            <tr><td colspan="7" class="loading">데이터를 불러오는 중...</td></tr>
           </tbody>
         </table>
       </div>
@@ -1224,7 +1226,7 @@ async function loadConversations() {
     document.getElementById('convTotal').textContent = `총 ${allConvs.length}건`;
     filterConvs();
   } catch (e) {
-    document.getElementById('convTable').innerHTML = '<tr><td colspan="5" style="text-align:center;padding:24px;color:#999;">데이터를 불러올 수 없습니다.</td></tr>';
+    document.getElementById('convTable').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:#999;">데이터를 불러올 수 없습니다.</td></tr>';
   }
 }
 
@@ -1238,19 +1240,52 @@ function filterConvs() {
   renderConvTable(filtered);
 }
 
+function badgeFinalAction(action) {
+  if (!action) return '<span style="color:var(--text-3);font-size:11px;">—</span>';
+  const map = {
+    purchase:      { label: '구매', color: '#10b981' },
+    cart_add:      { label: '장바구니', color: '#6366f1' },
+    product_click: { label: '상품클릭', color: '#f59e0b' },
+    chip_click:    { label: '칩클릭', color: '#94a3b8' },
+    chat_start:    { label: '채팅시작', color: '#94a3b8' },
+    impression:    { label: '노출', color: '#cbd5e1' },
+  };
+  const m = map[action] || { label: action, color: '#94a3b8' };
+  return `<span style="background:${m.color}22;color:${m.color};padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;">${m.label}</span>`;
+}
+
+function pageLabel(url) {
+  if (!url) return '<span style="color:var(--text-3);font-size:11px;">—</span>';
+  try {
+    const p = new URL(url).pathname;
+    const short = p.length > 28 ? '…' + p.slice(-26) : p;
+    return `<span title="${esc(url)}" style="font-size:11px;color:var(--text-2);">${esc(short)}</span>`;
+  } catch { return `<span style="font-size:11px;color:var(--text-2);">${esc(url)}</span>`; }
+}
+
+function userLabel(row) {
+  const sid = row.session_id ? row.session_id.slice(-4) : null;
+  const persona = row.persona || null;
+  if (!sid && !persona) return '<span style="color:var(--text-3);font-size:11px;">비회원</span>';
+  const name = persona || '비회원';
+  return `<span style="font-size:11px;" title="session: ${esc(row.session_id || '')}">${esc(name)} <span style="color:var(--text-3);">#${sid || '??'}</span></span>`;
+}
+
 function renderConvTable(convs) {
   const tbody = document.getElementById('convTable');
   if (!convs.length) {
-    tbody.innerHTML = '<tr><td colspan="5" class="loading">대화 기록이 없습니다.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="loading">대화 기록이 없습니다.</td></tr>';
     return;
   }
   tbody.innerHTML = convs.map(c => `
     <tr class="conv-row">
       <td style="white-space:nowrap;color:var(--text-3);">${timeAgo(c.created_at)}</td>
       <td><div class="conv-query">${esc(c.query || '—')}</div></td>
+      <td>${userLabel(c)}</td>
+      <td>${pageLabel(c.page_url)}</td>
       <td>${badgeType(c.result_type)}</td>
+      <td>${badgeFinalAction(c.final_action)}</td>
       <td>${c.product_count || 0}</td>
-      <td style="color:var(--text-3);font-size:11px;">${(c.product_ids || []).slice(0,3).join(', ') || '—'}</td>
     </tr>`).join('');
 }
 
