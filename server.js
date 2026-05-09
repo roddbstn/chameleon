@@ -1234,6 +1234,109 @@ app.get('/api/conversations', async (req, res) => {
   }
 });
 
+// ── AI 사이트 색상 분석 ──────────────────────────────────────────────────────
+app.post('/api/analyze-site-colors', async (req, res) => {
+  const { url } = req.body;
+  if (!url) return res.status(400).json({ error: 'url required' });
+
+  // 1. HTML 페치
+  let html = '';
+  try {
+    const r = await axios.get(url, {
+      timeout: 8000,
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ChameleonBot/1.0)' },
+      maxRedirects: 5,
+    });
+    html = r.data || '';
+  } catch (e) {
+    return res.status(502).json({ error: `사이트를 가져올 수 없습니다: ${e.message}` });
+  }
+
+  // 2. 색상 추출 (hex, rgb, CSS 변수, meta theme-color)
+  const hexRe   = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g;
+  const rgbRe   = /rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)/gi;
+  const metaRe  = /content=["'](\s*#[0-9A-Fa-f]{3,6}|rgb\([^)]+\))\s*["']/gi;
+
+  function toHex6(h) {
+    h = h.replace('#','');
+    if (h.length === 3) h = h.split('').map(c=>c+c).join('');
+    return '#' + h.toUpperCase();
+  }
+  function rgbToHex(r,g,b) {
+    return '#' + [r,g,b].map(v=>parseInt(v).toString(16).padStart(2,'0')).join('').toUpperCase();
+  }
+  function luminance(hex) {
+    const r = parseInt(hex.slice(1,3),16)/255;
+    const g = parseInt(hex.slice(3,5),16)/255;
+    const b = parseInt(hex.slice(5,7),16)/255;
+    return 0.2126*r + 0.7152*g + 0.0722*b;
+  }
+
+  const freq = {};
+  const bump = (h) => { const k = toHex6(h); freq[k] = (freq[k]||0)+1; };
+
+  let m;
+  while ((m = hexRe.exec(html))  !== null) bump(m[0]);
+  while ((m = rgbRe.exec(html))  !== null) bump(rgbToHex(m[1],m[2],m[3]));
+
+  // meta theme-color 가중치 높게
+  const themeColors = [];
+  while ((m = metaRe.exec(html)) !== null) {
+    const v = m[1].trim();
+    if (v.startsWith('#')) { const h = toHex6(v); freq[h] = (freq[h]||0)+20; themeColors.push(h); }
+  }
+
+  // 회색/흰/검정 필터 후 상위 20개
+  const colored = Object.entries(freq)
+    .filter(([h]) => {
+      const r = parseInt(h.slice(1,3),16);
+      const g = parseInt(h.slice(3,5),16);
+      const b = parseInt(h.slice(5,7),16);
+      const max = Math.max(r,g,b), min = Math.min(r,g,b);
+      const sat = max === 0 ? 0 : (max-min)/max;
+      const lum = luminance(h);
+      return sat > 0.12 && lum > 0.02 && lum < 0.95; // 유채색만
+    })
+    .sort((a,b) => b[1]-a[1])
+    .slice(0, 20)
+    .map(([h,cnt]) => ({ hex: h, count: cnt }));
+
+  if (!colored.length) {
+    return res.json({ accentColor: '#818CF8', backgroundColor: '#F5F3FF', rationale: '유채색을 찾지 못해 기본값을 반환합니다.' });
+  }
+
+  // 3. Gemini로 최적 색상 조합 결정
+  const palette = colored.map(c => `${c.hex}(${c.count})`).join(', ');
+  const prompt = `당신은 UI/UX 디자이너입니다. 아래는 쇼핑몰 웹사이트(${url})에서 추출한 색상 팔레트(사용 빈도 순)입니다:
+
+팔레트: ${palette}
+${themeColors.length ? `브랜드 테마 색상: ${themeColors.join(', ')}` : ''}
+
+이 사이트에 자연스럽게 어울리는 AI 채팅 위젯의 색상을 추천해주세요.
+- accentColor: 버튼, 헤더, 강조 요소에 쓰이는 색 (사이트 브랜드 컬러 기반, 너무 연하면 안 됨)
+- backgroundColor: 위젯 내부 배경색 (accentColor와 조화롭되 가독성 확보, 보통 매우 연한 색)
+
+반드시 아래 JSON만 반환하세요 (설명 없이):
+{"accentColor":"#RRGGBB","backgroundColor":"#RRGGBB","rationale":"한 문장 설명"}`;
+
+  try {
+    const r = await callGemini({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.3, maxOutputTokens: 200 },
+    });
+    const raw = r.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('JSON not found in response');
+    const parsed = JSON.parse(jsonMatch[0]);
+    return res.json({ ...parsed, palette: colored.slice(0, 8) });
+  } catch (e) {
+    console.error('[analyze-site-colors] Gemini error:', e.message);
+    // 폴백: 팔레트 1위 색상 사용
+    const accent = colored[0].hex;
+    return res.json({ accentColor: accent, backgroundColor: '#F8F8F8', rationale: 'AI 분석 실패, 사이트 대표 색상 적용', palette: colored.slice(0,8) });
+  }
+});
+
 // 기존 대시보드 (이전 버전 호환)
 app.get('/dashboard', (req, res) => res.redirect('/admin'));
 

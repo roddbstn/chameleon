@@ -745,6 +745,92 @@ select {
   max-height: 100vh;
   border-right: 1px solid var(--border);
 }
+/* ── AI 색상 분석 ── */
+.ai-color-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 7px 14px;
+  background: linear-gradient(135deg, #818CF8 0%, #6366F1 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.ai-color-btn:hover { opacity: 0.88; }
+.ai-color-btn:active { transform: scale(0.97); }
+.ai-color-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.ai-color-btn .spin {
+  display: inline-block;
+  width: 12px; height: 12px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.ai-result-card {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: #F5F3FF;
+  border: 1px solid #DDD6FE;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+.ai-result-card.visible { display: flex; }
+.ai-result-swatches {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ai-swatch-pair {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.ai-swatch {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+.ai-swatch-label { font-size: 10px; color: var(--text-3); }
+.ai-rationale {
+  font-size: 11px;
+  color: #5B21B6;
+  line-height: 1.5;
+}
+.ai-apply-btn {
+  align-self: flex-start;
+  padding: 6px 14px;
+  background: #6366F1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.ai-apply-btn:hover { opacity: 0.85; }
+.ai-palette-dots { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+.ai-palette-dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.1s;
+  title: attr(data-hex);
+}
+.ai-palette-dot:hover { transform: scale(1.3); }
+
 /* ── 위젯 외관: 오른쪽 미리보기 — 브라우저 시뮬레이션 ── */
 .widget-preview-col {
   background: #1A1A1A;
@@ -1253,6 +1339,27 @@ select {
             <label class="field-label">쇼핑몰 URL <span style="color:#F87171;font-size:10px;">★ 미리보기에 필요</span></label>
             <input type="url" id="siteUrl" placeholder="https://tndbsrkd.cafe24.com" oninput="updateWidgetPreview()">
             <div class="field-hint">미리보기 영역에 실제 사이트를 불러옵니다. 일부 사이트는 보안 설정으로 표시되지 않을 수 있어요.</div>
+            <button class="ai-color-btn" id="aiColorBtn" onclick="analyzeAndApplyColors()" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+              AI 디자인 맞추기
+            </button>
+            <!-- AI 분석 결과 카드 -->
+            <div class="ai-result-card" id="aiResultCard">
+              <div class="ai-result-swatches">
+                <div class="ai-swatch-pair">
+                  <div class="ai-swatch" id="aiSwatchAccent"></div>
+                  <div class="ai-swatch-label">강조색</div>
+                </div>
+                <div class="ai-swatch-pair">
+                  <div class="ai-swatch" id="aiSwatchBg"></div>
+                  <div class="ai-swatch-label">배경색</div>
+                </div>
+                <div style="flex:1"></div>
+                <div class="ai-palette-dots" id="aiPaletteDots"></div>
+              </div>
+              <div class="ai-rationale" id="aiRationale"></div>
+              <button class="ai-apply-btn" onclick="applyAiColors()" type="button">이 색상 적용하기</button>
+            </div>
           </div>
         </div>
 
@@ -1938,6 +2045,90 @@ function syncColorText(pickerId, textId) {
 function syncColorPicker(textId, pickerId) {
   const v = document.getElementById(textId).value;
   if (/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById(pickerId).value = v;
+}
+
+// ── AI 색상 분석 ──
+let _aiColors = null;
+
+async function analyzeAndApplyColors() {
+  const url = document.getElementById('siteUrl')?.value.trim();
+  if (!url) {
+    alert('먼저 쇼핑몰 URL을 입력해주세요.');
+    return;
+  }
+  const btn  = document.getElementById('aiColorBtn');
+  const card = document.getElementById('aiResultCard');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> 분석 중…';
+  card.classList.remove('visible');
+
+  try {
+    const r = await fetch('/api/analyze-site-colors', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || '분석 실패');
+
+    _aiColors = data;
+
+    // 스와치 업데이트
+    document.getElementById('aiSwatchAccent').style.background = data.accentColor;
+    document.getElementById('aiSwatchBg').style.background     = data.backgroundColor;
+    document.getElementById('aiRationale').textContent          = data.rationale || '';
+
+    // 팔레트 점
+    const dotsEl = document.getElementById('aiPaletteDots');
+    dotsEl.innerHTML = (data.palette || []).map(p =>
+      `<div class="ai-palette-dot" style="background:${p.hex}" title="${p.hex}"
+         onclick="setAiAccent('${p.hex}')"></div>`
+    ).join('');
+
+    card.classList.add('visible');
+
+    // 자동으로 미리보기에 색상 반영 (아직 저장 안 함)
+    applyAiColors(false);
+  } catch (e) {
+    alert('색상 분석 중 오류가 발생했습니다: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg> AI 디자인 맞추기`;
+  }
+}
+
+function setAiAccent(hex) {
+  // 팔레트 점 클릭 시 강조색만 교체
+  if (_aiColors) _aiColors.accentColor = hex;
+  document.getElementById('aiSwatchAccent').style.background = hex;
+  applyAiColors(false);
+}
+
+function applyAiColors(save = true) {
+  if (!_aiColors) return;
+  const { accentColor, backgroundColor } = _aiColors;
+
+  // 색상 피커 + 텍스트 인풋 동기화
+  const setColor = (pickId, textId, val) => {
+    const pk = document.getElementById(pickId);
+    const tx = document.getElementById(textId);
+    if (pk) pk.value = val;
+    if (tx) tx.value = val;
+  };
+  setColor('accentColor', 'accentColorText', accentColor);
+  setColor('bgColor',     'bgColorText',     backgroundColor);
+
+  // 미리보기 즉시 반영
+  updateWidgetPreview();
+
+  // 성공 피드백 (버튼 텍스트 잠깐 바꾸기)
+  if (save) {
+    const applyBtn = document.querySelector('.ai-apply-btn');
+    if (applyBtn) {
+      applyBtn.textContent = '적용 완료!';
+      setTimeout(() => { applyBtn.textContent = '이 색상 적용하기'; }, 1800);
+    }
+  }
 }
 
 // ── 미리보기 전체화면 토글 ──
