@@ -647,39 +647,135 @@ select {
   max-height: 100vh;
   border-right: 1px solid var(--border);
 }
+/* ── 위젯 외관: 오른쪽 미리보기 — 브라우저 시뮬레이션 ── */
 .widget-preview-col {
-  background: #EBEBEA;
+  background: #1A1A1A;
   position: sticky;
   top: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  padding: 14px;
   overflow: hidden;
-  gap: 0;
+  gap: 10px;
 }
-.widget-preview-tag {
-  position: absolute;
-  top: 16px;
-  left: 20px;
+.preview-col-label {
   font-size: 10px;
-  color: #AAA;
-  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  flex-shrink: 0;
+  padding: 0 2px;
 }
 
-/* ── 위젯 미리보기 프레임 ── */
-.wdg-frame {
-  width: 320px;
-  height: 540px;
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 24px 72px rgba(0,0,0,.14), 0 2px 8px rgba(0,0,0,.06);
-  overflow: hidden;
+/* 브라우저 창 */
+.preview-browser {
+  flex: 1;
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 24px 80px rgba(0,0,0,0.6);
+  min-height: 0;
 }
+.preview-browser-chrome {
+  background: #323232;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+.preview-traffic-lights { display: flex; gap: 6px; flex-shrink: 0; }
+.preview-traffic-lights span { width: 11px; height: 11px; border-radius: 50%; }
+.tl-close { background: #FF5F57; }
+.tl-min   { background: #FEBC2E; }
+.tl-max   { background: #28C840; }
+.preview-url-bar {
+  flex: 1;
+  background: #242424;
+  border-radius: 5px;
+  padding: 4px 12px;
+  font-size: 11px;
+  color: #AAA;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.preview-browser-body {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #F5F5F3;
+  min-height: 0;
+}
+
+/* 사이트 iframe */
+#site-preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* URL 미입력 시 빈 상태 */
+.preview-empty-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #F7F7F5;
+  color: #BBB;
+  font-size: 12px;
+  text-align: center;
+  padding: 24px;
+  pointer-events: none;
+}
+.preview-empty-icon {
+  width: 48px; height: 48px;
+  background: #E8E8E4;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+.preview-empty-state strong { color: #888; font-size: 13px; }
+
+/* iframe 로드 차단 안내 */
+.preview-blocked-note {
+  position: absolute;
+  bottom: 0; left: 0; right: 300px;
+  background: rgba(0,0,0,0.7);
+  color: rgba(255,255,255,0.7);
+  font-size: 10px;
+  padding: 6px 12px;
+  text-align: center;
+  display: none;
+  backdrop-filter: blur(4px);
+}
+
+/* 위젯 패널 오버레이 (오른쪽 사이드 패널처럼) */
+.preview-widget-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 290px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--wdg-bg, #FAFAF8);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  box-shadow: -8px 0 32px rgba(0,0,0,0.12);
+  z-index: 10;
+}
+
+/* 위젯 패널 내부 요소 */
 .wdg-header {
   padding: 13px 16px;
   background: var(--wdg-header-bg, #F5F0EE);
@@ -690,10 +786,7 @@ select {
 .wdg-header-left { display: flex; align-items: center; gap: 8px; }
 .wdg-header-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; flex-shrink:0; }
 .wdg-header-logo { height: 22px; object-fit: contain; display: block; }
-.wdg-header-logo-dot {
-  width: 22px; height: 22px; border-radius: 50%;
-  background: rgba(0,0,0,0.12);
-}
+.wdg-header-logo-dot { width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.12); }
 .wdg-header-title { font-size: 13px; font-weight: 700; color: var(--wdg-header-text, #111); }
 .wdg-close {
   width: 24px; height: 24px; border-radius: 50%;
@@ -702,30 +795,21 @@ select {
   font-size: 14px; color: var(--wdg-header-text, #111); opacity: 0.6;
 }
 .wdg-hero {
-  padding: 24px 18px 12px;
+  padding: 22px 16px 12px;
   text-align: center;
   flex-shrink: 0;
   background: var(--wdg-bg, #FAFAF8);
 }
-.wdg-hero-title {
-  font-size: 14px; font-weight: 700; color: #111;
-  line-height: 1.35; margin-bottom: 5px;
-}
+.wdg-hero-title { font-size: 14px; font-weight: 700; color: #111; line-height: 1.35; margin-bottom: 5px; }
 .wdg-hero-body { font-size: 11px; color: #888; line-height: 1.5; margin-bottom: 10px; }
 .wdg-chips-wrap {
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 14px), transparent);
-  mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 14px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 12px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 12px), transparent);
 }
-.wdg-chips-track {
-  display: flex; width: max-content;
-  animation: wdg-chip-scroll var(--wdg-chip-dur, 16s) linear infinite;
-}
+.wdg-chips-track { display: flex; width: max-content; animation: wdg-chip-scroll var(--wdg-chip-dur, 16s) linear infinite; }
 .wdg-chips-set { display: flex; gap: 5px; padding-right: 5px; }
-@keyframes wdg-chip-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
+@keyframes wdg-chip-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .wdg-chip {
   border: 1px solid var(--wdg-accent-15, #D5C8C3);
   border-radius: 999px; padding: 4px 10px;
@@ -744,17 +828,13 @@ select {
   font-size: 11px; line-height: 1.6; max-width: 84%;
 }
 .wdg-bubble.ai {
-  background: var(--wdg-ai-bg, #F5F3F1);
-  color: var(--wdg-ai-text, #333);
-  align-self: flex-start;
-  border-bottom-left-radius: 3px;
+  background: var(--wdg-ai-bg, #F5F3F1); color: var(--wdg-ai-text, #333);
+  align-self: flex-start; border-bottom-left-radius: 3px;
   border: var(--wdg-ai-border, 1px solid #E8E8E4);
 }
 .wdg-bubble.user {
-  background: var(--wdg-user-bg, #5E4637);
-  color: var(--wdg-user-text, #fff);
-  align-self: flex-end;
-  border-bottom-right-radius: 3px;
+  background: var(--wdg-user-bg, #5E4637); color: var(--wdg-user-text, #fff);
+  align-self: flex-end; border-bottom-right-radius: 3px;
   border: var(--wdg-user-border, none);
 }
 .wdg-input-bar {
@@ -1010,7 +1090,16 @@ select {
       <div class="widget-settings-col">
         <div class="page-header">
           <h1>위젯 외관</h1>
-          <p>쇼핑몰에 삽입되는 AI 위젯의 색상과 스타일을 설정합니다.</p>
+          <p>실제 고객 시점에서 위젯이 어떻게 보일지 오른쪽에서 확인하세요.</p>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">내 쇼핑몰</div>
+          <div class="field">
+            <label class="field-label">쇼핑몰 URL <span style="color:#F87171;font-size:10px;">★ 미리보기에 필요</span></label>
+            <input type="url" id="siteUrl" placeholder="https://tndbsrkd.cafe24.com" oninput="updateWidgetPreview()">
+            <div class="field-hint">미리보기 영역에 실제 사이트를 불러옵니다. 일부 사이트는 보안 설정으로 표시되지 않을 수 있어요.</div>
+          </div>
         </div>
 
         <div class="form-section">
@@ -1085,49 +1174,79 @@ select {
         </div>
       </div>
 
-      <!-- 오른쪽: 실시간 미리보기 -->
+      <!-- 오른쪽: 브라우저 시뮬레이션 미리보기 -->
       <div class="widget-preview-col">
-        <span class="widget-preview-tag">실시간 미리보기</span>
-        <div class="wdg-frame" id="wdg-preview">
-          <!-- 헤더 -->
-          <div class="wdg-header">
-            <div class="wdg-header-left">
-              <div class="wdg-header-dot"></div>
-              <div id="wdg-logo-wrap"><div class="wdg-header-logo-dot"></div></div>
+        <div class="preview-col-label">고객 시점 미리보기</div>
+
+        <div class="preview-browser">
+          <!-- 브라우저 크롬 (주소창) -->
+          <div class="preview-browser-chrome">
+            <div class="preview-traffic-lights">
+              <span class="tl-close"></span>
+              <span class="tl-min"></span>
+              <span class="tl-max"></span>
             </div>
-            <div class="wdg-close">×</div>
+            <div class="preview-url-bar" id="preview-url-bar">쇼핑몰 URL을 입력하세요</div>
           </div>
-          <!-- 히어로 -->
-          <div class="wdg-hero">
-            <div class="wdg-hero-title" id="wdg-prev-title">안녕하세요! 무엇을 찾고 있으신가요?</div>
-            <div class="wdg-hero-body" id="wdg-prev-body">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
-            <div class="wdg-chips-wrap" id="wdg-prev-chips">
-              <div class="wdg-chips-track">
-                <div class="wdg-chips-set">
-                  <div class="wdg-chip">선물용으로 찾고 있어요</div>
-                  <div class="wdg-chip">가벼운 아우터 추천해줘</div>
-                  <div class="wdg-chip">여름 데일리룩</div>
+
+          <!-- 브라우저 본문: iframe + 위젯 오버레이 -->
+          <div class="preview-browser-body">
+
+            <!-- 실제 사이트 iframe -->
+            <iframe id="site-preview-iframe" src="" title="사이트 미리보기"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+
+            <!-- URL 미입력 시 안내 -->
+            <div class="preview-empty-state" id="preview-empty-state">
+              <div class="preview-empty-icon">🌐</div>
+              <strong>쇼핑몰 URL을 입력하면<br>실제 사이트가 여기 나타나요</strong>
+              <span>왼쪽 "내 쇼핑몰 URL"에 입력하세요</span>
+            </div>
+
+            <!-- 위젯 패널 오버레이 (고객이 보는 사이드 패널) -->
+            <div class="preview-widget-panel" id="wdg-preview">
+              <!-- 헤더 -->
+              <div class="wdg-header">
+                <div class="wdg-header-left">
+                  <div class="wdg-header-dot"></div>
+                  <div id="wdg-logo-wrap"><div class="wdg-header-logo-dot"></div></div>
                 </div>
-                <div class="wdg-chips-set" aria-hidden="true">
-                  <div class="wdg-chip">선물용으로 찾고 있어요</div>
-                  <div class="wdg-chip">가벼운 아우터 추천해줘</div>
-                  <div class="wdg-chip">여름 데일리룩</div>
+                <div class="wdg-close">×</div>
+              </div>
+              <!-- 히어로 -->
+              <div class="wdg-hero">
+                <div class="wdg-hero-title" id="wdg-prev-title">안녕하세요! 무엇을 찾고 있으신가요?</div>
+                <div class="wdg-hero-body" id="wdg-prev-body">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
+                <div class="wdg-chips-wrap" id="wdg-prev-chips">
+                  <div class="wdg-chips-track">
+                    <div class="wdg-chips-set">
+                      <div class="wdg-chip">선물용으로 찾고 있어요</div>
+                      <div class="wdg-chip">가벼운 아우터 추천해줘</div>
+                      <div class="wdg-chip">여름 데일리룩</div>
+                    </div>
+                    <div class="wdg-chips-set" aria-hidden="true">
+                      <div class="wdg-chip">선물용으로 찾고 있어요</div>
+                      <div class="wdg-chip">가벼운 아우터 추천해줘</div>
+                      <div class="wdg-chip">여름 데일리룩</div>
+                    </div>
+                  </div>
                 </div>
               </div>
+              <!-- 메시지 -->
+              <div class="wdg-messages">
+                <div class="wdg-bubble ai">소재가 면 100%라서 여름에도 시원하게 입을 수 있어요.</div>
+                <div class="wdg-bubble user">세탁은 어떻게 해요?</div>
+                <div class="wdg-bubble ai">찬물 단독 세탁을 권장해요. 드라이 클리닝도 가능합니다.</div>
+              </div>
+              <!-- 입력창 -->
+              <div class="wdg-input-bar">
+                <div class="wdg-input-placeholder">궁금한 점을 물어보세요</div>
+                <div class="wdg-input-btn">↑</div>
+              </div>
             </div>
-          </div>
-          <!-- 메시지 영역 -->
-          <div class="wdg-messages">
-            <div class="wdg-bubble ai">소재가 면 100%라서 여름에도 시원하게 입을 수 있어요.</div>
-            <div class="wdg-bubble user">세탁은 어떻게 해요?</div>
-            <div class="wdg-bubble ai">찬물 단독 세탁을 권장해요. 드라이 클리닝도 가능합니다.</div>
-          </div>
-          <!-- 입력창 -->
-          <div class="wdg-input-bar">
-            <div class="wdg-input-placeholder">궁금한 점을 물어보세요</div>
-            <div class="wdg-input-btn">↑</div>
-          </div>
-        </div>
+
+          </div><!-- /preview-browser-body -->
+        </div><!-- /preview-browser -->
       </div>
 
     </section>
@@ -1339,8 +1458,9 @@ function applyConfig(data) {
   document.getElementById('accentColorText').value = accent;
   document.getElementById('bgColor').value         = bg;
   document.getElementById('bgColorText').value     = bg;
-  setVal('logoUrl',   br.logoUrl    || '');
-  setVal('heroImage', br.heroImage  || '');
+  setVal('logoUrl',  br.logoUrl   || '');
+  setVal('heroImage', br.heroImage || '');
+  setVal('siteUrl',  br.siteUrl   || '');
   document.getElementById('panelModePush').checked  = (tc.panel?.mode !== 'overlay');
   document.getElementById('adaptivePdpOn').checked  = (tc.adaptivePdp?.enabled !== false);
   document.getElementById('sneakPeekOn').checked    = (br.sneakPeekText !== null && br.sneakPeekText !== '');
@@ -1592,6 +1712,7 @@ function buildThemeConfig() {
         ? document.getElementById('sneakPeek').value
         : null,
       logoUrl:   document.getElementById('logoUrl').value  || null,
+      siteUrl:   document.getElementById('siteUrl')?.value.trim() || null,
       heroImage: document.getElementById('heroImage').value || null,
       starterChips: chips.filter(c => c.label.trim()).map(c => ({
         label: c.label.trim(),
@@ -1656,58 +1777,67 @@ function syncColorPicker(textId, pickerId) {
 
 // ── 위젯 미리보기 업데이트 ──
 function updateWidgetPreview() {
-  const frame = document.getElementById('wdg-preview');
-  if (!frame) return;
+  const panel = document.getElementById('wdg-preview');
+  if (!panel) return;
 
-  const accent = document.getElementById('accentColor')?.value || '#5E4637';
-  const bg     = document.getElementById('bgColor')?.value     || '#FAFAF8';
-  const logoUrl = document.getElementById('logoUrl')?.value    || '';
-  const title  = document.getElementById('welcomeTitle')?.value || '안녕하세요! 무엇을 찾고 있으신가요?';
-  const body   = document.getElementById('welcomeBody')?.value  || '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요';
+  const accent  = document.getElementById('accentColor')?.value  || '#5E4637';
+  const bg      = document.getElementById('bgColor')?.value      || '#FAFAF8';
+  const logoUrl = document.getElementById('logoUrl')?.value      || '';
+  const siteUrl = document.getElementById('siteUrl')?.value.trim() || '';
+  const title   = document.getElementById('welcomeTitle')?.value  || '안녕하세요! 무엇을 찾고 있으신가요?';
+  const body    = document.getElementById('welcomeBody')?.value   || '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요';
 
+  // ── CSS 변수 주입 ──
   const headerBg   = hexMixPrev(accent, '#ffffff', 0.18);
   const headerText = isDarkPrev(accent) ? '#fff' : '#111';
-  const accent15   = hexMixPrev(accent, '#ffffff', 0.85);
-  const accent06   = hexMixPrev(accent, '#ffffff', 0.94);
+  panel.style.setProperty('--wdg-accent',      accent);
+  panel.style.setProperty('--wdg-bg',           bg);
+  panel.style.setProperty('--wdg-header-bg',    headerBg);
+  panel.style.setProperty('--wdg-header-text',  headerText);
+  panel.style.setProperty('--wdg-accent-15',    hexMixPrev(accent, '#ffffff', 0.85));
+  panel.style.setProperty('--wdg-accent-06',    hexMixPrev(accent, '#ffffff', 0.94));
+  panel.style.setProperty('--wdg-user-bg',      accent);
+  panel.style.setProperty('--wdg-user-text',    isDarkPrev(accent) ? '#fff' : '#111');
 
-  frame.style.setProperty('--wdg-accent',     accent);
-  frame.style.setProperty('--wdg-bg',          bg);
-  frame.style.setProperty('--wdg-header-bg',   headerBg);
-  frame.style.setProperty('--wdg-header-text', headerText);
-  frame.style.setProperty('--wdg-accent-15',   accent15);
-  frame.style.setProperty('--wdg-accent-06',   accent06);
-
-  // 로고
+  // ── 로고 ──
   const logoWrap = document.getElementById('wdg-logo-wrap');
-  if (logoUrl) {
-    logoWrap.innerHTML = `<img class="wdg-header-logo" src="${esc(logoUrl)}" onerror="this.style.display='none'">`;
-  } else {
-    logoWrap.innerHTML = `<div class="wdg-header-logo-dot" style="background:${hexMixPrev(accent,'#000000',0.8)}"></div>`;
+  if (logoWrap) {
+    logoWrap.innerHTML = logoUrl
+      ? `<img class="wdg-header-logo" src="${esc(logoUrl)}" onerror="this.style.display='none'">`
+      : `<div class="wdg-header-logo-dot" style="background:${hexMixPrev(accent,'#000000',0.8)}"></div>`;
   }
 
-  // 텍스트
+  // ── 텍스트 ──
   const titleEl = document.getElementById('wdg-prev-title');
   const bodyEl  = document.getElementById('wdg-prev-body');
   if (titleEl) titleEl.textContent = title;
   if (bodyEl)  bodyEl.textContent  = body;
 
-  // 칩
+  // ── 칩 ──
   const chipsEl = document.getElementById('wdg-prev-chips');
-  if (chipsEl && typeof chips !== 'undefined' && chips.length) {
+  if (chipsEl && typeof chips !== 'undefined') {
     const visibleChips = chips.filter(c => (c.label || c).trim());
     if (visibleChips.length) {
       const setHTML = visibleChips.map(c => `<div class="wdg-chip">${esc((c.label || c).trim())}</div>`).join('');
-      chipsEl.innerHTML = `
-        <div class="wdg-chips-track">
-          <div class="wdg-chips-set">${setHTML}</div>
-          <div class="wdg-chips-set" aria-hidden="true">${setHTML}</div>
-        </div>`;
+      chipsEl.innerHTML = `<div class="wdg-chips-track"><div class="wdg-chips-set">${setHTML}</div><div class="wdg-chips-set" aria-hidden="true">${setHTML}</div></div>`;
     }
   }
 
-  // 말풍선 색상 (wdg-bubble.user)
-  frame.style.setProperty('--wdg-user-bg',   accent);
-  frame.style.setProperty('--wdg-user-text', isDarkPrev(accent) ? '#fff' : '#111');
+  // ── 사이트 URL → iframe + URL바 ──
+  const iframe   = document.getElementById('site-preview-iframe');
+  const emptyEl  = document.getElementById('preview-empty-state');
+  const urlBarEl = document.getElementById('preview-url-bar');
+
+  if (siteUrl) {
+    if (emptyEl) emptyEl.style.display = 'none';
+    if (urlBarEl) urlBarEl.textContent = siteUrl.replace(/^https?:\/\//, '');
+    // 이미 같은 src면 재로드 안 함
+    if (iframe && iframe.src !== siteUrl) iframe.src = siteUrl;
+  } else {
+    if (emptyEl) emptyEl.style.display = '';
+    if (urlBarEl) urlBarEl.textContent = '쇼핑몰 URL을 입력하세요';
+    if (iframe) iframe.src = '';
+  }
 }
 
 function hexMixPrev(hex1, hex2, t) {
