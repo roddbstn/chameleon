@@ -22,6 +22,26 @@
                 (path.includes('/product/') && location.search.includes('product_no')) ||
                 isSeoProduct;
 
+  // ── 0. 트래킹 헬퍼 (fire-and-forget) ──────────
+  function track(eventType, extra) {
+    const sid = sessionStorage.getItem('cml_sid') || (() => {
+      const id = Math.random().toString(36).slice(2);
+      sessionStorage.setItem('cml_sid', id);
+      return id;
+    })();
+    fetch(`${CHAMELEON_SERVER}/api/track`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mallId:    MALL_ID,
+        eventType,
+        productNo: extra?.productNo || null,
+        chipLabel: extra?.chipLabel || null,
+        sessionId: sid,
+      }),
+    }).catch(() => {}); // 추적 실패가 위젯 동작에 영향 없도록 silent
+  }
+
   // ── 1. 신호 수집 ─────────────────────────────
   function collectSignals() {
     const params    = new URLSearchParams(location.search);
@@ -1116,6 +1136,11 @@
         applyFixedHeaderWidth(SIDEBAR_W);
       }
       inputEl.focus();
+      // 세션당 1회만 chat_start 기록
+      if (!sessionStorage.getItem('cml_chat_started')) {
+        sessionStorage.setItem('cml_chat_started', '1');
+        track('chat_start');
+      }
     }
     function closeSidebar() {
       panel.classList.remove('cml-open');
@@ -1365,6 +1390,7 @@
         });
         if (res.ok || res.type === 'opaqueredirect' || res.status === 0 || res.status === 302) {
           showToast('장바구니에 담겼어요');
+          track('cart_add', { productNo: String(productId) });
         } else {
           showToast('담기에 실패했어요. 상품 페이지에서 시도해주세요.');
         }
@@ -1528,6 +1554,11 @@
         toggle.classList.toggle('open', isOpen);
       });
 
+      // "자세히 보기" 클릭 → 상품 클릭 추적
+      card.querySelector('.cml-inline-card-btn.primary')?.addEventListener('click', () => {
+        track('product_click', { productNo: String(product.id) });
+      });
+
       // 칩 클릭 → 사이드바 Q&A
       card.querySelectorAll('.cml-inline-card-chip').forEach(chip => {
         chip.addEventListener('click', e => {
@@ -1613,6 +1644,10 @@
             <a class="cml-msg-product-btn" href="${pdpUrl}">자세히 보기</a>
           </div>
         </div>`;
+      // 상품 클릭 추적
+      card.querySelector('.cml-msg-product-btn')?.addEventListener('click', () => {
+        track('product_click', { productNo: String(product.id) });
+      });
       return card;
     }
 
@@ -1697,7 +1732,12 @@
     inputEl.addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.isComposing) { const q = inputEl.value; inputEl.value = ''; sendChat(q); }
     });
-    startChips.forEach(chip => { chip.addEventListener('click', () => sendChat(chip.dataset.q)); });
+    startChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        track('chip_click', { chipLabel: chip.dataset.q });
+        sendChat(chip.dataset.q);
+      });
+    });
 
     // ── 상품 특정 Q&A (PDP 칩 클릭 전용) ──
     async function sendProductQA(query, productNo, productName) {
@@ -1732,6 +1772,7 @@
     document.addEventListener('chameleon:ask', e => {
       openSidebar();
       const { query, mode, productNo, productName, fullChips } = e.detail;
+      track('chip_click', { chipLabel: query, productNo: productNo || null });
       if (mode === 'product_qa') {
         // 이 상품 전용 컨텍스트 저장
         _pdpProductNo   = productNo   || '';
@@ -1843,6 +1884,7 @@
   // ── 11. 실행 ────────────────────────────────────
   async function init() {
     injectStyles();
+    track('impression'); // 페이지 로드 = 위젯 노출
 
     // config + pdpContent 요청을 동시에 시작 (직렬 await 제거)
     const configPromise = fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)

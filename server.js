@@ -1063,6 +1063,13 @@ app.get('/onboarding', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'onboarding.html'));
 });
 
+// ─────────────────────────────────────────────
+// 에이전트 콘솔
+// ─────────────────────────────────────────────
+app.get('/console', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'console.html'));
+});
+
 // 설정 조회
 app.get('/api/shop-config/:mallId', async (req, res) => {
   const { mallId } = req.params;
@@ -1076,13 +1083,21 @@ app.get('/api/shop-config/:mallId', async (req, res) => {
   }
 });
 
-// 설정 저장 (upsert)
+// 설정 저장 (upsert) — theme_config + agent_config 통합
 app.post('/api/shop-config', async (req, res) => {
-  const { mallId, brandName, theme_config } = req.body;
+  const { mallId, brandName, theme_config, agent_config } = req.body;
   if (!mallId) return res.status(400).json({ error: 'mallId required' });
   try {
+    const upsertData = {
+      mall_id:    mallId,
+      updated_at: new Date().toISOString(),
+    };
+    if (brandName   !== undefined) upsertData.brand_name   = brandName;
+    if (theme_config !== undefined) upsertData.theme_config = theme_config;
+    if (agent_config !== undefined) upsertData.agent_config = agent_config;
+
     const { error } = await supabase.from('shops').upsert(
-      { mall_id: mallId, brand_name: brandName, theme_config, updated_at: new Date().toISOString() },
+      upsertData,
       { onConflict: 'mall_id' }
     );
     if (error) throw error;
@@ -1090,6 +1105,98 @@ app.post('/api/shop-config', async (req, res) => {
     res.json({ success: true });
   } catch (e) {
     console.error('[ShopConfig] 저장 실패:', e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ─────────────────────────────────────────────
+// 10. TRACK API — 위젯 이벤트 수집 (노출/칩클릭/장바구니/구매)
+// POST /api/track
+// { mallId, eventType, productNo?, chipLabel?, sessionId? }
+// eventType: 'impression'|'chat_start'|'chip_click'|'product_click'|'cart_add'|'purchase'
+// ─────────────────────────────────────────────
+app.post('/api/track', async (req, res) => {
+  const { mallId, eventType, productNo, chipLabel, sessionId } = req.body;
+  if (!mallId || !eventType) return res.json({ ok: false });
+  try {
+    await supabase.from('widget_events').insert({
+      store_id:    mallId,
+      event_type:  eventType,
+      product_no:  productNo  || null,
+      chip_label:  chipLabel  || null,
+      session_id:  sessionId  || null,
+      occurred_at: new Date().toISOString(),
+    });
+  } catch (e) {
+    console.warn('[Track]', e.message);
+  }
+  res.json({ ok: true }); // 트래킹 실패여도 위젯 동작 방해 안 함
+});
+
+// ─────────────────────────────────────────────
+// 11. METRICS API — 콘솔 대시보드용 집계
+// GET /api/metrics?mallId=X&period=today|7d|30d
+// ─────────────────────────────────────────────
+app.get('/api/metrics', async (req, res) => {
+  const { mallId, period = '30d' } = req.query;
+  if (!mallId) return res.status(400).json({ error: 'mallId required' });
+
+  const now  = new Date();
+  const from = new Date(now);
+  if      (period === 'today') from.setHours(0, 0, 0, 0);
+  else if (period === '7d')    from.setDate(from.getDate() - 7);
+  else                         from.setDate(from.getDate() - 30);
+
+  try {
+    const { data: events } = await supabase
+      .from('widget_events')
+      .select('event_type, product_no, occurred_at')
+      .eq('store_id', mallId)
+      .gte('occurred_at', from.toISOString());
+
+    const totals = { impression: 0, chat_start: 0, chip_click: 0, product_click: 0, cart_add: 0, purchase: 0 };
+    const byProduct = {};
+    const daily = {};
+
+    (events || []).forEach(e => {
+      if (totals[e.event_type] !== undefined) totals[e.event_type]++;
+
+      if (e.product_no) {
+        if (!byProduct[e.product_no]) byProduct[e.product_no] = { impression: 0, chat_start: 0, product_click: 0, cart_add: 0, purchase: 0 };
+        if (byProduct[e.product_no][e.event_type] !== undefined) byProduct[e.product_no][e.event_type]++;
+      }
+
+      const day = e.occurred_at.slice(0, 10);
+      if (!daily[day]) daily[day] = { chat_start: 0, cart_add: 0, purchase: 0 };
+      if (daily[day][e.event_type] !== undefined) daily[day][e.event_type]++;
+    });
+
+    res.json({ period, from: from.toISOString(), totals, by_product: byProduct, daily });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ─────────────────────────────────────────────
+// 12. CONVERSATIONS API — 상품별 대화 기록 조회
+// GET /api/conversations?mallId=X&productNo=Y&limit=50&offset=0
+// ─────────────────────────────────────────────
+app.get('/api/conversations', async (req, res) => {
+  const { mallId, productNo, limit = 50, offset = 0 } = req.query;
+  if (!mallId) return res.status(400).json({ error: 'mallId required' });
+  try {
+    let q = supabase.from('chat_logs')
+      .select('*')
+      .eq('store_id', mallId)
+      .order('created_at', { ascending: false })
+      .range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1);
+
+    if (productNo) q = q.contains('product_ids', [productNo]);
+
+    const { data, error } = await q;
+    if (error) throw error;
+    res.json({ conversations: data || [], total: (data || []).length });
+  } catch (e) {
     res.status(500).json({ error: e.message });
   }
 });
@@ -1125,6 +1232,17 @@ const MIGRATIONS = [
     created_at   timestamptz DEFAULT now(),
     updated_at   timestamptz DEFAULT now()
   )`,
+  `CREATE TABLE IF NOT EXISTS widget_events (
+    id          bigserial PRIMARY KEY,
+    store_id    text NOT NULL,
+    event_type  text NOT NULL,
+    product_no  text,
+    chip_label  text,
+    session_id  text,
+    occurred_at timestamptz DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS widget_events_store_occurred_idx
+    ON widget_events (store_id, occurred_at DESC)`,
 ];
 
 async function runMigrations() {
