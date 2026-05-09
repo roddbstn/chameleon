@@ -126,31 +126,31 @@
     const style = document.createElement('style');
     style.id = 'cml-styles';
     style.textContent = `
-      /* ── push: html 너비 자체를 줄여 브라우저 창 좁힌 것처럼 리플로우 ── */
-      html {
-        transition: width 0.32s cubic-bezier(0.4,0,0.2,1) !important;
+      /* ── push: body padding-right로 오른쪽만 줄임 — 왼쪽 기준점 유지 ── */
+      body {
+        transition: padding-right 0.32s cubic-bezier(0.4,0,0.2,1) !important;
       }
       html.cml-push {
-        width: calc(100% - var(--cml-shift-width, 380px)) !important;
-        min-width: 0 !important;
         overflow-x: hidden !important;
       }
-      /* body/inner containers: min-width 제거해 실제로 좁혀지게 */
-      html.cml-push body,
+      /* padding-right + border-box: 왼쪽 좌표 전혀 안 변하고 오른쪽만 좁혀짐 */
+      html.cml-push body {
+        padding-right: var(--cml-shift-width, 380px) !important;
+        box-sizing: border-box !important;
+        min-width: 0 !important;
+      }
       html.cml-push #wrap,
       html.cml-push #container,
       html.cml-push #contents,
       html.cml-push .inner,
       html.cml-push [class*="layout-"] {
         min-width: 0 !important;
-        box-sizing: border-box;
       }
       body.cml-resizing, body.cml-resizing * { transition: none !important; }
 
       @media (max-width: 767px) {
-        html.cml-push {
-          width: 100% !important;
-          min-width: 0 !important;
+        html.cml-push body {
+          padding-right: 0 !important;
         }
       }
 
@@ -1119,9 +1119,11 @@
       document.querySelectorAll(FIXED_HDR_SEL).forEach(el => {
         const pos = getComputedStyle(el).position;
         if (pos === 'fixed' || pos === 'sticky') {
-          el.style.transition = 'width 0.32s cubic-bezier(0.4,0,0.2,1), max-width 0.32s cubic-bezier(0.4,0,0.2,1)';
-          el.style.width    = px != null ? `calc(100vw - ${px}px)` : '';
-          el.style.maxWidth = px != null ? `calc(100vw - ${px}px)` : '';
+          // right만 조정 — width/maxWidth 건드리지 않아 왼쪽 기준점 유지
+          el.style.transition = 'right 0.32s cubic-bezier(0.4,0,0.2,1)';
+          el.style.right    = px != null ? `${px}px` : '';
+          el.style.width    = '';
+          el.style.maxWidth = '';
         }
       });
     }
