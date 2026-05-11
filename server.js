@@ -896,13 +896,16 @@ app.get('/api/options', async (req, res) => {
 // { mallId, query, conversationHistory? }
 // ─────────────────────────────────────────────
 app.post('/api/recommend', async (req, res) => {
-  const { mallId, query, conversationHistory, sessionId, pageUrl } = req.body;
+  const { mallId, query, conversationHistory, sessionId, pageUrl, mode } = req.body;
   if (!mallId || !query) return res.status(400).json({ error: 'mallId, query 필요' });
 
-  console.log(`[Recommend] mallId=${mallId} query="${query}"`);
+  console.log(`[Recommend] mallId=${mallId} mode=${mode || 'auto'} query="${query}"`);
 
   try {
-    const result = await recommend({ mallId, query, conversationHistory, context: { sessionId, pageUrl } });
+    const result = await recommend({
+      mallId, query, conversationHistory,
+      context: { sessionId, pageUrl, mode },
+    });
     res.json(result);
   } catch (err) {
     console.error('[Recommend Error]', err.message);
@@ -1445,11 +1448,14 @@ const MIGRATIONS = [
   )`,
   `CREATE INDEX IF NOT EXISTS widget_events_store_occurred_idx
     ON widget_events (store_id, occurred_at DESC)`,
-  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS session_id text`,
-  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS page_url   text`,
-  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS persona    text`,
-  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS referrer   text`,
-  `CREATE INDEX IF NOT EXISTS chat_logs_session_idx ON chat_logs (session_id)`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS session_id      text`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS page_url        text`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS persona         text`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS referrer        text`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS intent_keywords text[]`,
+  `ALTER TABLE shops     ADD COLUMN IF NOT EXISTS agent_config    jsonb NOT NULL DEFAULT '{}'`,
+  `CREATE INDEX IF NOT EXISTS chat_logs_session_idx     ON chat_logs (session_id)`,
+  `CREATE INDEX IF NOT EXISTS chat_logs_keywords_idx    ON chat_logs USING gin(intent_keywords)`,
 ];
 
 async function runMigrations() {

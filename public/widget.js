@@ -1720,8 +1720,14 @@
       try {
         const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mallId: MALL_ID, query, conversationHistory: chatHistory, sessionId: sessionStorage.getItem('cml_sid') || '', pageUrl: location.href }),
+          body: JSON.stringify({
+            mallId: MALL_ID, query, conversationHistory: chatHistory,
+            sessionId: sessionStorage.getItem('cml_sid') || '',
+            pageUrl: location.href,
+            mode: _pendingMode || undefined,
+          }),
         });
+        _pendingMode = null; // 1회 사용 후 초기화
         const data = await res.json();
         loadingBubble.remove();
         const msg = data.message || data.error || '죄송해요, 다시 시도해주세요.';
@@ -1895,10 +1901,68 @@
     return { setupPdpWelcome };
   }
 
+  // ── after_cart 모드용 1회성 모드 플래그 ──
+  let _pendingMode = null;
+
+  // ── 장바구니 이벤트 감지 → after_cart 모드 트리거 ──
+  function setupCartDetection() {
+    // Cafe24 표준 장바구니 버튼 셀렉터들
+    const CART_BTN_SEL = [
+      '.btnCartAdd', '#cartAddBtn', '.cart-add', '[data-action="cart"]',
+      'button[onclick*="cart"]', 'input[onclick*="cart"]',
+      '.xans-product-detail .btn-cart', '#frmView .btn-primary',
+    ].join(',');
+
+    // MutationObserver로 동적 렌더된 버튼도 감지
+    let cartBtns = [];
+
+    function attachCartListeners() {
+      document.querySelectorAll(CART_BTN_SEL).forEach(btn => {
+        if (btn._cmlCartTracked) return;
+        btn._cmlCartTracked = true;
+        btn.addEventListener('click', () => {
+          // 장바구니 추가 확인 딜레이 (페이지가 반응하는 시간 고려)
+          setTimeout(() => {
+            track('cart_add');
+            _pendingMode = 'after_cart';
+            // 사이드바가 닫혀 있으면 열기
+            const chatPanel = document.querySelector('#cml-chat-panel') ||
+                              document.querySelector('.cml-chat-panel');
+            if (chatPanel && chatPanel.style.display !== 'none') {
+              // 이미 열려 있으면 자동 메시지 전송
+              const autoQuery = '장바구니에 담은 상품이랑 코디하면 좋은 거 추천해줘';
+              const inputEl = chatPanel.querySelector('#cml-chat-input') ||
+                              chatPanel.querySelector('input[type="text"]');
+              const sendEl  = chatPanel.querySelector('#cml-chat-send');
+              if (inputEl && sendEl) {
+                inputEl.value = autoQuery;
+                sendEl.click();
+              }
+            } else {
+              // 닫혀 있으면 탭을 sneak peek처럼 살짝 강조 (자동 열기는 안 함 — UX 침해)
+              const tab = document.querySelector('#cml-sidebar-tab') ||
+                          document.querySelector('.cml-sidebar-tab');
+              if (tab) {
+                tab.style.boxShadow = '-4px 0 20px rgba(94,70,55,0.25)';
+                setTimeout(() => { tab.style.boxShadow = ''; }, 3000);
+              }
+            }
+          }, 600);
+        });
+      });
+    }
+
+    attachCartListeners();
+    // DOM 변화 감시 (SPA, AJAX 렌더링 대응)
+    const obs = new MutationObserver(() => attachCartListeners());
+    obs.observe(document.body, { childList: true, subtree: true });
+  }
+
   // ── 11. 실행 ────────────────────────────────────
   async function init() {
     injectStyles();
     track('impression'); // 페이지 로드 = 위젯 노출
+    setupCartDetection(); // 장바구니 이벤트 감지 시작
 
     // config + pdpContent 요청을 동시에 시작 (직렬 await 제거)
     const configPromise = fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)

@@ -1196,19 +1196,55 @@ select {
               <div class="field-hint">고객에게 보이는 AI 어시스턴트의 이름</div>
             </div>
             <div class="field">
-              <label class="field-label">말투</label>
+              <label class="field-label">응대 말투</label>
               <select id="agentTone">
-                <option value="friendly">친근체 (~해요, ~거예요)</option>
-                <option value="formal">정중체 (~습니다, ~드립니다)</option>
-                <option value="expert">전문가체 (정보 중심, 간결)</option>
-                <option value="sensory">감성체 (분위기 중심, 서정적)</option>
+                <option value="friendly">친근체 — ~해요, ~거예요 (기본)</option>
+                <option value="formal">정중체 — ~습니다, ~드립니다</option>
+                <option value="expert">전문가체 — 정보 중심, 간결</option>
+                <option value="sensory">감성체 — 분위기·소재 묘사 중심</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">브랜드 DNA <span style="font-size:11px;color:var(--text-3);font-weight:400;">— AI가 고객을 이해하는 기초 데이터</span></div>
+          <div class="field">
+            <label class="field-label">주요 고객 페르소나 (Who)</label>
+            <textarea id="targetPersona" rows="3" placeholder="예: 30대 직장인 여성. 출퇴근+가벼운 외출 위주. 구김 없는 소재와 단정한 실루엣을 선호. 가격보다 품질 우선."></textarea>
+            <div class="field-hint">AI가 모든 추천의 기준으로 삼는 타겟 고객 정의</div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">브랜드 스타일 코드</label>
+              <input type="text" id="styleCodes" placeholder="예: 미니멀, 모던, 클린, 절제된 감각">
+              <div class="field-hint">브랜드를 3~5 단어로 표현한 스타일 정체성</div>
+            </div>
+            <div class="field">
+              <label class="field-label">가격대</label>
+              <select id="priceTier">
+                <option value="">선택 안 함</option>
+                <option value="entry">엔트리 (3~5만원대)</option>
+                <option value="mid">미드 (5~15만원대)</option>
+                <option value="premium">프리미엄 (15~30만원대)</option>
+                <option value="luxury">럭셔리 (30만원+)</option>
               </select>
             </div>
           </div>
           <div class="field">
-            <label class="field-label">브랜드 소개 / 가이드라인</label>
-            <textarea id="agentGuidelines" rows="4" placeholder="브랜드 소개, 추천 방식, 금지 사항 등을 입력하세요.&#10;예: 우리 브랜드는 지속가능한 패션을 추구합니다. 불필요한 업셀 금지. 소재 정보를 항상 먼저 안내."></textarea>
-            <div class="field-hint">AI가 고객 응대 시 참고하는 브랜드 고유 가이드라인</div>
+            <label class="field-label">이번 시즌 강조 포인트</label>
+            <input type="text" id="seasonFocus" placeholder="예: 25SS 핵심 — 린넨 소재, 와이드 팬츠, 뉴트럴 컬러 3종">
+            <div class="field-hint">현재 시즌 가장 밀어야 할 상품/소재/컨셉</div>
+          </div>
+          <div class="field">
+            <label class="field-label">브랜드 가이드라인 & 추가 지시</label>
+            <textarea id="agentGuidelines" rows="3" placeholder="예: 지속가능한 소재를 항상 먼저 소개. 타 브랜드 비교 언급 금지. 사이즈 문의 시 실측 기준 안내."></textarea>
+            <div class="field-hint">추천 방식, 강조할 점, 특이 운영 규칙</div>
+          </div>
+          <div class="field">
+            <label class="field-label">절대 금지 표현/행동</label>
+            <textarea id="prohibitedExpressions" rows="2" placeholder="예: '저렴한', '싸다' 표현 금지. 불필요한 업셀 금지. '재고 없음' 상품 추천 금지."></textarea>
+            <div class="field-hint">AI가 절대 하면 안 되는 표현이나 행동</div>
           </div>
         </div>
 
@@ -1744,13 +1780,19 @@ function applyConfig(data) {
   const br = tc.branding || {};
   const ac = data.agent_config || {};
 
-  // 에이전트
+  // 에이전트 기본
   setVal('agentName',       br.chatName    || ac.agentName || '');
   setVal('agentTone',       ac.tone        || 'friendly');
   setVal('agentGuidelines', ac.guidelines  || '');
   setVal('welcomeTitle',    br.welcomeTitle || '');
   setVal('welcomeBody',     br.welcomeBody  || '');
   setVal('sneakPeek',       br.sneakPeekText || '');
+  // 브랜드 DNA
+  setVal('targetPersona',         ac.targetPersona         || '');
+  setVal('styleCodes',            ac.styleCodes            || '');
+  setVal('seasonFocus',           ac.seasonFocus           || '');
+  setVal('prohibitedExpressions', ac.prohibitedExpressions || '');
+  if (ac.priceTier) { const el = document.getElementById('priceTier'); if (el) el.value = ac.priceTier; }
 
   // 위젯 색상
   const accent = tc.theme?.accentColor || '#C0392B';
@@ -1989,9 +2031,15 @@ async function saveAgentSettings() {
   const payload = {
     mallId,
     agent_config: {
-      agentName:  document.getElementById('agentName').value,
-      tone:       document.getElementById('agentTone').value,
-      guidelines: document.getElementById('agentGuidelines').value,
+      agentName:             document.getElementById('agentName').value,
+      tone:                  document.getElementById('agentTone').value,
+      guidelines:            document.getElementById('agentGuidelines').value,
+      // 브랜드 DNA 필드
+      targetPersona:         document.getElementById('targetPersona')?.value         || '',
+      styleCodes:            document.getElementById('styleCodes')?.value            || '',
+      priceTier:             document.getElementById('priceTier')?.value             || '',
+      seasonFocus:           document.getElementById('seasonFocus')?.value           || '',
+      prohibitedExpressions: document.getElementById('prohibitedExpressions')?.value || '',
     },
     theme_config: buildThemeConfig(),
   };
