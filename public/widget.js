@@ -276,31 +276,39 @@
       transform: translateY(-50%);
       z-index: 99999;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      gap: 10px;
       background: #fff;
       border: 1px solid rgba(94,70,55,0.15);
       border-right: none;
-      border-radius: 12px 0 0 12px;
-      padding: 16px 10px;
+      border-radius: 24px 0 0 24px;
+      padding: 12px;
       cursor: pointer;
       box-shadow: -4px 0 16px rgba(94,70,55,0.08);
-      transition: opacity 0.2s, box-shadow 0.2s;
+      transition: max-width 0.28s cubic-bezier(0.4,0,0.2,1), padding 0.28s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s;
       user-select: none;
       font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 48px;
     }
-    .cml-sidebar-tab:hover { box-shadow: -6px 0 22px rgba(94,70,55,0.14); }
+    .cml-sidebar-tab:hover {
+      max-width: 240px;
+      padding: 12px 18px 12px 12px;
+      box-shadow: -6px 0 22px rgba(94,70,55,0.14);
+    }
     .cml-sidebar-tab.cml-hidden { opacity: 0; pointer-events: none; }
-    .cml-sidebar-tab-icon { width: 22px; height: 22px; color: #5E4637; }
+    .cml-sidebar-tab-icon { width: 22px; height: 22px; color: #5E4637; flex-shrink: 0; }
     .cml-sidebar-tab-label {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 500;
       color: #5E4637;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.02em;
+      margin-left: 10px;
+      opacity: 0;
+      transition: opacity 0.15s 0.1s;
     }
+    .cml-sidebar-tab:hover .cml-sidebar-tab-label { opacity: 1; }
 
     /* ── 사이드바 패널 ── */
     .cml-chat-panel {
@@ -400,106 +408,6 @@
     }
     .cml-chat-bubble.loading { color: #A08070; font-style: italic; }
 
-    /* ── 추천 상품 카루셀 ── */
-    .cml-product-shelf {
-      background: #F7F5F3;
-      border-top: 1px solid rgba(94,70,55,0.10);
-      flex-shrink: 0;
-      position: relative;
-      overflow: hidden;
-    }
-    .cml-shelf-resize-handle {
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 8px; cursor: ns-resize; z-index: 10;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .cml-shelf-resize-handle::after {
-      content: ''; display: block;
-      width: 32px; height: 3px; border-radius: 2px;
-      background: rgba(94,70,55,0.20); margin-top: 2px;
-      transition: background 0.15s;
-    }
-    .cml-shelf-resize-handle:hover::after { background: rgba(94,70,55,0.45); }
-    .cml-product-shelf-header {
-      padding: 14px 16px 8px;
-      font-size: 15px; font-weight: 700; color: #5E4637;
-      letter-spacing: 0.02em;
-      display: flex; align-items: center; justify-content: space-between;
-      cursor: pointer; user-select: none;
-    }
-    .cml-product-shelf-header { cursor: default; }
-    #cml-product-shelf-list {
-      display: flex;
-      flex-direction: row;
-      overflow-x: auto;
-      gap: 10px;
-      padding: 0 16px 14px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-    #cml-product-shelf-list::-webkit-scrollbar { height: 3px; }
-    #cml-product-shelf-list::-webkit-scrollbar-track { background: transparent; }
-    #cml-product-shelf-list::-webkit-scrollbar-thumb { background: #DDD; border-radius: 2px; }
-    /* 가로형 shelf 카드 — 이미지 왼쪽, 정보 오른쪽 */
-    .cml-shelf-card {
-      flex: 0 0 280px;
-      height: 88px;
-      background: #fff;
-      border: 1px solid rgba(94,70,55,0.12);
-      border-radius: 10px;
-      overflow: hidden;
-      scroll-snap-align: start;
-      display: flex;
-      flex-direction: row;
-      transition: box-shadow 0.15s, border-color 0.15s;
-    }
-    .cml-shelf-card:hover { box-shadow: 0 3px 12px rgba(94,70,55,0.10); border-color: rgba(94,70,55,0.25); }
-    .cml-shelf-card-img-wrap {
-      position: relative;
-      width: 72px;
-      flex-shrink: 0;
-      background: #F0F0EE;
-    }
-    .cml-shelf-card-img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
-    .cml-shelf-card-img-placeholder {
-      width: 100%; height: 100%; background: #F0F0EE;
-      display: flex; align-items: center; justify-content: center;
-      color: #CCC; font-size: 10px;
-    }
-    .cml-shelf-card-num {
-      position: absolute; top: 5px; left: 5px;
-      width: 18px; height: 18px;
-      background: rgba(0,0,0,0.55); color: #fff;
-      font-size: 10px; font-weight: 700; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .cml-shelf-card-info {
-      flex: 1; padding: 9px 10px;
-      display: flex; flex-direction: column; justify-content: space-between;
-      min-width: 0;
-    }
-    .cml-shelf-card-name {
-      font-size: 12px; font-weight: 600; color: #111;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      line-height: 1.3;
-    }
-    .cml-shelf-card-price { font-size: 12px; color: #5E4637; font-weight: 600; }
-    .cml-shelf-card-reason {
-      font-size: 11px; color: #A08070;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      line-height: 1.3;
-    }
-    .cml-shelf-card-btns { display: flex; gap: 5px; margin-top: 4px; }
-    .cml-shelf-card-btn {
-      padding: 5px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;
-      cursor: pointer; border: none; font-family: inherit; text-decoration: none;
-      display: inline-block; transition: opacity 0.15s; text-align: center; white-space: nowrap;
-    }
-    .cml-shelf-card-btn:hover { opacity: 0.82; }
-    .cml-shelf-card-btn.primary { background: #5E4637; color: #fff; }
-    .cml-shelf-card-btn.secondary { background: #F0EBE5; color: #5E4637; }
 
     /* ── 인라인 추천 상품 카드 ── */
     .cml-inline-card {
@@ -658,14 +566,25 @@
     .cml-chat-send:hover { background: #E8DDD4; }
     .cml-chat-send:disabled { opacity: 0.35; cursor: default; }
 
-    /* ── 스타터 칩 ── */
+    /* ── 스타터 칩 (자동 스크롤 카드) ── */
     .cml-chat-starter-chips {
-      display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 14px;
+      overflow: hidden; padding: 0 0 14px;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
+      mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
     }
+    .cml-starter-track {
+      display: flex; width: max-content;
+      animation: cml-chips-scroll 22s linear infinite;
+      gap: 10px;
+    }
+    .cml-chat-starter-chips:hover .cml-starter-track { animation-play-state: paused; }
+    .cml-starter-set { display: flex; gap: 10px; padding-right: 10px; }
     .cml-chat-starter-chip {
-      border: 1px solid rgba(94,70,55,0.20); border-radius: 999px; padding: 10px 20px;
-      font-size: 13px; color: #5E4637; background: #fff; cursor: pointer;
-      font-family: inherit; transition: border-color 0.12s, background 0.12s;
+      border: 1px solid rgba(94,70,55,0.20); border-radius: 14px;
+      padding: 14px 20px; font-size: 13px; font-weight: 500; color: #5E4637;
+      background: #fff; cursor: pointer; font-family: inherit;
+      transition: border-color 0.12s, background 0.12s;
+      white-space: nowrap; flex-shrink: 0;
     }
     .cml-chat-starter-chip:hover { border-color: #5E4637; background: rgba(94,70,55,0.05); }
 
@@ -761,11 +680,12 @@
       .cml-chat-panel { width: 100vw !important; }
       .cml-sidebar-tab {
         top: auto; bottom: 20px; right: 16px; transform: none;
-        border-radius: 999px; flex-direction: row; padding: 12px 18px; gap: 8px;
-        border-right: 1px solid #E4E4E0;
+        border-radius: 999px; padding: 12px 18px;
+        border-right: 1px solid rgba(94,70,55,0.15);
+        max-width: 220px; overflow: visible;
       }
       .cml-sidebar-tab-label {
-        writing-mode: initial; text-orientation: initial;
+        opacity: 1; margin-left: 8px;
         font-size: 13px; letter-spacing: 0.04em;
       }
       .cml-sneak-peek {
@@ -776,64 +696,54 @@
       }
     }
 
-    /* ── 메시지 내 인라인 상품 카드 (컴팩트 수평 레이아웃) ── */
+    /* ── 메시지 내 인라인 상품 카드 (컴팩트 세로 2열 그리드) ── */
     .cml-msg-products {
-      display: flex; flex-direction: column; gap: 8px;
-      margin: 6px 0 10px;
-      max-width: 82%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin: 6px 0 10px; width: 100%; max-width: 100%;
     }
     .cml-msg-product-card {
-      display: flex; flex-direction: row;
-      background: #F7F5F3; border: 1px solid rgba(94,70,55,0.12);
+      display: flex; flex-direction: column;
+      background: #fff; border: 1px solid rgba(94,70,55,0.12);
       border-radius: 10px; overflow: hidden;
       transition: box-shadow 0.15s, border-color 0.15s;
     }
     .cml-msg-product-card:hover {
-      box-shadow: 0 2px 12px rgba(94,70,55,0.10);
-      border-color: #D0D0CC;
+      box-shadow: 0 2px 10px rgba(94,70,55,0.10);
+      border-color: rgba(94,70,55,0.28);
     }
     .cml-msg-product-img-wrap {
-      width: 100px; min-height: 110px;
-      flex-shrink: 0; overflow: hidden; background: #EEEEED;
-      position: relative;
+      width: 100%; aspect-ratio: 1 / 1;
+      overflow: hidden; background: #EEEEED;
     }
     .cml-msg-product-img {
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
     .cml-msg-product-img-placeholder {
-      width: 100%; height: 100%;
+      width: 100%; height: 100%; min-height: 80px;
       display: flex; align-items: center; justify-content: center;
-      color: #CCC; font-size: 11px;
+      color: #CCC; font-size: 10px;
     }
     .cml-msg-product-info {
-      flex: 1; padding: 12px 14px;
-      display: flex; flex-direction: column; gap: 3px;
-      min-width: 0;
+      padding: 8px 10px 10px;
+      display: flex; flex-direction: column; gap: 2px;
     }
     .cml-msg-product-name {
-      font-size: 14px; font-weight: 700; color: #111;
+      font-size: 12px; font-weight: 600; color: #111;
       line-height: 1.35; letter-spacing: -0.01em;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
       overflow: hidden;
     }
     .cml-msg-product-price {
-      font-size: 14px; color: #333; font-weight: 600;
+      font-size: 12px; color: #5E4637; font-weight: 600;
     }
-    .cml-msg-product-reason {
-      font-size: 12px; color: #888; line-height: 1.45;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; margin-top: 1px;
-    }
-    .cml-msg-product-btn-wrap {
-      margin-top: auto; display: flex; justify-content: flex-end;
-      padding-top: 6px;
-    }
+    .cml-msg-product-reason { display: none; }
+    .cml-msg-product-btn-wrap { margin-top: 7px; }
     .cml-msg-product-btn {
-      padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      display: block; width: 100%; padding: 7px 0; border-radius: 7px;
+      font-size: 11px; font-weight: 600; text-align: center;
       cursor: pointer; border: none; font-family: inherit; text-decoration: none;
-      display: inline-flex; align-items: center; justify-content: center;
-      transition: opacity 0.15s; white-space: nowrap;
-      background: #111; color: #fff;
+      background: #111; color: #fff; transition: opacity 0.15s;
+      box-sizing: border-box;
     }
     .cml-msg-product-btn:hover { opacity: 0.82; }
   `;
@@ -917,10 +827,11 @@
     tab.setAttribute('role', 'button');
     tab.setAttribute('aria-label', `${chatName} 열기`);
     tab.innerHTML = `
-      <svg class="cml-sidebar-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      <svg class="cml-sidebar-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <span class="cml-sidebar-tab-label">${buttonLabel}</span>
+      <span class="cml-sidebar-tab-label">무엇이든 물어보세요</span>
     `;
     shadow.appendChild(tab);
 
@@ -987,14 +898,10 @@
         <div class="cml-pdp-welcome-scroll" id="cml-pdp-welcome-scroll"></div>
       </div>
       <div class="cml-chat-starter-chips" id="cml-chat-starters">
-        ${starterChipsHtml}
-      </div>
-      <div class="cml-product-shelf" id="cml-product-shelf" style="display:none">
-        <div class="cml-shelf-resize-handle" id="cml-shelf-resize-handle"></div>
-        <div class="cml-product-shelf-header" id="cml-shelf-header">
-          <span>추천 상품</span>
+        <div class="cml-starter-track">
+          <div class="cml-starter-set">${starterChipsHtml}</div>
+          <div class="cml-starter-set" aria-hidden="true">${starterChipsHtml}</div>
         </div>
-        <div id="cml-product-shelf-list"></div>
       </div>
       <div class="cml-follow-chips-tray" id="cml-follow-chips-tray" style="display:none">
         <div class="cml-follow-chips-scroll" id="cml-follow-chips-scroll"></div>
@@ -1018,7 +925,6 @@
     const messagesEl = panel.querySelector('#cml-chat-messages');
     const inputEl    = panel.querySelector('#cml-chat-input');
     const sendBtn    = panel.querySelector('#cml-chat-send');
-    const startChips = panel.querySelectorAll('.cml-chat-starter-chip');
 
     const chatHistory = [];
     let lastProducts  = [];
@@ -1106,7 +1012,6 @@
         messagesEl.scrollTop = messagesEl.scrollHeight;
         (history || []).forEach(h => chatHistory.push(h));
         messageLog.push(...(messages || []));
-        if (products?.length) addProductCards(products);
       } catch (e) {}
     }
 
@@ -1193,21 +1098,6 @@
       document.body.classList.remove('cml-resizing');
     });
 
-    // ── 호버로 열기 (스크롤바 드래그 중에는 차단) ──
-    let _mouseIsDown = false;
-    let _hoverTimer  = null;
-    document.addEventListener('mousedown', () => { _mouseIsDown = true; });
-    document.addEventListener('mouseup',   () => { _mouseIsDown = false; });
-
-    tab.addEventListener('mouseenter', () => {
-      if (_mouseIsDown) return;
-      _hoverTimer = setTimeout(() => {
-        if (!_mouseIsDown) openSidebar();
-      }, 200);
-    });
-    tab.addEventListener('mouseleave', () => {
-      clearTimeout(_hoverTimer);
-    });
     tab.addEventListener('click', openSidebar);
     closeBtn.addEventListener('click', closeSidebar);
     refreshBtn.addEventListener('click', () => {
@@ -1217,10 +1107,6 @@
       lastProducts = [];
       messagesEl.innerHTML = '<div class="cml-chat-bubble assistant">안녕하세요. 원하시는 스타일이나 상황을 말씀해 주시면 잘 맞는 아이템을 찾아드릴게요.</div>';
       panel.querySelector('#cml-chat-starters').style.display = '';
-      const _shelf = panel.querySelector('#cml-product-shelf');
-      const _shelfList = panel.querySelector('#cml-product-shelf-list');
-      _shelf.style.display = 'none';
-      _shelfList.innerHTML = '';
       followTray.style.display = 'none';
       followScroll.innerHTML = '';
       if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
@@ -1246,121 +1132,6 @@
       return div;
     }
 
-    function addProductCards(products) {
-      lastProducts = products || [];
-      const shelf     = panel.querySelector('#cml-product-shelf');
-      const shelfList = panel.querySelector('#cml-product-shelf-list');
-      if (!products?.length) {
-        shelf.style.display = 'none';
-        shelfList.innerHTML = '';
-        saveSession([]);
-        return;
-      }
-      const pdpBase = '/product/detail.html?product_no=';
-      shelfList.innerHTML = products.map((p, idx) => {
-        const pdpUrl = `${pdpBase}${p.id}`;
-        const imgInner = p.image_url
-          ? `<img class="cml-shelf-card-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
-          : `<div class="cml-shelf-card-img-placeholder">No img</div>`;
-        const priceHtml = p.price
-          ? `<div class="cml-shelf-card-price">₩${Number(p.price).toLocaleString()}</div>` : '';
-        const reasonHtml = p.reason
-          ? `<div class="cml-shelf-card-reason">${p.reason}</div>` : '';
-        return `
-          <div class="cml-shelf-card" data-product-id="${p.id}">
-            <div class="cml-shelf-card-img-wrap">
-              ${imgInner}
-              <div class="cml-shelf-card-num">${idx + 1}</div>
-            </div>
-            <div class="cml-shelf-card-info">
-              <div class="cml-shelf-card-name">${p.name}</div>
-              ${priceHtml}
-              ${reasonHtml}
-              <div class="cml-shelf-card-btns">
-                <a class="cml-shelf-card-btn primary" href="${pdpUrl}">자세히 보기</a>
-              </div>
-            </div>
-          </div>`;
-      }).join('');
-      shelf.style.display = 'block';
-      shelf.style.height  = '';
-      saveSession(lastProducts);
-    }
-
-    // ── Shelf 핸들: 클릭 토글 + 드래그 리사이즈 ──
-    (function () {
-      const handle    = panel.querySelector('#cml-shelf-resize-handle');
-      const shelf     = panel.querySelector('#cml-product-shelf');
-      const SHELF_MIN = 44;   // 헤더만 보이는 최솟값(px) — 사진 안 보이게
-      const SHELF_MAX = 460;  // 완전히 열린 최댓값(px)
-      const DRAG_THRESHOLD = 4; // 이 픽셀 이상 움직이면 드래그로 간주
-
-      let dragging  = false;
-      let moved     = false;  // mousedown 후 실제로 움직였는지
-      let startY    = 0;
-      let startH    = 0;
-      // 현재 상태: 'open' | 'closed'
-      let shelfState = 'open';
-      const shelfList = panel.querySelector('#cml-product-shelf-list');
-
-      function setOpen() {
-        shelfList.style.display = '';
-        shelf.style.height   = '';
-        shelf.style.overflow = '';
-        shelfState = 'open';
-      }
-      function setClosed() {
-        shelfList.style.display = 'none';
-        shelf.style.height   = SHELF_MIN + 'px';
-        shelf.style.overflow = 'hidden';
-        shelfState = 'closed';
-      }
-
-      handle.addEventListener('mousedown', e => {
-        e.preventDefault();
-        dragging = true;
-        moved    = false;
-        startY   = e.clientY;
-        startH   = shelf.offsetHeight;
-        document.addEventListener('mousemove', onMove);
-        document.addEventListener('mouseup', onUp);
-      });
-
-      function onMove(e) {
-        if (!dragging) return;
-        const delta = Math.abs(e.clientY - startY);
-        if (!moved && delta < DRAG_THRESHOLD) return; // 아직 클릭 판정 유지
-        moved = true;
-        const dy   = startY - e.clientY; // 위로 드래그 → 양수
-        const newH = Math.min(SHELF_MAX, Math.max(SHELF_MIN, startH + dy));
-        shelf.style.height   = newH + 'px';
-        shelf.style.overflow = 'hidden';
-        // 최소 높이 근처면 상품 리스트 숨기기 (이미지 찔끔 보이는 현상 방지)
-        shelfList.style.display = (newH <= SHELF_MIN + 10) ? 'none' : '';
-      }
-
-      function onUp() {
-        document.removeEventListener('mousemove', onMove);
-        document.removeEventListener('mouseup', onUp);
-
-        if (!moved) {
-          // 클릭: 상태 토글
-          if (shelfState === 'closed') setOpen();
-          else setClosed();
-        } else {
-          // 드래그 끝: 위치로 상태 결정
-          if (shelf.offsetHeight >= SHELF_MAX - 10) {
-            setOpen();
-          } else if (shelf.offsetHeight <= SHELF_MIN + 5) {
-            setClosed();
-          } else {
-            shelfState = 'open'; // 중간이면 open 취급
-          }
-        }
-        dragging = false;
-        moved    = false;
-      }
-    })();
 
     // ── 토스트 ──
     let toastEl = null;
@@ -1410,23 +1181,6 @@
         }
       } catch { showToast('담기에 실패했어요. 상품 페이지에서 시도해주세요.'); }
     }
-
-    // ── 옵션 패널 표시 ──
-    function showOptionPanel(card, options, variants) {
-      const optPanel = card.querySelector('.cml-option-panel');
-      card.dataset.variants = JSON.stringify(variants);
-      optPanel.innerHTML = options.map(opt => `
-        <select class="cml-option-select" data-option-no="${opt.option_no}">
-          <option value="">-- ${opt.option_name} 선택 --</option>
-          ${(opt.option_value || []).map(v =>
-            `<option value="${v.option_value_no}">${v.option_text}</option>`
-          ).join('')}
-        </select>
-      `).join('') + `<button class="cml-cart-confirm-btn">담기 확인</button>`;
-      optPanel.style.display = 'flex';
-    }
-
-    // (shelf 장바구니 버튼 제거됨 — 이벤트 위임 불필요)
 
     // ── 추천 메시지 → 텍스트+카드 인라인 렌더링 ──
     function parseRecommendationSegments(message) {
@@ -1674,9 +1428,6 @@
       return container;
     }
 
-    // 하단 shelf에서 전체 상품을 수평 카드로 표시 (장바구니 포함)
-    // → addProductCards는 기존대로 유지 (shelf card에 장바구니 담기 버튼 유지)
-
     function renderInlineRecommendation(message, products) {
       const segments = parseRecommendationSegments(message);
       const productSegments = matchProductsToSegments(segments, products);
@@ -1705,9 +1456,6 @@
         messagesEl.appendChild(container);
         messagesEl.scrollTop = messagesEl.scrollHeight;
       }
-
-      // 하단 shelf도 함께 표시
-      addProductCards(products);
     }
 
     // ── 채팅 전송 ──
@@ -1752,11 +1500,11 @@
     inputEl.addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.isComposing) { const q = inputEl.value; inputEl.value = ''; sendChat(q); }
     });
-    startChips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        track('chip_click', { chipLabel: chip.dataset.q });
-        sendChat(chip.dataset.q);
-      });
+    panel.querySelector('#cml-chat-starters').addEventListener('click', e => {
+      const chip = e.target.closest('.cml-chat-starter-chip');
+      if (!chip) return;
+      track('chip_click', { chipLabel: chip.dataset.q });
+      sendChat(chip.dataset.q);
     });
 
     // ── 상품 특정 Q&A (PDP 칩 클릭 전용) ──
