@@ -398,8 +398,6 @@ select {
 .btn-accent { background: var(--accent); color: #111; }
 
 .save-bar {
-  position: sticky;
-  bottom: 0;
   background: var(--white);
   border-top: 1px solid var(--border);
   padding: 14px 40px;
@@ -1243,7 +1241,7 @@ select {
           <button class="chips-add-btn" id="chipsAddBtn">+ 칩 추가</button>
         </div>
 
-        <div class="save-bar" style="position:sticky;bottom:0;margin:0 -36px;padding:14px 36px;">
+        <div class="save-bar" style="margin:0 -36px;padding:14px 36px;">
           <span class="save-bar-hint">변경사항은 저장 후 즉시 적용됩니다.</span>
           <div style="display:flex;align-items:center;gap:12px;">
             <span class="save-status" id="agentSaveStatus">✓ 저장됨</span>
@@ -1460,7 +1458,7 @@ select {
           </div>
         </div>
 
-        <div class="save-bar" style="position:sticky;bottom:0;margin:0 -32px;padding:14px 32px;">
+        <div class="save-bar" style="margin:0 -32px;padding:14px 32px;">
           <span class="save-bar-hint">변경사항은 저장 후 즉시 적용됩니다.</span>
           <div style="display:flex;align-items:center;gap:12px;">
             <span class="save-status" id="widgetSaveStatus">✓ 저장됨</span>
