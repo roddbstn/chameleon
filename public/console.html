@@ -677,68 +677,18 @@ select {
   left: 24px;
 }
 
-/* 에이전트 미리보기 카드 */
+/* 에이전트 미리보기 카드 — 실제 위젯 비율 */
 .agent-preview-card {
   width: 300px;
+  height: 560px;          /* 실제 사이드 패널 비율 */
   background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04);
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.06);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
-.agent-prev-header {
-  padding: 14px 18px;
-  background: #F5F0EE;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.agent-prev-header-left { display: flex; align-items: center; gap: 8px; }
-.agent-prev-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; }
-.agent-prev-name { font-size: 13px; font-weight: 700; color: #111; }
-.agent-prev-close {
-  width: 22px; height: 22px; border-radius: 50%;
-  background: rgba(0,0,0,0.08);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; color: #888;
-}
-.agent-prev-hero {
-  padding: 28px 20px 16px;
-  text-align: center;
-  background: #FAFAF8;
-}
-.agent-prev-title { font-size: 15px; font-weight: 700; color: #111; line-height: 1.35; margin-bottom: 6px; }
-.agent-prev-body  { font-size: 11px; color: #888; line-height: 1.5; margin-bottom: 14px; }
-.agent-prev-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
-.agent-prev-chip {
-  border: 1px solid #E0D8D5;
-  border-radius: 999px;
-  padding: 5px 12px;
-  font-size: 11px;
-  color: #5E4637;
-  background: #F5F0EE;
-  white-space: nowrap;
-}
-.agent-prev-footer {
-  padding: 12px 14px;
-  background: #FAFAF8;
-  border-top: 1px solid #F0F0EE;
-  display: flex; align-items: center; gap: 8px;
-}
-.agent-prev-input {
-  flex: 1; font-size: 11px; color: #CCC;
-  background: #fff; border: 1px solid #E0E0DC;
-  border-radius: 999px; padding: 7px 12px;
-}
-.agent-prev-send {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: #5E4637;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; color: #fff; font-weight: 700;
-}
-
 /* ── 위젯 외관: 2-column 레이아웃 ── */
 #sec-widget.active {
   padding: 0;
@@ -1305,26 +1255,42 @@ select {
       <!-- 오른쪽: 에이전트 초기 상태 미리보기 -->
       <div class="agent-preview-col">
         <span class="agent-preview-label">고객이 처음 보는 화면</span>
-        <div class="agent-preview-card">
-          <div class="agent-prev-header">
-            <div class="agent-prev-header-left">
-              <div class="agent-prev-dot"></div>
-              <div class="agent-prev-name" id="agentPrevName">AI 쇼핑 도우미</div>
+        <!-- wdg-* 동일 구조 사용 → 실제 위젯과 동일한 디자인 -->
+        <div class="agent-preview-card" id="agent-wdg-preview">
+          <!-- 헤더 -->
+          <div class="wdg-header">
+            <div class="wdg-header-left">
+              <div class="wdg-header-dot"></div>
+              <div id="agentPrevLogoWrap"><div class="wdg-header-logo-dot"></div></div>
+              <div class="wdg-header-title" id="agentPrevName">AI 쇼핑 도우미</div>
             </div>
-            <div class="agent-prev-close">×</div>
+            <div class="wdg-close">×</div>
           </div>
-          <div class="agent-prev-hero">
-            <div class="agent-prev-title" id="agentPrevTitle">안녕하세요! 무엇을 찾고 있으신가요?</div>
-            <div class="agent-prev-body"  id="agentPrevBody">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
-            <div class="agent-prev-chips" id="agentPrevChips">
-              <div class="agent-prev-chip">선물용으로 찾고 있어요</div>
-              <div class="agent-prev-chip">가벼운 아우터</div>
-              <div class="agent-prev-chip">여름 데일리룩</div>
+          <!-- 히어로 -->
+          <div class="wdg-hero">
+            <div class="wdg-hero-title" id="agentPrevTitle">안녕하세요! 무엇을 찾고 있으신가요?</div>
+            <div class="wdg-hero-body"  id="agentPrevBody">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
+            <div class="wdg-chips-wrap" id="agentPrevChips">
+              <div class="wdg-chips-track">
+                <div class="wdg-chips-set">
+                  <div class="wdg-chip">선물용으로 찾고 있어요</div>
+                  <div class="wdg-chip">가벼운 아우터 추천해줘</div>
+                  <div class="wdg-chip">여름 데일리룩</div>
+                </div>
+                <div class="wdg-chips-set" aria-hidden="true">
+                  <div class="wdg-chip">선물용으로 찾고 있어요</div>
+                  <div class="wdg-chip">가벼운 아우터 추천해줘</div>
+                  <div class="wdg-chip">여름 데일리룩</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="agent-prev-footer">
-            <div class="agent-prev-input">궁금한 점을 물어보세요</div>
-            <div class="agent-prev-send">↑</div>
+          <!-- 빈 메시지 영역 (초기 상태) -->
+          <div class="wdg-messages" style="flex:1;"></div>
+          <!-- 입력창 -->
+          <div class="wdg-input-bar">
+            <div class="wdg-input-placeholder">궁금한 점을 물어보세요</div>
+            <div class="wdg-input-btn">↑</div>
           </div>
         </div>
       </div>
@@ -2242,23 +2208,64 @@ function _escClosePreview(e) {
   if (e.key === 'Escape') togglePreviewFullscreen();
 }
 
-// ── 에이전트 미리보기 업데이트 ──
+// ── 에이전트 미리보기 업데이트 (wdg-* 구조 공유) ──
 function updateAgentPreview() {
-  const name  = document.getElementById('agentName')?.value.trim()  || 'AI 쇼핑 도우미';
+  const panel = document.getElementById('agent-wdg-preview');
+  if (!panel) return;
+
+  const name  = document.getElementById('agentName')?.value.trim()    || 'AI 쇼핑 도우미';
   const title = document.getElementById('welcomeTitle')?.value.trim() || '안녕하세요! 무엇을 찾고 있으신가요?';
   const body  = document.getElementById('welcomeBody')?.value.trim()  || '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요';
+
+  // 텍스트
   const nameEl  = document.getElementById('agentPrevName');
   const titleEl = document.getElementById('agentPrevTitle');
   const bodyEl  = document.getElementById('agentPrevBody');
-  const chipsEl = document.getElementById('agentPrevChips');
   if (nameEl)  nameEl.textContent  = name;
   if (titleEl) titleEl.textContent = title;
   if (bodyEl)  bodyEl.textContent  = body;
+
+  // 칩 (wdg-chip 구조로)
+  const chipsEl = document.getElementById('agentPrevChips');
   if (chipsEl && typeof chips !== 'undefined') {
-    const visible = chips.filter(c => (c.label || c).trim()).slice(0, 4);
-    chipsEl.innerHTML = visible.length
-      ? visible.map(c => `<div class="agent-prev-chip">${esc((c.label || c).trim())}</div>`).join('')
-      : '<div class="agent-prev-chip">선물용으로 찾고 있어요</div><div class="agent-prev-chip">가벼운 아우터</div><div class="agent-prev-chip">여름 데일리룩</div>';
+    const visible = chips.filter(c => (c.label || c).trim());
+    const defaultChips = ['선물용으로 찾고 있어요', '가벼운 아우터 추천해줘', '여름 데일리룩'];
+    const chipList = visible.length ? visible.map(c => (c.label || c).trim()) : defaultChips;
+    const setHTML = chipList.map(c => `<div class="wdg-chip">${esc(c)}</div>`).join('');
+    chipsEl.innerHTML = `<div class="wdg-chips-track"><div class="wdg-chips-set">${setHTML}</div><div class="wdg-chips-set" aria-hidden="true">${setHTML}</div></div>`;
+  }
+
+  // 색상 CSS 변수 — 위젯 외관에서 설정된 값을 동기화
+  const accent  = document.getElementById('accentColor')?.value  || '#5E4637';
+  const bg      = document.getElementById('bgColor')?.value      || '#FAFAF8';
+  const logoUrl = document.getElementById('logoUrl')?.value      || '';
+
+  const headerBg   = hexMixPrev(accent, '#ffffff', 0.18);
+  const headerText = isDarkPrev(accent) ? '#fff' : '#111';
+  panel.style.setProperty('--wdg-accent',     accent);
+  panel.style.setProperty('--wdg-bg',          bg);
+  panel.style.setProperty('--wdg-header-bg',   headerBg);
+  panel.style.setProperty('--wdg-header-text', headerText);
+  panel.style.setProperty('--wdg-accent-15',   hexMixPrev(accent, '#ffffff', 0.85));
+  panel.style.setProperty('--wdg-accent-06',   hexMixPrev(accent, '#ffffff', 0.94));
+
+  const chipBgColor     = document.getElementById('chipBgColor')?.value     || '';
+  const chipTextColor   = document.getElementById('chipTextColor')?.value   || '';
+  const chipBorderColor = document.getElementById('chipBorderColor')?.value || '';
+  const userBubbleBg    = document.getElementById('userBubbleBg')?.value    || '';
+  const userBubbleText  = document.getElementById('userBubbleText')?.value  || '';
+  if (chipBgColor)     panel.style.setProperty('--wdg-chip-bg',     chipBgColor);     else panel.style.removeProperty('--wdg-chip-bg');
+  if (chipTextColor)   panel.style.setProperty('--wdg-chip-text',   chipTextColor);   else panel.style.removeProperty('--wdg-chip-text');
+  if (chipBorderColor) panel.style.setProperty('--wdg-chip-border', chipBorderColor); else panel.style.removeProperty('--wdg-chip-border');
+  panel.style.setProperty('--wdg-user-bg',   userBubbleBg   || accent);
+  panel.style.setProperty('--wdg-user-text', userBubbleText || (isDarkPrev(userBubbleBg || accent) ? '#fff' : '#111'));
+
+  // 로고
+  const logoWrap = document.getElementById('agentPrevLogoWrap');
+  if (logoWrap) {
+    logoWrap.innerHTML = logoUrl
+      ? `<img class="wdg-header-logo" src="${esc(logoUrl)}" onerror="this.style.display='none'">`
+      : `<div class="wdg-header-logo-dot" style="background:${hexMixPrev(accent,'#000000',0.8)}"></div>`;
   }
 }
 
@@ -2342,6 +2349,9 @@ function updateWidgetPreview() {
     if (urlBarEl) urlBarEl.textContent = '쇼핑몰 URL을 입력하세요';
     if (iframe) iframe.src = '';
   }
+
+  // 에이전트 미리보기 색상도 동기화
+  updateAgentPreview();
 }
 
 function hexMixPrev(hex1, hex2, t) {
