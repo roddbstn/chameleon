@@ -1529,6 +1529,21 @@ async function runMigrations() {
 loadTokensFromDb().catch(() => {});
 runMigrations().catch(() => {});
 
+// Supabase Storage: logos 버킷 없으면 자동 생성 (public)
+(async () => {
+  try {
+    const { data: buckets } = await supabase.storage.listBuckets();
+    const exists = buckets?.some(b => b.name === 'logos');
+    if (!exists) {
+      const { error } = await supabase.storage.createBucket('logos', { public: true });
+      if (error) console.warn('[Storage] logos 버킷 생성 실패:', error.message);
+      else console.log('[Storage] logos 버킷 생성 완료 (public)');
+    }
+  } catch (e) {
+    console.warn('[Storage] 버킷 확인 실패:', e.message);
+  }
+})();
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ╔══════════════════════════════════════════╗
