@@ -897,10 +897,10 @@
 
     // ── 스타터 칩 (config 또는 기본값) ──
     const defaultChips = [
-      { label: '요즘 트렌드', query: '요즘 트렌디한 아이템 뭐 있어요?' },
-      { label: '소개팅 룩',  query: '소개팅에 입기 좋은 옷 추천해주세요' },
-      { label: '여름 아이템', query: '여름에 시원하게 입을 수 있는 옷 있나요?' },
-      { label: '선물 추천',  query: '친구한테 선물하기 좋은 거 있어요?' },
+      { label: '여름에 시원하게 입기 좋은 아이템 추천해주세요', query: '여름에 시원하게 입기 좋은 아이템 추천해주세요' },
+      { label: '데님 스커트랑 어울리는 상의 같이 골라줄 수 있어요?', query: '데님 스커트랑 어울리는 상의 같이 골라줄 수 있어요?' },
+      { label: '매일 캐주얼하게 입기 좋은 기본템 뭐가 있어요?', query: '매일 캐주얼하게 입기 좋은 기본템 뭐가 있어요?' },
+      { label: '소개팅에 입고 나가기 좋은 깔끔한 룩 추천해줘요', query: '소개팅에 입고 나가기 좋은 깔끔한 룩 추천해줘요' },
     ];
     const starterChips = branding.starterChips || defaultChips;
 
@@ -927,8 +927,8 @@
       <!-- 초기 상태: 중앙 정렬 환영 화면 -->
       <div class="cml-chat-welcome" id="cml-chat-welcome">
         <div class="cml-chat-welcome-spark">✦</div>
-        <div class="cml-chat-welcome-title">${welcomeTitle || '안녕하세요!'}</div>
-        ${welcomeBody ? `<div class="cml-chat-welcome-body">${welcomeBody}</div>` : ''}
+        <div class="cml-chat-welcome-title">${welcomeTitle || '안녕하세요! 무엇을 찾고 있으신가요?'}</div>
+        <div class="cml-chat-welcome-body">${welcomeBody || '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요'}</div>
         <div class="cml-welcome-chips" id="cml-welcome-chips">${welcomeChipsHtml}</div>
       </div>
       <!-- 대화 시작 후: 채팅 버블 영역 -->

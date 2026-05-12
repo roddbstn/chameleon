@@ -172,14 +172,19 @@ const storeConfigs = {
       mode: 'push',
     },
     branding: {
-      chatName:      'AI 쇼핑 도우미',   // 패널 헤더 타이틀
-      buttonLabel:   'AI 도우미',         // 사이드 탭 라벨
-      logoUrl:       null,                // 헤더 로고 이미지 URL (null이면 dot 표시)
-      heroImage:     null,                // 채팅 상단 히어로 이미지 URL
-      welcomeTitle:  null,                // 히어로 타이틀 텍스트
-      welcomeBody:   null,                // 히어로 서브 텍스트
-      sneakPeekText: null,                // 4초 후 말풍선 텍스트 (null이면 기본값)
-      starterChips: null,                 // 스타터 칩 배열 [{label, query}] (null이면 기본값)
+      chatName:      'AI 쇼핑 도우미',
+      buttonLabel:   'AI 도우미',
+      logoUrl:       null,
+      heroImage:     null,
+      welcomeTitle:  '안녕하세요! 무엇을 찾고 있으신가요?',
+      welcomeBody:   '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요',
+      sneakPeekText: null,
+      starterChips: [
+        { label: '여름에 시원하게 입기 좋은 아이템 추천해주세요',      query: '여름에 시원하게 입기 좋은 아이템 추천해주세요' },
+        { label: '데님 스커트랑 어울리는 상의 같이 골라줄 수 있어요?', query: '데님 스커트랑 어울리는 상의 같이 골라줄 수 있어요?' },
+        { label: '매일 캐주얼하게 입기 좋은 기본템 뭐가 있어요?',      query: '매일 캐주얼하게 입기 좋은 기본템 뭐가 있어요?' },
+        { label: '소개팅에 입고 나가기 좋은 깔끔한 룩 추천해줘요',     query: '소개팅에 입고 나가기 좋은 깔끔한 룩 추천해줘요' },
+      ],
     },
   },
   // 다른 고객사 추가 예시:
