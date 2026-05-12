@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chameleon Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0F0F11;
+  --surface: #1A1A1E;
+  --surface2: #222228;
+  --border: rgba(255,255,255,.08);
+  --text: #F0F0F0;
+  --text-2: #999;
+  --accent: #818CF8;
+  --accent-dim: rgba(129,140,248,.15);
+  --green: #22c55e;
+  --red: #ef4444;
+  --radius: 10px;
+}
+body { font-family: 'Noto Sans KR', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; line-height: 1.5; }
+
+/* ── 로그인 오버레이 ── */
+#login-overlay {
+  position: fixed; inset: 0; background: var(--bg);
+  display: flex; align-items: center; justify-content: center; z-index: 999;
+}
+.login-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+  padding: 40px; width: 360px; text-align: center;
+}
+.login-logo { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.login-logo span { color: var(--accent); }
+.login-sub { color: var(--text-2); margin-bottom: 28px; font-size: 12px; }
+.login-input {
+  width: 100%; padding: 11px 14px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text); font-size: 14px; font-family: inherit;
+  margin-bottom: 12px; outline: none;
+}
+.login-input:focus { border-color: var(--accent); }
+.login-btn {
+  width: 100%; padding: 11px; border-radius: 8px; border: none;
+  background: var(--accent); color: #fff; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: opacity .15s;
+}
+.login-btn:hover { opacity: .85; }
+.login-error { color: var(--red); font-size: 12px; margin-top: 10px; display: none; }
+
+/* ── 레이아웃 ── */
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 220px; background: var(--surface); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 10;
+}
+.sidebar-logo {
+  padding: 20px; font-size: 15px; font-weight: 700; letter-spacing: -0.02em;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo span { color: var(--accent); }
+.sidebar-badge {
+  display: inline-block; font-size: 9px; font-weight: 600; background: var(--accent-dim);
+  color: var(--accent); border-radius: 4px; padding: 1px 5px; margin-left: 6px; vertical-align: middle;
+}
+.sidebar-nav { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px;
+  cursor: pointer; background: none; border: none; color: rgba(255,255,255,.45); font-size: 13px;
+  font-family: inherit; font-weight: 400; text-align: left; width: 100%; transition: all .15s;
+}
+.nav-item:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.8); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 500; }
+
+.main { margin-left: 220px; flex: 1; padding: 32px; }
+.page-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.02em; }
+.page-title small { font-size: 13px; font-weight: 400; color: var(--text-2); margin-left: 8px; }
+
+/* ── 섹션 ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── 카드 ── */
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; margin-bottom: 16px;
+}
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.card-title { font-weight: 600; font-size: 14px; }
+
+/* ── 샵 리스트 ── */
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.shop-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; cursor: pointer; transition: border-color .15s;
+}
+.shop-card:hover { border-color: var(--accent); }
+.shop-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.shop-dot { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.shop-name { font-weight: 600; font-size: 14px; }
+.shop-id { font-size: 11px; color: var(--text-2); }
+.shop-stats { display: flex; gap: 16px; }
+.stat { }
+.stat-val { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
+.stat-lbl { font-size: 11px; color: var(--text-2); margin-top: 2px; }
+.shop-card-footer { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.shop-accent-swatch { width: 18px; height: 18px; border-radius: 4px; border: 1px solid rgba(255,255,255,.12); flex-shrink: 0; }
+.shop-theme-label { font-size: 11px; color: var(--text-2); }
+
+/* ── 샵 상세 ── */
+.detail-back { display: flex; align-items: center; gap: 8px; color: var(--accent); cursor: pointer; font-size: 13px; margin-bottom: 20px; background: none; border: none; font-family: inherit; }
+.detail-back:hover { opacity: .75; }
+.detail-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.detail-avatar { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.detail-title { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+.detail-sub { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+.detail-stats { display: flex; gap: 16px; margin-bottom: 28px; }
+.detail-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; flex: 1; }
+.detail-stat-val { font-size: 28px; font-weight: 700; letter-spacing: -0.04em; }
+.detail-stat-lbl { font-size: 11px; color: var(--text-2); margin-top: 4px; }
+
+/* ── 탭 ── */
+.tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+.tab {
+  padding: 8px 16px; cursor: pointer; background: none; border: none; color: var(--text-2);
+  font-size: 13px; font-family: inherit; border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── 폼 ── */
+.field { margin-bottom: 16px; }
+.field-label { font-size: 11px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; display: block; }
+.field input[type="text"], .field input[type="color"], .field textarea, .field select {
+  width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text); font-size: 13px; font-family: inherit; outline: none;
+}
+.field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); }
+.field textarea { resize: vertical; min-height: 80px; }
+.color-row { display: flex; gap: 8px; align-items: center; }
+.color-row input[type="color"] { width: 44px; height: 36px; padding: 2px 4px; cursor: pointer; border-radius: 6px; }
+.color-row input[type="text"] { flex: 1; }
+.field-hint { font-size: 11px; color: var(--text-2); margin-top: 4px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 8px;
+  border: none; font-size: 13px; font-family: inherit; font-weight: 500; cursor: pointer; transition: opacity .15s;
+}
+.btn:hover { opacity: .85; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-ghost { background: rgba(255,255,255,.07); color: var(--text); }
+.btn-danger { background: rgba(239,68,68,.15); color: var(--red); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.save-status { font-size: 12px; font-weight: 600; margin-left: 10px; display: none; }
+
+/* ── 대화 로그 ── */
+.log-filters { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; }
+.log-search { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-size: 13px; font-family: inherit; outline: none; }
+.log-search:focus { border-color: var(--accent); }
+.log-table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { text-align: left; padding: 8px 12px; color: var(--text-2); font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: top; }
+tr:hover td { background: rgba(255,255,255,.025); }
+.type-badge {
+  display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 600;
+  background: var(--accent-dim); color: var(--accent);
+}
+.type-badge.faq { background: rgba(34,197,94,.12); color: var(--green); }
+.type-badge.pdp { background: rgba(251,191,36,.12); color: #fbbf24; }
+.log-query { max-width: 280px; white-space: pre-wrap; word-break: break-all; }
+.log-empty { padding: 40px; text-align: center; color: var(--text-2); }
+.pagination { display: flex; gap: 8px; margin-top: 16px; align-items: center; justify-content: flex-end; }
+
+/* ── 에이전트 설정 뷰어 ── */
+.config-viewer { background: var(--surface2); border-radius: 8px; padding: 16px; font-family: 'SF Mono', 'Consolas', monospace; font-size: 11px; color: var(--text-2); white-space: pre-wrap; word-break: break-all; max-height: 400px; overflow-y: auto; }
+
+/* ── 빈 상태 ── */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-2); }
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+.empty-icon { opacity: .3; }
+
+/* ── 로딩 ── */
+.spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.2); border-top-color: var(--accent); border-radius: 50%; animation: spin .6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── 색상 프리뷰 칩 ── */
+.color-preview-strip { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.color-chip { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-2); }
+.color-chip-dot { width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(255,255,255,.1); }
+
+/* ── 위젯 미니 프리뷰 ── */
+.mini-preview {
+  width: 200px; height: 320px; border-radius: 14px; border: 1px solid var(--border);
+  overflow: hidden; display: flex; flex-direction: column; flex-shrink: 0;
+}
+.mini-header {
+  padding: 12px 14px; display: flex; align-items: center; gap: 8px;
+  background: var(--mp-header-bg, #F0E4D3);
+}
+.mini-header-dot { width: 20px; height: 20px; border-radius: 4px; background: rgba(0,0,0,.2); }
+.mini-header-name { font-size: 11px; font-weight: 600; color: var(--mp-header-text, #111); }
+.mini-body {
+  flex: 1; background: #fff; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 16px; text-align: center;
+}
+.mini-spark { font-size: 20px; opacity: .3; margin-bottom: 10px; color: var(--mp-accent, #5E4637); }
+.mini-title { font-size: 11px; font-weight: 700; color: #111; margin-bottom: 4px; }
+.mini-body-text { font-size: 9px; color: #999; margin-bottom: 12px; }
+.mini-chips { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
+.mini-chip { font-size: 8px; border: 1px solid rgba(0,0,0,.12); border-radius: 99px; padding: 3px 7px; color: #444; white-space: nowrap; }
+.mini-input { background: #F7F7F5; margin: 8px; border-radius: 8px; padding: 6px 10px; font-size: 9px; color: #999; }
+
+/* ── 반응형 ── */
+@media (max-width: 768px) {
+  .sidebar { width: 100%; position: relative; height: auto; flex-direction: row; }
+  .main { margin-left: 0; padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 로그인 오버레이 -->
+<div id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">Chameleon <span>Admin</span></div>
+    <div class="login-sub">내부 관리자 전용</div>
+    <input type="password" class="login-input" id="login-password" placeholder="관리자 비밀번호" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">로그인</button>
+    <div class="login-error" id="login-error">비밀번호가 올바르지 않습니다.</div>
+  </div>
+</div>
+
+<div class="layout" id="app" style="display:none">
+
+  <!-- 사이드바 -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      Chameleon <span>Admin</span><span class="sidebar-badge">INTERNAL</span>
+    </div>
+    <div class="sidebar-nav">
+      <button class="nav-item active" data-section="shops" onclick="switchSection('shops')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        고객사 목록
+      </button>
+      <button class="nav-item" data-section="logs" onclick="switchSection('logs')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        전체 대화 로그
+      </button>
+    </div>
+    <div style="padding:16px 20px; border-top:1px solid var(--border); font-size:11px; color:rgba(255,255,255,.25);">
+      Chameleon v0.1 · internal
+    </div>
+  </nav>
+
+  <!-- 메인 -->
+  <main class="main">
+
+    <!-- ── 고객사 목록 ── -->
+    <section id="sec-shops" class="section active">
+      <div class="page-title">고객사 목록 <small id="shops-count"></small></div>
+      <div id="shops-loading" style="color:var(--text-2)"><span class="spinner"></span> 로딩 중...</div>
+      <div class="shop-grid" id="shop-grid"></div>
+    </section>
+
+    <!-- ── 샵 상세 ── -->
+    <section id="sec-detail" class="section">
+      <button class="detail-back" onclick="showShopList()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        고객사 목록
+      </button>
+      <div class="detail-header">
+        <div class="detail-avatar" id="detail-avatar"></div>
+        <div>
+          <div class="detail-title" id="detail-name"></div>
+          <div class="detail-sub" id="detail-id"></div>
+        </div>
+      </div>
+      <div class="detail-stats" id="detail-stats"></div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('tab-theme')">위젯 테마</button>
+        <button class="tab" onclick="switchTab('tab-agent')">에이전트 설정</button>
+        <button class="tab" onclick="switchTab('tab-logs')">대화 로그</button>
+      </div>
+
+      <!-- 위젯 테마 탭 -->
+      <div class="tab-panel active" id="tab-theme">
+        <div style="display:flex;gap:24px;align-items:flex-start">
+          <div style="flex:1">
+            <div class="card">
+              <div class="card-title" style="margin-bottom:16px">브랜드 색상 설정</div>
+              <div class="field">
+                <label class="field-label">강조 색상 (Accent)</label>
+                <div class="color-row">
+                  <input type="color" id="th-accentColor" value="#5E4637" oninput="syncThemeColor('th-accentColor','th-accentColorText');updateMiniPreview()">
+                  <input type="text" id="th-accentColorText" value="#5E4637" maxlength="7" oninput="syncThemeColorPicker('th-accentColorText','th-accentColor');updateMiniPreview()">
+                </div>
+              </div>
+              <div class="field">
+                <label class="field-label">배경색</label>
+                <div class="color-row">
+                  <input type="color" id="th-bgColor" value="#FEF8F7" oninput="syncThemeColor('th-bgColor','th-bgColorText');updateMiniPreview()">
+                  <input type="text" id="th-bgColorText" value="#FEF8F7" maxlength="7" oninput="syncThemeColorPicker('th-bgColorText','th-bgColor');updateMiniPreview()">
+                </div>
+              </div>
+              <div class="field">
+                <label class="field-label">로고 URL</label>
+                <input type="text" id="th-logoUrl" placeholder="https://..." oninput="updateMiniPreview()">
+                <div class="field-hint">비워두면 브랜드 이름 표시</div>
+              </div>
+              <div style="display:flex;align-items:center;margin-top:4px">
+                <button class="btn btn-primary" onclick="saveTheme()">저장</button>
+                <span class="save-status" id="theme-save-status"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 미니 위젯 프리뷰 -->
+          <div>
+            <div style="font-size:11px;color:var(--text-2);margin-bottom:8px;text-align:center">미리보기</div>
+            <div class="mini-preview" id="mini-preview">
+              <div class="mini-header" id="mp-header">
+                <div class="mini-header-dot" id="mp-logo-dot"></div>
+                <div class="mini-header-name" id="mp-name">AI 쇼핑 도우미</div>
+              </div>
+              <div class="mini-body">
+                <div class="mini-spark" id="mp-spark">✦</div>
+                <div class="mini-title" id="mp-title">안녕하세요!</div>
+                <div class="mini-body-text">무엇을 도와드릴까요?</div>
+                <div class="mini-chips">
+                  <div class="mini-chip">여름 아이템 추천</div>
+                  <div class="mini-chip">데일리룩 코디</div>
+                  <div class="mini-chip">소개팅 룩</div>
+                </div>
+              </div>
+              <div class="mini-input">메시지를 입력하세요...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 에이전트 설정 탭 -->
+      <div class="tab-panel" id="tab-agent">
+        <div class="card">
+          <div class="card-title" style="margin-bottom:12px">저장된 에이전트 설정</div>
+          <div class="config-viewer" id="agent-config-viewer">로딩 중...</div>
+        </div>
+      </div>
+
+      <!-- 대화 로그 탭 -->
+      <div class="tab-panel" id="tab-logs">
+        <div class="log-filters">
+          <input type="text" class="log-search" id="log-search" placeholder="쿼리 검색..." oninput="filterLogs()">
+          <button class="btn btn-ghost" onclick="loadShopLogs()">새로고침</button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="log-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>시간</th>
+                  <th>유형</th>
+                  <th>쿼리</th>
+                  <th>결과 수</th>
+                  <th>페르소나</th>
+                </tr>
+              </thead>
+              <tbody id="log-tbody"></tbody>
+            </table>
+            <div id="log-empty" class="log-empty" style="display:none">대화 기록이 없습니다.</div>
+          </div>
+          <div class="pagination" id="log-pagination"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── 전체 대화 로그 ── -->
+    <section id="sec-logs" class="section">
+      <div class="page-title">전체 대화 로그</div>
+      <div class="log-filters">
+        <select id="all-log-shop-filter" style="padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:inherit;font-size:13px;outline:none;min-width:160px">
+          <option value="">전체 고객사</option>
+        </select>
+        <input type="text" class="log-search" id="all-log-search" placeholder="쿼리 검색..." oninput="filterAllLogs()">
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="log-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>시간</th>
+                <th>고객사</th>
+                <th>유형</th>
+                <th>쿼리</th>
+                <th>결과 수</th>
+              </tr>
+            </thead>
+            <tbody id="all-log-tbody"></tbody>
+          </table>
+          <div id="all-log-empty" class="log-empty" style="display:none">대화 기록이 없습니다.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+// ── 상태 ──
+let adminPassword = '';
+let allShops = [];
+let currentShop = null;
+let allShopLogs = [];
+let shopLogs = [];
+let logPage = 0;
+const LOG_PAGE_SIZE = 30;
+
+// ── 로그인 ──
+async function doLogin() {
+  const pw = document.getElementById('login-password').value;
+  if (!pw) return;
+  const r = await fetch('/api/chameleon-admin/shops', {
+    headers: { 'x-admin-password': pw }
+  });
+  if (r.status === 401) {
+    document.getElementById('login-error').style.display = 'block';
+    return;
+  }
+  adminPassword = pw;
+  document.getElementById('login-overlay').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  const shops = await r.json();
+  renderShops(shops);
+}
+
+document.getElementById('login-password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// ── 네비게이션 ──
+function switchSection(name) {
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.section === name));
+  document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'sec-' + name));
+  if (name === 'logs') loadAllLogs();
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    const panels = document.querySelectorAll('.tab-panel');
+    t.classList.toggle('active', 'tab-' + ['theme','agent','logs'][i] === tabId);
+    panels[i]?.classList.toggle('active', 'tab-' + ['theme','agent','logs'][i] === tabId);
+  });
+  if (tabId === 'tab-logs') loadShopLogs();
+  if (tabId === 'tab-agent') renderAgentConfig();
+}
+
+// ── 샵 목록 ──
+function renderShops(shops) {
+  allShops = shops;
+  document.getElementById('shops-loading').style.display = 'none';
+  document.getElementById('shops-count').textContent = `${shops.length}개 고객사`;
+
+  // 전체 로그 필터 옵션 채우기
+  const sel = document.getElementById('all-log-shop-filter');
+  sel.innerHTML = '<option value="">전체 고객사</option>';
+  shops.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.mall_id;
+    opt.textContent = s.brand_name || s.mall_id;
+    sel.appendChild(opt);
+  });
+
+  const grid = document.getElementById('shop-grid');
+  if (!shops.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="icon empty-icon">🏪</div><div>등록된 고객사가 없습니다.</div></div>';
+    return;
+  }
+  grid.innerHTML = shops.map(shop => {
+    const accent = shop.theme_config?.theme?.accentColor || '#5E4637';
+    const name   = shop.brand_name || shop.mall_id;
+    const initials = name.slice(0, 2).toUpperCase();
+    const lastUpd = shop.updated_at
+      ? new Date(shop.updated_at).toLocaleDateString('ko-KR')
+      : '—';
+    return `
+      <div class="shop-card" onclick="openShop('${esc(shop.mall_id)}')">
+        <div class="shop-card-header">
+          <div class="shop-dot" style="background:${esc(accent)}20;color:${esc(accent)}">${esc(initials)}</div>
+          <div>
+            <div class="shop-name">${esc(name)}</div>
+            <div class="shop-id">${esc(shop.mall_id)}.cafe24.com</div>
+          </div>
+        </div>
+        <div class="shop-stats">
+          <div class="stat">
+            <div class="stat-val">${shop.product_count?.toLocaleString() || 0}</div>
+            <div class="stat-lbl">등록 상품</div>
+          </div>
+          <div class="stat">
+            <div class="stat-val">${shop.chat_count?.toLocaleString() || 0}</div>
+            <div class="stat-lbl">총 대화</div>
+          </div>
+        </div>
+        <div class="shop-card-footer">
+          <div class="shop-accent-swatch" style="background:${esc(accent)}"></div>
+          <div class="shop-theme-label">${esc(accent)} · 마지막 수정: ${lastUpd}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── 샵 상세 ──
+function openShop(mallId) {
+  currentShop = allShops.find(s => s.mall_id === mallId);
+  if (!currentShop) return;
+
+  const name   = currentShop.brand_name || mallId;
+  const accent = currentShop.theme_config?.theme?.accentColor || '#5E4637';
+  const theme  = currentShop.theme_config?.theme || {};
+  const br     = currentShop.theme_config?.branding || {};
+
+  // 헤더
+  document.getElementById('detail-avatar').style.cssText = `background:${accent}20;color:${accent}`;
+  document.getElementById('detail-avatar').textContent = name.slice(0, 2).toUpperCase();
+  document.getElementById('detail-name').textContent = name;
+  document.getElementById('detail-id').textContent = mallId + '.cafe24.com · ' + (currentShop.updated_at ? '마지막 수정: ' + new Date(currentShop.updated_at).toLocaleDateString('ko-KR') : '');
+
+  document.getElementById('detail-stats').innerHTML = `
+    <div class="detail-stat"><div class="detail-stat-val">${(currentShop.product_count || 0).toLocaleString()}</div><div class="detail-stat-lbl">등록 상품</div></div>
+    <div class="detail-stat"><div class="detail-stat-val">${(currentShop.chat_count || 0).toLocaleString()}</div><div class="detail-stat-lbl">총 대화</div></div>
+    <div class="detail-stat"><div class="detail-stat-val">${currentShop.theme_config && Object.keys(currentShop.theme_config).length > 0 ? '설정됨' : '기본값'}</div><div class="detail-stat-lbl">테마 상태</div></div>
+  `;
+
+  // 테마 폼 채우기
+  setThemeInput('th-accentColor', 'th-accentColorText', accent);
+  setThemeInput('th-bgColor', 'th-bgColorText', theme.backgroundColor || '#FEF8F7');
+  document.getElementById('th-logoUrl').value = br.logoUrl || '';
+
+  // 에이전트 이름을 미니 프리뷰에
+  document.getElementById('mp-name').textContent = br.chatName || name + ' 쇼핑 도우미';
+  document.getElementById('mp-title').textContent = br.welcomeTitle || '안녕하세요!';
+
+  updateMiniPreview();
+
+  // 탭 초기화 (테마 탭으로)
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+  document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', i === 0));
+  document.getElementById('theme-save-status').style.display = 'none';
+  shopLogs = [];
+  logPage = 0;
+
+  // 섹션 전환
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-detail').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+}
+
+function showShopList() {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-shops').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.section === 'shops'));
+  currentShop = null;
+}
+
+// ── 테마 입력 ──
+function setThemeInput(colorId, textId, val) {
+  const pk = document.getElementById(colorId);
+  const tx = document.getElementById(textId);
+  if (pk) pk.value = val;
+  if (tx) tx.value = val;
+}
+function syncThemeColor(colorId, textId) {
+  document.getElementById(textId).value = document.getElementById(colorId).value;
+}
+function syncThemeColorPicker(textId, colorId) {
+  const v = document.getElementById(textId).value;
+  if (/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById(colorId).value = v;
+}
+
+// ── 미니 프리뷰 ──
+function mixHexWhite(hex, ratio) {
+  // ratio: 0 = hex, 1 = white
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  const rr = Math.round(r + (255-r)*ratio);
+  const gg = Math.round(g + (255-g)*ratio);
+  const bb = Math.round(b + (255-b)*ratio);
+  return '#' + [rr,gg,bb].map(c => c.toString(16).padStart(2,'0')).join('');
+}
+function isDark(hex) {
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return (0.299*r+0.587*g+0.114*b) < 128;
+}
+function updateMiniPreview() {
+  const accent = document.getElementById('th-accentColorText')?.value || '#5E4637';
+  const bg     = document.getElementById('th-bgColorText')?.value    || '#FEF8F7';
+  const logoUrl= document.getElementById('th-logoUrl')?.value        || '';
+  const valid  = /^#[0-9A-Fa-f]{6}$/.test(accent);
+  if (!valid) return;
+
+  const headerBg   = mixHexWhite(accent, 0.82);
+  const headerText = isDark(accent) ? '#fff' : '#111';
+  const mp = document.getElementById('mini-preview');
+  mp.style.background = bg;
+  document.getElementById('mp-header').style.background = headerBg;
+  document.getElementById('mp-header').style.color = headerText;
+  document.getElementById('mp-name').style.color = headerText;
+  document.getElementById('mp-logo-dot').style.background = accent + '55';
+  document.getElementById('mp-spark').style.color = accent;
+
+  const logoWrap = document.getElementById('mp-logo-dot');
+  if (logoUrl) {
+    logoWrap.style.backgroundImage = `url(${logoUrl})`;
+    logoWrap.style.backgroundSize = 'contain';
+    logoWrap.style.backgroundRepeat = 'no-repeat';
+    logoWrap.style.backgroundPosition = 'center';
+  } else {
+    logoWrap.style.backgroundImage = '';
+    logoWrap.style.background = accent + '55';
+  }
+}
+
+// ── 테마 저장 ──
+async function saveTheme() {
+  if (!currentShop) return;
+  const btn = document.querySelector('[onclick="saveTheme()"]');
+  const status = document.getElementById('theme-save-status');
+  btn.disabled = true; btn.textContent = '저장 중...';
+  try {
+    const accent = document.getElementById('th-accentColorText').value;
+    const bg     = document.getElementById('th-bgColorText').value;
+    const logoUrl= document.getElementById('th-logoUrl').value.trim();
+    const existing = currentShop.theme_config || {};
+    const payload = {
+      theme_config: {
+        ...existing,
+        theme: { ...(existing.theme || {}), accentColor: accent, backgroundColor: bg },
+        branding: { ...(existing.branding || {}), logoUrl: logoUrl || null },
+      }
+    };
+    const r = await fetch(`/api/chameleon-admin/shop/${currentShop.mall_id}/theme`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+      body: JSON.stringify(payload),
+    });
+    const ok = r.ok;
+    status.style.cssText = `display:inline;color:${ok ? 'var(--green)' : 'var(--red)'};font-weight:600;font-size:12px;margin-left:10px`;
+    status.textContent = ok ? '✓ 저장됨' : '✗ 저장 실패';
+    if (ok) {
+      // 메모리 업데이트
+      currentShop.theme_config = payload.theme_config;
+      allShops = allShops.map(s => s.mall_id === currentShop.mall_id ? { ...s, theme_config: payload.theme_config } : s);
+    }
+    setTimeout(() => { status.style.display = 'none'; }, 3000);
+  } catch (e) {
+    status.style.cssText = 'display:inline;color:var(--red);font-size:12px;margin-left:10px';
+    status.textContent = '✗ 오류';
+  } finally {
+    btn.disabled = false; btn.textContent = '저장';
+  }
+}
+
+// ── 에이전트 설정 뷰어 ──
+function renderAgentConfig() {
+  if (!currentShop) return;
+  const viewer = document.getElementById('agent-config-viewer');
+  const ac = currentShop.agent_config || {};
+  const tc = currentShop.theme_config || {};
+  viewer.textContent = JSON.stringify({ agent_config: ac, theme_config: tc }, null, 2);
+}
+
+// ── 대화 로그 (샵 상세) ──
+async function loadShopLogs() {
+  if (!currentShop) return;
+  const tbody = document.getElementById('log-tbody');
+  tbody.innerHTML = '<tr><td colspan="5" style="padding:20px;color:var(--text-2)"><span class="spinner"></span> 로딩 중...</td></tr>';
+  try {
+    const r = await fetch(`/api/chameleon-admin/shop/${currentShop.mall_id}/logs?limit=200`, {
+      headers: { 'x-admin-password': adminPassword }
+    });
+    shopLogs = await r.json();
+    filterLogs();
+  } catch {
+    tbody.innerHTML = '<tr><td colspan="5" style="padding:20px;color:var(--red)">로드 실패</td></tr>';
+  }
+}
+
+function filterLogs() {
+  const q = document.getElementById('log-search')?.value.toLowerCase() || '';
+  const filtered = shopLogs.filter(l => !q || (l.query || '').toLowerCase().includes(q));
+  renderLogTable(filtered, 'log-tbody', 'log-empty', true);
+}
+
+function renderLogTable(logs, tbodyId, emptyId, showPersona) {
+  const tbody = document.getElementById(tbodyId);
+  const empty = document.getElementById(emptyId);
+  if (!logs.length) {
+    tbody.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  tbody.innerHTML = logs.slice(0, 100).map(l => {
+    const type = l.result_type || '—';
+    const typeCls = type.includes('faq') ? 'faq' : type.includes('pdp') ? 'pdp' : '';
+    const dt = l.created_at ? new Date(l.created_at).toLocaleString('ko-KR', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
+    const personaCol = showPersona ? `<td style="color:var(--text-2)">${esc(l.persona || '—')}</td>` : `<td>${esc(l.store_id || '—')}</td>`;
+    return `<tr>
+      <td style="white-space:nowrap;color:var(--text-2)">${dt}</td>
+      <td><span class="type-badge ${typeCls}">${esc(type)}</span></td>
+      <td class="log-query">${esc(l.query || '—')}</td>
+      <td style="text-align:center">${l.product_count ?? '—'}</td>
+      ${personaCol}
+    </tr>`;
+  }).join('');
+}
+
+// ── 전체 로그 ──
+let allLogs = [];
+async function loadAllLogs() {
+  const tbody = document.getElementById('all-log-tbody');
+  tbody.innerHTML = '<tr><td colspan="5" style="padding:20px;color:var(--text-2)"><span class="spinner"></span> 로딩 중...</td></tr>';
+  try {
+    // 모든 샵의 로그를 병렬 조회
+    const results = await Promise.all(
+      allShops.map(s => fetch(`/api/chameleon-admin/shop/${s.mall_id}/logs?limit=100`, {
+        headers: { 'x-admin-password': adminPassword }
+      }).then(r => r.json()))
+    );
+    allLogs = results.flat().sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    filterAllLogs();
+  } catch {
+    tbody.innerHTML = '<tr><td colspan="5" style="padding:20px;color:var(--red)">로드 실패</td></tr>';
+  }
+}
+
+function filterAllLogs() {
+  const shopFilter = document.getElementById('all-log-shop-filter')?.value || '';
+  const q = document.getElementById('all-log-search')?.value.toLowerCase() || '';
+  const filtered = allLogs.filter(l => {
+    if (shopFilter && l.store_id !== shopFilter) return false;
+    if (q && !(l.query || '').toLowerCase().includes(q)) return false;
+    return true;
+  });
+  renderLogTable(filtered, 'all-log-tbody', 'all-log-empty', false);
+}
+
+// ── 유틸 ──
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

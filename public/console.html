@@ -1251,16 +1251,6 @@ select {
           <div class="form-section-title">브랜딩</div>
           <div class="field-row" style="align-items:flex-start;">
 
-            <!-- 강조 색상 -->
-            <div class="field">
-              <label class="field-label">브랜드 강조 색상</label>
-              <div class="color-field">
-                <input type="color" id="accentColor" value="#C0392B" oninput="syncColorText('accentColor','accentColorText');updateAgentPreview();updateWidgetPreview()">
-                <input type="text" id="accentColorText" value="#C0392B" maxlength="7" placeholder="#C0392B" oninput="syncColorPicker('accentColorText','accentColor');updateAgentPreview();updateWidgetPreview()">
-              </div>
-              <div class="field-hint">헤더·버튼·탭에 사용되는 브랜드 컬러</div>
-            </div>
-
             <!-- 로고 업로드 -->
             <div class="field">
               <label class="field-label">브랜드 로고</label>
@@ -1792,7 +1782,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 색상 인풋 동기화
-  syncColorInput('accentColor', 'accentColorText');
   syncColorInput('bgColor', 'bgColorText');
 
   // 칩 에디터
@@ -1858,12 +1847,9 @@ function applyConfig(data) {
   if (ac.priceTier) { const el = document.getElementById('priceTier'); if (el) el.value = ac.priceTier; }
 
   // 위젯 색상
-  const accent = tc.theme?.accentColor || '#C0392B';
-  const bg     = tc.theme?.backgroundColor || '#FEF8F7';
-  document.getElementById('accentColor').value     = accent;
-  document.getElementById('accentColorText').value = accent;
-  document.getElementById('bgColor').value         = bg;
-  document.getElementById('bgColorText').value     = bg;
+  const bg = tc.theme?.backgroundColor || '#FEF8F7';
+  document.getElementById('bgColor').value     = bg;
+  document.getElementById('bgColorText').value = bg;
 
   const setColorPair = (pickId, textId, val) => {
     if (!val) return;
@@ -2131,7 +2117,7 @@ function buildThemeConfig() {
     ...existing,
     theme: {
       ...(existing.theme || {}),
-      accentColor:      document.getElementById('accentColorText').value,
+      accentColor:      existing.theme?.accentColor || '#5E4637',
       backgroundColor:  document.getElementById('bgColorText').value,
       chipBgColor:      document.getElementById('chipBgColorText').value,
       chipTextColor:    document.getElementById('chipTextColorText').value,
@@ -2357,9 +2343,9 @@ function updateAgentPreview() {
   }
 
   // 색상 CSS 변수 — 위젯 외관에서 설정된 값을 동기화
-  const accent  = document.getElementById('accentColor')?.value  || '#5E4637';
-  const bg      = document.getElementById('bgColor')?.value      || '#FAFAF8';
-  const logoUrl = document.getElementById('logoUrl')?.value      || '';
+  const accent  = shopConfig.theme_config?.theme?.accentColor || '#5E4637';
+  const bg      = document.getElementById('bgColor')?.value   || '#FAFAF8';
+  const logoUrl = document.getElementById('logoUrl')?.value   || '';
 
   const headerBg   = hexMixPrev(accent, '#ffffff', 0.18);
   const headerText = isDarkPrev(accent) ? '#fff' : '#111';
@@ -2395,9 +2381,9 @@ function updateWidgetPreview() {
   const panel = document.getElementById('wdg-preview');
   if (!panel) return;
 
-  const accent  = document.getElementById('accentColor')?.value  || '#5E4637';
-  const bg      = document.getElementById('bgColor')?.value      || '#FAFAF8';
-  const logoUrl = document.getElementById('logoUrl')?.value      || '';
+  const accent  = shopConfig.theme_config?.theme?.accentColor || '#5E4637';
+  const bg      = document.getElementById('bgColor')?.value   || '#FAFAF8';
+  const logoUrl = document.getElementById('logoUrl')?.value   || '';
   const siteUrl = document.getElementById('siteUrl')?.value.trim() || '';
   const title   = document.getElementById('welcomeTitle')?.value  || '안녕하세요! 무엇을 찾고 있으신가요?';
   const body    = document.getElementById('welcomeBody')?.value   || '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요';

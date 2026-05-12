@@ -1468,6 +1468,88 @@ Return ONLY this JSON, no markdown, no explanation:
 app.get('/dashboard', (req, res) => res.redirect('/admin'));
 
 // ─────────────────────────────────────────────
+// CHAMELEON INTERNAL ADMIN
+// /chameleon-admin — 내부 전용 관리 패널
+// ─────────────────────────────────────────────
+const ADMIN_PASSWORD = process.env.CHAMELEON_ADMIN_PASSWORD || 'chameleon2025';
+
+function requireAdminAuth(req, res, next) {
+  const auth = req.headers['x-admin-password'];
+  if (auth !== ADMIN_PASSWORD) return res.status(401).json({ error: 'unauthorized' });
+  next();
+}
+
+app.get('/chameleon-admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'chameleon-admin.html'));
+});
+
+// GET /api/chameleon-admin/shops — 모든 샵 + 통계
+app.get('/api/chameleon-admin/shops', requireAdminAuth, async (req, res) => {
+  try {
+    const { data: shops, error } = await supabase
+      .from('shops').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+
+    // 각 샵의 상품 수 + 채팅 수를 병렬로 조회
+    const enriched = await Promise.all((shops || []).map(async (shop) => {
+      const mallId = shop.mall_id;
+      const [prodRes, chatRes] = await Promise.all([
+        supabase.from('products').select('product_id', { count: 'exact', head: true }).eq('store_id', mallId).eq('status', 'active'),
+        supabase.from('chat_logs').select('id', { count: 'exact', head: true }).eq('store_id', mallId),
+      ]);
+      return {
+        ...shop,
+        product_count: prodRes.count || 0,
+        chat_count:    chatRes.count || 0,
+      };
+    }));
+
+    res.json(enriched);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// GET /api/chameleon-admin/shop/:mallId/logs — 대화 로그
+app.get('/api/chameleon-admin/shop/:mallId/logs', requireAdminAuth, async (req, res) => {
+  const { mallId } = req.params;
+  const limit = Math.min(parseInt(req.query.limit) || 50, 200);
+  const offset = parseInt(req.query.offset) || 0;
+  try {
+    const { data, error } = await supabase
+      .from('chat_logs')
+      .select('*')
+      .eq('store_id', mallId)
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
+    if (error) throw error;
+    res.json(data || []);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// POST /api/chameleon-admin/shop/:mallId/theme — 테마 설정 (Chameleon 전용)
+app.post('/api/chameleon-admin/shop/:mallId/theme', requireAdminAuth, async (req, res) => {
+  const { mallId } = req.params;
+  const { theme_config } = req.body;
+  if (!theme_config) return res.status(400).json({ error: 'theme_config required' });
+  try {
+    // 기존 설정 조회 후 테마만 병합
+    const { data: existing } = await supabase.from('shops').select('theme_config').eq('mall_id', mallId).single();
+    const merged = { ...(existing?.theme_config || {}), ...theme_config };
+    const { error } = await supabase.from('shops').upsert(
+      { mall_id: mallId, theme_config: merged, updated_at: new Date().toISOString() },
+      { onConflict: 'mall_id' }
+    );
+    if (error) throw error;
+    res.json({ success: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ─────────────────────────────────────────────
 // Start
 // ─────────────────────────────────────────────
 // ─────────────────────────────────────────────
