@@ -827,6 +827,25 @@
     const heroImage   = branding.heroImage   || null;
     const welcomeTitle = branding.welcomeTitle || null;
     const welcomeBody  = branding.welcomeBody  || null;
+    const logoMode     = branding.logoMode    || null;
+    const fontFamily   = branding.fontFamily  || null;
+    const fontWeight   = branding.fontWeight  || 700;
+    const letterSpacing= branding.letterSpacing || '0';
+
+    // ── Google Font 주입 (Shadow DOM 안에 @import) ──
+    if (logoMode === 'text' && fontFamily) {
+      const fontStyle = document.createElement('style');
+      fontStyle.textContent = `@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontFamily)}:wght@${fontWeight}&display=swap');
+        .cml-chat-header-text-logo {
+          font-family: '${fontFamily}', sans-serif;
+          font-weight: ${fontWeight};
+          letter-spacing: ${letterSpacing};
+          font-size: 15px;
+          color: var(--cml-header-text, #333);
+          line-height: 1;
+        }`;
+      shadow.appendChild(fontStyle);
+    }
 
     // ── 사이드바 탭 (트리거) ──
     const tab = document.createElement('div');
@@ -855,9 +874,11 @@
       </div>` : '';
 
     // ── 헤더 왼쪽 ──
-    const headerLeftHtml = logoUrl
-      ? `<img class="cml-chat-header-logo" src="${logoUrl}" alt="${chatName}">`
-      : `<span class="cml-chat-header-dot"></span><span class="cml-chat-header-title">${chatName}</span>`;
+    const headerLeftHtml = logoMode === 'text' && fontFamily
+      ? `<span class="cml-chat-header-text-logo">${chatName}</span>`
+      : logoUrl
+        ? `<img class="cml-chat-header-logo" src="${logoUrl}" alt="${chatName}">`
+        : `<span class="cml-chat-header-dot"></span><span class="cml-chat-header-title">${chatName}</span>`;
 
     // ── 사이드바 패널 ──
     const panel = document.createElement('div');

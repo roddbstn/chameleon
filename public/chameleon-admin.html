@@ -185,6 +185,43 @@ tr:hover td { background: rgba(255,255,255,.025); }
 .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.2); border-top-color: var(--accent); border-radius: 50%; animation: spin .6s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ── 로고 업로드 ── */
+.logo-upload-zone {
+  border: 1.5px dashed rgba(255,255,255,.2); border-radius: 8px; padding: 20px;
+  text-align: center; cursor: pointer; transition: border-color .15s, background .15s;
+  background: var(--surface2);
+}
+.logo-upload-zone:hover { border-color: var(--accent); background: var(--accent-dim); }
+.logo-upload-zone.has-file { border-style: solid; border-color: rgba(255,255,255,.15); }
+.logo-upload-preview { display: none; position: relative; }
+.logo-upload-preview img { max-height: 60px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 0 4px rgba(255,255,255,.1)); }
+.logo-remove-btn {
+  position: absolute; top: -6px; right: -6px; width: 20px; height: 20px;
+  border-radius: 50%; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-2); cursor: pointer; font-size: 12px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-placeholder-text { font-size: 12px; color: var(--text-2); margin-top: 6px; }
+
+/* ── AI 분석 결과 ── */
+.analyze-result {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; margin-top: 12px;
+}
+.analyze-result-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.analyze-label { font-size: 11px; color: var(--text-2); width: 80px; flex-shrink: 0; }
+.analyze-input {
+  flex: 1; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 13px; font-family: inherit; outline: none;
+}
+.analyze-input:focus { border-color: var(--accent); }
+.font-preview-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; text-align: center; margin-top: 10px;
+}
+.font-preview-text { font-size: 22px; color: var(--text); line-height: 1.2; }
+.font-preview-sub { font-size: 10px; color: var(--text-2); margin-top: 6px; }
+
 /* ── 색상 프리뷰 칩 ── */
 .color-preview-strip { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
 .color-chip { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-2); }
@@ -289,8 +326,10 @@ tr:hover td { background: rgba(255,255,255,.025); }
       <div class="tab-panel active" id="tab-theme">
         <div style="display:flex;gap:24px;align-items:flex-start">
           <div style="flex:1">
+
+            <!-- 색상 -->
             <div class="card">
-              <div class="card-title" style="margin-bottom:16px">브랜드 색상 설정</div>
+              <div class="card-title" style="margin-bottom:16px">브랜드 색상</div>
               <div class="field">
                 <label class="field-label">강조 색상 (Accent)</label>
                 <div class="color-row">
@@ -305,24 +344,79 @@ tr:hover td { background: rgba(255,255,255,.025); }
                   <input type="text" id="th-bgColorText" value="#FEF8F7" maxlength="7" oninput="syncThemeColorPicker('th-bgColorText','th-bgColor');updateMiniPreview()">
                 </div>
               </div>
-              <div class="field">
-                <label class="field-label">로고 URL</label>
-                <input type="text" id="th-logoUrl" placeholder="https://..." oninput="updateMiniPreview()">
-                <div class="field-hint">비워두면 브랜드 이름 표시</div>
+            </div>
+
+            <!-- 로고 → AI 텍스트 로고 -->
+            <div class="card" style="margin-top:0">
+              <div class="card-title" style="margin-bottom:4px">AI 텍스트 로고</div>
+              <div style="font-size:11px;color:var(--text-2);margin-bottom:14px">브랜드 로고를 업로드하면 폰트를 분석해 <strong style="color:var(--text)">브랜드명 AI</strong> 텍스트 로고를 자동 생성합니다.</div>
+
+              <!-- 파일 업로드 -->
+              <input type="file" id="logo-file-input" accept=".svg,.png,.webp,image/svg+xml,image/png,image/webp" style="display:none" onchange="handleLogoFile(this)">
+              <div class="logo-upload-zone" id="logo-upload-zone" onclick="document.getElementById('logo-file-input').click()">
+                <div class="logo-upload-preview" id="logo-preview">
+                  <img id="logo-preview-img" src="" alt="로고">
+                  <button class="logo-remove-btn" onclick="event.stopPropagation();clearLogo()" title="제거">×</button>
+                </div>
+                <div id="logo-placeholder">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:rgba(255,255,255,.3)"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <div class="logo-placeholder-text">클릭해서 로고 업로드 (SVG · PNG · WebP)</div>
+                </div>
               </div>
-              <div style="display:flex;align-items:center;margin-top:4px">
-                <button class="btn btn-primary" onclick="saveTheme()">저장</button>
-                <span class="save-status" id="theme-save-status"></span>
+
+              <!-- 분석 중 -->
+              <div id="analyze-loading" style="display:none;padding:16px;text-align:center;color:var(--text-2);font-size:12px">
+                <span class="spinner"></span> Gemini가 폰트를 분석 중...
               </div>
+
+              <!-- 분석 결과 -->
+              <div id="analyze-result" style="display:none">
+                <div class="analyze-result">
+                  <div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">분석 결과</div>
+                  <div class="analyze-result-row">
+                    <span class="analyze-label">브랜드명</span>
+                    <input type="text" class="analyze-input" id="ai-brand-name" placeholder="SOUSA" oninput="updateFontPreview()">
+                  </div>
+                  <div class="analyze-result-row">
+                    <span class="analyze-label">Google Font</span>
+                    <input type="text" class="analyze-input" id="ai-font-family" placeholder="Lilita One" oninput="updateFontPreview()">
+                  </div>
+                  <div class="analyze-result-row">
+                    <span class="analyze-label">굵기</span>
+                    <input type="text" class="analyze-input" id="ai-font-weight" placeholder="700" style="width:80px;flex:none" oninput="updateFontPreview()">
+                    <span class="analyze-label" style="width:auto">자간</span>
+                    <input type="text" class="analyze-input" id="ai-letter-spacing" placeholder="0" style="width:80px;flex:none" oninput="updateFontPreview()">
+                  </div>
+                  <div class="analyze-result-row">
+                    <span class="analyze-label">변환</span>
+                    <select class="analyze-input" id="ai-text-transform" style="flex:none;width:140px" onchange="updateFontPreview()">
+                      <option value="uppercase">uppercase</option>
+                      <option value="none">none (원본)</option>
+                      <option value="lowercase">lowercase</option>
+                    </select>
+                  </div>
+                  <div class="font-preview-box" id="font-preview-box">
+                    <div class="font-preview-text" id="font-preview-text">BRAND AI</div>
+                    <div class="font-preview-sub" id="font-preview-sub">Google Font 로딩 중...</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 오류 -->
+              <div id="analyze-error" style="display:none;color:var(--red);font-size:12px;padding:10px 0"></div>
+            </div>
+
+            <div style="display:flex;align-items:center;margin-top:4px">
+              <button class="btn btn-primary" id="save-theme-btn" onclick="saveTheme()">저장</button>
+              <span class="save-status" id="theme-save-status"></span>
             </div>
           </div>
 
           <!-- 미니 위젯 프리뷰 -->
-          <div>
-            <div style="font-size:11px;color:var(--text-2);margin-bottom:8px;text-align:center">미리보기</div>
+          <div style="position:sticky;top:24px">
+            <div style="font-size:11px;color:var(--text-2);margin-bottom:8px;text-align:center">위젯 미리보기</div>
             <div class="mini-preview" id="mini-preview">
               <div class="mini-header" id="mp-header">
-                <div class="mini-header-dot" id="mp-logo-dot"></div>
                 <div class="mini-header-name" id="mp-name">AI 쇼핑 도우미</div>
               </div>
               <div class="mini-body">
@@ -537,10 +631,22 @@ function openShop(mallId) {
   // 테마 폼 채우기
   setThemeInput('th-accentColor', 'th-accentColorText', accent);
   setThemeInput('th-bgColor', 'th-bgColorText', theme.backgroundColor || '#FEF8F7');
-  document.getElementById('th-logoUrl').value = br.logoUrl || '';
 
-  // 에이전트 이름을 미니 프리뷰에
-  document.getElementById('mp-name').textContent = br.chatName || name + ' 쇼핑 도우미';
+  // 기존 AI 로고 설정 복원
+  clearLogo();
+  if (br.logoMode === 'text' && br.fontFamily) {
+    document.getElementById('ai-brand-name').value    = (br.chatName || '').replace(/ AI$/, '');
+    document.getElementById('ai-font-family').value   = br.fontFamily;
+    document.getElementById('ai-font-weight').value   = br.fontWeight || '700';
+    document.getElementById('ai-letter-spacing').value= br.letterSpacing || '0';
+    const transformSel = document.getElementById('ai-text-transform');
+    if (transformSel) transformSel.value = br.textTransform || 'uppercase';
+    document.getElementById('analyze-result').style.display = 'block';
+    updateFontPreview();
+  }
+
+  // 미니 프리뷰
+  document.getElementById('mp-name').textContent = br.chatName || name + ' AI';
   document.getElementById('mp-title').textContent = br.welcomeTitle || '안녕하세요!';
 
   updateMiniPreview();
@@ -595,10 +701,124 @@ function isDark(hex) {
   const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
   return (0.299*r+0.587*g+0.114*b) < 128;
 }
+// ── 로고 업로드 + AI 분석 ──
+let _logoBase64 = null;
+let _logoMime   = null;
+
+function handleLogoFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const allowed = ['image/svg+xml','image/png','image/webp'];
+  if (!allowed.includes(file.type)) { alert('SVG, PNG, WebP 파일만 가능합니다.'); return; }
+  if (file.size > 2 * 1024 * 1024) { alert('파일 크기는 2MB 이하여야 합니다.'); return; }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const dataUrl = e.target.result;
+    const base64  = dataUrl.split(',')[1];
+    _logoBase64   = base64;
+    _logoMime     = file.type;
+
+    // 미리보기
+    document.getElementById('logo-preview').style.display = 'block';
+    document.getElementById('logo-preview-img').src = dataUrl;
+    document.getElementById('logo-placeholder').style.display = 'none';
+    document.getElementById('logo-upload-zone').classList.add('has-file');
+
+    // 분석 시작
+    analyzeLogo(base64, file.type);
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearLogo() {
+  _logoBase64 = null; _logoMime = null;
+  document.getElementById('logo-file-input').value = '';
+  document.getElementById('logo-preview').style.display = 'none';
+  document.getElementById('logo-placeholder').style.display = 'block';
+  document.getElementById('logo-upload-zone').classList.remove('has-file');
+  document.getElementById('analyze-result').style.display = 'none';
+  document.getElementById('analyze-error').style.display = 'none';
+  document.getElementById('analyze-loading').style.display = 'none';
+}
+
+async function analyzeLogo(base64, mimeType) {
+  document.getElementById('analyze-loading').style.display = 'block';
+  document.getElementById('analyze-result').style.display = 'none';
+  document.getElementById('analyze-error').style.display = 'none';
+  try {
+    const r = await fetch('/api/chameleon-admin/analyze-logo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+      body: JSON.stringify({ fileBase64: base64, mimeType }),
+    });
+    document.getElementById('analyze-loading').style.display = 'none';
+    if (!r.ok) { const e = await r.json(); throw new Error(e.error || r.statusText); }
+    const data = await r.json();
+
+    // 폼에 결과 반영
+    document.getElementById('ai-brand-name').value    = data.brandName || '';
+    document.getElementById('ai-font-family').value   = data.fontFamily || '';
+    document.getElementById('ai-font-weight').value   = String(data.fontWeight || 700);
+    document.getElementById('ai-letter-spacing').value= data.letterSpacing || '0';
+    const transformSel = document.getElementById('ai-text-transform');
+    if (transformSel) transformSel.value = data.textTransform || 'uppercase';
+
+    document.getElementById('analyze-result').style.display = 'block';
+    updateFontPreview();
+
+    // 미니 프리뷰 이름도 업데이트
+    document.getElementById('mp-name').textContent = (data.brandName || '') + ' AI';
+  } catch(e) {
+    document.getElementById('analyze-loading').style.display = 'none';
+    document.getElementById('analyze-error').style.display = 'block';
+    document.getElementById('analyze-error').textContent = '분석 실패: ' + e.message;
+  }
+}
+
+// Google Font 로드 + 프리뷰
+const _loadedFonts = new Set();
+function updateFontPreview() {
+  const brandName    = document.getElementById('ai-brand-name')?.value || 'BRAND';
+  const fontFamily   = document.getElementById('ai-font-family')?.value || '';
+  const fontWeight   = document.getElementById('ai-font-weight')?.value || '700';
+  const letterSpacing= document.getElementById('ai-letter-spacing')?.value || '0';
+  const textTransform= document.getElementById('ai-text-transform')?.value || 'uppercase';
+  if (!fontFamily) return;
+
+  // Google Font 로드 (이미 로드됐으면 스킵)
+  const fontKey = fontFamily + ':' + fontWeight;
+  if (!_loadedFonts.has(fontKey)) {
+    _loadedFonts.add(fontKey);
+    const link = document.createElement('link');
+    link.rel  = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontFamily)}:wght@${fontWeight}&display=swap`;
+    document.head.appendChild(link);
+  }
+
+  const previewText = document.getElementById('font-preview-text');
+  const previewSub  = document.getElementById('font-preview-sub');
+  const displayName = textTransform === 'uppercase'
+    ? (brandName + ' AI').toUpperCase()
+    : textTransform === 'lowercase'
+    ? (brandName + ' AI').toLowerCase()
+    : brandName + ' AI';
+
+  previewText.textContent = displayName;
+  previewText.style.cssText = `font-family:'${fontFamily}',sans-serif;font-weight:${fontWeight};letter-spacing:${letterSpacing};font-size:22px;color:var(--text);line-height:1.2`;
+  previewSub.textContent = fontFamily + ' · weight ' + fontWeight;
+
+  // 미니 프리뷰 이름도 동일 폰트
+  const mpName = document.getElementById('mp-name');
+  mpName.textContent = displayName;
+  mpName.style.fontFamily = `'${fontFamily}', sans-serif`;
+  mpName.style.fontWeight = fontWeight;
+  mpName.style.letterSpacing = letterSpacing;
+}
+
 function updateMiniPreview() {
   const accent = document.getElementById('th-accentColorText')?.value || '#5E4637';
   const bg     = document.getElementById('th-bgColorText')?.value    || '#FEF8F7';
-  const logoUrl= document.getElementById('th-logoUrl')?.value        || '';
   const valid  = /^#[0-9A-Fa-f]{6}$/.test(accent);
   if (!valid) return;
 
@@ -609,37 +829,44 @@ function updateMiniPreview() {
   document.getElementById('mp-header').style.background = headerBg;
   document.getElementById('mp-header').style.color = headerText;
   document.getElementById('mp-name').style.color = headerText;
-  document.getElementById('mp-logo-dot').style.background = accent + '55';
   document.getElementById('mp-spark').style.color = accent;
-
-  const logoWrap = document.getElementById('mp-logo-dot');
-  if (logoUrl) {
-    logoWrap.style.backgroundImage = `url(${logoUrl})`;
-    logoWrap.style.backgroundSize = 'contain';
-    logoWrap.style.backgroundRepeat = 'no-repeat';
-    logoWrap.style.backgroundPosition = 'center';
-  } else {
-    logoWrap.style.backgroundImage = '';
-    logoWrap.style.background = accent + '55';
-  }
 }
 
 // ── 테마 저장 ──
 async function saveTheme() {
   if (!currentShop) return;
-  const btn = document.querySelector('[onclick="saveTheme()"]');
+  const btn = document.getElementById('save-theme-btn');
   const status = document.getElementById('theme-save-status');
   btn.disabled = true; btn.textContent = '저장 중...';
   try {
     const accent = document.getElementById('th-accentColorText').value;
     const bg     = document.getElementById('th-bgColorText').value;
-    const logoUrl= document.getElementById('th-logoUrl').value.trim();
     const existing = currentShop.theme_config || {};
+
+    // AI 텍스트 로고 설정
+    const hasAiLogo = document.getElementById('analyze-result')?.style.display !== 'none';
+    const brandingPatch = {};
+    if (hasAiLogo) {
+      const brandName    = document.getElementById('ai-brand-name').value.trim();
+      const fontFamily   = document.getElementById('ai-font-family').value.trim();
+      const fontWeight   = document.getElementById('ai-font-weight').value.trim();
+      const letterSpacing= document.getElementById('ai-letter-spacing').value.trim();
+      const textTransform= document.getElementById('ai-text-transform').value;
+      const transform    = textTransform === 'uppercase' ? (s => s.toUpperCase()) : textTransform === 'lowercase' ? (s => s.toLowerCase()) : (s => s);
+      brandingPatch.logoMode     = 'text';
+      brandingPatch.chatName     = transform(brandName + ' AI');
+      brandingPatch.fontFamily   = fontFamily;
+      brandingPatch.fontWeight   = parseInt(fontWeight) || 700;
+      brandingPatch.letterSpacing= letterSpacing;
+      brandingPatch.textTransform= textTransform;
+      brandingPatch.logoUrl      = null; // 이미지 로고 제거
+    }
+
     const payload = {
       theme_config: {
         ...existing,
         theme: { ...(existing.theme || {}), accentColor: accent, backgroundColor: bg },
-        branding: { ...(existing.branding || {}), logoUrl: logoUrl || null },
+        branding: { ...(existing.branding || {}), ...brandingPatch },
       }
     };
     const r = await fetch(`/api/chameleon-admin/shop/${currentShop.mall_id}/theme`, {

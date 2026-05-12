@@ -1464,6 +1464,60 @@ Return ONLY this JSON, no markdown, no explanation:
   }
 });
 
+// ─────────────────────────────────────────────
+// LOGO FONT ANALYSIS — Gemini Vision으로 로고 폰트 분석
+// POST /api/chameleon-admin/analyze-logo
+// { fileBase64, mimeType } → { brandName, fontFamily, fontWeight, letterSpacing, textTransform, fontStyle }
+// ─────────────────────────────────────────────
+app.post('/api/chameleon-admin/analyze-logo', requireAdminAuth, async (req, res) => {
+  const { fileBase64, mimeType } = req.body;
+  if (!fileBase64 || !mimeType) return res.status(400).json({ error: 'fileBase64, mimeType required' });
+
+  const prompt = `You are a typography expert. Analyze this brand logo image and identify the font used for the main brand name text.
+
+Return ONLY valid JSON with these fields:
+{
+  "brandName": "the exact brand name text as shown in the logo (uppercase if shown uppercase)",
+  "fontFamily": "the closest matching Google Font name (must be a real font available on fonts.google.com)",
+  "fontWeight": 700,
+  "letterSpacing": "0.05em",
+  "textTransform": "uppercase",
+  "fontStyle": "normal"
+}
+
+Rules:
+- fontFamily MUST be a real Google Font (e.g. "Lilita One", "Bebas Neue", "Montserrat", "Raleway", "Oswald", "Anton", "Black Han Sans", "Noto Sans KR", etc.)
+- fontWeight: 400, 500, 600, 700, 800, or 900
+- letterSpacing: CSS value like "0", "0.05em", "0.1em", "-0.02em"
+- textTransform: "uppercase", "lowercase", or "none"
+- fontStyle: "normal" or "italic"
+- If the logo uses a highly custom/display typeface, choose the closest Google Font match for the overall visual feel (weight, width, style)
+
+Return ONLY the JSON object, no markdown, no explanation.`;
+
+  try {
+    const r = await callGemini({
+      contents: [{
+        role: 'user',
+        parts: [
+          { inlineData: { mimeType, data: fileBase64 } },
+          { text: prompt },
+        ],
+      }],
+      generationConfig: { temperature: 0.1, maxOutputTokens: 300, responseMimeType: 'application/json' },
+    });
+    const raw = (r.data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
+    const jsonMatch = raw.match(/\{[\s\S]*?\}/);
+    if (!jsonMatch) throw new Error('JSON not found in response');
+    const parsed = JSON.parse(jsonMatch[0]);
+    if (!parsed.brandName || !parsed.fontFamily) throw new Error('Missing required fields');
+    res.json(parsed);
+  } catch (e) {
+    console.error('[analyze-logo]', e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // 기존 대시보드 (이전 버전 호환)
 app.get('/dashboard', (req, res) => res.redirect('/admin'));
 
