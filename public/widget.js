@@ -932,7 +932,7 @@
       { label: '매일 캐주얼하게 입기 좋은 기본템 뭐가 있어요?', query: '매일 캐주얼하게 입기 좋은 기본템 뭐가 있어요?' },
       { label: '소개팅에 입고 나가기 좋은 깔끔한 룩 추천해줘요', query: '소개팅에 입고 나가기 좋은 깔끔한 룩 추천해줘요' },
     ];
-    const starterChips = branding.starterChips || defaultChips;
+    const starterChips = branding.starterChips?.length ? branding.starterChips : defaultChips;
 
     // ── 웰컴 칩 HTML (flex-wrap, 스크롤 없음) ──
     const welcomeChipsHtml = starterChips

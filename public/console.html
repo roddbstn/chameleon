@@ -2125,11 +2125,11 @@ function updatePreview() {
   document.getElementById('previewWelcome').textContent = welcome;
   document.getElementById('previewSub').textContent     = sub;
 
+  const defaultPreviewChips = ['여름에 시원하게 입기 좋은 아이템 추천해주세요', '소개팅에 입고 나가기 좋은 깔끔한 룩 추천해줘요'];
   const previewChips = document.getElementById('previewChips');
   const validChips   = chips.filter(c => c.label.trim());
-  previewChips.innerHTML = validChips.length
-    ? validChips.map(c => `<span class="preview-chip">${esc(c.label)}</span>`).join('')
-    : '<span style="font-size:11px;color:#CCC;">칩이 없습니다</span>';
+  const displayChips = validChips.length ? validChips.map(c => c.label) : defaultPreviewChips;
+  previewChips.innerHTML = displayChips.map(c => `<span class="preview-chip">${esc(c)}</span>`).join('');
 }
 
 // ── 저장 ──
@@ -2174,7 +2174,7 @@ function buildThemeConfig() {
     ...existing,
     theme: {
       ...(existing.theme || {}),
-      accentColor:      existing.theme?.accentColor || '#5E4637',
+      accentColor:      document.getElementById('accentColorText')?.value || existing.theme?.accentColor || '#5E4637',
       backgroundColor:  document.getElementById('bgColorText').value,
       chipBgColor:      document.getElementById('chipBgColorText').value,
       chipTextColor:    document.getElementById('chipTextColorText').value,
