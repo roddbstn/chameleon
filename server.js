@@ -465,7 +465,8 @@ app.post('/api/chips', async (req, res) => {
 
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 120, thinkingConfig: { thinkingBudget: 0 } },
+      generationConfig: { maxOutputTokens: 120 },
+      thinkingConfig: { thinkingBudget: 0 },
     });
 
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
@@ -555,7 +556,8 @@ chips 작성 규칙:
   try {
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } },
+      generationConfig: { maxOutputTokens: 500 },
+      thinkingConfig: { thinkingBudget: 0 },
     });
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
     const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -636,7 +638,8 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
 
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } },
+      generationConfig: { maxOutputTokens: 300 },
+      thinkingConfig: { thinkingBudget: 0 },
     });
 
     const answer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text
