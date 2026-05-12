@@ -1220,7 +1220,7 @@ app.get('/api/metrics', async (req, res) => {
       .eq('store_id', mallId)
       .gte('occurred_at', from.toISOString());
 
-    const totals = { impression: 0, chat_start: 0, chip_click: 0, product_click: 0, cart_add: 0, purchase: 0 };
+    const totals = { impression: 0, chat_start: 0, chip_click: 0, pdp_chip_click: 0, product_click: 0, cart_add: 0, purchase: 0 };
     const byProduct = {};
     const daily = {};
 
@@ -1275,7 +1275,7 @@ app.get('/api/conversations', async (req, res) => {
         .in('session_id', sessionIds)
         .order('occurred_at', { ascending: false });
 
-      const priority = { purchase: 4, cart_add: 3, product_click: 2, chip_click: 1 };
+      const priority = { purchase: 4, cart_add: 3, product_click: 2, pdp_chip_click: 1, chip_click: 1 };
       (events || []).forEach(e => {
         const cur = eventMap[e.session_id];
         if (!cur || (priority[e.event_type] || 0) > (priority[cur] || 0)) {

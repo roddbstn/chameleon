@@ -102,10 +102,12 @@
     const badge = content?.badge || 'AI 쇼핑 도우미';
     const title = content?.title || '';
     const body  = content?.body  || '';
-    // 전체 칩을 무한 스크롤 ticker로 표시
-    const allChips = content?.chips?.length
+    // 칩 개수 config 기반 제한
+    const chipLimit = config?.adaptivePdp?.chipCount || 4;
+    const rawChips = content?.chips?.length
       ? content.chips
       : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'];
+    const allChips = rawChips.slice(0, chipLimit);
     const chipsHTML = allChips.map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`).join('');
     return `
       <div class="cml-panel" id="cml-panel" style="${cssVars}">
@@ -758,6 +760,12 @@
 
   // ── 7. 패널 삽입 위치 찾기 (config 기반) ──────────────
   function findInsertTarget(config) {
+    // DB에서 설정된 selector 우선 (콘솔에서 고객사가 지정)
+    const dbSelector = config?.adaptivePdp?.selector;
+    if (dbSelector) {
+      const el = document.querySelector(dbSelector);
+      if (el) { console.log(`[Chameleon] 삽입 위치 (DB): ${dbSelector}`); return el; }
+    }
     if (config?.insert?.selector) {
       const el = document.querySelector(config.insert.selector);
       if (el) { console.log(`[Chameleon] 삽입 위치 (config): ${config.insert.selector}`); return el; }
@@ -784,20 +792,21 @@
     wrapper.innerHTML = buildPanelHTML(content, config);
     const panel = wrapper.firstElementChild;
 
-    const position = config?.insert?.position || 'afterend';
+    const position = config?.adaptivePdp?.position || config?.insert?.position || 'afterend';
     target.insertAdjacentElement(position, panel);
 
-    // 칩 클릭 → 사이드바 열기 + 이 상품에 특정된 Q&A 요청
+    // PDP 칩 클릭 → pdp_chip_click 이벤트 + 사이드바 열기
     panel.querySelector('.cml-chips-wrap').addEventListener('click', e => {
       const chip = e.target.closest('.cml-chip');
       if (!chip) return;
+      track('pdp_chip_click', { chipLabel: chip.dataset.q, productNo: productCtx?.productNo || null });
       document.dispatchEvent(new CustomEvent('chameleon:ask', {
         detail: {
           query: chip.dataset.q,
           mode: 'product_qa',
           productNo:   productCtx?.productNo   || '',
           productName: productCtx?.productName || '',
-          fullChips:   content?.chips          || [],  // 전체 7개 칩 풀 전달
+          fullChips:   content?.chips          || [],
         },
       }));
     });
@@ -1791,6 +1800,11 @@
       // PHASE 2 — config + AI 콘텐츠 병렬 대기 후 패널 교체
       const pdpPromise = fetchPdpContent(signals.productNo, productInfo.name, productInfo.desc);
       Promise.all([configPromise, pdpPromise]).then(([config, pdpContent]) => {
+        // adaptivePdp 비활성화 시 패널 제거
+        if (config?.adaptivePdp?.enabled === false) {
+          document.getElementById('cml-panel')?.remove();
+          return;
+        }
         if (!config && !pdpContent) return; // 둘 다 없으면 기본 패널 유지
         const panel = document.getElementById('cml-panel');
         if (panel) { panel.style.transition = 'opacity 0.2s'; panel.style.opacity = '0'; }

@@ -607,6 +607,10 @@ select {
 .toggle-row-label { font-size: 13px; font-weight: 500; }
 .toggle-row-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; }
 
+.pdp-settings { padding: 12px 16px 4px; background: var(--bg); border-radius: 8px; margin-top: 4px; border: 1px solid var(--border); }
+.preset-btn { font-size: 11px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--white); cursor: pointer; font-family: inherit; color: var(--text-2); transition: all .12s; }
+.preset-btn:hover { border-color: var(--accent-dark); color: var(--accent-dark); }
+
 .toggle {
   position: relative;
   width: 38px;
@@ -1154,6 +1158,11 @@ select {
           <div class="metric-sub" id="m-purchase-rate">최종 구매 완료</div>
         </div>
         <div class="metric-card">
+          <div class="metric-label">PDP 칩 클릭</div>
+          <div class="metric-value" id="m-pdpclick">—</div>
+          <div class="metric-sub" id="m-pdpclick-rate">상품 페이지 내 질문 버튼</div>
+        </div>
+        <div class="metric-card">
           <div class="metric-label">총 대화 수</div>
           <div class="metric-value" id="m-chatcount">—</div>
           <div class="metric-sub" id="m-chatcount-sub">이번 달 기준</div>
@@ -1167,6 +1176,12 @@ select {
           <div class="funnel-step">
             <div class="funnel-step-label">노출</div>
             <div class="funnel-step-val" id="f-impression">—</div>
+          </div>
+          <div class="funnel-arrow">→</div>
+          <div class="funnel-step">
+            <div class="funnel-step-label">PDP 칩 클릭</div>
+            <div class="funnel-step-val" id="f-pdpclick">—</div>
+            <div class="funnel-step-rate" id="f-pdpclick-r">—</div>
           </div>
           <div class="funnel-arrow">→</div>
           <div class="funnel-step">
@@ -1533,10 +1548,42 @@ select {
               <div class="toggle-row-desc">상품 페이지 내부에 질문 버튼 자동 삽입</div>
             </div>
             <label class="toggle">
-              <input type="checkbox" id="adaptivePdpOn" checked>
+              <input type="checkbox" id="adaptivePdpOn" checked onchange="document.getElementById('pdpSettings').style.display=this.checked?'block':'none'">
               <span class="toggle-slider"></span>
             </label>
           </div>
+
+          <!-- PDP 세부 설정 -->
+          <div class="pdp-settings" id="pdpSettings">
+            <div class="field">
+              <label class="field-label">삽입 위치 CSS Selector</label>
+              <input type="text" id="pdpSelector" placeholder=".xans-product-detail .infoArea .xans-product-action">
+              <div class="field-hint">칩 패널을 삽입할 요소. 비워두면 서버 기본값 사용.</div>
+              <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+                <button class="preset-btn" onclick="document.getElementById('pdpSelector').value='.xans-product-detail .infoArea .xans-product-action'">카페24 기본형</button>
+                <button class="preset-btn" onclick="document.getElementById('pdpSelector').value='.product-detail__buy-now'">카페24 신형</button>
+                <button class="preset-btn" onclick="document.getElementById('pdpSelector').value='#productDetail .buyArea'">카페24 구형</button>
+              </div>
+            </div>
+            <div class="field-row" style="margin-top:8px">
+              <div class="field">
+                <label class="field-label">칩 개수</label>
+                <select id="pdpChipCount">
+                  <option value="2">2개</option>
+                  <option value="3" selected>3개</option>
+                  <option value="4">4개</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="field-label">삽입 방향</label>
+                <select id="pdpPosition">
+                  <option value="afterend" selected>선택자 아래에</option>
+                  <option value="beforebegin">선택자 위에</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           <div class="toggle-row">
             <div class="toggle-row-info">
               <div class="toggle-row-label">스닉픽 말풍선</div>
@@ -1867,7 +1914,12 @@ function applyConfig(data) {
   setVal('heroImage', br.heroImage || '');
   setVal('siteUrl',  br.siteUrl   || '');
   document.getElementById('panelModePush').checked  = (tc.panel?.mode !== 'overlay');
-  document.getElementById('adaptivePdpOn').checked  = (tc.adaptivePdp?.enabled !== false);
+  const pdpEnabled = tc.adaptivePdp?.enabled !== false;
+  document.getElementById('adaptivePdpOn').checked  = pdpEnabled;
+  document.getElementById('pdpSettings').style.display = pdpEnabled ? 'block' : 'none';
+  if (tc.adaptivePdp?.selector)  document.getElementById('pdpSelector').value  = tc.adaptivePdp.selector;
+  if (tc.adaptivePdp?.chipCount) { const el = document.getElementById('pdpChipCount'); if (el) el.value = tc.adaptivePdp.chipCount; }
+  if (tc.adaptivePdp?.position)  { const el = document.getElementById('pdpPosition');  if (el) el.value = tc.adaptivePdp.position; }
   document.getElementById('sneakPeekOn').checked    = (br.sneakPeekText !== null && br.sneakPeekText !== '');
 
   // 칩
@@ -1905,12 +1957,15 @@ async function loadMetrics() {
     document.getElementById('m-productclick').textContent    = fmt(t.product_click);
     document.getElementById('m-cartadd').textContent         = fmt(t.cart_add);
     document.getElementById('m-purchase').textContent        = fmt(t.purchase);
+    document.getElementById('m-pdpclick').textContent        = fmt(t.pdp_chip_click);
 
+    const pdpr = t.impression ? pct(t.pdp_chip_click, t.impression) : '—';
     const cvr  = t.impression ? pct(t.chat_start, t.impression) : '—';
     const pcr  = t.chat_start ? pct(t.product_click, t.chat_start) : '—';
     const car  = t.product_click ? pct(t.cart_add, t.product_click) : '—';
     const pur  = t.cart_add ? pct(t.purchase, t.cart_add) : '—';
 
+    document.getElementById('m-pdpclick-rate').innerHTML     = `노출 대비 <span class="up">${pdpr}</span>`;
     document.getElementById('m-chatstart-rate').innerHTML    = `시작률 <span class="up">${cvr}</span>`;
     document.getElementById('m-productclick-rate').innerHTML = `클릭률 <span class="up">${pcr}</span>`;
     document.getElementById('m-cartadd-rate').innerHTML      = `추가율 <span class="up">${car}</span>`;
@@ -1918,10 +1973,12 @@ async function loadMetrics() {
 
     // 퍼널
     document.getElementById('f-impression').textContent    = fmt(t.impression);
+    document.getElementById('f-pdpclick').textContent      = fmt(t.pdp_chip_click);
     document.getElementById('f-chatstart').textContent     = fmt(t.chat_start);
     document.getElementById('f-productclick').textContent  = fmt(t.product_click);
     document.getElementById('f-cartadd').textContent       = fmt(t.cart_add);
     document.getElementById('f-purchase').textContent      = fmt(t.purchase);
+    document.getElementById('f-pdpclick-r').textContent    = pdpr;
     document.getElementById('f-chatstart-r').textContent   = cvr;
     document.getElementById('f-productclick-r').textContent = pcr;
     document.getElementById('f-cartadd-r').textContent     = car;
@@ -2131,7 +2188,10 @@ function buildThemeConfig() {
       mode: document.getElementById('panelModePush').checked ? 'push' : 'overlay',
     },
     adaptivePdp: {
-      enabled: document.getElementById('adaptivePdpOn').checked,
+      enabled:   document.getElementById('adaptivePdpOn').checked,
+      selector:  document.getElementById('pdpSelector')?.value.trim() || null,
+      chipCount: parseInt(document.getElementById('pdpChipCount')?.value) || 3,
+      position:  document.getElementById('pdpPosition')?.value || 'afterend',
     },
     branding: {
       ...(existing.branding || {}),
