@@ -477,7 +477,7 @@ app.post('/api/chips', async (req, res) => {
 
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 120 },
+      generationConfig: { maxOutputTokens: 2048 },
     });
 
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
@@ -567,7 +567,7 @@ chips 작성 규칙:
   try {
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 500 },
+      generationConfig: { maxOutputTokens: 4096 },
     });
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
     const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -649,7 +649,7 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
 
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 450 },
+      generationConfig: { maxOutputTokens: 8192 },
     });
 
     const answer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text
@@ -1445,7 +1445,7 @@ Return ONLY this JSON, no markdown, no explanation:
   try {
     const r = await callGemini({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.2, maxOutputTokens: 300, responseMimeType: 'application/json' },
+      generationConfig: { temperature: 0.2, maxOutputTokens: 4096, responseMimeType: 'application/json' },
     });
     const raw = (r.data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
     const jsonMatch = raw.match(/\{[\s\S]*?\}/);
@@ -1507,7 +1507,7 @@ Return ONLY the JSON object, no markdown, no explanation.`;
         ],
       }],
       // responseMimeType 제거 — 이미지 입력과 함께 쓰면 Gemini가 거부하는 케이스 있음
-      generationConfig: { temperature: 0.1, maxOutputTokens: 500 },
+      generationConfig: { temperature: 0.1, maxOutputTokens: 4096 },
     });
     const raw = (r.data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
     console.log('[analyze-logo] raw response:', raw.slice(0, 300));

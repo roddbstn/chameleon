@@ -180,7 +180,7 @@ JSON만 응답하세요.`;
 
   const res = await callGemini({
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { maxOutputTokens: 600 },
+    generationConfig: { maxOutputTokens: 8192 },
   });
 
   const text = res.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
@@ -356,7 +356,7 @@ REASONS:{"1":"첫 번째 상품 핵심 이유 (40자 이내)","2":"두 번째","
 
   const res = await callGemini({
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { maxOutputTokens: 1100 },
+    generationConfig: { maxOutputTokens: 8192 },
   });
 
   return res.data.candidates?.[0]?.content?.parts?.[0]?.text || '죄송해요, 다시 시도해주세요.';
@@ -485,7 +485,7 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
 
     const faqRes = await callGemini({
       contents: [{ parts: [{ text: faqPrompt }] }],
-      generationConfig: { maxOutputTokens: 300 },
+      generationConfig: { maxOutputTokens: 4096 },
     });
     const faqMsg = faqRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '고객센터로 문의해주세요.';
     await logApiCost(mallId, 'faq', 1000, 200);
