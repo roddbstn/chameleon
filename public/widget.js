@@ -1148,23 +1148,9 @@
       '.sticky-header', '.fixed-header',
     ].join(',');
 
-    function applyFixedHeaderWidth(px) {
-      document.querySelectorAll(FIXED_HDR_SEL).forEach(el => {
-        const pos = getComputedStyle(el).position;
-        if (pos === 'fixed' || pos === 'sticky') {
-          el.style.transition = 'max-width 0.32s cubic-bezier(0.4,0,0.2,1)';
-          if (px != null) {
-            // width:100% 헤더: max-width로 우측 패널폭만큼 좁힘 (left:0 기준점 유지)
-            el.style.maxWidth = `calc(100% - ${px}px)`;
-            el.style.width    = '';
-            el.style.right    = '';
-          } else {
-            el.style.maxWidth = '';
-            el.style.width    = '';
-            el.style.right    = '';
-          }
-        }
-      });
+    function applyFixedHeaderWidth(_px) {
+      // 헤더 레이아웃은 건드리지 않음 — 패널이 z-index로 위를 덮음
+      // (width/right 조정 시 내부 요소가 세로 배치되는 부작용 발생)
     }
 
     function openSidebar() {
@@ -1766,7 +1752,7 @@
     }
 
     function setupPdpWelcome(productName, chips, productNo) {
-      if (sessionStorage.getItem(SESSION_KEY)) return; // 기존 대화 있으면 건드리지 않음
+      if (messageLog.length > 0) return; // 로드된 메시지가 있으면 (기존 대화) 건드리지 않음
 
       // 웰컴 타이틀 PDP 전용으로 교체
       const welcomeTitleEl = welcomeEl?.querySelector('.cml-chat-welcome-title');
