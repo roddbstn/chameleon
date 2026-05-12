@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chameleon — 온보딩 & 계약 제안서</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #111111;
+    --ink2: #444444;
+    --ink3: #888888;
+    --accent: #5E4637;
+    --accent2: #A07860;
+    --bg: #FAFAF8;
+    --border: #E8E4E0;
+    --slide-w: 1280px;
+    --slide-h: 720px;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: #1A1714;
+    font-family: 'Noto Sans KR', sans-serif;
+    overflow: hidden;
+  }
+
+  /* ── 슬라이드 뷰포트 ── */
+  #deck {
+    width: var(--slide-w);
+    height: var(--slide-h);
+    position: absolute;
+    top: 50%; left: 50%;
+    transform-origin: center center;
+  }
+
+  .slide {
+    width: var(--slide-w);
+    height: var(--slide-h);
+    position: absolute; inset: 0;
+    background: var(--bg);
+    display: none;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; }
+
+  /* ── 네비게이션 ── */
+  #nav {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 16px; z-index: 100;
+  }
+  .nav-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+    color: #fff; font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.22); }
+  #counter {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px; color: rgba(255,255,255,0.55); letter-spacing: 0.1em;
+    min-width: 60px; text-align: center;
+  }
+
+  /* ════════════════════════════════
+     공통 레이아웃 유틸
+  ════════════════════════════════ */
+  .col { display: flex; flex-direction: column; }
+  .row { display: flex; flex-direction: row; }
+  .flex1 { flex: 1; }
+  .center { align-items: center; justify-content: center; }
+  .gap8  { gap: 8px; }
+  .gap16 { gap: 16px; }
+  .gap24 { gap: 24px; }
+  .gap32 { gap: 32px; }
+  .gap40 { gap: 40px; }
+
+  /* ── 슬라이드 공통 패딩 ── */
+  .pad { padding: 64px 80px; }
+  .pad-sm { padding: 48px 80px; }
+
+  /* ── 태그 ── */
+  .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 14px; border-radius: 999px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tag-accent { background: color-mix(in srgb, var(--accent) 10%, white); color: var(--accent); }
+  .tag-dark   { background: var(--ink); color: #fff; }
+  .tag-light  { background: var(--border); color: var(--ink2); }
+
+  /* ── 제목 스타일 ── */
+  .h-xl {
+    font-size: 72px; font-weight: 900; color: var(--ink);
+    line-height: 1.0; letter-spacing: -0.03em;
+  }
+  .h-lg {
+    font-size: 52px; font-weight: 800; color: var(--ink);
+    line-height: 1.1; letter-spacing: -0.025em;
+  }
+  .h-md {
+    font-size: 36px; font-weight: 700; color: var(--ink);
+    line-height: 1.2; letter-spacing: -0.02em;
+  }
+  .h-sm {
+    font-size: 22px; font-weight: 700; color: var(--ink);
+    line-height: 1.3; letter-spacing: -0.01em;
+  }
+  .body-lg { font-size: 18px; color: var(--ink2); line-height: 1.75; }
+  .body-md { font-size: 15px; color: var(--ink2); line-height: 1.7; }
+  .body-sm { font-size: 13px; color: var(--ink3); line-height: 1.6; }
+  .italic { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .accent-text { color: var(--accent); }
+
+  /* ── 구분선 ── */
+  .divider {
+    width: 48px; height: 3px; border-radius: 2px;
+    background: var(--accent); flex-shrink: 0;
+  }
+  .divider-v {
+    width: 1px; background: var(--border); align-self: stretch;
+  }
+
+  /* ── 카드 ── */
+  .card {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px 28px;
+  }
+  .card-dark {
+    background: var(--ink); border-radius: 16px; padding: 28px;
+  }
+
+  /* ── 번호 배지 ── */
+  .badge-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 16px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .badge-num-lg {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 12%, white);
+    color: var(--accent); font-size: 22px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+
+  /* ── 아이콘 원 ── */
+  .icon-circle {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 10%, white);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 22px;
+  }
+
+  /* ── 강조 블록 ── */
+  .highlight-box {
+    background: color-mix(in srgb, var(--accent) 6%, white);
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, white);
+    border-radius: 12px; padding: 20px 24px;
+  }
+
+  /* ── 타임라인 ── */
+  .timeline-step {
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+  .timeline-line {
+    width: 2px; background: var(--border);
+    margin: 4px 0; flex-shrink: 0; margin-left: 19px;
+    height: 32px;
+  }
+
+  /* ── 체크 아이템 ── */
+  .check-item {
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .check-dot {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 15%, white);
+    border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .check-dot::after {
+    content: '✓'; font-size: 10px; color: var(--accent); font-weight: 700;
+  }
+
+  /* ── 데이터 테이블 ── */
+  .data-row {
+    display: flex; align-items: center; gap: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  .data-row:last-child { border-bottom: none; }
+  .data-label { font-size: 13px; color: var(--ink3); width: 160px; flex-shrink: 0; }
+  .data-value { font-size: 15px; font-weight: 500; color: var(--ink); flex: 1; }
+  .data-note  { font-size: 12px; color: var(--ink3); }
+
+  /* ── 사이드 액센트 바 ── */
+  .side-accent {
+    width: 6px; border-radius: 3px;
+    background: var(--accent); flex-shrink: 0; align-self: stretch;
+  }
+
+  /* ════════════════════════════════
+     슬라이드별 스타일
+  ════════════════════════════════ */
+
+  /* S1: 표지 */
+  #s1 {
+    background: var(--ink);
+    flex-direction: row;
+  }
+  #s1 .left {
+    flex: 1; padding: 80px 72px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  #s1 .right {
+    width: 420px; background: color-mix(in srgb, var(--accent) 18%, black);
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: center; padding: 60px 48px; gap: 32px;
+  }
+  #s1 .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 600;
+    font-size: 28px; color: #fff; letter-spacing: 0.01em;
+  }
+  #s1 .main-title {
+    font-size: 68px; font-weight: 900; color: #fff;
+    line-height: 1.0; letter-spacing: -0.03em;
+  }
+  #s1 .main-sub {
+    font-size: 20px; color: rgba(255,255,255,0.55);
+    line-height: 1.6; font-weight: 300;
+  }
+  #s1 .stat-box {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px; padding: 20px 24px; width: 100%;
+    text-align: center;
+  }
+  #s1 .stat-num {
+    font-size: 42px; font-weight: 900; color: #fff;
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  #s1 .stat-label {
+    font-size: 12px; color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em; margin-top: 6px;
+  }
+
+  /* S2: 문제 인식 */
+  #s2 { flex-direction: column; }
+  .problem-card {
+    flex: 1; padding: 28px 32px;
+    border: 1px solid var(--border); border-radius: 16px;
+    display: flex; flex-direction: column; gap: 12px;
+    background: #fff;
+  }
+  .problem-icon { font-size: 32px; }
+  .problem-pct {
+    font-size: 48px; font-weight: 900; color: var(--ink);
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .problem-pct span { font-size: 22px; font-weight: 500; color: var(--ink3); }
+
+  /* S3: 솔루션 */
+  #s3 { flex-direction: row; }
+  #s3 .left {
+    width: 480px; padding: 64px 60px;
+    background: var(--ink); display: flex; flex-direction: column;
+    justify-content: center; gap: 28px;
+  }
+  #s3 .right {
+    flex: 1; padding: 64px 60px;
+    display: flex; flex-direction: column; justify-content: center; gap: 24px;
+  }
+
+  /* S4: 어떻게 보이나 */
+  #s4 { flex-direction: column; }
+  .widget-mockup {
+    width: 280px; background: #fff;
+    border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden; flex-shrink: 0;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+  }
+  .wm-header {
+    padding: 14px 18px; background: #F0E4D3;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wm-title { font-size: 13px; font-weight: 700; color: var(--accent); }
+  .wm-dot { width: 8px; height: 8px; border-radius: 50%; background: #22C55E; }
+  .wm-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .wm-bubble {
+    background: #F7F5F3; border-radius: 10px; border-bottom-left-radius: 3px;
+    padding: 10px 12px; font-size: 11px; color: #333; line-height: 1.5;
+    border: 1px solid rgba(94,70,55,0.08);
+  }
+  .wm-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .wm-chip {
+    border: 1px solid rgba(94,70,55,0.20); border-radius: 999px;
+    padding: 5px 10px; font-size: 10px; color: var(--accent);
+  }
+  .wm-input {
+    margin: 0 16px 16px; border: 1.5px solid rgba(94,70,55,0.18);
+    border-radius: 12px; padding: 10px 14px; font-size: 11px; color: #999;
+  }
+
+  /* S5: 온보딩 플로우 */
+  #s5 { flex-direction: column; }
+  .flow-step {
+    display: flex; align-items: flex-start; gap: 20px;
+    position: relative;
+  }
+  .flow-num {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 18px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; z-index: 1;
+  }
+  .flow-content { flex: 1; padding-top: 8px; }
+  .flow-connector {
+    width: 2px; height: 36px; background: var(--border);
+    margin-left: 21px;
+  }
+
+  /* S6: 우리가 하는 것 vs 고객사가 하는 것 */
+  #s6 { flex-direction: row; }
+  #s6 .col-left {
+    flex: 1; background: var(--ink); padding: 64px 56px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  #s6 .col-right {
+    flex: 1; background: #fff; padding: 64px 56px;
+    display: flex; flex-direction: column; gap: 24px;
+    border-left: 1px solid var(--border);
+  }
+  .role-item {
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .role-icon-we {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(255,255,255,0.10); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .role-icon-they {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: color-mix(in srgb, var(--accent) 10%, white); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+
+  /* S7: 필요 데이터셋 */
+  #s7 { flex-direction: column; }
+  .data-category {
+    flex: 1; border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; background: #fff;
+  }
+  .data-cat-header {
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .data-cat-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .data-field {
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .field-name { font-size: 13px; font-weight: 600; color: var(--ink); min-width: 120px; }
+  .field-desc { font-size: 12px; color: var(--ink3); }
+  .required-badge {
+    font-size: 10px; font-weight: 600; color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, white);
+    padding: 2px 7px; border-radius: 4px; flex-shrink: 0;
+  }
+  .optional-badge {
+    font-size: 10px; font-weight: 600; color: var(--ink3);
+    background: #F0F0EE; padding: 2px 7px; border-radius: 4px; flex-shrink: 0;
+  }
+
+  /* S8: 타임라인 */
+  #s8 { flex-direction: column; }
+  .timeline-row { display: flex; gap: 16px; }
+  .tl-box {
+    flex: 1; border-radius: 14px; padding: 24px 22px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .tl-day {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tl-title { font-size: 17px; font-weight: 700; line-height: 1.3; }
+  .tl-items { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+  .tl-item { font-size: 12px; line-height: 1.5; padding-left: 12px; position: relative; }
+  .tl-item::before {
+    content: '·'; position: absolute; left: 0;
+    font-size: 16px; line-height: 1.2;
+  }
+
+  /* S9: 계약 구조 */
+  #s9 { flex-direction: column; }
+  .price-card {
+    flex: 1; border-radius: 16px; padding: 28px 26px;
+    display: flex; flex-direction: column; gap: 14px;
+    border: 2px solid var(--border); background: #fff;
+    position: relative;
+  }
+  .price-card.featured {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 4%, white);
+  }
+  .featured-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+    padding: 4px 14px; border-radius: 999px; white-space: nowrap;
+  }
+  .price-tier { font-size: 13px; font-weight: 700; color: var(--ink3); letter-spacing: 0.06em; text-transform: uppercase; }
+  .price-amount { font-size: 36px; font-weight: 900; color: var(--ink); letter-spacing: -0.02em; line-height: 1; }
+  .price-amount span { font-size: 16px; font-weight: 400; color: var(--ink3); }
+  .price-includes { display: flex; flex-direction: column; gap: 7px; }
+  .pi-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink2); }
+  .pi-check { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  /* S10: CTA */
+  #s10 { background: var(--ink); flex-direction: column; }
+  .cta-step {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 24px; border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+  }
+  .cta-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.6);
+    font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+
+  /* ── 슬라이드 하단 페이지 표시 ── */
+  .slide-footer {
+    position: absolute; bottom: 20px; right: 32px;
+    font-size: 11px; color: rgba(0,0,0,0.18); letter-spacing: 0.05em;
+  }
+  .slide-footer-light {
+    position: absolute; bottom: 20px; right: 32px;
+    font-size: 11px; color: rgba(255,255,255,0.18); letter-spacing: 0.05em;
+  }
+  .logo-footer {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 600; font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+  <!-- ══════════════ S1: 표지 ══════════════ -->
+  <div class="slide active" id="s1">
+    <div class="left">
+      <div class="logo">Chameleon</div>
+      <div class="col gap24">
+        <div class="tag tag-accent" style="width:fit-content">Proposal 2026</div>
+        <div class="main-title">AI 쇼핑 어드바이저<br>도입 제안서</div>
+        <div class="main-sub">고객의 탐색 비용을 낮추고<br>구매 확신을 높이는 아gentic 커머스</div>
+      </div>
+      <div class="body-sm" style="color:rgba(255,255,255,0.3)">Confidential · For Client Use Only</div>
+    </div>
+    <div class="right">
+      <div class="stat-box">
+        <div class="stat-num">3.2×</div>
+        <div class="stat-label">AI 채팅 유입 고객의 전환율 배수</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">67%</div>
+        <div class="stat-label">탐색 후 이탈 방문자 비율 (카페24 평균)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">D+7</div>
+        <div class="stat-label">도입 후 라이브까지 걸리는 시간</div>
+      </div>
+    </div>
+    <div class="slide-footer-light"><span class="logo-footer">Chameleon</span> &nbsp;·&nbsp; 1 / 10</div>
+  </div>
+
+  <!-- ══════════════ S2: 문제 인식 ══════════════ -->
+  <div class="slide" id="s2">
+    <div class="col flex1 pad gap32">
+      <div class="col gap12">
+        <div class="tag tag-light" style="width:fit-content">Problem</div>
+        <div class="h-lg">고객은 상품을 찾다가<br><span class="accent-text">지쳐서 떠납니다</span></div>
+      </div>
+      <div class="row gap20 flex1">
+        <div class="problem-card">
+          <div class="problem-icon">🔍</div>
+          <div class="problem-pct">67%<span> 이탈</span></div>
+          <div class="body-md">방문자의 3분의 2는<br>상품을 찾는 과정에서 이탈합니다</div>
+          <div class="body-sm" style="margin-top:auto">탐색 비용이 너무 크기 때문</div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">💬</div>
+          <div class="problem-pct">4.2개<span> 평균</span></div>
+          <div class="body-md">구매 결정 전까지<br>평균 4.2번의 검색을 반복합니다</div>
+          <div class="body-sm" style="margin-top:auto">카테고리·필터·검색창을 오가는 피로</div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">🛒</div>
+          <div class="problem-pct">1.8%<span> 전환</span></div>
+          <div class="body-md">카페24 평균 전환율.<br>98%는 구매 없이 떠납니다</div>
+          <div class="body-sm" style="margin-top:auto">광고비는 쓰는데 전환이 안 됨</div>
+        </div>
+        <div class="problem-card" style="background:color-mix(in srgb,var(--accent) 6%,white); border-color:color-mix(in srgb,var(--accent) 20%,white)">
+          <div class="problem-icon">🤖</div>
+          <div class="problem-pct" style="color:var(--accent)">해결책<span style="color:var(--ink3)"> 있음</span></div>
+          <div class="body-md">고객이 말하면 즉시 찾아주는<br>AI 쇼핑 어드바이저</div>
+          <div class="body-sm" style="margin-top:auto">탐색 → 대화로 패러다임 전환</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="logo-footer" style="color:var(--accent2)">Chameleon</span> &nbsp;·&nbsp; 2 / 10</div>
+  </div>
+
+  <!-- ══════════════ S3: 솔루션 ══════════════ -->
+  <div class="slide" id="s3">
+    <div class="left">
+      <div class="tag tag-dark" style="width:fit-content; background:rgba(255,255,255,0.12); color:#fff">Solution</div>
+      <div class="col gap16" style="margin-top: 28px;">
+        <div style="font-size:48px; font-weight:900; color:#fff; line-height:1.05; letter-spacing:-0.025em">
+          고객의 말 한마디에<br>딱 맞는 상품을<br><span style="color:color-mix(in srgb,var(--accent2) 80%,white)">바로 꺼내드립니다</span>
+        </div>
+        <div style="font-size:15px; color:rgba(255,255,255,0.55); line-height:1.7; margin-top:8px">
+          검색창·카테고리·필터 없이도<br>대화만으로 구매까지 연결
+        </div>
+      </div>
+      <div class="col gap16" style="margin-top:auto">
+        <div style="font-size:12px; color:rgba(255,255,255,0.35); letter-spacing:0.06em; text-transform:uppercase">Powered by</div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap">
+          <div style="padding:6px 14px; border-radius:8px; background:rgba(255,255,255,0.08); font-size:12px; color:rgba(255,255,255,0.6)">Gemini 2.5 Flash</div>
+          <div style="padding:6px 14px; border-radius:8px; background:rgba(255,255,255,0.08); font-size:12px; color:rgba(255,255,255,0.6)">Vector Search</div>
+          <div style="padding:6px 14px; border-radius:8px; background:rgba(255,255,255,0.08); font-size:12px; color:rgba(255,255,255,0.6)">Cafe24 API</div>
+        </div>
+      </div>
+    </div>
+    <div class="right col gap20 center" style="background:#FAFAF8">
+      <div class="col gap16" style="width:100%">
+        <div class="card row gap16" style="align-items:flex-start">
+          <div class="icon-circle">🎯</div>
+          <div class="col gap6">
+            <div class="h-sm">인텐트 3레이어 분석</div>
+            <div class="body-sm">상황(TPO) → 진짜 니즈 → 제약 조건을<br>한 문장에서 자동으로 추론</div>
+          </div>
+        </div>
+        <div class="card row gap16" style="align-items:flex-start">
+          <div class="icon-circle">🧬</div>
+          <div class="col gap6">
+            <div class="h-sm">브랜드 DNA 학습</div>
+            <div class="body-sm">고객사의 톤·타겟·금지어·스타일 코드를<br>AI가 그대로 체화해서 답변</div>
+          </div>
+        </div>
+        <div class="card row gap16" style="align-items:flex-start">
+          <div class="icon-circle">🛍️</div>
+          <div class="col gap6">
+            <div class="h-sm">실시간 상품 매칭</div>
+            <div class="body-sm">전체 상품을 벡터로 인덱싱.<br>대화 흐름에 맞는 상품을 즉시 추출</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="logo-footer" style="color:var(--accent2)">Chameleon</span> &nbsp;·&nbsp; 3 / 10</div>
+  </div>
+
+  <!-- ══════════════ S4: 어떻게 보이나 ══════════════ -->
+  <div class="slide" id="s4">
+    <div class="col flex1 pad-sm gap24">
+      <div class="col gap10">
+        <div class="tag tag-light" style="width:fit-content">Design</div>
+        <div class="h-lg">귀사 브랜드 컬러로<br><span class="accent-text">우리가 직접 세팅합니다</span></div>
+        <div class="body-md" style="max-width:560px">고객사가 UI를 직접 설정하는 게 아닙니다.<br>로고와 브랜드 컬러만 알려주시면 Chameleon이 완성해서 드립니다.</div>
+      </div>
+      <div class="row gap32 flex1" style="align-items:center">
+        <!-- 위젯 목업 1 -->
+        <div class="col gap12 center" style="align-items:center">
+          <div class="widget-mockup">
+            <div class="wm-header">
+              <div class="wm-title" style="color:#C0392B">BRAND A</div>
+              <div class="wm-dot"></div>
+            </div>
+            <div class="wm-body">
+              <div class="wm-bubble">안녕하세요. 어떤 스타일을 찾고 계신가요?</div>
+              <div class="wm-chips">
+                <div class="wm-chip" style="color:#C0392B; border-color:rgba(192,57,43,0.3)">데일리룩</div>
+                <div class="wm-chip" style="color:#C0392B; border-color:rgba(192,57,43,0.3)">소개팅</div>
+              </div>
+            </div>
+            <div class="wm-input">무엇을 도와드릴까요?</div>
+          </div>
+          <div class="body-sm">액센트 컬러만 교체</div>
+        </div>
+        <!-- 화살표 -->
+        <div style="font-size:32px; color:var(--border)">→</div>
+        <!-- 위젯 목업 2 -->
+        <div class="col gap12 center" style="align-items:center">
+          <div class="widget-mockup">
+            <div class="wm-header" style="background:#E8F4F8">
+              <div class="wm-title" style="color:#1A6B8A">BRAND B</div>
+              <div class="wm-dot"></div>
+            </div>
+            <div class="wm-body">
+              <div class="wm-bubble">안녕하세요. 어떤 스타일을 찾고 계신가요?</div>
+              <div class="wm-chips">
+                <div class="wm-chip" style="color:#1A6B8A; border-color:rgba(26,107,138,0.3)">여름 아이템</div>
+                <div class="wm-chip" style="color:#1A6B8A; border-color:rgba(26,107,138,0.3)">선물</div>
+              </div>
+            </div>
+            <div class="wm-input" style="border-color:rgba(26,107,138,0.2)">무엇을 도와드릴까요?</div>
+          </div>
+          <div class="body-sm">구조·레이아웃 동일</div>
+        </div>
+        <!-- 설명 -->
+        <div class="col gap20 flex1" style="padding-left:16px">
+          <div class="divider"></div>
+          <div class="col gap14">
+            <div class="check-item">
+              <div class="check-dot"></div>
+              <div class="body-md"><strong>브랜드 로고</strong> — 헤더에 자동 적용</div>
+            </div>
+            <div class="check-item">
+              <div class="check-dot"></div>
+              <div class="body-md"><strong>액센트 컬러 1개</strong> — 탭·버튼·칩 전체 자동 반영</div>
+            </div>
+            <div class="check-item">
+              <div class="check-dot"></div>
+              <div class="body-md"><strong>스타터 칩 4개</strong> — 브랜드 특성에 맞게 제안</div>
+            </div>
+            <div class="check-item">
+              <div class="check-dot"></div>
+              <div class="body-md"><strong>레이아웃·구조</strong> — Chameleon이 품질 보증</div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <div class="body-sm" style="color:var(--accent)"><strong>고객사가 건드릴 필요 없는 것:</strong><br>폰트 크기, 말풍선 모양, 컴포넌트 위치,<br>반응형 레이아웃, 모바일 최적화</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="logo-footer" style="color:var(--accent2)">Chameleon</span> &nbsp;·&nbsp; 4 / 10</div>
+  </div>
+
+  <!-- ══════════════ S5: 온보딩 플로우 ══════════════ -->
+  <div class="slide" id="s5">
+    <div class="col flex1 pad gap28">
+      <div class="col gap10">
+        <div class="tag tag-light" style="width:fit-content">Onboarding Flow</div>
+        <div class="h-md">계약부터 라이브까지 <span class="accent-text">7일</span></div>
+      </div>
+      <div class="row gap40 flex1">
+        <!-- 왼쪽: 플로우 -->
+        <div class="col flex1 gap0" style="justify-content:center">
+          <div class="flow-step">
+            <div class="flow-num">1</div>
+            <div class="flow-content">
+              <div class="h-sm">미팅 & 계약</div>
+              <div class="body-sm" style="margin-top:4px">도입 목적·KPI 정의 / 계약서 사인</div>
+            </div>
+            <div class="tag tag-light" style="align-self:flex-start; margin-left:auto">D-Day</div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-num">2</div>
+            <div class="flow-content">
+              <div class="h-sm">온보딩 인터뷰 (1시간)</div>
+              <div class="body-sm" style="margin-top:4px">브랜드 DNA 5필드 채우기 / 로고·컬러 수집</div>
+            </div>
+            <div class="tag tag-light" style="align-self:flex-start; margin-left:auto">D+1~2</div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-num">3</div>
+            <div class="flow-content">
+              <div class="h-sm">Chameleon 세팅</div>
+              <div class="body-sm" style="margin-top:4px">상품 임베딩 / AI 에이전트 설정 / 브랜드 스타일 적용</div>
+            </div>
+            <div class="tag tag-light" style="align-self:flex-start; margin-left:auto">D+3~4</div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-num">4</div>
+            <div class="flow-content">
+              <div class="h-sm">고객사 검수 & 피드백</div>
+              <div class="body-sm" style="margin-top:4px">미리보기 링크 공유 / 스타터 칩·톤 미세조정</div>
+            </div>
+            <div class="tag tag-light" style="align-self:flex-start; margin-left:auto">D+5~6</div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-num" style="background:#22C55E">✓</div>
+            <div class="flow-content">
+              <div class="h-sm" style="color:#22C55E">라이브 배포</div>
+              <div class="body-sm" style="margin-top:4px">카페24 스크립트 태그 등록 → 즉시 전 페이지 적용</div>
+            </div>
+            <div class="tag" style="align-self:flex-start; margin-left:auto; background:#DCFCE7; color:#16A34A">D+7</div>
+          </div>
+        </div>
+        <!-- 오른쪽: 필요 준비물 요약 -->
+        <div class="col gap14" style="width:280px; justify-content:center">
+          <div class="h-sm">고객사 준비물</div>
+          <div class="divider"></div>
+          <div class="card col gap12">
+            <div class="data-row" style="padding-top:0">
+              <div class="data-label">로고 파일</div>
+              <div class="data-value">SVG/PNG</div>
+            </div>
+            <div class="data-row">
+              <div class="data-label">브랜드 컬러</div>
+              <div class="data-value">HEX 코드</div>
+            </div>
+            <div class="data-row">
+              <div class="data-label">타겟 고객</div>
+              <div class="data-value">1~2 문장</div>
+            </div>
+            <div class="data-row">
+              <div class="data-label">카페24 몰 ID</div>
+              <div class="data-value">영문 ID</div>
+            </div>
+            <div class="data-row" style="padding-bottom:0">
+              <div class="data-label">관리자 계정</div>
+              <div class="data-value">API 권한용</div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <div class="body-sm" style="color:var(--accent)">상품 데이터는<br><strong>카페24 API로 자동 수집</strong>됩니다.<br>별도 엑셀 제출 불필요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="logo-footer" style="color:var(--accent2)">Chameleon</span> &nbsp;·&nbsp; 5 / 10</div>
+  </div>
+
+  <!-- ══════════════ S6: 역할 분담 ══════════════ -->
+  <div class="slide" id="s6">
+    <div class="col-left">
+      <div class="tag" style="width:fit-content; background:rgba(255,255,255,0.12); color:#fff; margin-bottom:24px">Chameleon 담당</div>
+      <div style="font-size:32px; font-weight:800; color:#fff; line-height:1.2; letter-spacing:-0.02em; margin-bottom:32px">우리가 하는 것</div>
+      <div class="col gap20">
+        <div class="role-item">
+          <div class="role-icon-we">🎨</div>
+          <div class="col gap4">
+            <div style="font-size:15px; font-weight:600; color:#fff">위젯 디자인 완성</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.5)">로고·컬러 적용, 레이아웃 품질 보증</div>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon-we">🧠</div>
+          <div class="col gap4">
+            <div style="font-size:15px; font-weight:600; color:#fff">AI 에이전트 설정</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.5)">브랜드 DNA → 시스템 프롬프트 조립</div>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon-we">📦</div>
+          <div class="col gap4">
+            <div style="font-size:15px; font-weight:600; color:#fff">상품 데이터 임베딩</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.5)">전체 상품 벡터 인덱싱 (자동화)</div>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon-we">🚀</div>
+          <div class="col gap4">
+            <div style="font-size:15px; font-weight:600; color:#fff">카페24 배포</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.5)">스크립트 태그 등록까지 완료</div>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon-we">📊</div>
+          <div class="col gap4">
+            <div style="font-size:15px; font-weight:600; color:#fff">월간 리포트</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.5)">대화 수·전환율·인텐트 인사이트</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-right">
+      <div class="tag tag-accent" style="width:fit-content; margin-bottom:24px">고객사 담당</div>
+      <div class="h-md" style="margin-bottom:32px">고객사가 하는 것</div>
+      <div class="col gap20">
+        <div class="role-item">
+          <div class="role-icon-they">📋</div>
+          <div class="col gap4">
+            <div class="h-sm">온보딩 인터뷰 참여</div>
+            <div class="body-sm">브랜드 DNA 5필드 답변 (1시간)</div>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon-they">🖼️</div>
+          <div class="col gap4">
+            <div class="h-sm">로고 & 컬러 전달</div>
+            <div class="body-sm">SVG/PNG 파일 1개, HEX 코드</div>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon-they">✅</div>
+          <div class="col gap4">
+            <div class="h-sm">미리보기 검수</div>
+            <div class="body-sm">배포 전 최종 확인 & 피드백</div>
+          </div>
+        </div>
+        <div class="role-item">
+          <div class="role-icon-they">🔑</div>
+          <div class="col gap4">
+            <div class="h-sm">카페24 API 권한 부여</div>
+            <div class="body-sm">상품 수집용 관리자 접근</div>
+          </div>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:auto">
+        <div class="body-md" style="color:var(--accent)"><strong>"설정할 게 없습니다."</strong><br>고객사는 브랜드를 알려주시기만 하면<br>나머지는 Chameleon이 처리합니다.</div>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="logo-footer" style="color:var(--accent2)">Chameleon</span> &nbsp;·&nbsp; 6 / 10</div>
+  </div>
+
+  <!-- ══════════════ S7: 온보딩 인터뷰 질문지 ══════════════ -->
+  <div class="slide" id="s7">
+    <div class="col flex1 pad gap24">
+      <div class="col gap10">
+        <div class="tag tag-light" style="width:fit-content">Onboarding Interview</div>
+        <div class="h-md">브랜드 DNA 인터뷰 — <span class="accent-text">5가지 질문</span></div>
+        <div class="body-md">이 답변 하나하나가 AI 에이전트의 성격을 만듭니다</div>
+      </div>
+      <div class="row gap16 flex1">
+        <div class="col gap12 flex1">
+          <div class="card col gap10" style="flex:1">
+            <div class="row gap10" style="align-items:center">
+              <div class="badge-num" style="width:28px;height:28px;font-size:13px">1</div>
+              <div style="font-size:14px; font-weight:700; color:var(--ink)">우리 고객은 누구인가요?</div>
+            </div>
+            <div class="body-sm">→ 나이·성별·라이프스타일·쇼핑 패턴</div>
+            <div class="body-sm" style="color:var(--accent); padding:8px 12px; background:color-mix(in srgb,var(--accent) 6%,white); border-radius:8px; font-style:italic">"20-30대 직장 여성, 출퇴근+주말 겸용<br>실용 패션을 찾는 워킹맘"</div>
+          </div>
+          <div class="card col gap10" style="flex:1">
+            <div class="row gap10" style="align-items:center">
+              <div class="badge-num" style="width:28px;height:28px;font-size:13px">2</div>
+              <div style="font-size:14px; font-weight:700; color:var(--ink)">우리 브랜드의 스타일은?</div>
+            </div>
+            <div class="body-sm">→ 3개 키워드로 표현, 경쟁 브랜드 언급</div>
+            <div class="body-sm" style="color:var(--accent); padding:8px 12px; background:color-mix(in srgb,var(--accent) 6%,white); border-radius:8px; font-style:italic">"미니멀, 클린, 뉴트럴톤.<br>COS보다는 캐주얼하게"</div>
+          </div>
+          <div class="card col gap10" style="flex:1">
+            <div class="row gap10" style="align-items:center">
+              <div class="badge-num" style="width:28px;height:28px;font-size:13px">3</div>
+              <div style="font-size:14px; font-weight:700; color:var(--ink)">주력 가격대는?</div>
+            </div>
+            <div class="body-sm">→ 최소·최대 가격, 주력 포지션</div>
+            <div class="body-sm" style="color:var(--accent); padding:8px 12px; background:color-mix(in srgb,var(--accent) 6%,white); border-radius:8px; font-style:italic">"3~8만원대. 가성비보다는<br>합리적 프리미엄 포지션"</div>
+          </div>
+        </div>
+        <div class="col gap12 flex1">
+          <div class="card col gap10" style="flex:1">
+            <div class="row gap10" style="align-items:center">
+              <div class="badge-num" style="width:28px;height:28px;font-size:13px">4</div>
+              <div style="font-size:14px; font-weight:700; color:var(--ink)">절대 하지 말아야 할 말이 있나요?</div>
+            </div>
+            <div class="body-sm">→ 브랜드 이미지를 해치는 표현, 경쟁사 언급</div>
+            <div class="body-sm" style="color:var(--accent); padding:8px 12px; background:color-mix(in srgb,var(--accent) 6%,white); border-radius:8px; font-style:italic">"럭셔리·명품급 표현 금지.<br>타사 브랜드 직접 비교 금지"</div>
+          </div>
+          <div class="card col gap10" style="flex:1">
+            <div class="row gap10" style="align-items:center">
+              <div class="badge-num" style="width:28px;height:28px;font-size:13px">5</div>
+              <div style="font-size:14px; font-weight:700; color:var(--ink)">고객이 자주 겪는 고민은?</div>
+            </div>
+            <div class="body-sm">→ 반복되는 CS, 구매 망설임 패턴</div>
+            <div class="body-sm" style="color:var(--accent); padding:8px 12px; background:color-mix(in srgb,var(--accent) 6%,white); border-radius:8px; font-style:italic">"팔뚝 노출 걱정이 많음.<br>체형 고민 나오면 커버 기능 먼저 제안"</div>
+          </div>
+          <div class="highlight-box" style="flex:1; display:flex; align-items:center">
+            <div class="body-md" style="color:var(--accent)">이 5개 답변 →<br><strong>AI 에이전트 설정 완료</strong><br><br>추가 기술 지식 불필요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="logo-footer" style="color:var(--accent2)">Chameleon</span> &nbsp;·&nbsp; 7 / 10</div>
+  </div>
+
+  <!-- ══════════════ S8: 타임라인 상세 ══════════════ -->
+  <div class="slide" id="s8">
+    <div class="col flex1 pad gap24">
+      <div class="col gap10">
+        <div class="tag tag-light" style="width:fit-content">Timeline</div>
+        <div class="h-md">D+7 라이브 — <span class="accent-text">단계별 상세</span></div>
+      </div>
+      <div class="col gap10 flex1">
+        <div class="timeline-row">
+          <div class="tl-box" style="background:var(--ink); color:#fff; max-width:280px">
+            <div class="tl-day" style="color:rgba(255,255,255,0.4)">D-Day</div>
+            <div class="tl-title" style="color:#fff">계약 체결</div>
+            <div class="tl-items">
+              <div class="tl-item" style="color:rgba(255,255,255,0.6)">서비스 범위 확정</div>
+              <div class="tl-item" style="color:rgba(255,255,255,0.6)">KPI 목표 설정</div>
+              <div class="tl-item" style="color:rgba(255,255,255,0.6)">계약서 & 첫 달 선납</div>
+            </div>
+          </div>
+          <div class="tl-box" style="background:#fff; border:1px solid var(--border); flex:1">
+            <div class="tl-day" style="color:var(--accent)">D+1 ~ D+2</div>
+            <div class="tl-title">온보딩 인터뷰</div>
+            <div class="tl-items">
+              <div class="tl-item">1시간 화상 미팅</div>
+              <div class="tl-item">브랜드 DNA 5필드 수집</div>
+              <div class="tl-item">로고·컬러·스타터 칩 초안</div>
+              <div class="tl-item">카페24 API 접근 권한 부여</div>
+            </div>
+          </div>
+          <div class="tl-box" style="background:#fff; border:1px solid var(--border); flex:1">
+            <div class="tl-day" style="color:var(--accent)">D+3 ~ D+4</div>
+            <div class="tl-title">Chameleon 세팅</div>
+            <div class="tl-items">
+              <div class="tl-item">전체 상품 자동 수집 & 임베딩</div>
+              <div class="tl-item">AI 에이전트 프롬프트 구성</div>
+              <div class="tl-item">브랜드 컬러·로고 위젯 적용</div>
+              <div class="tl-item">내부 QA 테스트 (20+ 시나리오)</div>
+            </div>
+          </div>
+          <div class="tl-box" style="background:#fff; border:1px solid var(--border); flex:1">
+            <div class="tl-day" style="color:var(--accent)">D+5 ~ D+6</div>
+            <div class="tl-title">검수 & 피드백</div>
+            <div class="tl-items">
+              <div class="tl-item">고객사 전용 미리보기 링크 공유</div>
+              <div class="tl-item">피드백 반영 (톤·칩 미세조정)</div>
+              <div class="tl-item">최종 승인</div>
+            </div>
+          </div>
+          <div class="tl-box" style="background:color-mix(in srgb,#22C55E 10%,white); border:2px solid #22C55E; max-width:180px">
+            <div class="tl-day" style="color:#16A34A">D+7</div>
+            <div class="tl-title" style="color:#16A34A">🚀 라이브</div>
+            <div class="tl-items">
+              <div class="tl-item" style="color:#16A34A">스크립트 태그 등록</div>
+              <div class="tl-item" style="color:#16A34A">전 페이지 즉시 적용</div>
+              <div class="tl-item" style="color:#16A34A">모니터링 시작</div>
+            </div>
+          </div>
+        </div>
+        <div class="row gap16" style="margin-top:8px">
+          <div class="highlight-box flex1">
+            <div class="row gap10" style="align-items:center">
+              <div style="font-size:24px">📊</div>
+              <div>
+                <div class="h-sm" style="font-size:15px">D+30: 첫 성과 리포트</div>
+                <div class="body-sm">대화 수, 전환율 변화, 인기 인텐트 키워드, 개선 제안</div>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box flex1">
+            <div class="row gap10" style="align-items:center">
+              <div style="font-size:24px">🔄</div>
+              <div>
+                <div class="h-sm" style="font-size:15px">매월: 상품 데이터 자동 갱신</div>
+                <div class="body-sm">신상품 추가·단종 반영 자동화. 별도 요청 불필요</div>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box flex1">
+            <div class="row gap10" style="align-items:center">
+              <div style="font-size:24px">💬</div>
+              <div>
+                <div class="h-sm" style="font-size:15px">전담 슬랙 채널</div>
+                <div class="body-sm">운영 중 문의·개선 요청 24시간 이내 응답</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="logo-footer" style="color:var(--accent2)">Chameleon</span> &nbsp;·&nbsp; 8 / 10</div>
+  </div>
+
+  <!-- ══════════════ S9: 계약 구조 ══════════════ -->
+  <div class="slide" id="s9">
+    <div class="col flex1 pad gap24">
+      <div class="col gap10">
+        <div class="tag tag-light" style="width:fit-content">Pricing</div>
+        <div class="h-md">심플한 <span class="accent-text">월 구독 구조</span></div>
+        <div class="body-md">초기 세팅비 + 월 구독. 계약 기간에 따라 할인</div>
+      </div>
+      <div class="row gap20 flex1" style="align-items:center">
+        <div class="price-card">
+          <div class="price-tier">Starter</div>
+          <div class="price-amount">별도 협의<span></span></div>
+          <div class="body-sm">소규모 쇼핑몰 (상품 500개 이하)</div>
+          <div class="price-includes">
+            <div class="pi-item"><div class="pi-check">✓</div>위젯 기본 세팅</div>
+            <div class="pi-item"><div class="pi-check">✓</div>AI 에이전트 1종</div>
+            <div class="pi-item"><div class="pi-check">✓</div>월간 리포트</div>
+            <div class="pi-item"><div class="pi-check">✓</div>이메일 지원</div>
+          </div>
+        </div>
+        <div class="price-card featured">
+          <div class="featured-badge">추천</div>
+          <div class="price-tier" style="color:var(--accent)">Growth</div>
+          <div class="price-amount" style="color:var(--accent)">별도 협의<span></span></div>
+          <div class="body-sm">성장 단계 쇼핑몰 (상품 500~3,000개)</div>
+          <div class="price-includes">
+            <div class="pi-item"><div class="pi-check">✓</div>전체 세팅 + 브랜드 DNA 인터뷰</div>
+            <div class="pi-item"><div class="pi-check">✓</div>AI 에이전트 커스터마이징</div>
+            <div class="pi-item"><div class="pi-check">✓</div>월간 인텐트 인사이트 리포트</div>
+            <div class="pi-item"><div class="pi-check">✓</div>전담 슬랙 채널</div>
+            <div class="pi-item"><div class="pi-check">✓</div>월 1회 전략 미팅</div>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Enterprise</div>
+          <div class="price-amount">맞춤 협의<span></span></div>
+          <div class="body-sm">대형 쇼핑몰 또는 멀티몰 운영</div>
+          <div class="price-includes">
+            <div class="pi-item"><div class="pi-check">✓</div>Growth 플랜 전체 포함</div>
+            <div class="pi-item"><div class="pi-check">✓</div>멀티몰 동시 운영</div>
+            <div class="pi-item"><div class="pi-check">✓</div>커스텀 AI 모드 개발</div>
+            <div class="pi-item"><div class="pi-check">✓</div>전용 서버 분리 가능</div>
+            <div class="pi-item"><div class="pi-check">✓</div>SLA 보장</div>
+          </div>
+        </div>
+      </div>
+      <div class="row gap16">
+        <div class="card row gap14 flex1" style="padding:16px 20px; align-items:center">
+          <div style="font-size:20px">📦</div>
+          <div class="col gap2">
+            <div style="font-size:13px; font-weight:700; color:var(--ink)">초기 세팅비</div>
+            <div class="body-sm">상품 임베딩·AI 세팅·브랜드 적용 포함. 계약 시 1회</div>
+          </div>
+        </div>
+        <div class="card row gap14 flex1" style="padding:16px 20px; align-items:center">
+          <div style="font-size:20px">📅</div>
+          <div class="col gap2">
+            <div style="font-size:13px; font-weight:700; color:var(--ink)">6개월 약정 시 할인</div>
+            <div class="body-sm">12개월 약정 추가 할인. 월 선납 방식</div>
+          </div>
+        </div>
+        <div class="card row gap14 flex1" style="padding:16px 20px; align-items:center">
+          <div style="font-size:20px">🔓</div>
+          <div class="col gap2">
+            <div style="font-size:13px; font-weight:700; color:var(--ink)">해지 정책</div>
+            <div class="body-sm">약정 종료 후 1개월 전 통보. 위약금 없음</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer"><span class="logo-footer" style="color:var(--accent2)">Chameleon</span> &nbsp;·&nbsp; 9 / 10</div>
+  </div>
+
+  <!-- ══════════════ S10: 다음 단계 ══════════════ -->
+  <div class="slide" id="s10">
+    <div class="col flex1 pad center" style="align-items:flex-start; gap:40px">
+      <div class="col gap16">
+        <div class="tag" style="width:fit-content; background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.7)">Next Step</div>
+        <div style="font-size:56px; font-weight:900; color:#fff; line-height:1.0; letter-spacing:-0.025em">
+          지금 바로<br>시작할 수 있습니다
+        </div>
+        <div style="font-size:18px; color:rgba(255,255,255,0.5); line-height:1.6; max-width:520px">
+          미팅 이후 7일이면 고객이 실제로 사용할 수 있습니다.<br>
+          다음 3단계만 진행하시면 됩니다.
+        </div>
+      </div>
+      <div class="col gap12" style="width:100%; max-width:560px">
+        <div class="cta-step">
+          <div class="cta-num">1</div>
+          <div class="col gap3">
+            <div style="font-size:16px; font-weight:700; color:#fff">계약 의향 확인</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.45)">오늘 미팅 후 → 계약서 검토 (2일 이내)</div>
+          </div>
+        </div>
+        <div class="cta-step">
+          <div class="cta-num">2</div>
+          <div class="col gap3">
+            <div style="font-size:16px; font-weight:700; color:#fff">온보딩 인터뷰 일정 잡기</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.45)">1시간 화상 미팅 — 브랜드 DNA 수집</div>
+          </div>
+        </div>
+        <div class="cta-step">
+          <div class="cta-num">3</div>
+          <div class="col gap3">
+            <div style="font-size:16px; font-weight:700; color:#fff">카페24 API 권한 부여</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.45)">관리자 초대 1건 — 이후 모든 세팅은 Chameleon이</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:auto; display:flex; align-items:center; gap:24px">
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:600; font-size:32px; color:#fff">Chameleon</div>
+        <div style="width:1px; height:32px; background:rgba(255,255,255,0.15)"></div>
+        <div style="font-size:13px; color:rgba(255,255,255,0.35); line-height:1.6">고객의 탐색 비용을 낮추고<br>구매 확신을 높이는 AI 커머스</div>
+      </div>
+    </div>
+    <div class="slide-footer-light"><span class="logo-footer">Chameleon</span> &nbsp;·&nbsp; 10 / 10</div>
+  </div>
+
+</div>
+
+<!-- 네비게이션 -->
+<div id="nav">
+  <button class="nav-btn" id="btn-prev">←</button>
+  <div id="counter">1 / 10</div>
+  <button class="nav-btn" id="btn-next">→</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total  = slides.length;
+  let current  = 0;
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    document.getElementById('counter').textContent = `${current + 1} / ${total}`;
+  }
+
+  document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                     goTo(current - 1);
+  });
+
+  // 뷰포트에 맞게 스케일 조정
+  function resize() {
+    const deck = document.getElementById('deck');
+    const sw = window.innerWidth;
+    const sh = window.innerHeight - 70; // nav 여백
+    const scaleX = sw / 1280;
+    const scaleY = sh / 720;
+    const scale  = Math.min(scaleX, scaleY);
+    deck.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+</script>
+</body>
+</html>
