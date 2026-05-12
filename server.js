@@ -637,6 +637,7 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
 이 상품에 대한 질문에 직접 답변해 드리세요. 다른 상품을 추천하거나 "어떤 상황에 입으실 건가요?" 같은 역질문은 절대 하지 마세요.
 
 규칙:
+- 인사말 없이 바로 핵심 답변으로 시작할 것 — '안녕하세요', '고객님', '보고 계신' 같은 도입부 금지
 - 반드시 이 상품에 대해서만 답변할 것 — 다른 상품 추천 절대 금지
 - 상품 정보를 근거로 구체적으로 답변할 것
 - 존댓말 사용: "~해요", "~거예요", "~답니다" (부드럽고 자연스럽게)
@@ -648,7 +649,7 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
 
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 300 },
+      generationConfig: { maxOutputTokens: 450 },
     });
 
     const answer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text

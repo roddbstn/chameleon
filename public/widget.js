@@ -1152,11 +1152,17 @@
       document.querySelectorAll(FIXED_HDR_SEL).forEach(el => {
         const pos = getComputedStyle(el).position;
         if (pos === 'fixed' || pos === 'sticky') {
-          // right만 조정 — width/maxWidth 건드리지 않아 왼쪽 기준점 유지
-          el.style.transition = 'right 0.32s cubic-bezier(0.4,0,0.2,1)';
-          el.style.right    = px != null ? `${px}px` : '';
-          el.style.width    = '';
-          el.style.maxWidth = '';
+          el.style.transition = 'max-width 0.32s cubic-bezier(0.4,0,0.2,1)';
+          if (px != null) {
+            // width:100% 헤더: max-width로 우측 패널폭만큼 좁힘 (left:0 기준점 유지)
+            el.style.maxWidth = `calc(100% - ${px}px)`;
+            el.style.width    = '';
+            el.style.right    = '';
+          } else {
+            el.style.maxWidth = '';
+            el.style.width    = '';
+            el.style.right    = '';
+          }
         }
       });
     }
@@ -1657,8 +1663,13 @@
     panel.querySelector('#cml-welcome-chips').addEventListener('click', e => {
       const chip = e.target.closest('.cml-welcome-chip');
       if (!chip) return;
-      track('chip_click', { chipLabel: chip.dataset.q });
-      sendChat(chip.dataset.q);
+      track('chip_click', { chipLabel: chip.dataset.q, productNo: chip.dataset.pid || null });
+      if (chip.dataset.pid) {
+        openSidebar();
+        setTimeout(() => sendProductQA(chip.dataset.q, chip.dataset.pid, chip.dataset.pname), 100);
+      } else {
+        sendChat(chip.dataset.q);
+      }
     });
 
     // ── 상품 특정 Q&A (PDP 칩 클릭 전용) ──
@@ -1738,19 +1749,51 @@
 
     // ── PDP 웰컴 UX ──
     // 세션 없을 때만: 인사말 변경 + 칩 자동스크롤 + 사이드바 자동 오픈
+    // ── PDP 칩 개인화 선택 ──
+    // allChips에서 count개를 랜덤 선택, 이미 대화한 주제는 뒤로 밀기
+    function selectPdpChips(allChips, count) {
+      if (!allChips?.length) return [];
+      const historyText = messageLog.map(m => m.text || '').join(' ').toLowerCase();
+      const scored = allChips.map(c => ({
+        c,
+        // 이미 비슷한 단어가 대화에 나왔다면 우선순위 낮춤
+        score: historyText.includes(c.slice(0, 5).toLowerCase())
+          ? Math.random() * 0.35
+          : 0.4 + Math.random() * 0.6,
+      }));
+      scored.sort((a, b) => b.score - a.score);
+      return scored.slice(0, count).map(s => s.c);
+    }
+
     function setupPdpWelcome(productName, chips, productNo) {
       if (sessionStorage.getItem(SESSION_KEY)) return; // 기존 대화 있으면 건드리지 않음
 
-      // 웰컴 화면의 타이틀을 PDP 전용으로 변경
+      // 웰컴 타이틀 PDP 전용으로 교체
       const welcomeTitleEl = welcomeEl?.querySelector('.cml-chat-welcome-title');
       if (welcomeTitleEl) {
         welcomeTitleEl.innerHTML = `지금 <strong>${productName}</strong>에 대해<br>무엇이든 물어보세요.`;
       }
 
-      // PDP 웰컴 칩 트레이 구성
+      // 웰컴 바디 텍스트 교체
+      const welcomeBodyEl = welcomeEl?.querySelector('.cml-chat-welcome-body');
+      if (welcomeBodyEl) {
+        welcomeBodyEl.textContent = '아래 질문을 클릭하거나 직접 입력해보세요';
+      }
+
+      const chipPool = chips?.length ? chips : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '관리 방법이 어떻게 되나요?'];
+
+      // 웰컴 칩을 상품 특화 칩으로 교체 (이력 기반 개인화)
+      const welcomeChipsEl = panel.querySelector('#cml-welcome-chips');
+      if (welcomeChipsEl) {
+        const selected = selectPdpChips(chipPool, 4);
+        welcomeChipsEl.innerHTML = selected.map(c =>
+          `<button class="cml-welcome-chip" data-q="${c}" data-pid="${productNo}" data-pname="${productName}">${c}</button>`
+        ).join('');
+      }
+
+      // PDP 웰컴 칩 트레이 구성 (입력창 아래 자동 스크롤)
       const tray = panel.querySelector('#cml-pdp-welcome-tray');
       const scroll = panel.querySelector('#cml-pdp-welcome-scroll');
-      const chipPool = chips?.length ? chips : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '관리 방법이 어떻게 되나요?'];
       // 칩 2벌 이어붙여 무한 스크롤처럼 보이게
       const doubled = [...chipPool, ...chipPool];
       scroll.innerHTML = doubled.map(c =>
