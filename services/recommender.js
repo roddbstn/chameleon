@@ -492,6 +492,7 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
     await logApiCost(mallId, 'faq', 1000, 200);
     Promise.resolve(supabase.from('chat_logs').insert({
       store_id: mallId, query, result_type: 'faq', product_count: 0,
+      intent_keywords: intent.intent_keywords || [],
       session_id: context.sessionId || null, page_url: context.pageUrl || null, persona: context.persona || null,
     })).catch(() => {});
     return { type: 'faq', message: faqMsg, products: [], intent };
@@ -513,6 +514,7 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
 
     Promise.resolve(supabase.from('chat_logs').insert({
       store_id: mallId, query, result_type: 'discovery',
+      intent_keywords: intent.intent_keywords || [],
       product_count: recommended.length, product_ids: recommended.map(p => String(p.product_id)),
       session_id: context.sessionId || null, page_url: context.pageUrl || null, persona: context.persona || null,
     })).catch(() => {});
@@ -586,8 +588,9 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
   Promise.resolve(supabase.from('chat_logs').insert({
     store_id:         mallId,
     query,
-    intent_situation: intent.situation || null,
-    intent_needs:     intent.needs     || null,
+    intent_situation: intent.situation     || null,
+    intent_needs:     intent.needs         || null,
+    intent_keywords:  intent.intent_keywords || [],
     result_type:      mode === 'pdp_context' ? 'pdp_context' :
                       mode === 'after_cart'  ? 'after_cart'  : 'recommendation',
     product_count:    recommended.length,

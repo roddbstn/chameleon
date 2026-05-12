@@ -1051,10 +1051,6 @@ select {
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2Z"/></svg>
         에이전트
       </button>
-      <button class="nav-item" data-section="widget">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-        위젯 외관
-      </button>
       <button class="nav-item" data-section="conversations">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         대화 기록
@@ -1183,8 +1179,8 @@ select {
       <!-- 왼쪽: 설정 폼 -->
       <div class="agent-settings-col">
         <div class="page-header">
-          <h1>에이전트 설정</h1>
-          <p>AI 어시스턴트의 이름, 말투, 환영 메시지를 설정합니다. 오른쪽에서 실시간으로 확인하세요.</p>
+          <h1>브랜드 & 에이전트 설정</h1>
+          <p>브랜드 정보와 AI 어시스턴트를 설정합니다. 오른쪽에서 실시간으로 확인하세요.</p>
         </div>
 
         <div class="form-section">
@@ -1203,6 +1199,25 @@ select {
                 <option value="expert">전문가체 — 정보 중심, 간결</option>
                 <option value="sensory">감성체 — 분위기·소재 묘사 중심</option>
               </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">브랜딩</div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">브랜드 강조 색상</label>
+              <div class="color-field">
+                <input type="color" id="accentColor" value="#C0392B" oninput="syncColorText('accentColor','accentColorText');updateAgentPreview();updateWidgetPreview()">
+                <input type="text" id="accentColorText" value="#C0392B" maxlength="7" placeholder="#C0392B" oninput="syncColorPicker('accentColorText','accentColor');updateAgentPreview();updateWidgetPreview()">
+              </div>
+              <div class="field-hint">헤더·버튼·탭 강조 색상</div>
+            </div>
+            <div class="field">
+              <label class="field-label">로고 URL</label>
+              <input type="url" id="logoUrl" placeholder="https://your-brand.com/logo.png" oninput="updateAgentPreview();updateWidgetPreview()">
+              <div class="field-hint">위젯 헤더에 표시할 로고. 비워두면 브랜드 이름 표시.</div>
             </div>
           </div>
         </div>
@@ -1300,27 +1315,26 @@ select {
             </div>
             <div class="wdg-close">×</div>
           </div>
-          <!-- 히어로 -->
-          <div class="wdg-hero">
-            <div class="wdg-hero-title" id="agentPrevTitle">안녕하세요! 무엇을 찾고 있으신가요?</div>
-            <div class="wdg-hero-body"  id="agentPrevBody">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
-            <div class="wdg-chips-wrap" id="agentPrevChips">
-              <div class="wdg-chips-track">
-                <div class="wdg-chips-set">
-                  <div class="wdg-chip">선물용으로 찾고 있어요</div>
-                  <div class="wdg-chip">가벼운 아우터 추천해줘</div>
-                  <div class="wdg-chip">여름 데일리룩</div>
-                </div>
-                <div class="wdg-chips-set" aria-hidden="true">
-                  <div class="wdg-chip">선물용으로 찾고 있어요</div>
-                  <div class="wdg-chip">가벼운 아우터 추천해줘</div>
-                  <div class="wdg-chip">여름 데일리룩</div>
-                </div>
+          <!-- 메시지 영역: 인사 말풍선 -->
+          <div class="wdg-messages" style="flex:1;">
+            <div class="wdg-bubble ai" id="agentPrevTitle">안녕하세요! 무엇을 찾고 있으신가요?</div>
+            <div class="wdg-bubble ai" id="agentPrevBody" style="margin-top:2px;">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
+          </div>
+          <!-- 스타터 칩 (스크롤) -->
+          <div class="wdg-chips-wrap" id="agentPrevChips" style="padding:8px 0;">
+            <div class="wdg-chips-track">
+              <div class="wdg-chips-set">
+                <div class="wdg-chip">선물용으로 찾고 있어요</div>
+                <div class="wdg-chip">가벼운 아우터 추천해줘</div>
+                <div class="wdg-chip">여름 데일리룩</div>
+              </div>
+              <div class="wdg-chips-set" aria-hidden="true">
+                <div class="wdg-chip">선물용으로 찾고 있어요</div>
+                <div class="wdg-chip">가벼운 아우터 추천해줘</div>
+                <div class="wdg-chip">여름 데일리룩</div>
               </div>
             </div>
           </div>
-          <!-- 빈 메시지 영역 (초기 상태) -->
-          <div class="wdg-messages" style="flex:1;"></div>
           <!-- 입력창 -->
           <div class="wdg-input-bar">
             <div class="wdg-input-placeholder">궁금한 점을 물어보세요</div>
@@ -1375,13 +1389,6 @@ select {
           <div class="form-section-title">색상</div>
           <div class="form-section-subtitle">기본</div>
           <div class="field-row">
-            <div class="field">
-              <label class="field-label">강조 색상</label>
-              <div class="color-field">
-                <input type="color" id="accentColor" value="#C0392B" oninput="syncColorText('accentColor','accentColorText');updateWidgetPreview()">
-                <input type="text" id="accentColorText" value="#C0392B" maxlength="7" placeholder="#C0392B" oninput="syncColorPicker('accentColorText','accentColor');updateWidgetPreview()">
-              </div>
-            </div>
             <div class="field">
               <label class="field-label">패널 배경</label>
               <div class="color-field">
@@ -1448,15 +1455,6 @@ select {
                 <input type="text" id="aiBubbleTextText" value="#333333" maxlength="7" placeholder="#333333" oninput="syncColorPicker('aiBubbleTextText','aiBubbleText');updateWidgetPreview()">
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-title">브랜딩</div>
-          <div class="field">
-            <label class="field-label">로고 URL</label>
-            <input type="url" id="logoUrl" placeholder="https://your-brand.com/logo.png" oninput="updateWidgetPreview()">
-            <div class="field-hint">위젯 헤더에 표시할 로고 이미지 URL. 비워두면 브랜드 이름 표시.</div>
           </div>
         </div>
 
@@ -1547,33 +1545,31 @@ select {
                 <div class="wdg-header-left">
                   <div class="wdg-header-dot"></div>
                   <div id="wdg-logo-wrap"><div class="wdg-header-logo-dot"></div></div>
+                  <div class="wdg-header-title" id="wdg-prev-name">AI 쇼핑 도우미</div>
                 </div>
                 <div class="wdg-close">×</div>
               </div>
-              <!-- 히어로 -->
-              <div class="wdg-hero">
-                <div class="wdg-hero-title" id="wdg-prev-title">안녕하세요! 무엇을 찾고 있으신가요?</div>
-                <div class="wdg-hero-body" id="wdg-prev-body">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
-                <div class="wdg-chips-wrap" id="wdg-prev-chips">
-                  <div class="wdg-chips-track">
-                    <div class="wdg-chips-set">
-                      <div class="wdg-chip">선물용으로 찾고 있어요</div>
-                      <div class="wdg-chip">가벼운 아우터 추천해줘</div>
-                      <div class="wdg-chip">여름 데일리룩</div>
-                    </div>
-                    <div class="wdg-chips-set" aria-hidden="true">
-                      <div class="wdg-chip">선물용으로 찾고 있어요</div>
-                      <div class="wdg-chip">가벼운 아우터 추천해줘</div>
-                      <div class="wdg-chip">여름 데일리룩</div>
-                    </div>
+              <!-- 메시지 영역: 인사 + 대화 예시 -->
+              <div class="wdg-messages">
+                <div class="wdg-bubble ai" id="wdg-prev-title">안녕하세요! 무엇을 찾고 있으신가요?</div>
+                <div class="wdg-bubble ai" id="wdg-prev-body" style="margin-top:2px;">상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요</div>
+                <div class="wdg-bubble user">여름 린넨 원피스 추천해줘</div>
+                <div class="wdg-bubble ai">시원하게 입을 수 있는 린넨 소재 원피스를 찾아드릴게요!</div>
+              </div>
+              <!-- 스타터 칩 (스크롤) -->
+              <div class="wdg-chips-wrap" id="wdg-prev-chips" style="padding:8px 0;">
+                <div class="wdg-chips-track">
+                  <div class="wdg-chips-set">
+                    <div class="wdg-chip">선물용으로 찾고 있어요</div>
+                    <div class="wdg-chip">가벼운 아우터 추천해줘</div>
+                    <div class="wdg-chip">여름 데일리룩</div>
+                  </div>
+                  <div class="wdg-chips-set" aria-hidden="true">
+                    <div class="wdg-chip">선물용으로 찾고 있어요</div>
+                    <div class="wdg-chip">가벼운 아우터 추천해줘</div>
+                    <div class="wdg-chip">여름 데일리룩</div>
                   </div>
                 </div>
-              </div>
-              <!-- 메시지 -->
-              <div class="wdg-messages">
-                <div class="wdg-bubble ai">소재가 면 100%라서 여름에도 시원하게 입을 수 있어요.</div>
-                <div class="wdg-bubble user">세탁은 어떻게 해요?</div>
-                <div class="wdg-bubble ai">찬물 단독 세탁을 권장해요. 드라이 클리닝도 가능합니다.</div>
               </div>
               <!-- 입력창 -->
               <div class="wdg-input-bar">
@@ -2365,8 +2361,10 @@ function updateWidgetPreview() {
   }
 
   // ── 텍스트 ──
+  const nameEl  = document.getElementById('wdg-prev-name');
   const titleEl = document.getElementById('wdg-prev-title');
   const bodyEl  = document.getElementById('wdg-prev-body');
+  if (nameEl)  nameEl.textContent  = document.getElementById('agentName')?.value.trim() || 'AI 쇼핑 도우미';
   if (titleEl) titleEl.textContent = title;
   if (bodyEl)  bodyEl.textContent  = body;
 
