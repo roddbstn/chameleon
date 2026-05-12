@@ -237,7 +237,8 @@ function formatProductForPrompt(p, index) {
     /여성|우먼|women|girl|lady/.test(text) ? '여성 타겟' :
     /남성|맨즈|men|guy/.test(text)         ? '남성 타겟' : '남녀공용';
 
-  return `${index + 1}. [${p.styleBucket || ''}] ${p.name}
+  const bucketLabel = p.styleBucket ? `[${p.styleBucket}] ` : '';
+  return `${index + 1}. ${bucketLabel}${p.name}
 가격: ${p.price?.toLocaleString() || '미정'}원 | 성별: ${genderHint}
 소재/핏: ${attrs.material || attrs.fit || '-'}
 설명: ${(p.embed_text || '').slice(0, 350)}

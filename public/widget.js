@@ -372,15 +372,24 @@
     .cml-chat-hero-title { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 4px; }
     .cml-chat-hero-body  { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
 
-    /* ── 웰컴 화면 (초기 상태 — 메시지 없을 때) ── */
+    /* ── 통합 스크롤 영역 (웰컴 + 메시지 함께) ── */
+    .cml-chat-scroll-area {
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column;
+      background: var(--cml-bg, #fff);
+    }
+    .cml-chat-scroll-area::-webkit-scrollbar { width: 4px; }
+    .cml-chat-scroll-area::-webkit-scrollbar-thumb { background: #DDD; border-radius: 4px; }
+
+    /* ── 웰컴 화면 (스크롤 영역 상단에 항상 존재) ── */
     .cml-chat-welcome {
-      flex: 1;
+      flex-shrink: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      padding: 40px 28px 28px;
+      min-height: 100%;
+      padding: 40px 28px 36px;
       text-align: center;
-      background: var(--cml-bg, #fff);
-      overflow: hidden;
+      box-sizing: border-box;
     }
     .cml-chat-welcome-spark {
       font-size: 30px; line-height: 1; margin-bottom: 20px;
@@ -409,12 +418,11 @@
       background: color-mix(in srgb, var(--cml-accent, #5E4637) 5%, white);
     }
 
-    /* ── 메시지 영역 ── */
+    /* ── 메시지 영역 (스크롤 영역 하단) ── */
     .cml-chat-messages {
-      flex: 1; overflow-y: auto;
-      padding: 16px 20px 8px;
+      flex-shrink: 0;
+      padding: 4px 20px 16px;
       display: flex; flex-direction: column; gap: 10px;
-      background: #fff;
     }
     .cml-chat-bubble {
       max-width: 82%;
@@ -438,6 +446,38 @@
       border: 1px solid rgba(94,70,55,0.08);
     }
     .cml-chat-bubble.loading { color: #A08070; font-style: italic; }
+
+    /* ── 스켈레톤 로딩 카드 ── */
+    .cml-skeleton {
+      align-self: flex-start; max-width: 88%;
+      background: var(--cml-ai-bg, #F7F5F3);
+      border: 1px solid rgba(94,70,55,0.08);
+      border-radius: 14px; border-bottom-left-radius: 4px;
+      padding: 14px 18px;
+    }
+    .cml-skeleton-top {
+      display: flex; align-items: center; gap: 9px; margin-bottom: 14px;
+    }
+    .cml-skeleton-spinner {
+      width: 15px; height: 15px; flex-shrink: 0;
+      border: 2.5px solid rgba(0,0,0,0.08);
+      border-top-color: var(--cml-accent, #5E4637);
+      border-radius: 50%;
+      animation: cml-spin 0.75s linear infinite;
+    }
+    @keyframes cml-spin { to { transform: rotate(360deg); } }
+    .cml-skeleton-label { font-size: 12px; color: #999; letter-spacing: 0.01em; }
+    .cml-skeleton-bar {
+      height: 10px; border-radius: 6px;
+      background: rgba(0,0,0,0.07);
+      margin-bottom: 7px;
+      animation: cml-shimmer 1.5s ease-in-out infinite;
+    }
+    .cml-skeleton-bar:last-child { margin-bottom: 0; }
+    @keyframes cml-shimmer {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 0.85; }
+    }
 
 
     /* ── 인라인 추천 상품 카드 ── */
@@ -954,15 +994,16 @@
         </div>
       </div>
       ${heroHtml}
-      <!-- 초기 상태: 중앙 정렬 환영 화면 -->
-      <div class="cml-chat-welcome" id="cml-chat-welcome">
-        <div class="cml-chat-welcome-spark">✦</div>
-        <div class="cml-chat-welcome-title">${welcomeTitle || '안녕하세요! 무엇을 찾고 있으신가요?'}</div>
-        <div class="cml-chat-welcome-body">${welcomeBody || '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요'}</div>
-        <div class="cml-welcome-chips" id="cml-welcome-chips">${welcomeChipsHtml}</div>
+      <!-- 웰컴 + 메시지를 하나의 스크롤 영역에 통합 -->
+      <div class="cml-chat-scroll-area" id="cml-chat-scroll-area">
+        <div class="cml-chat-welcome" id="cml-chat-welcome">
+          <div class="cml-chat-welcome-spark">✦</div>
+          <div class="cml-chat-welcome-title">${welcomeTitle || '안녕하세요! 무엇을 찾고 있으신가요?'}</div>
+          <div class="cml-chat-welcome-body">${welcomeBody || '상품 검색을 위해 질문하거나, 아래의 질문을 골라보세요'}</div>
+          <div class="cml-welcome-chips" id="cml-welcome-chips">${welcomeChipsHtml}</div>
+        </div>
+        <div class="cml-chat-messages" id="cml-chat-messages"></div>
       </div>
-      <!-- 대화 시작 후: 채팅 버블 영역 -->
-      <div class="cml-chat-messages" id="cml-chat-messages" style="display:none;"></div>
       <div class="cml-pdp-welcome-tray" id="cml-pdp-welcome-tray" style="display:none">
         <div class="cml-pdp-welcome-scroll" id="cml-pdp-welcome-scroll"></div>
       </div>
@@ -987,11 +1028,14 @@
     const refreshBtn = panel.querySelector('#cml-chat-refresh');
     const welcomeEl  = panel.querySelector('#cml-chat-welcome');
     const messagesEl = panel.querySelector('#cml-chat-messages');
+    const scrollArea = panel.querySelector('#cml-chat-scroll-area');
     const inputEl    = panel.querySelector('#cml-chat-input');
     const sendBtn    = panel.querySelector('#cml-chat-send');
 
-    function showWelcome()  { welcomeEl.style.display = ''; messagesEl.style.display = 'none'; }
-    function hideWelcome()  { welcomeEl.style.display = 'none'; messagesEl.style.display = ''; }
+    function scrollToBottom() { scrollArea.scrollTop = scrollArea.scrollHeight; }
+    // 웰컴 화면은 항상 스크롤 영역 상단에 존재 — hide/show 대신 스크롤로 전환
+    function showWelcome()  { messagesEl.innerHTML = ''; scrollArea.scrollTop = 0; }
+    function hideWelcome()  { /* no-op: welcome stays visible at top */ }
 
     const chatHistory = [];
     let lastProducts  = [];
@@ -1077,7 +1121,7 @@
           else div.textContent = m.text;
           messagesEl.appendChild(div);
         });
-        messagesEl.scrollTop = messagesEl.scrollHeight;
+        scrollArea.scrollTop = scrollArea.scrollHeight;
         (history || []).forEach(h => chatHistory.push(h));
         messageLog.push(...(messages || []));
       } catch (e) {}
@@ -1186,13 +1230,43 @@
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     }
 
+    // ── 쿼리 내용에 따른 로딩 텍스트 ──
+    function getLoadingText(query) {
+      const q = (query || '').toLowerCase();
+      if (/선물|gift/.test(q))                      return '선물에 딱 맞는 상품을 찾고 있어요...';
+      if (/사이즈|핏|크게|작게|키|몸무게/.test(q))      return '사이즈 정보를 분석하고 있어요...';
+      if (/코디|어울|매치|세트|함께|같이/.test(q))      return '어울리는 코디를 찾고 있어요...';
+      if (/배송|교환|반품|환불|정책/.test(q))           return '답변을 준비하고 있어요...';
+      if (/여름|봄|가을|겨울|시즌|계절/.test(q))        return '시즌 아이템을 찾고 있어요...';
+      if (/트렌드|인기|베스트|핫|요즘/.test(q))         return '트렌드 상품을 분석하고 있어요...';
+      if (/소개팅|데이트|파티|결혼식|하객/.test(q))      return '룩을 구성하고 있어요...';
+      return '상품을 찾고 있어요...';
+    }
+
+    function addSkeletonLoader(query) {
+      const el = document.createElement('div');
+      el.className = 'cml-skeleton';
+      el.innerHTML = `
+        <div class="cml-skeleton-top">
+          <div class="cml-skeleton-spinner"></div>
+          <span class="cml-skeleton-label">${getLoadingText(query)}</span>
+        </div>
+        <div class="cml-skeleton-bar" style="width:83%"></div>
+        <div class="cml-skeleton-bar" style="width:64%"></div>
+        <div class="cml-skeleton-bar" style="width:48%"></div>
+      `;
+      messagesEl.appendChild(el);
+      scrollToBottom();
+      return el;
+    }
+
     function addBubble(role, text) {
       const div = document.createElement('div');
       div.className = `cml-chat-bubble ${role}`;
       if (role === 'assistant') div.innerHTML = parseMd(text);
       else div.textContent = text;
       messagesEl.appendChild(div);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+      scrollToBottom();
       if (role === 'user' || role === 'assistant') {
         messageLog.push({ role, text });
         saveSession(lastProducts);
@@ -1513,7 +1587,7 @@
           productCounter += segProds.length;
           inlineRendered += segProds.length;
           messagesEl.appendChild(container);
-          messagesEl.scrollTop = messagesEl.scrollHeight;
+          scrollToBottom();
         }
       });
 
@@ -1522,16 +1596,15 @@
         console.log('[Chameleon] No inline cards matched — rendering all products after text');
         const container = renderMsgProductCards(products, 0);
         messagesEl.appendChild(container);
-        messagesEl.scrollTop = messagesEl.scrollHeight;
+        scrollToBottom();
       }
     }
 
     // ── 채팅 전송 ──
     async function sendChat(query) {
       if (!query.trim()) return;
-      hideWelcome();
       addBubble('user', query);
-      const loadingBubble = addBubble('assistant loading', '추천을 찾고 있어요...');
+      const loadingBubble = addSkeletonLoader(query);
       sendBtn.disabled = true;
       try {
         const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
@@ -1578,9 +1651,8 @@
     // ── 상품 특정 Q&A (PDP 칩 클릭 전용) ──
     async function sendProductQA(query, productNo, productName) {
       if (!query.trim()) return;
-      hideWelcome();
       addBubble('user', query);
-      const loadingBubble = addBubble('assistant loading', '이 상품에 대해 알아보는 중...');
+      const loadingBubble = addSkeletonLoader('이 상품에 대해');
       sendBtn.disabled = true;
       try {
         const res = await fetch(`${CHAMELEON_SERVER}/api/ask`, {
