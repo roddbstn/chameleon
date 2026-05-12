@@ -2091,23 +2091,32 @@ function updatePreview() {
 
 // ── 저장 ──
 async function saveAgentSettings() {
-  const payload = {
-    mallId,
-    agent_config: {
-      agentName:             document.getElementById('agentName').value,
-      tone:                  document.getElementById('agentTone').value,
-      guidelines:            document.getElementById('agentGuidelines').value,
-      // 브랜드 DNA 필드
-      targetPersona:         document.getElementById('targetPersona')?.value         || '',
-      styleCodes:            document.getElementById('styleCodes')?.value            || '',
-      priceTier:             document.getElementById('priceTier')?.value             || '',
-      seasonFocus:           document.getElementById('seasonFocus')?.value           || '',
-      prohibitedExpressions: document.getElementById('prohibitedExpressions')?.value || '',
-    },
-    theme_config: buildThemeConfig(),
-  };
+  const btn = document.querySelector('[onclick="saveAgentSettings()"]');
+  const origText = btn?.textContent;
+  if (btn) { btn.disabled = true; btn.textContent = '저장 중...'; }
 
-  const ok = await postConfig(payload);
+  let ok = false;
+  try {
+    const payload = {
+      mallId,
+      agent_config: {
+        agentName:             document.getElementById('agentName').value,
+        tone:                  document.getElementById('agentTone').value,
+        guidelines:            document.getElementById('agentGuidelines').value,
+        targetPersona:         document.getElementById('targetPersona')?.value         || '',
+        styleCodes:            document.getElementById('styleCodes')?.value            || '',
+        priceTier:             document.getElementById('priceTier')?.value             || '',
+        seasonFocus:           document.getElementById('seasonFocus')?.value           || '',
+        prohibitedExpressions: document.getElementById('prohibitedExpressions')?.value || '',
+      },
+      theme_config: buildThemeConfig(),
+    };
+    ok = await postConfig(payload);
+  } catch (e) {
+    console.error('[Save] 저장 실패:', e);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = origText; }
+  }
   showStatus('agentSaveStatus', ok);
 }
 
@@ -2146,9 +2155,9 @@ function buildThemeConfig() {
       sneakPeekText: document.getElementById('sneakPeekOn').checked
         ? document.getElementById('sneakPeek').value
         : null,
-      logoUrl:   document.getElementById('logoUrl').value  || null,
+      logoUrl:   document.getElementById('logoUrl')?.value  || null,
       siteUrl:   document.getElementById('siteUrl')?.value.trim() || null,
-      heroImage: document.getElementById('heroImage').value || null,
+      heroImage: document.getElementById('heroImage')?.value || null,
       starterChips: chips.filter(c => c.label.trim()).map(c => ({
         label: c.label.trim(),
         query: c.query.trim() || c.label.trim(),
@@ -2172,10 +2181,13 @@ async function postConfig(payload) {
 
 function showStatus(id, ok) {
   const el = document.getElementById(id);
-  el.style.display = 'inline';
-  el.style.color   = ok ? '#16a34a' : '#dc2626';
-  el.textContent   = ok ? '✓ 저장됨' : '저장 실패';
-  setTimeout(() => { el.style.display = 'none'; }, 2500);
+  if (!el) return;
+  el.style.display    = 'inline';
+  el.style.color      = ok ? '#16a34a' : '#dc2626';
+  el.style.fontWeight = '600';
+  el.textContent      = ok ? '✓ 저장됨' : '✗ 저장 실패 — 콘솔을 확인하세요';
+  clearTimeout(el._hideTimer);
+  el._hideTimer = setTimeout(() => { el.style.display = 'none'; }, 4000);
 }
 
 // ── 동기화 ──

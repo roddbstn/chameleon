@@ -1755,9 +1755,10 @@
     const configPromise = fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)
       .then(r => r.json()).catch(() => null);
 
-    // FAB: 기본값으로 즉시 렌더, config 로드 후 색상 업데이트
-    const fab = renderFab(null);
-    configPromise.then(config => { if (config) fab?.updateConfig(config); });
+    // FAB: config 로드 후 렌더 (브랜딩 텍스트·색상 모두 정확하게)
+    // config 요청은 보통 <200ms이므로 탭 출현 지연이 체감되지 않음
+    let fab = null;
+    configPromise.then(config => { fab = renderFab(config); });
 
     if (isPDP) {
       const signals     = collectSignals();

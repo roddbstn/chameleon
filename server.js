@@ -363,10 +363,16 @@ app.get('/api/config/:mallId', async (req, res) => {
   try {
     const { data } = await supabase.from('shops').select('theme_config').eq('mall_id', mallId).single();
     if (data?.theme_config && Object.keys(data.theme_config).length > 0) {
-      return res.json(data.theme_config);
+      // DB의 theme/branding 우선, hardcoded의 insert/cart 설정 병합
+      const hardcoded = storeConfigs[mallId] || {};
+      return res.json({
+        insert: hardcoded.insert,
+        cart:   hardcoded.cart,
+        ...data.theme_config,
+      });
     }
   } catch {}
-  // 없으면 하드코딩 storeConfigs 폴백
+  // DB에 설정 없으면 하드코딩 storeConfigs 폴백
   res.json(storeConfigs[mallId] || defaultConfig);
 });
 
