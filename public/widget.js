@@ -331,9 +331,9 @@
     .cml-chat-panel.cml-open { transform: translateX(0); }
 
     .cml-chat-header {
-      padding: 18px 24px;
-      background: #F0E4D3;
-      border-bottom: 1px solid rgba(94,70,55,0.12);
+      padding: 16px 20px;
+      background: var(--cml-header-bg, #F0E4D3);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -345,11 +345,11 @@
       width: 8px; height: 8px; border-radius: 50%;
       background: #22C55E; flex-shrink: 0;
     }
-    .cml-chat-header-title { font-size: 16px; font-weight: 700; color: #5E4637; letter-spacing: 0.01em; }
+    .cml-chat-header-title { font-size: 16px; font-weight: 700; color: var(--cml-header-text, #333); letter-spacing: 0.01em; }
     .cml-chat-header-actions { display: flex; align-items: center; gap: 2px; }
     .cml-chat-close,
     .cml-chat-refresh {
-      background: none; border: none; color: #A08070; cursor: pointer;
+      background: none; border: none; color: var(--cml-header-icon, rgba(0,0,0,0.4)); cursor: pointer;
       line-height: 1; padding: 7px; border-radius: 7px;
       transition: color 0.15s, background 0.15s;
       display: flex; align-items: center; justify-content: center;
@@ -357,9 +357,9 @@
     .cml-chat-close { font-size: 18px; }
     .cml-chat-refresh svg { width: 16px; height: 16px; }
     .cml-chat-close:hover,
-    .cml-chat-refresh:hover { color: #5E4637; background: rgba(94,70,55,0.08); }
+    .cml-chat-refresh:hover { color: var(--cml-header-text, #111); background: rgba(0,0,0,0.06); }
 
-    /* ── 히어로 영역 ── */
+    /* ── 히어로 영역 (이미지 배경 있을 때) ── */
     .cml-chat-hero { flex-shrink: 0; position: relative; overflow: hidden; }
     .cml-chat-hero-img { width: 100%; height: 180px; object-fit: cover; display: block; }
     .cml-chat-hero-overlay {
@@ -367,16 +367,45 @@
       background: linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.52));
       display: flex; flex-direction: column; justify-content: flex-end; padding: 20px 24px;
     }
-    .cml-chat-hero-title {
-      font-size: 22px; font-weight: 700; color: #fff;
-      line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 4px;
+    .cml-chat-hero-title { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .cml-chat-hero-body  { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+
+    /* ── 웰컴 화면 (초기 상태 — 메시지 없을 때) ── */
+    .cml-chat-welcome {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 40px 28px 28px;
+      text-align: center;
+      background: var(--cml-bg, #fff);
+      overflow: hidden;
     }
-    .cml-chat-hero-body { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
-    .cml-chat-hero-text-only { padding: 20px 24px 0; flex-shrink: 0; }
-    .cml-chat-hero-text-only .cml-chat-hero-title {
-      font-size: 20px; font-weight: 700; color: #111; margin-bottom: 4px;
+    .cml-chat-welcome-spark {
+      font-size: 30px; line-height: 1; margin-bottom: 20px;
+      color: var(--cml-accent, #5E4637); opacity: 0.35;
     }
-    .cml-chat-hero-text-only .cml-chat-hero-body { font-size: 13px; color: #666; }
+    .cml-chat-welcome-title {
+      font-size: 21px; font-weight: 700; color: #111;
+      line-height: 1.35; letter-spacing: -0.02em; margin-bottom: 10px;
+    }
+    .cml-chat-welcome-body {
+      font-size: 14px; color: #999; line-height: 1.65; margin-bottom: 32px;
+    }
+    .cml-welcome-chips {
+      display: flex; flex-wrap: wrap; gap: 9px; justify-content: center;
+    }
+    .cml-welcome-chip {
+      border: 1.5px solid rgba(0,0,0,0.13); border-radius: 999px;
+      padding: 10px 18px; font-size: 13px; font-weight: 500; color: #333;
+      background: #fff; cursor: pointer; font-family: inherit;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .cml-welcome-chip:hover {
+      border-color: var(--cml-accent, #5E4637);
+      color: var(--cml-accent, #5E4637);
+      background: color-mix(in srgb, var(--cml-accent, #5E4637) 5%, white);
+    }
 
     /* ── 메시지 영역 ── */
     .cml-chat-messages {
@@ -566,27 +595,6 @@
     .cml-chat-send:hover { background: #E8DDD4; }
     .cml-chat-send:disabled { opacity: 0.35; cursor: default; }
 
-    /* ── 스타터 칩 (자동 스크롤 카드) ── */
-    .cml-chat-starter-chips {
-      overflow: hidden; padding: 0 0 14px;
-      -webkit-mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
-      mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
-    }
-    .cml-starter-track {
-      display: flex; width: max-content;
-      animation: cml-chips-scroll 22s linear infinite;
-      gap: 10px;
-    }
-    .cml-chat-starter-chips:hover .cml-starter-track { animation-play-state: paused; }
-    .cml-starter-set { display: flex; gap: 10px; padding-right: 10px; }
-    .cml-chat-starter-chip {
-      border: 1px solid rgba(94,70,55,0.20); border-radius: 14px;
-      padding: 14px 20px; font-size: 13px; font-weight: 500; color: #5E4637;
-      background: #fff; cursor: pointer; font-family: inherit;
-      transition: border-color 0.12s, background 0.12s;
-      white-space: nowrap; flex-shrink: 0;
-    }
-    .cml-chat-starter-chip:hover { border-color: #5E4637; background: rgba(94,70,55,0.05); }
 
     /* ── PDP 웰컴 칩 트레이 (상품 상세 진입 시 자동 표시) ── */
     .cml-pdp-welcome-tray {
@@ -835,25 +843,16 @@
     `;
     shadow.appendChild(tab);
 
-    // ── 히어로 HTML ──
-    let heroHtml = '';
-    if (heroImage) {
-      heroHtml = `
-        <div class="cml-chat-hero">
-          <img class="cml-chat-hero-img" src="${heroImage}" alt="">
-          ${(welcomeTitle || welcomeBody) ? `
-            <div class="cml-chat-hero-overlay">
-              ${welcomeTitle ? `<div class="cml-chat-hero-title">${welcomeTitle}</div>` : ''}
-              ${welcomeBody  ? `<div class="cml-chat-hero-body">${welcomeBody}</div>`   : ''}
-            </div>` : ''}
-        </div>`;
-    } else if (welcomeTitle || welcomeBody) {
-      heroHtml = `
-        <div class="cml-chat-hero-text-only">
-          ${welcomeTitle ? `<div class="cml-chat-hero-title">${welcomeTitle}</div>` : ''}
-          ${welcomeBody  ? `<div class="cml-chat-hero-body">${welcomeBody}</div>`   : ''}
-        </div>`;
-    }
+    // ── 히어로 HTML (이미지 배경 있을 때만) ──
+    const heroHtml = heroImage ? `
+      <div class="cml-chat-hero">
+        <img class="cml-chat-hero-img" src="${heroImage}" alt="">
+        ${(welcomeTitle || welcomeBody) ? `
+          <div class="cml-chat-hero-overlay">
+            ${welcomeTitle ? `<div class="cml-chat-hero-title">${welcomeTitle}</div>` : ''}
+            ${welcomeBody  ? `<div class="cml-chat-hero-body">${welcomeBody}</div>`   : ''}
+          </div>` : ''}
+      </div>` : '';
 
     // ── 헤더 왼쪽 ──
     const headerLeftHtml = logoUrl
@@ -864,6 +863,38 @@
     const panel = document.createElement('div');
     panel.id = 'cml-chat-panel';
     panel.className = 'cml-chat-panel';
+
+    // ── CSS 변수 주입 헬퍼 ──
+    function mixHex(hex, alpha) {
+      if (!/^#[0-9A-Fa-f]{6}$/.test(hex)) return null;
+      const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+      return `rgb(${Math.round(r*alpha+255*(1-alpha))},${Math.round(g*alpha+255*(1-alpha))},${Math.round(b*alpha+255*(1-alpha))})`;
+    }
+    function isDarkHex(hex) {
+      if (!/^#[0-9A-Fa-f]{6}$/.test(hex)) return false;
+      const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+      return (0.299*r+0.587*g+0.114*b)<128;
+    }
+    function applyCssVars(theme) {
+      const t = theme || {};
+      const accent = t.accentColor || '#5E4637';
+      const hdrBg  = mixHex(accent, 0.14) || '#F0E4D3';
+      const dark   = isDarkHex(accent);
+      panel.style.setProperty('--cml-accent',      accent);
+      panel.style.setProperty('--cml-header-bg',   hdrBg);
+      panel.style.setProperty('--cml-header-text',  dark ? '#fff' : '#111');
+      panel.style.setProperty('--cml-header-icon',  dark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.4)');
+      if (t.backgroundColor)  panel.style.setProperty('--cml-bg',          t.backgroundColor);
+      if (t.chipBgColor)      panel.style.setProperty('--cml-chip-bg',     t.chipBgColor);
+      if (t.chipTextColor)    panel.style.setProperty('--cml-chip-text',   t.chipTextColor);
+      if (t.chipBorderColor)  panel.style.setProperty('--cml-chip-border', t.chipBorderColor);
+      if (t.userBubbleBg)     panel.style.setProperty('--cml-user-bg',     t.userBubbleBg);
+      if (t.userBubbleText)   panel.style.setProperty('--cml-user-text',   t.userBubbleText);
+      if (t.aiBubbleBg)       panel.style.setProperty('--cml-ai-bg',       t.aiBubbleBg);
+      if (t.aiBubbleText)     panel.style.setProperty('--cml-ai-text',     t.aiBubbleText);
+    }
+    applyCssVars(config?.theme);
+
     // ── 스타터 칩 (config 또는 기본값) ──
     const defaultChips = [
       { label: '요즘 트렌드', query: '요즘 트렌디한 아이템 뭐 있어요?' },
@@ -872,8 +903,10 @@
       { label: '선물 추천',  query: '친구한테 선물하기 좋은 거 있어요?' },
     ];
     const starterChips = branding.starterChips || defaultChips;
-    const starterChipsHtml = starterChips
-      .map(c => `<button class="cml-chat-starter-chip" data-q="${c.query}">${c.label}</button>`)
+
+    // ── 웰컴 칩 HTML (flex-wrap, 스크롤 없음) ──
+    const welcomeChipsHtml = starterChips
+      .map(c => `<button class="cml-welcome-chip" data-q="${c.query || c.label}">${c.label}</button>`)
       .join('');
 
     panel.innerHTML = `
@@ -891,17 +924,17 @@
         </div>
       </div>
       ${heroHtml}
-      <div class="cml-chat-messages" id="cml-chat-messages">
-        <div class="cml-chat-bubble assistant">안녕하세요. 원하시는 스타일이나 상황을 말씀해 주시면 잘 맞는 아이템을 찾아드릴게요.</div>
+      <!-- 초기 상태: 중앙 정렬 환영 화면 -->
+      <div class="cml-chat-welcome" id="cml-chat-welcome">
+        <div class="cml-chat-welcome-spark">✦</div>
+        <div class="cml-chat-welcome-title">${welcomeTitle || '안녕하세요!'}</div>
+        ${welcomeBody ? `<div class="cml-chat-welcome-body">${welcomeBody}</div>` : ''}
+        <div class="cml-welcome-chips" id="cml-welcome-chips">${welcomeChipsHtml}</div>
       </div>
+      <!-- 대화 시작 후: 채팅 버블 영역 -->
+      <div class="cml-chat-messages" id="cml-chat-messages" style="display:none;"></div>
       <div class="cml-pdp-welcome-tray" id="cml-pdp-welcome-tray" style="display:none">
         <div class="cml-pdp-welcome-scroll" id="cml-pdp-welcome-scroll"></div>
-      </div>
-      <div class="cml-chat-starter-chips" id="cml-chat-starters">
-        <div class="cml-starter-track">
-          <div class="cml-starter-set">${starterChipsHtml}</div>
-          <div class="cml-starter-set" aria-hidden="true">${starterChipsHtml}</div>
-        </div>
       </div>
       <div class="cml-follow-chips-tray" id="cml-follow-chips-tray" style="display:none">
         <div class="cml-follow-chips-scroll" id="cml-follow-chips-scroll"></div>
@@ -922,9 +955,13 @@
 
     const closeBtn   = panel.querySelector('#cml-chat-close');
     const refreshBtn = panel.querySelector('#cml-chat-refresh');
+    const welcomeEl  = panel.querySelector('#cml-chat-welcome');
     const messagesEl = panel.querySelector('#cml-chat-messages');
     const inputEl    = panel.querySelector('#cml-chat-input');
     const sendBtn    = panel.querySelector('#cml-chat-send');
+
+    function showWelcome()  { welcomeEl.style.display = ''; messagesEl.style.display = 'none'; }
+    function hideWelcome()  { welcomeEl.style.display = 'none'; messagesEl.style.display = ''; }
 
     const chatHistory = [];
     let lastProducts  = [];
@@ -999,9 +1036,10 @@
       try {
         const raw = sessionStorage.getItem(SESSION_KEY);
         if (!raw) return;
-        const { messages, history, products } = JSON.parse(raw);
+        const { messages, history } = JSON.parse(raw);
+        if (!(messages?.length)) return;
         messagesEl.innerHTML = '';
-        panel.querySelector('#cml-chat-starters').style.display = 'none';
+        hideWelcome();
         (messages || []).forEach(m => {
           const div = document.createElement('div');
           div.className = `cml-chat-bubble ${m.role}`;
@@ -1105,11 +1143,11 @@
       messageLog.splice(0);
       chatHistory.splice(0);
       lastProducts = [];
-      messagesEl.innerHTML = '<div class="cml-chat-bubble assistant">안녕하세요. 원하시는 스타일이나 상황을 말씀해 주시면 잘 맞는 아이템을 찾아드릴게요.</div>';
-      panel.querySelector('#cml-chat-starters').style.display = '';
+      messagesEl.innerHTML = '';
       followTray.style.display = 'none';
       followScroll.innerHTML = '';
       if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
+      showWelcome();
     });
 
     function parseMd(text) {
@@ -1461,7 +1499,7 @@
     // ── 채팅 전송 ──
     async function sendChat(query) {
       if (!query.trim()) return;
-      panel.querySelector('#cml-chat-starters').style.display = 'none';
+      hideWelcome();
       addBubble('user', query);
       const loadingBubble = addBubble('assistant loading', '추천을 찾고 있어요...');
       sendBtn.disabled = true;
@@ -1500,8 +1538,8 @@
     inputEl.addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.isComposing) { const q = inputEl.value; inputEl.value = ''; sendChat(q); }
     });
-    panel.querySelector('#cml-chat-starters').addEventListener('click', e => {
-      const chip = e.target.closest('.cml-chat-starter-chip');
+    panel.querySelector('#cml-welcome-chips').addEventListener('click', e => {
+      const chip = e.target.closest('.cml-welcome-chip');
       if (!chip) return;
       track('chip_click', { chipLabel: chip.dataset.q });
       sendChat(chip.dataset.q);
@@ -1510,7 +1548,7 @@
     // ── 상품 특정 Q&A (PDP 칩 클릭 전용) ──
     async function sendProductQA(query, productNo, productName) {
       if (!query.trim()) return;
-      panel.querySelector('#cml-chat-starters').style.display = 'none';
+      hideWelcome();
       addBubble('user', query);
       const loadingBubble = addBubble('assistant loading', '이 상품에 대해 알아보는 중...');
       sendBtn.disabled = true;
@@ -1588,14 +1626,11 @@
     function setupPdpWelcome(productName, chips, productNo) {
       if (sessionStorage.getItem(SESSION_KEY)) return; // 기존 대화 있으면 건드리지 않음
 
-      // 인사말 변경
-      const greetEl = messagesEl.querySelector('.cml-chat-bubble.assistant');
-      if (greetEl) {
-        greetEl.innerHTML = `지금 <strong>${productName}</strong>을(를) 보고 계시네요.<br>이 상품에 대해 무엇이든 물어보세요.`;
+      // 웰컴 화면의 타이틀을 PDP 전용으로 변경
+      const welcomeTitleEl = welcomeEl?.querySelector('.cml-chat-welcome-title');
+      if (welcomeTitleEl) {
+        welcomeTitleEl.innerHTML = `지금 <strong>${productName}</strong>에 대해<br>무엇이든 물어보세요.`;
       }
-
-      // 기본 스타터 칩 숨기기
-      panel.querySelector('#cml-chat-starters').style.display = 'none';
 
       // PDP 웰컴 칩 트레이 구성
       const tray = panel.querySelector('#cml-pdp-welcome-tray');
@@ -1646,7 +1681,11 @@
       setTimeout(() => openSidebar(), 600);
     }
 
-    return { setupPdpWelcome };
+    function updateConfig(newConfig) {
+      applyCssVars(newConfig?.theme);
+    }
+
+    return { setupPdpWelcome, updateConfig };
   }
 
   // ── after_cart 모드용 1회성 모드 플래그 ──
@@ -1716,8 +1755,9 @@
     const configPromise = fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)
       .then(r => r.json()).catch(() => null);
 
-    // FAB은 config 기다리지 않고 즉시 기본값으로 렌더
+    // FAB: 기본값으로 즉시 렌더, config 로드 후 색상 업데이트
     const fab = renderFab(null);
+    configPromise.then(config => { if (config) fab?.updateConfig(config); });
 
     if (isPDP) {
       const signals     = collectSignals();
