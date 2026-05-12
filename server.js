@@ -1504,13 +1504,17 @@ Return ONLY the JSON object, no markdown, no explanation.`;
           { text: prompt },
         ],
       }],
-      generationConfig: { temperature: 0.1, maxOutputTokens: 300, responseMimeType: 'application/json' },
+      // responseMimeType 제거 — 이미지 입력과 함께 쓰면 Gemini가 거부하는 케이스 있음
+      generationConfig: { temperature: 0.1, maxOutputTokens: 500 },
     });
     const raw = (r.data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
-    const jsonMatch = raw.match(/\{[\s\S]*?\}/);
-    if (!jsonMatch) throw new Error('JSON not found in response');
+    console.log('[analyze-logo] raw response:', raw.slice(0, 300));
+    // 마크다운 코드블록 제거 후 JSON 추출
+    const cleaned = raw.replace(/```(?:json)?/gi, '').replace(/```/g, '');
+    const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('JSON not found in response: ' + raw.slice(0, 150));
     const parsed = JSON.parse(jsonMatch[0]);
-    if (!parsed.brandName || !parsed.fontFamily) throw new Error('Missing required fields');
+    if (!parsed.brandName || !parsed.fontFamily) throw new Error('Missing required fields: ' + JSON.stringify(parsed));
     res.json(parsed);
   } catch (e) {
     console.error('[analyze-logo]', e.message);
