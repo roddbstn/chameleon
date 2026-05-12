@@ -263,8 +263,14 @@ tr:hover td { background: rgba(255,255,255,.025); }
   <div class="login-box">
     <div class="login-logo">Chameleon <span>Admin</span></div>
     <div class="login-sub">내부 관리자 전용</div>
-    <input type="password" class="login-input" id="login-password" placeholder="관리자 비밀번호" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">로그인</button>
+    <form id="login-form" onsubmit="event.preventDefault();doLogin()" autocomplete="on">
+      <!-- 브라우저 비밀번호 관리자가 사용자명을 요구 — 고정값으로 바인딩 -->
+      <input type="text" name="username" value="chameleon-admin" autocomplete="username"
+             style="display:none" readonly tabindex="-1">
+      <input type="password" class="login-input" id="login-password" name="password"
+             placeholder="관리자 비밀번호" autocomplete="current-password">
+      <button type="submit" class="login-btn">로그인</button>
+    </form>
     <div class="login-error" id="login-error">비밀번호가 올바르지 않습니다.</div>
   </div>
 </div>
@@ -524,15 +530,32 @@ async function doLogin() {
     return;
   }
   adminPassword = pw;
+
+  // 브라우저 비밀번호 관리자에 저장 (Touch ID / Face ID 자동입력 활성화)
+  if (window.PasswordCredential) {
+    try {
+      const cred = new PasswordCredential({ id: 'chameleon-admin', password: pw, name: 'Chameleon Admin' });
+      await navigator.credentials.store(cred);
+    } catch (_) {}
+  }
+
   document.getElementById('login-overlay').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   const shops = await r.json();
   renderShops(shops);
 }
 
-document.getElementById('login-password').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
+// 페이지 로드 시 저장된 자격증명으로 자동 로그인 시도
+(async () => {
+  if (!window.PasswordCredential) return;
+  try {
+    const cred = await navigator.credentials.get({ password: true, mediation: 'optional' });
+    if (cred?.password) {
+      document.getElementById('login-password').value = cred.password;
+      doLogin();
+    }
+  } catch (_) {}
+})();
 
 // ── 네비게이션 ──
 function switchSection(name) {
