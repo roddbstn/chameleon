@@ -466,7 +466,6 @@ app.post('/api/chips', async (req, res) => {
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { maxOutputTokens: 120 },
-      thinkingConfig: { thinkingBudget: 0 },
     });
 
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
@@ -557,7 +556,6 @@ chips 작성 규칙:
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { maxOutputTokens: 500 },
-      thinkingConfig: { thinkingBudget: 0 },
     });
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
     const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -639,7 +637,6 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { maxOutputTokens: 300 },
-      thinkingConfig: { thinkingBudget: 0 },
     });
 
     const answer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text
@@ -1116,6 +1113,53 @@ app.post('/api/shop-config', async (req, res) => {
     res.json({ success: true });
   } catch (e) {
     console.error('[ShopConfig] 저장 실패:', e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ─────────────────────────────────────────────
+// 10b. LOGO UPLOAD API — 브랜드 로고 Supabase Storage 업로드
+// POST /api/upload-logo
+// { mallId, fileBase64, fileName, mimeType }
+// → { url } (Supabase Storage public URL)
+// 허용 포맷: image/svg+xml, image/png, image/webp
+// 최대 크기: 2MB
+// ─────────────────────────────────────────────
+const ALLOWED_LOGO_TYPES = new Set(['image/svg+xml', 'image/png', 'image/webp']);
+const LOGO_EXT = { 'image/svg+xml': 'svg', 'image/png': 'png', 'image/webp': 'webp' };
+
+app.post('/api/upload-logo', express.json({ limit: '3mb' }), async (req, res) => {
+  const { mallId, fileBase64, fileName, mimeType } = req.body;
+  if (!mallId || !fileBase64 || !mimeType) {
+    return res.status(400).json({ error: 'mallId, fileBase64, mimeType required' });
+  }
+  if (!ALLOWED_LOGO_TYPES.has(mimeType)) {
+    return res.status(400).json({ error: 'SVG, PNG, WebP 파일만 업로드 가능합니다.' });
+  }
+
+  try {
+    const ext    = LOGO_EXT[mimeType];
+    const buffer = Buffer.from(fileBase64, 'base64');
+
+    if (buffer.byteLength > 2 * 1024 * 1024) {
+      return res.status(400).json({ error: '파일 크기는 2MB 이하여야 합니다.' });
+    }
+
+    const storagePath = `${mallId}/${Date.now()}.${ext}`;
+    const { error: uploadError } = await supabase.storage
+      .from('logos')
+      .upload(storagePath, buffer, { contentType: mimeType, upsert: true });
+
+    if (uploadError) throw uploadError;
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('logos')
+      .getPublicUrl(storagePath);
+
+    console.log(`[Logo] ${mallId} 로고 업로드 완료: ${storagePath}`);
+    res.json({ url: publicUrl });
+  } catch (e) {
+    console.error('[Logo] 업로드 실패:', e.message);
     res.status(500).json({ error: e.message });
   }
 });
