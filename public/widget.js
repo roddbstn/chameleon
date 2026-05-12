@@ -786,7 +786,11 @@
     .cml-msg-product-price {
       font-size: 12px; color: #5E4637; font-weight: 600;
     }
-    .cml-msg-product-reason { display: none; }
+    .cml-msg-product-reason {
+      font-size: 11px; color: #666; line-height: 1.45;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      overflow: hidden; margin-top: 3px;
+    }
     .cml-msg-product-btn-wrap { margin-top: 7px; }
     .cml-msg-product-btn {
       display: block; width: 100%; padding: 7px 0; border-radius: 7px;
@@ -1580,7 +1584,16 @@
 
       segments.forEach((seg, sIdx) => {
         if (!seg.content) return;
-        addBubble('assistant', seg.content);
+        if (seg.type === 'product') {
+          // Strip "N. **Product Name**" header line — the card already shows the name
+          const stripped = seg.content
+            .replace(/^\d+[.)]\s+\*\*[^*\n]+\*\*\s*[-–—]?\s*\n?/, '')
+            .replace(/^\d+[.)]\s+[^\n]+\n?/, '')
+            .trim();
+          if (stripped) addBubble('assistant', stripped);
+        } else {
+          addBubble('assistant', seg.content);
+        }
         const segProds = productSegments[sIdx];
         if (segProds && segProds.length) {
           const container = renderMsgProductCards(segProds, productCounter);
