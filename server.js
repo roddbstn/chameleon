@@ -52,7 +52,7 @@ async function callGemini(body) {
   }
   throw new Error('All Gemini models unavailable');
 }
-app.use(express.json());
+app.use(express.json({ limit: '3mb' }));
 app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
