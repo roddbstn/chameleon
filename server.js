@@ -29,6 +29,7 @@ app.use(cors());
 // v1beta = preview/experimental, v1 = stable
 const GEMINI_CHAIN = [
   { model: 'gemini-2.5-flash', api: 'v1beta' },
+  { model: 'gemini-2.0-flash', api: 'v1beta' },
   { model: 'gemini-1.5-flash', api: 'v1'     },
 ];
 async function callGemini(body) {

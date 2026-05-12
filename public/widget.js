@@ -952,13 +952,13 @@
     function applyCssVars(theme) {
       const t = theme || {};
       const accent = t.accentColor || '#5E4637';
-      const hdrBg  = mixHex(accent, 0.14) || '#F0E4D3';
+      const hdrBg  = mixHex(accent, 0.18) || '#F0E4D3'; // 18% = same as admin preview
       const dark   = isDarkHex(accent);
       panel.style.setProperty('--cml-accent',      accent);
       panel.style.setProperty('--cml-header-bg',   hdrBg);
       panel.style.setProperty('--cml-header-text',  dark ? '#fff' : '#111');
       panel.style.setProperty('--cml-header-icon',  dark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.4)');
-      if (t.backgroundColor)  panel.style.setProperty('--cml-bg',          t.backgroundColor);
+      panel.style.setProperty('--cml-bg',           t.backgroundColor || '#ffffff');
       if (t.chipBgColor)      panel.style.setProperty('--cml-chip-bg',     t.chipBgColor);
       if (t.chipTextColor)    panel.style.setProperty('--cml-chip-text',   t.chipTextColor);
       if (t.chipBorderColor)  panel.style.setProperty('--cml-chip-border', t.chipBorderColor);
