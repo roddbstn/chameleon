@@ -800,6 +800,28 @@
       box-sizing: border-box;
     }
     .cml-msg-product-btn:hover { opacity: 0.82; }
+
+    /* ── 추천 정제 칩 바 (결과 아래 리파인 옵션) ── */
+    .cml-refine-bar {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding: 10px 0 4px;
+    }
+    .cml-refine-chip {
+      border: 1px solid rgba(94,70,55,0.22); border-radius: 999px;
+      padding: 8px 16px; font-size: 13px; color: #5E4637;
+      white-space: nowrap; cursor: pointer;
+      background: #fff; font-family: inherit;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .cml-refine-chip:hover {
+      border-color: var(--cml-accent, #5E4637);
+      background: color-mix(in srgb, var(--cml-accent, #5E4637) 6%, white);
+    }
+    .cml-refine-chip.cml-active {
+      border-color: var(--cml-accent, #5E4637);
+      background: color-mix(in srgb, var(--cml-accent, #5E4637) 12%, white);
+      font-weight: 600; color: var(--cml-accent, #5E4637);
+    }
   `;
 
   // ── 7. 패널 삽입 위치 찾기 (config 기반) ──────────────
@@ -1043,6 +1065,7 @@
 
     const chatHistory = [];
     let lastProducts  = [];
+    let _refineBar    = null;
 
     // PDP 칩 풀 + 컨텍스트 (product_qa 모드 전용)
     let _pdpChips      = [];
@@ -1217,6 +1240,7 @@
       followTray.style.display = 'none';
       followScroll.innerHTML = '';
       if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
+      if (_refineBar) { _refineBar = null; } // already removed by innerHTML = ''
       showWelcome();
     });
 
@@ -1566,7 +1590,61 @@
       return container;
     }
 
-    function renderInlineRecommendation(message, products) {
+    function renderRefinementChips(chips) {
+      if (!chips || !chips.length) return null;
+      const bar = document.createElement('div');
+      bar.className = 'cml-refine-bar';
+      chips.forEach(label => {
+        const btn = document.createElement('button');
+        btn.className = 'cml-refine-chip';
+        btn.textContent = label;
+        btn.addEventListener('click', () => {
+          bar.querySelectorAll('.cml-refine-chip').forEach(c => c.classList.remove('cml-active'));
+          btn.classList.add('cml-active');
+          sendRefinement(label, bar);
+        });
+        bar.appendChild(btn);
+      });
+      return bar;
+    }
+
+    async function sendRefinement(query, bar) {
+      addBubble('user', query);
+      const loadingBubble = addSkeletonLoader(query);
+      sendBtn.disabled = true;
+      try {
+        const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mallId: MALL_ID, query, conversationHistory: chatHistory,
+            sessionId: sessionStorage.getItem('cml_sid') || '',
+            pageUrl: location.href,
+          }),
+        });
+        const data = await res.json();
+        loadingBubble.remove();
+        const msg = data.message || data.error || '죄송해요, 다시 시도해주세요.';
+        if (data.type === 'recommendation' && data.products?.length) {
+          renderInlineRecommendation(msg, data.products, data.refinement_chips);
+        } else {
+          addBubble('assistant', msg);
+        }
+        // Re-append existing bar to bottom so it stays visible after new results
+        if (bar) messagesEl.appendChild(bar);
+        chatHistory.push({ role: 'user', content: query });
+        chatHistory.push({ role: 'assistant', content: msg });
+        if (chatHistory.length > 20) chatHistory.splice(0, 2);
+      } catch {
+        loadingBubble.remove();
+        addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
+      } finally {
+        sendBtn.disabled = false;
+        scrollToBottom();
+        inputEl.focus();
+      }
+    }
+
+    function renderInlineRecommendation(message, products, chips) {
       const segments = parseRecommendationSegments(message);
       const productSegments = matchProductsToSegments(segments, products);
 
@@ -1603,11 +1681,20 @@
         messagesEl.appendChild(container);
         scrollToBottom();
       }
+
+      // 리파인 칩 바: 기존 바 제거 후 새 바 추가
+      if (chips && chips.length) {
+        if (_refineBar) _refineBar.remove();
+        _refineBar = renderRefinementChips(chips);
+        if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+      }
     }
 
     // ── 채팅 전송 ──
     async function sendChat(query) {
       if (!query.trim()) return;
+      // 새 메시지 입력 시 리파인 칩 바 제거
+      if (_refineBar) { _refineBar.remove(); _refineBar = null; }
       addBubble('user', query);
       const loadingBubble = addSkeletonLoader(query);
       sendBtn.disabled = true;
@@ -1626,7 +1713,7 @@
         loadingBubble.remove();
         const msg = data.message || data.error || '죄송해요, 다시 시도해주세요.';
         if (data.type === 'recommendation' && data.products?.length) {
-          renderInlineRecommendation(msg, data.products);
+          renderInlineRecommendation(msg, data.products, data.refinement_chips);
         } else {
           addBubble('assistant', msg);
         }

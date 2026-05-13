@@ -157,49 +157,69 @@ async function vectorSearch(embedding, mallId, count = 8) {
 }
 
 // ─────────────────────────────────────────────
-// Agent 1 — 인텐트 분석 (Who/What/Why 3레이어)
+// Agent 1 — 인텐트 분석 (Who/What/Why 3레이어 + 하드/소프트 필터 분리)
 // ─────────────────────────────────────────────
 async function analyzeIntent(query, conversationHistory = []) {
   const historyText = conversationHistory.length
     ? '이전 대화:\n' + conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n') + '\n\n'
     : '';
 
-  const fullHistory = conversationHistory.map(m => m.content || '').join(' ');
-  const alreadyAsked = conversationHistory.some(m => m.role === 'assistant' && m.content?.includes('?'));
-
   const prompt = `${historyText}유저 메시지: "${query}"
 
 당신은 커머스 고객 인텐트 분석 전문가입니다.
-고객의 메시지 속에 숨겨진 3가지 레이어를 분석하세요.
+고객 메시지에서 의도를 분석해 아래 JSON 형식으로만 응답하세요.
 
 {
-  "intent_type": "specific | discovery | refinement | pdp_context | after_cart | size_guide | faq",
-  "situation": "고객이 처한 TPO (상황/장소/행사)",
+  "intent_type": "specific | discovery | refinement | size_guide | faq",
+  "situation": "고객이 처한 TPO (상황/장소/행사). 없으면 null",
   "needs": "진짜 필요한 것 (기능, 감정, 사회적 맥락)",
-  "constraints": "제약 조건 (예산, 체형 고민, 소재 기피 등. 없으면 null)",
-  "assumptions": "문맥상 합리적으로 추론 가능한 정보",
-  "search_query": "벡터 검색 최적화 쿼리 (TPO·스타일·소재·핏·계절 풍부하게 포함, 한국어, 최대 250자)",
-  "color_filter": {
-    "include": ["원하는 색상. 없으면 빈 배열"],
-    "exclude": ["피하는 색상. 없으면 빈 배열"]
+  "search_query": "벡터 검색용 쿼리. 상황·스타일·소재·핏·계절을 연상 확장해 풍부하게. 최대 250자",
+  "hard_filters": {
+    "price_max": null,
+    "price_min": null,
+    "colors_exclude": [],
+    "colors_include": [],
+    "category": null
   },
-  "intent_keywords": ["의도를 대표하는 핵심 키워드 3~5개. 예: 팔뚝커버, 하객룩, 결혼식"],
-  "clarification_needed": false,
-  "clarification_question": null
+  "soft_preferences": {
+    "fit": null,
+    "fabric": [],
+    "style_keywords": [],
+    "occasion": null
+  },
+  "inference_log": [],
+  "intent_keywords": [],
+  "clarification_needed": false
 }
 
-intent_type 판단:
-- "specific": 소재·카테고리·색상·상황·상품명 등 구체적 단서 있음
-- "discovery": 막연한 탐색, 스타일 모름 (단서 전혀 없음)
-- "refinement": 이전 추천에 대한 반응/수정 요청
-- "size_guide": "사이즈", "핏", "크게", "작게", "키", "몸무게" 언급
-- "faq": 배송·교환·반품·정책 관련 질문
-- "pdp_context"와 "after_cart"는 시스템이 직접 설정하므로 여기선 사용 안 함
+## 필드 작성 규칙
 
-${alreadyAsked ? 'clarification_needed는 항상 false.' : ''}
-search_query: 질문 속 상황(예: 바닷가→휴양지 여름 시원한)·스타일·소재·핏·시즌을 연상 확장해 풍부하게.
-color_filter.exclude: "밝은 색" 요청이면 블랙/차콜/네이비/다크 계열 추가.
-intent_keywords: 이 대화 의도의 핵심 태그 (나중에 의도 데이터 분석에 사용됨).
+intent_type:
+- "specific": 소재·카테고리·색상·상황 등 구체적 단서 있음
+- "discovery": 막연한 탐색, 단서 거의 없음
+- "refinement": 이전 추천 반응/수정 요청
+- "size_guide": 사이즈·핏·체형 관련 질문
+- "faq": 배송·교환·반품·정책 질문
+
+hard_filters (절대 위반 불가):
+- price_max: "5만원대" → 59000, "10만원 이하" → 100000. 숫자만.
+- price_min: "3만원 이상" → 30000. 없으면 null.
+- colors_exclude: "밝은색" → ["화이트","베이지","아이보리","크림"]. "어두운색 제외" → ["블랙","차콜","네이비"]. 피하는 색상만.
+- colors_include: 반드시 포함해야 하는 색상. 없으면 [].
+- category: "반바지만", "니트로" 등 카테고리 강제. 없으면 null.
+
+soft_preferences (선호도 — 벡터 재정렬에만 사용):
+- fit: "통풍성 좋은" → "루즈핏", "슬림하게" → "슬림핏". 없으면 null.
+- fabric: ["린넨","면"] 등. "시원한" → ["린넨","면","시어서커"]. 없으면 [].
+- style_keywords: ["미니멀","캐주얼","포멀"] 등. 없으면 [].
+- occasion: "데이트","직장","캠핑" 등. 없으면 null.
+
+inference_log: 암묵적 단서에서 추론한 것을 배열로. 예: ["'통풍성 좋은' → 루즈핏 + 린넨/면 추론", "성인 남성 대학생 → 20대 캐주얼 스타일"].
+
+search_query: 상황(바닷가→휴양지 여름 시원한)·스타일·소재·핏·시즌을 연상 확장해 풍부하게.
+
+clarification_needed: 항상 false. 단서가 부족해도 합리적으로 추론해 검색하라.
+  → 질문 금지. 정보가 부족하면 가장 일반적인 가정을 하면 됨.
 
 JSON만 응답하세요.`;
 
@@ -211,10 +231,118 @@ JSON만 응답하세요.`;
   const text = res.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
   try {
     const cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    return JSON.parse(cleaned);
+    const parsed = JSON.parse(cleaned);
+    // 항상 clarification_needed = false 강제
+    parsed.clarification_needed = false;
+    return parsed;
   } catch {
-    return { search_query: query, clarification_needed: false, intent_keywords: [] };
+    return {
+      search_query: query,
+      clarification_needed: false,
+      intent_keywords: [],
+      hard_filters: {},
+      soft_preferences: {},
+      inference_log: [],
+    };
   }
+}
+
+// ─────────────────────────────────────────────
+// 하드 필터 — 절대 위반 불가 조건 적용
+// 조건을 적용했을 때 결과가 2개 미만이면 해당 조건 건너뜀 (결과 보존 우선)
+// ─────────────────────────────────────────────
+function applyHardFilters(products, hardFilters = {}) {
+  let result = [...products];
+
+  // 가격 상한
+  if (hardFilters.price_max) {
+    const filtered = result.filter(p => !p.price || p.price <= hardFilters.price_max);
+    if (filtered.length >= 2) result = filtered;
+    else console.log(`[HardFilter] price_max=${hardFilters.price_max} 적용 시 결과 부족 — 건너뜀`);
+  }
+  // 가격 하한
+  if (hardFilters.price_min) {
+    const filtered = result.filter(p => !p.price || p.price >= hardFilters.price_min);
+    if (filtered.length >= 2) result = filtered;
+    else console.log(`[HardFilter] price_min=${hardFilters.price_min} 적용 시 결과 부족 — 건너뜀`);
+  }
+  // 색상 제외
+  const excludeColors = (hardFilters.colors_exclude || []).map(c => c.toLowerCase());
+  if (excludeColors.length) {
+    const filtered = result.filter(p => {
+      const t = ((p.name || '') + ' ' + (p.embed_text || '')).toLowerCase();
+      return !excludeColors.some(c => t.includes(c));
+    });
+    if (filtered.length >= 2) result = filtered;
+    else console.log(`[HardFilter] colors_exclude 적용 시 결과 부족 — 건너뜀`);
+  }
+  // 색상 포함
+  const includeColors = (hardFilters.colors_include || []).map(c => c.toLowerCase());
+  if (includeColors.length) {
+    const matched = result.filter(p => {
+      const t = ((p.name || '') + ' ' + (p.embed_text || '')).toLowerCase();
+      return includeColors.some(c => t.includes(c));
+    });
+    if (matched.length >= 2) result = matched;
+    else console.log(`[HardFilter] colors_include 적용 시 결과 부족 — 건너뜀`);
+  }
+  // 카테고리 강제
+  if (hardFilters.category) {
+    const cat = hardFilters.category.toLowerCase();
+    const filtered = result.filter(p => {
+      const t = ((p.name || '') + ' ' + (p.embed_text || '')).toLowerCase();
+      return t.includes(cat);
+    });
+    if (filtered.length >= 2) result = filtered;
+    else console.log(`[HardFilter] category="${hardFilters.category}" 적용 시 결과 부족 — 건너뜀`);
+  }
+
+  return result;
+}
+
+// ─────────────────────────────────────────────
+// 소프트 선호 재정렬 — 유사도 60% + 선호도 매칭 40%
+// ─────────────────────────────────────────────
+function calcSoftScore(product, softPrefs = {}) {
+  const t = ((product.name || '') + ' ' + (product.embed_text || '')).toLowerCase();
+  let score = 0;
+  if (softPrefs.fit) {
+    const fit = softPrefs.fit.toLowerCase();
+    if (t.includes(fit)) score += 0.40;
+    // 유사 표현 보너스
+    const fitAliases = {
+      '루즈핏': ['루즈', '오버핏', '와이드', '박시'],
+      '슬림핏': ['슬림', '타이트', '스키니'],
+      '크롭':   ['크롭', '숏'],
+    };
+    for (const [key, aliases] of Object.entries(fitAliases)) {
+      if (fit.includes(key) && aliases.some(a => t.includes(a))) score += 0.20;
+    }
+  }
+  (softPrefs.fabric || []).forEach(f => {
+    if (t.includes(f.toLowerCase())) score += 0.25;
+  });
+  (softPrefs.style_keywords || []).forEach(s => {
+    if (t.includes(s.toLowerCase())) score += 0.15;
+  });
+  if (softPrefs.occasion && t.includes(softPrefs.occasion.toLowerCase())) score += 0.20;
+  return Math.min(score, 1.0);
+}
+
+function rerankBySoftPreferences(products, softPrefs = {}) {
+  const hasPrefs = softPrefs && (
+    softPrefs.fit ||
+    (softPrefs.fabric || []).length ||
+    (softPrefs.style_keywords || []).length ||
+    softPrefs.occasion
+  );
+  if (!hasPrefs) return products;
+
+  return [...products].sort((a, b) => {
+    const scoreA = (a.similarity || 0) * 0.6 + calcSoftScore(a, softPrefs) * 0.4;
+    const scoreB = (b.similarity || 0) * 0.6 + calcSoftScore(b, softPrefs) * 0.4;
+    return scoreB - scoreA;
+  });
 }
 
 // ─────────────────────────────────────────────
@@ -304,8 +432,8 @@ async function generateRecommendation(query, intent, products, systemPrompt, mod
 
 응답 형식:
 1. 피드백 반영 한 문장 ("더 캐주얼한 방향으로 골라봤어요." 등)
-2. 수정된 방향의 상품 2~3개 (각 상품마다 이 상황에 왜 적합한지 구체적 이유)
-3. 짧은 후속 질문 1개 (필요시만)`,
+2. 수정된 방향의 상품 2~3개 — 각각 번호(1., 2.)로 시작, 상품명 정확히, 이유 구체적으로
+※ 질문 금지. 아래 CHIPS로 대신 유도.`,
 
     pdp_context: `
 【상품 페이지 컨텍스트 모드】
@@ -313,17 +441,17 @@ async function generateRecommendation(query, intent, products, systemPrompt, mod
 
 응답 형식:
 1. 현재 상품 관련 짧은 코멘트 (1문장, "이 상품과 잘 어울리는" 또는 "비슷한 스타일로")
-2. 연관 상품 2~3개 — 코디 조합 관점에서 왜 잘 맞는지 구체적으로
-3. 짧은 후속 질문 1개 (필요시만)`,
+2. 연관 상품 2~3개 — 각각 번호(1., 2.)로 시작, 코디 조합 관점에서 왜 잘 맞는지 구체적으로
+※ 질문 금지. 아래 CHIPS로 대신 유도.`,
 
     after_cart: `
 【장바구니 추가 후 모드 — Cross-sell】
 고객이 방금 상품을 장바구니에 담았습니다. 구매를 이미 결정한 상태이므로 압박하지 않고, 자연스럽게 코디 완성을 도와주세요.
 
 응답 형식:
-1. "담으셨군요! 이 상품과 함께 코디하면 좋은 아이템도 가져왔어요." (1문장, 자연스럽게)
-2. 연관 상품 2개 — "함께 입으면 어떤 룩이 완성되는지" 관점에서 구체적으로
-3. 선택지: "전체 코디로 완성하시겠어요, 아니면 다른 게 필요하신가요?" (1문장)`,
+1. "담으셨군요! 이 상품과 함께 코디하면 좋은 아이템도 가져왔어요." (1문장)
+2. 연관 상품 2개 — 각각 번호(1., 2.)로 시작, "함께 입으면 어떤 룩이 완성되는지" 구체적으로
+※ 질문 금지. 아래 CHIPS로 대신 유도.`,
 
     size_guide: `
 【사이즈/핏 가이드 모드】
@@ -332,7 +460,8 @@ async function generateRecommendation(query, intent, products, systemPrompt, mod
 응답 형식:
 1. 질문한 상품의 핏 특성 설명 (1~2문장)
 2. 사이즈 선택 기준 제시 (키/체형/착용감 기준으로)
-3. 구체적 상품 추천 1~2개 (핏이 잘 맞는 이유 포함)`,
+3. 구체적 상품 추천 1~2개 — 각각 번호(1., 2.)로 시작, 핏이 잘 맞는 이유 포함
+※ 질문 금지. 아래 CHIPS로 대신 유도.`,
 
     specific: `
 【구체적 추천 모드】
@@ -343,11 +472,36 @@ async function generateRecommendation(query, intent, products, systemPrompt, mod
    - 상품명 정확히 포함
    - 이 상황에 왜 이 상품인지 구체적 이유 (소재·핏·착용감 포함)
    - **핵심 셀링포인트 1개** 굵게 강조 (예: **구김 없는 소재**, **팔뚝 커버**)
-3. 짧은 후속 질문 1개 (선택사항)`,
+※ 질문 금지. 아래 CHIPS로 대신 유도.`,
   }[mode] || `【구체적 추천 모드】
 1. 고객 니즈 한 문장 짚기
-2. 상품 2~3개 (상품명 정확히, 이유 구체적으로)
-3. 후속 질문 1개 (선택사항)`;
+2. 상품 2~3개 — 각각 번호(1., 2.)로 시작, 상품명 정확히, 이유 구체적으로
+※ 질문 금지. 아래 CHIPS로 대신 유도.`;
+
+  const hardFiltersText = (() => {
+    const hf = intent.hard_filters || {};
+    const parts = [];
+    if (hf.price_max)            parts.push(`가격 상한 ${hf.price_max.toLocaleString()}원 이하`);
+    if (hf.price_min)            parts.push(`가격 하한 ${hf.price_min.toLocaleString()}원 이상`);
+    if (hf.colors_exclude?.length) parts.push(`색상 제외: ${hf.colors_exclude.join(', ')}`);
+    if (hf.colors_include?.length) parts.push(`색상 포함: ${hf.colors_include.join(', ')}`);
+    if (hf.category)             parts.push(`카테고리 강제: ${hf.category}`);
+    return parts.length ? parts.join(' | ') : '없음';
+  })();
+
+  const softPrefsText = (() => {
+    const sp = intent.soft_preferences || {};
+    const parts = [];
+    if (sp.fit)                     parts.push(`핏: ${sp.fit}`);
+    if (sp.fabric?.length)          parts.push(`소재: ${sp.fabric.join(', ')}`);
+    if (sp.style_keywords?.length)  parts.push(`스타일: ${sp.style_keywords.join(', ')}`);
+    if (sp.occasion)                parts.push(`상황: ${sp.occasion}`);
+    return parts.length ? parts.join(' | ') : '없음';
+  })();
+
+  const inferenceText = (intent.inference_log || []).length
+    ? (intent.inference_log || []).map(l => `  · ${l}`).join('\n')
+    : '  · (없음)';
 
   const prompt = `${systemPrompt}
 
@@ -358,14 +512,16 @@ ${modeInstruction}
 ## 고객 인텐트 분석 결과
 - 상황(TPO): ${intent.situation || '-'}
 - 진짜 니즈: ${intent.needs || '-'}
-- 제약 조건: ${intent.constraints || '없음'}
-- 추론한 맥락: ${intent.assumptions || '-'}
+- 하드 필터 (반드시 지킬 것): ${hardFiltersText}
+- 소프트 선호 (가중치): ${softPrefsText}
+- AI 추론 내역:
+${inferenceText}
 - 핵심 의도 키워드: ${(intent.intent_keywords || []).join(', ') || '-'}
 
 ## 고객 메시지
 "${query}"
 
-## 검색된 상품 후보
+## 검색된 상품 후보 (하드 필터 적용 + 소프트 선호 재정렬 완료)
 ${productList}
 
 ---
@@ -373,11 +529,20 @@ ${productList}
 - 문장을 반드시 완성해서 끝낼 것
 - 이모지 금지
 - 상품 설명 시 **굵게** 핵심 셀링포인트 1개 반드시 포함
+- 질문 절대 금지 — 궁금한 것은 CHIPS로만 유도
 
 응답 맨 끝(줄바꿈 후) 반드시 추가:
 PRODUCTS:[응답에 나온 순서대로 번호, 예: 2,1,3]
 REASONS:{"1":"첫 번째 상품 핵심 이유 (40자 이내)","2":"두 번째","3":"세 번째(있는 경우만)"}
-(PRODUCTS, REASONS는 UI 파싱 후 제거됨)`;
+CHIPS:["결과를 다르게 바꿀 조건 칩1","칩2","칩3"]
+(PRODUCTS, REASONS, CHIPS는 UI 파싱 후 제거됨)
+
+CHIPS 작성 규칙:
+- 이 추천 결과를 다른 방향으로 바꾸고 싶을 때 누를 버튼 3개
+- 고객 요청에서 애매했던 부분 or 쉽게 바꿀 수 있는 조건 기반
+- 각 12자 이내 (짧을수록 좋음)
+- 예: "5만원대로", "캐주얼로", "어두운 색으로", "반바지로", "더 루즈하게"
+- 반드시 3개 정확히`;
 
   const res = await callGemini({
     contents: [{ parts: [{ text: prompt }] }],
@@ -443,6 +608,7 @@ function cleanMessage(raw) {
   return raw
     .replace(/\n?PRODUCTS:\[?[^\]\n]*\]?/g, '')
     .replace(/\n?REASONS:\{[^\n]+\}/g, '')
+    .replace(/\n?CHIPS:\[[\s\S]*?\]/g, '')
     .replace(/\n?Goodbye\.?$/i, '')
     .trim();
 }
@@ -454,6 +620,18 @@ function parseReasons(raw) {
   const match = raw.match(/\nREASONS:(\{[^\n]+\})/);
   if (!match) return {};
   try { return JSON.parse(match[1]); } catch { return {}; }
+}
+
+// ─────────────────────────────────────────────
+// CHIPS 태그 파싱
+// ─────────────────────────────────────────────
+function parseChips(raw) {
+  const match = raw.match(/\nCHIPS:(\[[\s\S]*?\])/);
+  if (!match) return [];
+  try {
+    const parsed = JSON.parse(match[1]);
+    return Array.isArray(parsed) ? parsed.slice(0, 3) : [];
+  } catch { return []; }
 }
 
 // ─────────────────────────────────────────────
@@ -556,7 +734,8 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
     : searchQuery;
 
   const queryEmbedding = await embedQuery(searchBase);
-  const rawProducts = await vectorSearch(queryEmbedding, mallId);
+  // 하드 필터 적용 여유분 확보를 위해 15개 요청
+  const rawProducts = await vectorSearch(queryEmbedding, mallId, 15);
 
   const seen = new Set();
   let products = rawProducts.filter(p => {
@@ -575,46 +754,38 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
     return { type: 'no_results', message: '아직 등록된 상품 중에서는 딱 맞는 걸 못 찾았어요. 다르게 설명해주시면 다시 찾아볼게요!', products: [] };
   }
 
-  // ── 색상 필터 ──
-  const colorFilter  = intent.color_filter || {};
-  const excludeColors = (colorFilter.exclude || []).map(c => c.toLowerCase());
-  const includeColors = (colorFilter.include || []).map(c => c.toLowerCase());
+  // ── 하드 필터 (절대 준수) ──
+  products = applyHardFilters(products, intent.hard_filters || {});
 
-  if (excludeColors.length) {
-    const filtered = products.filter(p => {
-      const t = ((p.name || '') + ' ' + (p.embed_text || '')).toLowerCase();
-      return !excludeColors.some(c => t.includes(c));
-    });
-    if (filtered.length >= 2) products = filtered;
-  }
-  if (includeColors.length && products.length > 3) {
-    const matched = products.filter(p => {
-      const t = ((p.name || '') + ' ' + (p.embed_text || '')).toLowerCase();
-      return includeColors.some(c => t.includes(c));
-    });
-    if (matched.length >= 2) products = matched;
-  }
+  // ── 소프트 선호 재정렬 ──
+  products = rerankBySoftPreferences(products, intent.soft_preferences || {});
+
+  console.log(`[Pipeline] 필터 후 후보: ${products.length}개`);
 
   // ── 상품 이미지·가격 보강 ──
   const enriched = await enrichProducts(products);
 
-  // ── 추천 생성 ──
+  // ── 추천 생성 (상위 6개만 AI에게 전달) ──
   const rawMessage = await generateRecommendation(
-    query, intent, enriched, systemPrompt, mode, { pdpProduct }
+    query, intent, enriched.slice(0, 6), systemPrompt, mode, { pdpProduct }
   );
   await logApiCost(mallId, 'response_generation', 3000, 700);
 
   const reasons  = parseReasons(rawMessage);
+  const chips    = parseChips(rawMessage);
   const message  = cleanMessage(rawMessage);
   const recommended = matchProductsFromMessage(message, enriched);
 
-  // ── 의도 데이터 저장 (intent_keywords 포함) ──
+  // ── 의도 데이터 저장 ──
   Promise.resolve(supabase.from('chat_logs').insert({
     store_id:         mallId,
     query,
-    intent_situation: intent.situation     || null,
-    intent_needs:     intent.needs         || null,
-    intent_keywords:  intent.intent_keywords || [],
+    intent_situation: intent.situation        || null,
+    intent_needs:     intent.needs            || null,
+    intent_keywords:  intent.intent_keywords  || [],
+    inference_log:    intent.inference_log    || [],
+    hard_filters:     intent.hard_filters     || {},
+    soft_preferences: intent.soft_preferences || {},
     result_type:      mode === 'pdp_context' ? 'pdp_context' :
                       mode === 'after_cart'  ? 'after_cart'  : 'recommendation',
     product_count:    recommended.length,
@@ -637,6 +808,7 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
       url:        p.url   ?? null,
       reason:     reasons[String(i + 1)] || null,
     })),
+    refinement_chips: chips,
     intent,
     mode,
   };
