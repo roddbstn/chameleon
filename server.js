@@ -1688,6 +1688,10 @@ const MIGRATIONS = [
   `ALTER TABLE shops     ADD COLUMN IF NOT EXISTS agent_config    jsonb NOT NULL DEFAULT '{}'`,
   `CREATE INDEX IF NOT EXISTS chat_logs_session_idx     ON chat_logs (session_id)`,
   `CREATE INDEX IF NOT EXISTS chat_logs_keywords_idx    ON chat_logs USING gin(intent_keywords)`,
+  // intent 고도화 컬럼 (hard_filters, soft_preferences, inference_log)
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS inference_log    text[]`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS hard_filters     jsonb NOT NULL DEFAULT '{}'`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS soft_preferences jsonb NOT NULL DEFAULT '{}'`,
 ];
 
 async function runMigrations() {

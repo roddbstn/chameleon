@@ -746,16 +746,19 @@
       }
     }
 
-    /* ── 메시지 내 인라인 상품 카드 (컴팩트 세로 2열 그리드) ── */
+    /* ── 메시지 내 인라인 상품 카드 (가로 나열) ── */
     .cml-msg-products {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-      margin: 6px 0 10px; width: 100%; max-width: 100%;
+      display: flex; flex-direction: row; gap: 8px;
+      margin: 6px 0 10px; width: 100%;
+      align-items: stretch;
     }
     .cml-msg-product-card {
+      flex: 1; min-width: 0;
       display: flex; flex-direction: column;
       background: #fff; border: 1px solid rgba(94,70,55,0.12);
       border-radius: 10px; overflow: hidden;
       transition: box-shadow 0.15s, border-color 0.15s;
+      text-decoration: none;
     }
     .cml-msg-product-card:hover {
       box-shadow: 0 2px 10px rgba(94,70,55,0.10);
@@ -763,7 +766,7 @@
     }
     .cml-msg-product-img-wrap {
       width: 100%; aspect-ratio: 1 / 1;
-      overflow: hidden; background: #EEEEED;
+      overflow: hidden; background: #EEEEED; flex-shrink: 0;
     }
     .cml-msg-product-img {
       width: 100%; height: 100%; object-fit: cover; display: block;
@@ -774,24 +777,20 @@
       color: #CCC; font-size: 10px;
     }
     .cml-msg-product-info {
-      padding: 8px 10px 10px;
+      padding: 8px 8px 9px;
       display: flex; flex-direction: column; gap: 2px;
+      flex: 1;
     }
     .cml-msg-product-name {
-      font-size: 12px; font-weight: 600; color: #111;
+      font-size: 11px; font-weight: 600; color: #111;
       line-height: 1.35; letter-spacing: -0.01em;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
       overflow: hidden;
     }
     .cml-msg-product-price {
-      font-size: 12px; color: #5E4637; font-weight: 600;
+      font-size: 11px; color: #5E4637; font-weight: 600;
     }
-    .cml-msg-product-reason {
-      font-size: 11px; color: #666; line-height: 1.45;
-      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-      overflow: hidden; margin-top: 3px;
-    }
-    .cml-msg-product-btn-wrap { margin-top: 7px; }
+    .cml-msg-product-btn-wrap { margin-top: auto; padding-top: 6px; }
     .cml-msg-product-btn {
       display: block; width: 100%; padding: 7px 0; border-radius: 7px;
       font-size: 11px; font-weight: 600; text-align: center;
@@ -1551,7 +1550,7 @@
       return card;
     }
 
-    // ── 메시지 내 컴팩트 인라인 상품 카드 (수평: 이미지 좌 + 정보 우) ──
+    // ── 메시지 내 인라인 상품 카드 (세로, 가로 배열용) ──
     function createMsgProductCard(product, badgeNum) {
       const pdpUrl = `/product/detail.html?product_no=${product.id}`;
       const priceText = product.price
@@ -1559,22 +1558,31 @@
       const card = document.createElement('div');
       card.className = 'cml-msg-product-card';
       card.dataset.productId = String(product.id);
-      const imgHtml = product.image_url
-        ? `<img class="cml-msg-product-img" src="${product.image_url}" alt="${product.name}" loading="lazy">`
-        : `<div class="cml-msg-product-img-placeholder">이미지 없음</div>`;
+
+      const hasImage = !!product.image_url;
       card.innerHTML = `
         <div class="cml-msg-product-img-wrap">
-          ${imgHtml}
+          ${hasImage
+            ? `<img class="cml-msg-product-img" src="${product.image_url}" alt="${product.name}" loading="lazy">`
+            : `<div class="cml-msg-product-img-placeholder">이미지 없음</div>`}
         </div>
         <div class="cml-msg-product-info">
           <div class="cml-msg-product-name">${product.name}</div>
           ${priceText ? `<div class="cml-msg-product-price">${priceText}</div>` : ''}
-          ${product.reason ? `<div class="cml-msg-product-reason">${product.reason}</div>` : ''}
           <div class="cml-msg-product-btn-wrap">
             <a class="cml-msg-product-btn" href="${pdpUrl}">자세히 보기</a>
           </div>
         </div>`;
-      // 상품 클릭 추적
+
+      // 이미지 로드 실패 시 플레이스홀더로 교체
+      if (hasImage) {
+        const img = card.querySelector('.cml-msg-product-img');
+        img.addEventListener('error', () => {
+          const wrap = img.parentElement;
+          wrap.innerHTML = '<div class="cml-msg-product-img-placeholder">이미지 없음</div>';
+        }, { once: true });
+      }
+
       card.querySelector('.cml-msg-product-btn')?.addEventListener('click', () => {
         track('product_click', { productNo: String(product.id) });
       });
@@ -1645,44 +1653,19 @@
     }
 
     function renderInlineRecommendation(message, products, chips) {
-      const segments = parseRecommendationSegments(message);
-      const productSegments = matchProductsToSegments(segments, products);
+      // 메시지 전체를 하나의 버블로 표시 (1. 2. 3. 넘버링 포함)
+      addBubble('assistant', message);
 
-      // 인라인 카드가 실제로 렌더링된 상품 수 추적
-      let productCounter = 0;
-      let inlineRendered = 0;
-
-      segments.forEach((seg, sIdx) => {
-        if (!seg.content) return;
-        if (seg.type === 'product') {
-          // Strip "N. **Product Name**" header line — the card already shows the name
-          const stripped = seg.content
-            .replace(/^\d+[.)]\s+\*\*[^*\n]+\*\*\s*[-–—]?\s*\n?/, '')
-            .replace(/^\d+[.)]\s+[^\n]+\n?/, '')
-            .trim();
-          if (stripped) addBubble('assistant', stripped);
-        } else {
-          addBubble('assistant', seg.content);
-        }
-        const segProds = productSegments[sIdx];
-        if (segProds && segProds.length) {
-          const container = renderMsgProductCards(segProds, productCounter);
-          productCounter += segProds.length;
-          inlineRendered += segProds.length;
-          messagesEl.appendChild(container);
-          scrollToBottom();
-        }
-      });
-
-      // 인라인 카드가 하나도 렌더링되지 않았다면 모든 상품을 마지막에 표시
-      if (inlineRendered === 0 && products.length > 0) {
-        console.log('[Chameleon] No inline cards matched — rendering all products after text');
-        const container = renderMsgProductCards(products, 0);
+      // 상품 카드 전체를 가로 1행으로 나열
+      if (products.length) {
+        const container = document.createElement('div');
+        container.className = 'cml-msg-products';
+        products.forEach((p, i) => container.appendChild(createMsgProductCard(p, i + 1)));
         messagesEl.appendChild(container);
         scrollToBottom();
       }
 
-      // 리파인 칩 바: 기존 바 제거 후 새 바 추가
+      // 리파인 칩 바
       if (chips && chips.length) {
         if (_refineBar) _refineBar.remove();
         _refineBar = renderRefinementChips(chips);

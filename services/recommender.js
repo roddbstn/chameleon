@@ -405,7 +405,7 @@ function formatProductForPrompt(p, index) {
 // context: { pdpProduct, mode }
 // ─────────────────────────────────────────────
 async function generateRecommendation(query, intent, products, systemPrompt, mode = 'specific', context = {}) {
-  const productList = products.slice(0, 5).map((p, i) => formatProductForPrompt(p, i)).join('\n\n');
+  const productList = products.map((p, i) => formatProductForPrompt(p, i)).join('\n\n');
 
   // ── PDP 컨텍스트 블록 ──
   const pdpBlock = context.pdpProduct ? `
@@ -419,12 +419,12 @@ async function generateRecommendation(query, intent, products, systemPrompt, mod
   const modeInstruction = {
     discovery: `
 【스타일 발견 모드】
-고객이 막연하게 탐색 중입니다. 설명을 묻지 말고, 서로 다른 스타일의 실제 상품 3개를 보여줘 반응을 이끌어내세요.
+고객이 막연하게 탐색 중입니다. 설명을 묻지 말고, 서로 다른 스타일의 실제 상품 3개를 바로 보여주세요.
 
 응답 형식:
-1. "스타일이 다른 몇 가지를 가져왔어요. 어떤 느낌이 끌리시는지 반응해주시면 바로 좁혀드릴게요." (한 문장)
-2. 상품 3개 — 각각 스타일 레이블(**미니멀/클린**, **캐주얼/스트릿**, **트렌디/유니크**)과 함께 2문장 이내 소개
-3. "마음에 드는 방향이 있으신가요, 아니면 다른 느낌을 원하세요?" (한 문장)`,
+1. "스타일이 다른 몇 가지를 가져왔어요." (한 문장, 인사 없이)
+2. 상품 3개 — 번호(1., 2., 3.)로 시작, 스타일 레이블(**미니멀/클린**, **캐주얼/스트릿**, **트렌디/유니크**)과 함께 2문장 이내 소개
+※ 질문 금지. 아래 CHIPS로 대신 유도.`,
 
     refinement: `
 【취향 반영 모드】
@@ -565,7 +565,9 @@ async function enrichProducts(products) {
 
   const imgMap = {}, priceMap = {};
   (rows || []).forEach(r => {
-    imgMap[r.product_id]   = r.raw_data?.list_image || r.raw_data?.detail_image || null;
+    const rawImg = r.raw_data?.list_image || r.raw_data?.detail_image || null;
+    // protocol-relative URL(//cdn...) → https: 보정
+    imgMap[r.product_id]   = rawImg ? rawImg.replace(/^\/\//, 'https://') : null;
     priceMap[r.product_id] = r.price;
   });
 
