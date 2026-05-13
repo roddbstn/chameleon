@@ -802,13 +802,22 @@
 
     /* ── 추천 정제 칩 바 (결과 아래 리파인 옵션) ── */
     .cml-refine-bar {
-      display: flex; gap: 8px; flex-wrap: wrap;
+      overflow: hidden;
       padding: 10px 0 4px;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+      mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
     }
+    .cml-refine-track {
+      display: flex; width: max-content; gap: 8px;
+      animation: cml-chips-scroll 24s linear infinite;
+    }
+    .cml-refine-bar:hover .cml-refine-track,
+    .cml-refine-bar.cml-paused .cml-refine-track { animation-play-state: paused; }
+    .cml-refine-set { display: flex; gap: 8px; padding-right: 8px; }
     .cml-refine-chip {
       border: 1px solid rgba(94,70,55,0.22); border-radius: 999px;
       padding: 8px 16px; font-size: 13px; color: #5E4637;
-      white-space: nowrap; cursor: pointer;
+      white-space: nowrap; cursor: pointer; flex-shrink: 0;
       background: #fff; font-family: inherit;
       transition: border-color 0.15s, background 0.15s, color 0.15s;
     }
@@ -1608,19 +1617,37 @@
 
     function renderRefinementChips(chips) {
       if (!chips || !chips.length) return null;
+
+      function makeSet(ariaHidden) {
+        const set = document.createElement('div');
+        set.className = 'cml-refine-set';
+        if (ariaHidden) set.setAttribute('aria-hidden', 'true');
+        chips.forEach(label => {
+          const btn = document.createElement('button');
+          btn.className = 'cml-refine-chip';
+          btn.textContent = label;
+          if (ariaHidden) btn.tabIndex = -1;
+          btn.addEventListener('click', () => {
+            bar.classList.add('cml-paused');
+            bar.querySelectorAll('.cml-refine-chip').forEach(c => c.classList.remove('cml-active'));
+            bar.querySelectorAll('.cml-refine-chip').forEach(c => {
+              if (c.textContent === label) c.classList.add('cml-active');
+            });
+            track('refine_chip_click', { chipLabel: label });
+            sendRefinement(label, bar);
+          });
+          set.appendChild(btn);
+        });
+        return set;
+      }
+
       const bar = document.createElement('div');
       bar.className = 'cml-refine-bar';
-      chips.forEach(label => {
-        const btn = document.createElement('button');
-        btn.className = 'cml-refine-chip';
-        btn.textContent = label;
-        btn.addEventListener('click', () => {
-          bar.querySelectorAll('.cml-refine-chip').forEach(c => c.classList.remove('cml-active'));
-          btn.classList.add('cml-active');
-          sendRefinement(label, bar);
-        });
-        bar.appendChild(btn);
-      });
+      const track = document.createElement('div');
+      track.className = 'cml-refine-track';
+      track.appendChild(makeSet(false));
+      track.appendChild(makeSet(true));
+      bar.appendChild(track);
       return bar;
     }
 

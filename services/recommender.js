@@ -146,25 +146,68 @@ async function embedQuery(text) {
 // ─────────────────────────────────────────────
 // Supabase 벡터 검색
 // ─────────────────────────────────────────────
-async function vectorSearch(embedding, mallId, count = 8) {
-  const { data, error } = await supabase.rpc('match_products', {
+async function vectorSearch(embedding, mallId, count = 8, priceFilter = {}) {
+  const params = {
     query_embedding: JSON.stringify(embedding),
     match_store_id:  mallId,
     match_count:     count,
-  });
+  };
+  // RPC 레벨 가격 필터 — 후보군 자체를 좁혀 품질 향상
+  if (priceFilter.price_max) params.filter_price_max = priceFilter.price_max;
+  if (priceFilter.price_min) params.filter_price_min = priceFilter.price_min;
+
+  const { data, error } = await supabase.rpc('match_products', params);
   if (error) throw new Error(error.message);
   return data || [];
 }
 
 // ─────────────────────────────────────────────
+// 인텐트 캐시 — sessionId + query 기반, 5분 TTL
+// ─────────────────────────────────────────────
+const intentCache = new Map();
+const INTENT_CACHE_TTL = 5 * 60 * 1000; // 5분
+
+function getCachedIntent(sessionId, query) {
+  if (!sessionId) return null;
+  const key = `${sessionId}::${query}`;
+  const entry = intentCache.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > INTENT_CACHE_TTL) {
+    intentCache.delete(key);
+    return null;
+  }
+  return entry.intent;
+}
+
+function setCachedIntent(sessionId, query, intent) {
+  if (!sessionId) return;
+  const key = `${sessionId}::${query}`;
+  intentCache.set(key, { intent, ts: Date.now() });
+  // 1000개 초과 시 오래된 것부터 정리
+  if (intentCache.size > 1000) {
+    const oldest = [...intentCache.entries()].sort((a, b) => a[1].ts - b[1].ts)[0];
+    intentCache.delete(oldest[0]);
+  }
+}
+
+// ─────────────────────────────────────────────
 // Agent 1 — 인텐트 분석 (Who/What/Why 3레이어 + 하드/소프트 필터 분리)
 // ─────────────────────────────────────────────
-async function analyzeIntent(query, conversationHistory = []) {
+async function analyzeIntent(query, conversationHistory = [], userPreferences = null) {
   const historyText = conversationHistory.length
     ? '이전 대화:\n' + conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n') + '\n\n'
     : '';
 
-  const prompt = `${historyText}유저 메시지: "${query}"
+  const prefText = userPreferences && userPreferences.interaction_count > 0 ? `
+## 이 고객의 누적 취향 데이터 (${userPreferences.interaction_count}회 상호작용 기반)
+${userPreferences.style_keywords?.length ? `- 선호 스타일: ${userPreferences.style_keywords.join(', ')}` : ''}
+${userPreferences.fit ? `- 선호 핏: ${userPreferences.fit}` : ''}
+${userPreferences.fabric?.length ? `- 선호 소재: ${userPreferences.fabric.join(', ')}` : ''}
+${userPreferences.occasions?.length ? `- 주로 찾는 상황: ${userPreferences.occasions.join(', ')}` : ''}
+→ 현재 요청에 명시적 단서가 없으면 이 취향을 soft_preferences 기본값으로 활용하세요.
+` : '';
+
+  const prompt = `${historyText}${prefText}유저 메시지: "${query}"
 
 당신은 커머스 고객 인텐트 분석 전문가입니다.
 고객 메시지에서 의도를 분석해 아래 JSON 형식으로만 응답하세요.
@@ -416,6 +459,13 @@ async function generateRecommendation(query, intent, products, systemPrompt, mod
 → 이 상품을 기준으로 "함께 코디하면 좋은" 또는 "이 상품 대신 고려할" 상품을 추천하세요.
 ` : '';
 
+  // ── 이전 추천 상품 블록 (멀티턴) ──
+  const prevProductsBlock = (context.previousProducts || []).length ? `
+## 이번 대화에서 이미 추천한 상품 (중복 추천 피할 것)
+${(context.previousProducts).map(p => `- ${p.name} (${p.price?.toLocaleString() || '미정'}원)`).join('\n')}
+→ 위 상품들은 이미 보여줬습니다. 고객이 "다른 거"나 "더 저렴한 거"를 요청하면 이 목록 외 상품으로 추천하세요.
+` : '';
+
   // ── 모드별 응답 지침 ──
   const modeInstruction = {
     discovery: `
@@ -507,7 +557,7 @@ async function generateRecommendation(query, intent, products, systemPrompt, mod
   const prompt = `${systemPrompt}
 
 ---
-${pdpBlock}
+${pdpBlock}${prevProductsBlock}
 ${modeInstruction}
 
 ## 고객 인텐트 분석 결과
@@ -535,20 +585,18 @@ ${productList}
 응답 맨 끝(줄바꿈 후) 반드시 추가:
 PRODUCTS:[응답에 나온 순서대로 번호, 예: 2,1,3]
 REASONS:{"1":"첫 번째 상품 핵심 이유 (40자 이내)","2":"두 번째","3":"세 번째(있는 경우만)"}
-CHIPS:["칩1","칩2","칩3"]
+CHIPS:["질문1","질문2","질문3"]
 (PRODUCTS, REASONS, CHIPS는 UI 파싱 후 제거됨)
 
 ${mode === 'discovery' ? `CHIPS 작성 규칙 (스타일 탐색 모드):
-- 방금 보여준 3가지 스타일 방향 중 하나를 선택하거나 다른 방향으로 이동하게 유도하는 칩 3개
-- 스타일 레이블 기반: 미니멀/베이직, 캐주얼/스트릿, 트렌디/유니크, 포멀/오피스, 빈티지 등
-- 클릭하면 그 방향으로 좁혀진 추천이 나오는 것처럼 느껴져야 함
-- 예: "미니멀로 더", "캐주얼한 방향", "더 트렌디하게", "베이직하게", "스트릿 느낌으로"
-- 각 10자 이내, 반드시 3개 정확히` : `CHIPS 작성 규칙:
-- 이 추천 결과를 다른 방향으로 바꾸고 싶을 때 누를 버튼 3개
-- 고객 요청에서 애매했던 부분 or 쉽게 바꿀 수 있는 조건 기반
-- 각 12자 이내 (짧을수록 좋음)
-- 예: "5만원대로", "캐주얼로", "어두운 색으로", "반바지로", "더 루즈하게"
-- 반드시 3개 정확히`}`;
+- 고객이 방금 한 질문 맥락 + 우리가 보여준 스타일들을 고려해, 고객이 실제로 다음에 물어볼 법한 완성형 질문 2~4개
+- 방향을 바꾸거나 구체화하는 자연스러운 질문 형태로 작성 (예: "좀 더 캐주얼한 스타일 있나요?", "미니멀한 버전으로 보여주세요", "이거 다른 색상도 있나요?")
+- 단어 조각(예: "캐주얼로", "다른 색상으로") 형태 금지 — 반드시 완성된 문장
+- 각 20자 이내, 2~4개` : `CHIPS 작성 규칙:
+- 고객이 방금 한 질문 맥락 + 우리가 추천한 상품들을 고려해, 고객이 실제로 다음에 물어볼 법한 완성형 질문 2~4개
+- 이런 유형을 참고: 다른 조건으로 바꾸기("5만원대도 있나요?"), 스타일 변형("더 캐주얼한 버전도 있나요?"), 활용 상황("데이트 말고 데일리로도 입을 수 있나요?"), 특정 아이템 궁금증("1번 상품 다른 색상도 있나요?")
+- 단어 조각(예: "캐주얼로", "다른 색상으로") 형태 금지 — 반드시 완성된 문장
+- 각 22자 이내, 2~4개`}`;
 
   const res = await callGemini({
     contents: [{ parts: [{ text: prompt }] }],
@@ -561,13 +609,18 @@ ${mode === 'discovery' ? `CHIPS 작성 규칙 (스타일 탐색 모드):
 // ─────────────────────────────────────────────
 // 상품 이미지·가격 일괄 보강
 // ─────────────────────────────────────────────
-async function enrichProducts(products) {
+async function enrichProducts(products, mallId = null) {
   if (!products.length) return products;
   const ids = products.map(p => p.product_id);
-  const { data: rows } = await supabase
+  let query = supabase
     .from('products')
     .select('product_id, price, raw_data')
     .in('product_id', ids);
+  if (mallId) query = query.eq('store_id', mallId);
+
+  const { data: rows, error } = await query;
+  console.log(`[Enrich] ids=${JSON.stringify(ids)} rows=${rows?.length ?? 0} error=${error?.message || 'none'}`);
+  if (rows?.length) console.log(`[Enrich] sample raw_data keys:`, Object.keys(rows[0].raw_data || {}));
 
   const imgMap = {}, priceMap = {};
   (rows || []).forEach(r => {
@@ -638,7 +691,7 @@ function parseChips(raw) {
   if (!match) return [];
   try {
     const parsed = JSON.parse(match[1]);
-    return Array.isArray(parsed) ? parsed.slice(0, 3) : [];
+    return Array.isArray(parsed) ? parsed.slice(0, 4) : [];
   } catch { return []; }
 }
 
@@ -679,9 +732,34 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
     }
   }
 
-  // ── 인텐트 분석 ──
-  const intent = await analyzeIntent(query, conversationHistory);
-  await logApiCost(mallId, 'intent_analysis', 2000, 500);
+  // ── 인텐트 분석 + 임베딩 병렬 실행 (캐시 우선) ──
+  const sessionId = context.sessionId || null;
+  const searchBase = pdpProduct
+    ? `${pdpProduct.name} ${pdpProduct.embed_text?.slice(0, 100) || ''} 코디 어울리는`
+    : (/* 임시 — intent 나온 후 search_query로 덮어씀 */ query);
+
+  let intent = getCachedIntent(sessionId, query);
+  let queryEmbedding;
+
+  if (intent) {
+    console.log(`[Cache] 인텐트 캐시 히트: session=${sessionId}`);
+    queryEmbedding = await embedQuery(pdpProduct ? searchBase : (intent.search_query || query));
+  } else {
+    // 인텐트 분석과 임베딩을 병렬로 실행
+    const [resolvedIntent, embeddingFromQuery] = await Promise.all([
+      analyzeIntent(query, conversationHistory, context.userPreferences || null),
+      embedQuery(searchBase),
+    ]);
+    intent = resolvedIntent;
+    await logApiCost(mallId, 'intent_analysis', 2000, 500);
+    setCachedIntent(sessionId, query, intent);
+    // intent.search_query가 query와 다르면 다시 임베딩 (PDP가 아닌 경우)
+    if (!pdpProduct && intent.search_query && intent.search_query !== query) {
+      queryEmbedding = await embedQuery(intent.search_query);
+    } else {
+      queryEmbedding = embeddingFromQuery;
+    }
+  }
 
   // ── 모드 결정 ──
   // context.mode (after_cart, pdp_context 등) > intent.intent_type
@@ -715,7 +793,7 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
       return { type: 'no_results', message: '등록된 상품을 불러오는 데 문제가 생겼어요. 잠시 후 다시 시도해주세요.', products: [] };
     }
 
-    const enriched = await enrichProducts(palette);
+    const enriched = await enrichProducts(palette, mallId);
     const rawMessage = await generateRecommendation(query, intent, enriched, systemPrompt, 'discovery', { pdpProduct });
     await logApiCost(mallId, 'response_generation', 3000, 700);
 
@@ -733,17 +811,12 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
   }
 
   // ── Specific / Refinement / PDP / after_cart / size_guide 모드 ──
-  const searchQuery = intent.search_query || query;
-
-  // after_cart: 장바구니 담은 상품과 코디 가능한 상품 검색
-  // pdp_context: 현재 보는 상품 기반으로 연관 상품 검색
-  const searchBase = pdpProduct
-    ? `${pdpProduct.name} ${pdpProduct.embed_text?.slice(0, 100) || ''} 코디 어울리는`
-    : searchQuery;
-
-  const queryEmbedding = await embedQuery(searchBase);
-  // 하드 필터 적용 여유분 확보를 위해 15개 요청
-  const rawProducts = await vectorSearch(queryEmbedding, mallId, 15);
+  // queryEmbedding은 위에서 이미 병렬로 생성됨
+  // RPC 레벨 가격 필터 적용 + 하드 필터 여유분 확보를 위해 15개 요청
+  const rawProducts = await vectorSearch(queryEmbedding, mallId, 15, {
+    price_max: intent.hard_filters?.price_max || null,
+    price_min: intent.hard_filters?.price_min || null,
+  });
 
   const seen = new Set();
   let products = rawProducts.filter(p => {
@@ -771,7 +844,7 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
   console.log(`[Pipeline] 필터 후 후보: ${products.length}개`);
 
   // ── 상품 이미지·가격 보강 ──
-  const enriched = await enrichProducts(products);
+  const enriched = await enrichProducts(products, mallId);
 
   // ── 추천 생성 (상위 6개만 AI에게 전달) ──
   const rawMessage = await generateRecommendation(
