@@ -1065,6 +1065,7 @@
     const chatHistory = [];
     let lastProducts  = [];
     let _refineBar    = null;
+    let _lastChips    = [];   // 마지막 추천의 정제 칩 레이블 (세션 저장용)
 
     // PDP 칩 풀 + 컨텍스트 (product_qa 모드 전용)
     let _pdpChips      = [];
@@ -1123,7 +1124,8 @@
     function saveSession(products) {
       try {
         sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-          messages: messageLog, history: chatHistory, products: products || [],
+          messages: messageLog, history: chatHistory,
+          products: products || [], chips: _lastChips || [],
         }));
       } catch (e) {}
     }
@@ -1136,7 +1138,7 @@
       try {
         const raw = sessionStorage.getItem(SESSION_KEY);
         if (!raw) return;
-        const { messages, history } = JSON.parse(raw);
+        const { messages, history, chips } = JSON.parse(raw);
         if (!(messages?.length)) return;
         messagesEl.innerHTML = '';
         hideWelcome();
@@ -1147,6 +1149,12 @@
           else div.textContent = m.text;
           messagesEl.appendChild(div);
         });
+        // 마지막 정제 칩 복원
+        if (chips?.length) {
+          _lastChips = chips;
+          _refineBar = renderRefinementChips(chips);
+          if (_refineBar) messagesEl.appendChild(_refineBar);
+        }
         scrollArea.scrollTop = scrollArea.scrollHeight;
         (history || []).forEach(h => chatHistory.push(h));
         messageLog.push(...(messages || []));
@@ -1239,7 +1247,7 @@
       followTray.style.display = 'none';
       followScroll.innerHTML = '';
       if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
-      if (_refineBar) { _refineBar = null; } // already removed by innerHTML = ''
+      _refineBar = null; _lastChips = []; // already removed by innerHTML = ''
       showWelcome();
     });
 
@@ -1667,17 +1675,20 @@
 
       // 리파인 칩 바
       if (chips && chips.length) {
+        _lastChips = chips;
         if (_refineBar) _refineBar.remove();
         _refineBar = renderRefinementChips(chips);
         if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+        saveSession(lastProducts);
       }
     }
 
     // ── 채팅 전송 ──
     async function sendChat(query) {
       if (!query.trim()) return;
-      // 새 메시지 입력 시 리파인 칩 바 제거
+      // 새 메시지 입력 시 리파인 칩 바 + 저장된 칩 초기화
       if (_refineBar) { _refineBar.remove(); _refineBar = null; }
+      _lastChips = [];
       addBubble('user', query);
       const loadingBubble = addSkeletonLoader(query);
       sendBtn.disabled = true;

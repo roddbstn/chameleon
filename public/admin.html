@@ -8,198 +8,195 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Apple SD Gothic Neo', -apple-system, 'Noto Sans KR', sans-serif;
-      background: #F5F5F3;
-      color: #111;
-      min-height: 100vh;
+      background: #F5F5F3; color: #111; min-height: 100vh;
     }
 
     /* ── 헤더 ── */
     .header {
-      background: #111;
-      color: #fff;
-      padding: 0 32px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: #111; color: #fff;
+      padding: 0 32px; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
     }
-    .header-logo {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
+    .header-logo { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
     .header-logo span { color: #A8FF78; }
-    .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
 
-    /* ── mall selector ── */
-    .mall-select {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #fff;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      outline: none;
-      cursor: pointer;
+    .mall-select, .period-select {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; padding: 6px 12px; border-radius: 8px;
+      font-size: 13px; outline: none; cursor: pointer;
     }
-    .mall-select option { background: #222; color: #fff; }
+    .mall-select option, .period-select option { background: #222; color: #fff; }
 
     .btn {
-      padding: 7px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.15s;
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      cursor: pointer; border: none; transition: opacity 0.15s; letter-spacing: 0.01em;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
     }
     .btn:hover { opacity: 0.82; }
     .btn-primary { background: #fff; color: #111; }
     .btn-ghost { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
     .btn-sm { padding: 5px 12px; font-size: 12px; }
-    .btn-danger { background: #FEE2E2; color: #991B1B; }
 
-    /* ── 메인 레이아웃 ── */
-    .main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    .main { max-width: 1160px; margin: 0 auto; padding: 32px 24px; }
 
-    /* ── 섹션 타이틀 ── */
     .section-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #666;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
+      font-size: 12px; font-weight: 600; color: #999;
+      letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 12px;
     }
 
     /* ── 통계 카드 ── */
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 14px;
-      margin-bottom: 32px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px; margin-bottom: 28px;
     }
     .stat-card {
-      background: #fff;
-      border-radius: 14px;
-      padding: 20px 22px;
+      background: #fff; border-radius: 14px;
+      padding: 18px 20px; border: 1px solid #EBEBEB;
+    }
+    .stat-label { font-size: 11px; color: #999; margin-bottom: 6px; letter-spacing: 0.03em; }
+    .stat-value { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+    .stat-sub   { font-size: 11px; color: #BBB; margin-top: 4px; }
+    .stat-delta { font-size: 11px; margin-top: 4px; }
+    .stat-delta.up   { color: #16A34A; }
+    .stat-delta.down { color: #DC2626; }
+    .stat-card.accent { background: #111; border-color: #111; }
+    .stat-card.accent .stat-label { color: rgba(255,255,255,0.5); }
+    .stat-card.accent .stat-value { color: #A8FF78; }
+    .stat-card.accent .stat-sub   { color: rgba(255,255,255,0.35); }
+
+    /* ── 퍼널 ── */
+    .funnel-card {
+      background: #fff; border-radius: 14px; border: 1px solid #EBEBEB;
+      padding: 24px 28px; margin-bottom: 28px;
+    }
+    .funnel-title { font-size: 14px; font-weight: 600; margin-bottom: 20px; }
+    .funnel-row {
+      display: flex; align-items: stretch; gap: 0;
+    }
+    .funnel-step {
+      flex: 1; text-align: center; position: relative;
+    }
+    .funnel-step + .funnel-step::before {
+      content: '→';
+      position: absolute; left: -10px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px; color: #CCC; line-height: 1;
+    }
+    .funnel-box {
+      background: #F8F8F6; border-radius: 10px;
+      padding: 16px 12px; margin: 0 8px;
       border: 1px solid #EBEBEB;
     }
-    .stat-label { font-size: 12px; color: #888; margin-bottom: 8px; letter-spacing: 0.02em; }
-    .stat-value { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
-    .stat-sub { font-size: 11px; color: #AAA; margin-top: 4px; }
-    .stat-card.accent { background: #111; border-color: #111; }
-    .stat-card.accent .stat-label { color: rgba(255,255,255,0.6); }
-    .stat-card.accent .stat-value { color: #A8FF78; }
-    .stat-card.accent .stat-sub { color: rgba(255,255,255,0.4); }
+    .funnel-box.highlight { background: #F0FFF4; border-color: #BBF7D0; }
+    .funnel-event { font-size: 11px; color: #999; margin-bottom: 6px; letter-spacing: 0.03em; }
+    .funnel-count { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #111; }
+    .funnel-rate  {
+      display: inline-block; margin-top: 6px;
+      font-size: 11px; font-weight: 600; padding: 2px 8px;
+      border-radius: 999px; background: #111; color: #fff;
+    }
+    .funnel-rate.low  { background: #FEF3C7; color: #92400E; }
+    .funnel-rate.mid  { background: #DBEAFE; color: #1E40AF; }
+    .funnel-rate.high { background: #DCFCE7; color: #166534; }
+
+    /* ── 카드 / 테이블 ── */
+    .card {
+      background: #fff; border-radius: 14px;
+      border: 1px solid #EBEBEB; overflow: hidden; margin-bottom: 24px;
+    }
+    .card-header {
+      padding: 14px 20px; border-bottom: 1px solid #F0F0EE;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-title { font-size: 14px; font-weight: 600; }
+    .card-meta  { font-size: 12px; color: #AAA; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; font-size: 11px; font-weight: 600; color: #888;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 9px 16px; border-bottom: 1px solid #F0F0EE; background: #FAFAF9;
+    }
+    td {
+      padding: 11px 16px; font-size: 13px;
+      border-bottom: 1px solid #F8F8F6; vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr { cursor: pointer; transition: background 0.1s; }
+    tbody tr:hover td { background: #FAFAF9; }
+    tbody tr.expanded td { background: #F5F5F3; }
+
+    /* ── 확장 행 (inference_log) ── */
+    .expand-row td { padding: 0; border-bottom: 1px solid #F0F0EE; cursor: default; }
+    .expand-row:hover td { background: transparent; }
+    .expand-panel {
+      padding: 14px 20px 14px 52px;
+      background: #FAFAF9;
+      display: none; flex-direction: column; gap: 10px;
+    }
+    .expand-panel.open { display: flex; }
+    .expand-section-label {
+      font-size: 10px; font-weight: 700; color: #AAA;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .inference-item {
+      font-size: 12px; color: #555; line-height: 1.5;
+      padding: 2px 0;
+    }
+    .inference-item::before { content: '·  '; color: #AAA; }
+    .product-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .product-chip {
+      font-size: 11px; padding: 3px 10px; border-radius: 999px;
+      background: #F0F0EE; color: #555; white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-block; padding: 2px 8px;
+      border-radius: 999px; font-size: 11px; font-weight: 500;
+    }
+    .badge-green  { background: #DCFCE7; color: #166534; }
+    .badge-blue   { background: #DBEAFE; color: #1E40AF; }
+    .badge-yellow { background: #FEF9C3; color: #854D0E; }
+    .badge-red    { background: #FEE2E2; color: #991B1B; }
+    .badge-gray   { background: #F1F5F9; color: #475569; }
+    .badge-purple { background: #F3E8FF; color: #6B21A8; }
+
+    .query-text {
+      max-width: 260px; overflow: hidden;
+      text-overflow: ellipsis; white-space: nowrap; color: #333;
+    }
+    .time-text { color: #AAA; font-size: 12px; white-space: nowrap; }
+
+    /* ── 분포 바 ── */
+    .bar-wrap { padding: 16px 20px 20px; }
+    .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .bar-label { font-size: 12px; color: #555; width: 72px; flex-shrink: 0; }
+    .bar-bg { flex: 1; height: 8px; background: #F0F0EE; border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+    .bar-val { font-size: 12px; color: #333; width: 50px; text-align: right; flex-shrink: 0; }
 
     /* ── 퀵 액션 ── */
-    .actions-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
+    .actions-row { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
     .action-card {
-      background: #fff;
-      border: 1px solid #EBEBEB;
-      border-radius: 12px;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 200px;
-      flex: 1;
+      background: #fff; border: 1px solid #EBEBEB; border-radius: 12px;
+      padding: 14px 18px; display: flex; align-items: center;
+      gap: 14px; min-width: 190px; flex: 1;
     }
     .action-icon {
-      width: 38px; height: 38px;
-      background: #F5F5F3;
-      border-radius: 10px;
+      width: 36px; height: 36px; background: #F5F5F3; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
+      font-size: 16px; flex-shrink: 0;
     }
     .action-info { flex: 1; min-width: 0; }
     .action-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
     .action-desc { font-size: 11px; color: #888; }
 
-    /* ── 로그 테이블 ── */
-    .card {
-      background: #fff;
-      border-radius: 14px;
-      border: 1px solid #EBEBEB;
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-    .card-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid #F0F0EE;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .card-title { font-size: 14px; font-weight: 600; }
-    table { width: 100%; border-collapse: collapse; }
-    th {
-      text-align: left;
-      font-size: 11px;
-      font-weight: 600;
-      color: #888;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 10px 16px;
-      border-bottom: 1px solid #F0F0EE;
-      background: #FAFAF9;
-    }
-    td {
-      padding: 11px 16px;
-      font-size: 13px;
-      border-bottom: 1px solid #F8F8F6;
-      vertical-align: middle;
-    }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #FAFAF9; }
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 500;
-    }
-    .badge-green { background: #DCFCE7; color: #166534; }
-    .badge-yellow { background: #FEF9C3; color: #854D0E; }
-    .badge-red { background: #FEE2E2; color: #991B1B; }
-    .badge-gray { background: #F1F5F9; color: #475569; }
-    .query-text {
-      max-width: 280px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: #333;
-    }
-    .time-text { color: #AAA; font-size: 12px; white-space: nowrap; }
+    /* ── 기타 ── */
+    .loading { color: #AAA; font-size: 13px; padding: 28px; text-align: center; }
+    .empty   { color: #CCC; font-size: 13px; padding: 36px; text-align: center; }
 
-    /* ── 비용 바 차트 ── */
-    .cost-bar-wrap { padding: 16px 20px 20px; }
-    .cost-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .cost-bar-label { font-size: 12px; color: #555; width: 80px; flex-shrink: 0; }
-    .cost-bar-bg { flex: 1; height: 8px; background: #F0F0EE; border-radius: 4px; overflow: hidden; }
-    .cost-bar-fill { height: 100%; border-radius: 4px; background: #111; transition: width 0.4s; }
-    .cost-bar-val { font-size: 12px; color: #333; width: 60px; text-align: right; flex-shrink: 0; }
-
-    /* ── 로딩 ── */
-    .loading { color: #AAA; font-size: 13px; padding: 24px; text-align: center; }
-    .empty { color: #CCC; font-size: 13px; padding: 32px; text-align: center; }
-
-    /* ── 토스트 ── */
     #toast {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px);
       background: #111; color: #fff; font-size: 13px; padding: 10px 20px;
@@ -211,6 +208,8 @@
     @media (max-width: 640px) {
       .main { padding: 16px; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .funnel-row { flex-direction: column; gap: 8px; }
+      .funnel-step + .funnel-step::before { display: none; }
     }
   </style>
 </head>
@@ -218,7 +217,6 @@
 
 <div id="toast"></div>
 
-<!-- ── 헤더 ── -->
 <header class="header">
   <div class="header-logo">Chame<span>leon</span></div>
   <div class="header-right">
@@ -226,46 +224,71 @@
       <option value="">전체 스토어</option>
       <option value="tndbsrkd" selected>tndbsrkd</option>
     </select>
+    <select class="period-select" id="period-select" onchange="loadAll()">
+      <option value="today">오늘</option>
+      <option value="7d">7일</option>
+      <option value="30d" selected>30일</option>
+    </select>
     <button class="btn btn-ghost btn-sm" onclick="loadAll()">↻ 새로고침</button>
   </div>
 </header>
 
-<!-- ── 메인 ── -->
 <main class="main">
 
-  <!-- 통계 카드 -->
-  <div class="section-title">이번 달 현황</div>
-  <div class="stats-grid">
+  <!-- ── 핵심 지표 카드 ── -->
+  <div class="section-title">핵심 지표</div>
+  <div class="stats-grid" style="margin-bottom:28px;">
+    <div class="stat-card">
+      <div class="stat-label">위젯 노출</div>
+      <div class="stat-value" id="stat-impression">—</div>
+      <div class="stat-sub">페이지 방문</div>
+    </div>
     <div class="stat-card accent">
-      <div class="stat-label">API 비용</div>
-      <div class="stat-value" id="stat-cost">—</div>
-      <div class="stat-sub" id="stat-period">로딩 중...</div>
+      <div class="stat-label">대화 시작</div>
+      <div class="stat-value" id="stat-chat-start">—</div>
+      <div class="stat-sub" id="stat-chat-rate">노출 대비 —</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">총 대화 수</div>
-      <div class="stat-value" id="stat-chats">—</div>
-      <div class="stat-sub">이번 달</div>
+      <div class="stat-label">상품 클릭</div>
+      <div class="stat-value" id="stat-product-click">—</div>
+      <div class="stat-sub" id="stat-click-rate">대화 대비 —</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">등록 상품 수</div>
-      <div class="stat-value" id="stat-products">—</div>
-      <div class="stat-sub">활성 상품</div>
+      <div class="stat-label">장바구니 담기</div>
+      <div class="stat-value" id="stat-cart-add">—</div>
+      <div class="stat-sub" id="stat-cart-rate">클릭 대비 —</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">추천 성공률</div>
+      <div class="stat-label">AI 추천 성공률</div>
       <div class="stat-value" id="stat-success">—</div>
       <div class="stat-sub">recommendation / 전체</div>
     </div>
+    <div class="stat-card">
+      <div class="stat-label">API 비용</div>
+      <div class="stat-value" id="stat-cost">—</div>
+      <div class="stat-sub" id="stat-period">이번 달</div>
+    </div>
   </div>
 
-  <!-- 퀵 액션 -->
-  <div class="section-title">빠른 작업</div>
-  <div class="actions-row" style="margin-bottom:32px;">
+  <!-- ── 전환 퍼널 ── -->
+  <div class="section-title">Chameleon 기여 전환 퍼널</div>
+  <div class="funnel-card" style="margin-bottom:28px;">
+    <div id="funnel-row" class="funnel-row">
+      <div class="loading">로딩 중...</div>
+    </div>
+    <div style="margin-top:16px;font-size:11px;color:#BBB;text-align:right;">
+      각 단계의 % = 직전 단계 대비 전환율
+    </div>
+  </div>
+
+  <!-- ── 퀵 액션 ── -->
+  <div class="section-title">관리</div>
+  <div class="actions-row">
     <div class="action-card">
       <div class="action-icon">🔄</div>
       <div class="action-info">
         <div class="action-name">상품 동기화</div>
-        <div class="action-desc">카페24 → Supabase 전체 동기화</div>
+        <div class="action-desc">카페24 → Supabase 전체</div>
       </div>
       <button class="btn btn-primary btn-sm" onclick="runSync()">실행</button>
     </div>
@@ -287,20 +310,20 @@
     </div>
   </div>
 
-  <!-- 대화 결과 유형 분포 -->
-  <div class="section-title">결과 유형 분포</div>
-  <div class="card" style="margin-bottom:32px;">
-    <div class="cost-bar-wrap" id="type-bars">
+  <!-- ── 결과 유형 분포 ── -->
+  <div class="section-title">대화 결과 유형</div>
+  <div class="card" style="margin-bottom:28px;">
+    <div class="bar-wrap" id="type-bars">
       <div class="loading">로딩 중...</div>
     </div>
   </div>
 
-  <!-- 최근 대화 로그 -->
-  <div class="section-title">최근 대화 로그</div>
+  <!-- ── 대화 품질 모니터링 ── -->
+  <div class="section-title">대화 품질 모니터링</div>
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Chat Logs</div>
-      <span id="log-count" style="font-size:12px;color:#AAA;"></span>
+      <div class="card-title">대화 로그</div>
+      <span class="card-meta" id="log-count"></span>
     </div>
     <div id="log-table-wrap">
       <div class="loading">로딩 중...</div>
@@ -312,6 +335,7 @@
 <script>
   const SERVER = '';
   let currentMallId = document.getElementById('mall-select').value;
+  let currentPeriod = document.getElementById('period-select').value;
 
   function onMallChange() {
     currentMallId = document.getElementById('mall-select').value;
@@ -336,81 +360,218 @@
     return '방금 전';
   }
 
-  function typeBadge(t) {
-    if (t === 'recommendation') return '<span class="badge badge-green">추천</span>';
-    if (t === 'clarification')  return '<span class="badge badge-yellow">질문</span>';
-    if (t === 'no_results')     return '<span class="badge badge-red">결과없음</span>';
-    return `<span class="badge badge-gray">${t||'?'}</span>`;
+  function pct(num, den) {
+    if (!den) return '—';
+    return Math.round((num / den) * 100) + '%';
   }
 
+  function rateClass(num, den) {
+    if (!den) return '';
+    const r = num / den;
+    if (r >= 0.3) return 'high';
+    if (r >= 0.1) return 'mid';
+    return 'low';
+  }
+
+  function typeBadge(t) {
+    const map = {
+      recommendation: ['badge-green',  '추천'],
+      discovery:      ['badge-blue',   '탐색'],
+      faq:            ['badge-gray',   'FAQ'],
+      no_results:     ['badge-red',    '결과없음'],
+      pdp_context:    ['badge-purple', 'PDP'],
+      after_cart:     ['badge-yellow', '장바구니후'],
+    };
+    const [cls, label] = map[t] || ['badge-gray', t || '?'];
+    return `<span class="badge ${cls}">${label}</span>`;
+  }
+
+  function actionBadge(a) {
+    const map = {
+      cart_add:      ['badge-green',  '🛒 장바구니'],
+      product_click: ['badge-blue',   '👆 상품클릭'],
+      purchase:      ['badge-green',  '✅ 구매'],
+      chip_click:    ['badge-gray',   '칩 클릭'],
+    };
+    if (!a) return '<span style="color:#DDD;font-size:12px;">—</span>';
+    const [cls, label] = map[a] || ['badge-gray', a];
+    return `<span class="badge ${cls}">${label}</span>`;
+  }
+
+  // ── 전환 퍼널 렌더 ──
+  function renderFunnel(totals) {
+    const steps = [
+      { key: 'impression',     label: '위젯 노출' },
+      { key: 'chat_start',     label: '대화 시작' },
+      { key: 'product_click',  label: '상품 클릭' },
+      { key: 'cart_add',       label: '장바구니' },
+    ];
+
+    document.getElementById('funnel-row').innerHTML = steps.map((step, i) => {
+      const count = totals[step.key] || 0;
+      const prev  = i > 0 ? (totals[steps[i-1].key] || 0) : null;
+      const rate  = prev !== null ? pct(count, prev) : null;
+      const cls   = prev !== null ? rateClass(count, prev) : '';
+      const isHighlight = step.key === 'cart_add';
+      return `
+        <div class="funnel-step">
+          <div class="funnel-box${isHighlight ? ' highlight' : ''}">
+            <div class="funnel-event">${step.label}</div>
+            <div class="funnel-count">${count.toLocaleString()}</div>
+            ${rate !== null ? `<span class="funnel-rate ${cls}">${rate}</span>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── 대화 로그 테이블 렌더 ──
+  function renderLogTable(conversations) {
+    if (!conversations.length) {
+      document.getElementById('log-table-wrap').innerHTML =
+        '<div class="empty">아직 대화 로그가 없어요.<br>채팅을 시작하면 여기에 기록됩니다.</div>';
+      return;
+    }
+
+    document.getElementById('log-count').textContent = `최근 ${conversations.length}건`;
+
+    const rows = conversations.map((l, idx) => {
+      const hasInference = l.inference_log?.length > 0;
+      const hasProducts  = l.product_ids?.length > 0;
+      const expandable   = hasInference || hasProducts;
+
+      const inferenceHtml = hasInference
+        ? l.inference_log.map(s => `<div class="inference-item">${s}</div>`).join('')
+        : '<div style="color:#CCC;font-size:12px;">추론 내역 없음</div>';
+
+      const productHtml = hasProducts
+        ? `<div class="product-chips">${l.product_ids.map(id =>
+            `<span class="product-chip">#${id}</span>`).join('')}</div>`
+        : '';
+
+      const hardFilters = l.hard_filters && Object.values(l.hard_filters).some(v => v && (Array.isArray(v) ? v.length : true))
+        ? `<div style="font-size:11px;color:#888;margin-top:6px;">
+            하드 필터: ${JSON.stringify(l.hard_filters)}</div>`
+        : '';
+
+      return `
+        <tr onclick="toggleExpand(${idx})" id="row-${idx}">
+          <td class="time-text">${timeAgo(l.created_at)}</td>
+          <td><div class="query-text" title="${l.query||''}">${l.query||'—'}</div></td>
+          <td style="font-size:12px;color:#666;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${l.intent_situation||'—'}</td>
+          <td>${typeBadge(l.result_type)}</td>
+          <td>${actionBadge(l.final_action)}</td>
+          <td style="text-align:center;color:#888;">${l.product_count ?? '—'}</td>
+          <td style="color:#CCC;font-size:12px;">${expandable ? '▸' : ''}</td>
+        </tr>
+        <tr class="expand-row" id="expand-${idx}">
+          <td colspan="7">
+            <div class="expand-panel" id="panel-${idx}">
+              <div>
+                <div class="expand-section-label">AI 추론 내역</div>
+                ${inferenceHtml}
+                ${hardFilters}
+              </div>
+              ${hasProducts ? `<div>
+                <div class="expand-section-label">추천 상품 ID</div>
+                ${productHtml}
+              </div>` : ''}
+              ${l.intent_needs ? `<div>
+                <div class="expand-section-label">파악된 니즈</div>
+                <div style="font-size:12px;color:#555;">${l.intent_needs}</div>
+              </div>` : ''}
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+
+    document.getElementById('log-table-wrap').innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>시간</th>
+            <th>쿼리</th>
+            <th>상황(TPO)</th>
+            <th>결과</th>
+            <th>최종 액션</th>
+            <th style="text-align:center;">추천수</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+
+  function toggleExpand(idx) {
+    const panel = document.getElementById(`panel-${idx}`);
+    const row   = document.getElementById(`row-${idx}`);
+    if (!panel) return;
+    const isOpen = panel.classList.toggle('open');
+    row.classList.toggle('expanded', isOpen);
+  }
+
+  // ── 전체 로드 ──
   async function loadAll() {
-    const url = SERVER + '/api/stats' + (currentMallId ? `?mallId=${currentMallId}` : '');
+    currentMallId = document.getElementById('mall-select').value;
+    currentPeriod = document.getElementById('period-select').value;
+
+    const qs = (base) => base + (currentMallId ? `${base.includes('?') ? '&' : '?'}mallId=${currentMallId}` : '');
+
     try {
-      const r = await fetch(url);
-      const d = await r.json();
+      // 병렬 요청
+      const [statsRes, metricsRes, convRes] = await Promise.all([
+        fetch(qs(`${SERVER}/api/stats`)).then(r => r.json()),
+        fetch(`${SERVER}/api/metrics?mallId=${currentMallId || ''}&period=${currentPeriod}`).then(r => r.json()),
+        fetch(`${SERVER}/api/conversations?mallId=${currentMallId || ''}&limit=80`).then(r => r.json()),
+      ]);
 
-      document.getElementById('stat-cost').textContent = `$${d.total_cost_usd.toFixed(4)}`;
-      document.getElementById('stat-period').textContent = d.period;
-      document.getElementById('stat-chats').textContent = d.chat_count.toLocaleString();
-      document.getElementById('stat-products').textContent = d.product_count.toLocaleString();
+      // ── 핵심 지표 카드 ──
+      const t = metricsRes.totals || {};
+      document.getElementById('stat-impression').textContent    = (t.impression || 0).toLocaleString();
+      document.getElementById('stat-chat-start').textContent    = (t.chat_start || 0).toLocaleString();
+      document.getElementById('stat-product-click').textContent = (t.product_click || 0).toLocaleString();
+      document.getElementById('stat-cart-add').textContent      = (t.cart_add || 0).toLocaleString();
 
-      const total = d.chat_count || 1;
-      const rec = d.by_type?.recommendation || 0;
-      const pct = total ? Math.round((rec / total) * 100) : 0;
-      document.getElementById('stat-success').textContent = `${pct}%`;
+      document.getElementById('stat-chat-rate').textContent    = `노출 대비 ${pct(t.chat_start, t.impression)}`;
+      document.getElementById('stat-click-rate').textContent   = `대화 대비 ${pct(t.product_click, t.chat_start)}`;
+      document.getElementById('stat-cart-rate').textContent    = `클릭 대비 ${pct(t.cart_add, t.product_click)}`;
 
-      // 유형 분포 바
+      document.getElementById('stat-cost').textContent   = `$${(statsRes.total_cost_usd || 0).toFixed(4)}`;
+      document.getElementById('stat-period').textContent = statsRes.period || '';
+
+      const total = statsRes.chat_count || 1;
+      const rec   = statsRes.by_type?.recommendation || 0;
+      document.getElementById('stat-success').textContent = `${total ? Math.round((rec/total)*100) : 0}%`;
+
+      // ── 퍼널 ──
+      renderFunnel(t);
+
+      // ── 유형 분포 ──
       const types = [
-        { key: 'recommendation', label: '추천', color: '#111' },
-        { key: 'clarification',  label: '질문',  color: '#FBBF24' },
+        { key: 'recommendation', label: '추천',     color: '#111' },
+        { key: 'discovery',      label: '탐색',     color: '#3B82F6' },
+        { key: 'faq',            label: 'FAQ',      color: '#8B5CF6' },
         { key: 'no_results',     label: '결과없음', color: '#F87171' },
+        { key: 'pdp_context',    label: 'PDP',      color: '#F59E0B' },
       ];
-      const maxVal = Math.max(...types.map(t => d.by_type?.[t.key] || 0), 1);
+      const byType = statsRes.by_type || {};
+      const maxVal = Math.max(...types.map(t => byType[t.key] || 0), 1);
       document.getElementById('type-bars').innerHTML = types.map(t => {
-        const val = d.by_type?.[t.key] || 0;
-        const w = Math.round((val / maxVal) * 100);
+        const val = byType[t.key] || 0;
+        const w   = Math.round((val / maxVal) * 100);
         return `
-          <div class="cost-bar-row">
-            <div class="cost-bar-label">${t.label}</div>
-            <div class="cost-bar-bg"><div class="cost-bar-fill" style="width:${w}%;background:${t.color}"></div></div>
-            <div class="cost-bar-val">${val}회</div>
+          <div class="bar-row">
+            <div class="bar-label">${t.label}</div>
+            <div class="bar-bg"><div class="bar-fill" style="width:${w}%;background:${t.color}"></div></div>
+            <div class="bar-val">${val}회</div>
           </div>`;
       }).join('');
 
-      // 로그 테이블
-      const logs = d.recent_chats || [];
-      document.getElementById('log-count').textContent = `최근 ${logs.length}건`;
-      if (!logs.length) {
-        document.getElementById('log-table-wrap').innerHTML = '<div class="empty">아직 대화 로그가 없어요.<br>채팅을 시작하면 여기에 기록됩니다.</div>';
-        return;
-      }
-      document.getElementById('log-table-wrap').innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>시간</th>
-              <th>스토어</th>
-              <th>쿼리</th>
-              <th>상황</th>
-              <th>결과</th>
-              <th>상품 수</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${logs.map(l => `
-              <tr>
-                <td class="time-text">${timeAgo(l.created_at)}</td>
-                <td><code style="font-size:11px;color:#555;">${l.store_id||''}</code></td>
-                <td><div class="query-text">${l.query||''}</div></td>
-                <td style="font-size:12px;color:#666;">${l.intent_situation||'—'}</td>
-                <td>${typeBadge(l.result_type)}</td>
-                <td style="text-align:center;">${l.product_count ?? '—'}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>`;
+      // ── 대화 로그 ──
+      renderLogTable(convRes.conversations || []);
+
     } catch (e) {
       console.error(e);
-      showToast('통계 로드 실패: ' + e.message);
+      showToast('로드 실패: ' + e.message);
     }
   }
 
@@ -439,7 +600,7 @@
   }
 
   loadAll();
-  setInterval(loadAll, 30000); // 30초마다 자동 갱신
+  setInterval(loadAll, 60000);
 </script>
 </body>
 </html>
