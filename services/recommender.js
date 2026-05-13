@@ -45,6 +45,25 @@ const GEMINI_CHAIN = [
 ];
 const EMBED_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent';
 
+// OpenAI fallback — text-only 요청을 Gemini 응답 포맷으로 래핑
+async function callOpenAIFallback(body) {
+  if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY not set');
+  const textPart = body.contents?.[0]?.parts?.find(p => p.text);
+  if (!textPart) throw new Error('No text content for OpenAI fallback');
+  const maxTokens = Math.min(body.generationConfig?.maxOutputTokens || 1024, 16000);
+  const r = await axios.post('https://api.openai.com/v1/chat/completions', {
+    model: 'gpt-4o-mini',
+    messages: [{ role: 'user', content: textPart.text }],
+    max_tokens: maxTokens,
+  }, {
+    headers: { 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
+    timeout: 30000,
+  });
+  const text = r.data.choices?.[0]?.message?.content || '';
+  console.log('[AI] OpenAI gpt-4o-mini fallback 성공');
+  return { data: { candidates: [{ content: { parts: [{ text }] } }] } };
+}
+
 async function callGemini(body) {
   for (const { model, api } of GEMINI_CHAIN) {
     const endpoint = `https://generativelanguage.googleapis.com/${api}/models/${model}:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`;
@@ -66,7 +85,13 @@ async function callGemini(body) {
       }
     }
   }
-  throw new Error('All Gemini models unavailable');
+  // Gemini 전체 실패 → OpenAI 폴백
+  try {
+    return await callOpenAIFallback(body);
+  } catch (openAiErr) {
+    console.error('[AI] OpenAI fallback 실패:', openAiErr.message);
+    throw new Error('All AI models unavailable');
+  }
 }
 
 // ─────────────────────────────────────────────

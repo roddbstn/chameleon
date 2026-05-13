@@ -32,6 +32,26 @@ const GEMINI_CHAIN = [
   { model: 'gemini-2.0-flash', api: 'v1beta' },
   { model: 'gemini-1.5-flash', api: 'v1'     },
 ];
+
+// OpenAI fallback — text-only 요청을 Gemini 응답 포맷으로 래핑
+async function callOpenAIFallback(body) {
+  if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY not set');
+  const textPart = body.contents?.[0]?.parts?.find(p => p.text);
+  if (!textPart) throw new Error('No text content for OpenAI fallback (multimodal not supported)');
+  const maxTokens = Math.min(body.generationConfig?.maxOutputTokens || 1024, 16000);
+  const r = await axios.post('https://api.openai.com/v1/chat/completions', {
+    model: 'gpt-4o-mini',
+    messages: [{ role: 'user', content: textPart.text }],
+    max_tokens: maxTokens,
+  }, {
+    headers: { 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
+    timeout: 30000,
+  });
+  const text = r.data.choices?.[0]?.message?.content || '';
+  console.log('[AI] OpenAI gpt-4o-mini fallback 성공');
+  return { data: { candidates: [{ content: { parts: [{ text }] } }] } };
+}
+
 async function callGemini(body) {
   for (const { model, api } of GEMINI_CHAIN) {
     const url = `https://generativelanguage.googleapis.com/${api}/models/${model}:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`;
@@ -51,7 +71,13 @@ async function callGemini(body) {
       }
     }
   }
-  throw new Error('All Gemini models unavailable');
+  // Gemini 전체 실패 → OpenAI 폴백
+  try {
+    return await callOpenAIFallback(body);
+  } catch (openAiErr) {
+    console.error('[AI] OpenAI fallback 실패:', openAiErr.message);
+    throw new Error('All AI models unavailable');
+  }
 }
 app.use(express.json({ limit: '3mb' }));
 app.use(express.static(path.join(__dirname, 'public'), {
@@ -570,8 +596,14 @@ chips 작성 규칙:
       generationConfig: { maxOutputTokens: 4096 },
     });
     const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-    const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    const content = JSON.parse(cleaned);
+    const cleaned = raw
+      .replace(/```json\n?/g, '').replace(/```\n?/g, '')
+      .replace(/'/g, '"')             // single → double quote
+      .replace(/,\s*}/g, '}')         // trailing comma
+      .replace(/,\s*]/g, ']')
+      .trim();
+    const jsonStr = cleaned.match(/\{[\s\S]*\}/)?.[0] || '{}';
+    const content = JSON.parse(jsonStr);
     console.log(`[PdpContent] ${mallId} product:${productNo} → ${content.badge} chips:${content.chips?.length}`);
     pdpContentCache.set(cacheKey, content);
     res.json(content);
