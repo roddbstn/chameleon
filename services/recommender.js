@@ -39,9 +39,10 @@ async function logApiCost(storeId, agentType, tokensIn, tokensOut) {
 }
 
 const GEMINI_CHAIN = [
-  { model: 'gemini-2.5-flash', api: 'v1beta' },
-  { model: 'gemini-2.0-flash', api: 'v1beta' },
-  { model: 'gemini-1.5-flash', api: 'v1'     },
+  { model: 'gemini-2.5-flash',          api: 'v1beta' },
+  { model: 'gemini-2.0-flash',          api: 'v1'     },
+  { model: 'gemini-2.0-flash-lite',     api: 'v1'     },
+  { model: 'gemini-1.5-flash',          api: 'v1'     },
 ];
 const EMBED_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent';
 
