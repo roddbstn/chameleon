@@ -830,6 +830,10 @@
       background: color-mix(in srgb, var(--cml-accent, #5E4637) 12%, white);
       font-weight: 600; color: var(--cml-accent, #5E4637);
     }
+    @keyframes cml-chips-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
   `;
 
   // ── 7. 패널 삽입 위치 찾기 (config 기반) ──────────────
@@ -1147,7 +1151,7 @@
       try {
         const raw = sessionStorage.getItem(SESSION_KEY);
         if (!raw) return;
-        const { messages, history, chips } = JSON.parse(raw);
+        const { messages, history, chips, products } = JSON.parse(raw);
         if (!(messages?.length)) return;
         messagesEl.innerHTML = '';
         hideWelcome();
@@ -1158,6 +1162,14 @@
           else div.textContent = m.text;
           messagesEl.appendChild(div);
         });
+        // 마지막 추천 상품 카드 복원
+        if (products?.length) {
+          lastProducts = products;
+          const container = document.createElement('div');
+          container.className = 'cml-msg-products';
+          products.forEach((p, i) => container.appendChild(createMsgProductCard(p, i + 1)));
+          messagesEl.appendChild(container);
+        }
         // 마지막 정제 칩 복원
         if (chips?.length) {
           _lastChips = chips;
@@ -1689,12 +1701,14 @@
 
     function renderInlineRecommendation(message, products, chips) {
       // 메시지 전체를 하나의 버블로 표시 (1. 2. 3. 넘버링 포함)
+      lastProducts = products || [];
       addBubble('assistant', message);
 
       // 상품 카드 전체를 가로 1행으로 나열
       if (products.length) {
         const container = document.createElement('div');
         container.className = 'cml-msg-products';
+        container.dataset.products = JSON.stringify(products);
         products.forEach((p, i) => container.appendChild(createMsgProductCard(p, i + 1)));
         messagesEl.appendChild(container);
         scrollToBottom();
