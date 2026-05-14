@@ -1663,32 +1663,75 @@
       return bar;
     }
 
+    async function consumeRecommendStream(fetchBody, { loadingBubble, onDone }) {
+      const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fetchBody),
+      });
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let sseBuffer = '';
+      let streamBubble = null;
+      let streamRaw = '';
+      let loadingGone = false;
+
+      const removeLoading = () => { if (!loadingGone) { loadingBubble.remove(); loadingGone = true; } };
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        sseBuffer += decoder.decode(value, { stream: true });
+        const events = sseBuffer.split('\n\n');
+        sseBuffer = events.pop();
+
+        for (const event of events) {
+          if (!event.startsWith('data: ')) continue;
+          let data;
+          try { data = JSON.parse(event.slice(6)); } catch { continue; }
+
+          if (data.type === 'chunk') {
+            removeLoading();
+            streamRaw += data.text;
+            if (!streamBubble) {
+              streamBubble = document.createElement('div');
+              streamBubble.className = 'cml-chat-bubble assistant';
+              messagesEl.appendChild(streamBubble);
+            }
+            streamBubble.innerHTML = parseMd(streamRaw);
+            scrollToBottom();
+          } else if (data.type === 'done' || data.type === 'error') {
+            removeLoading();
+            const msg = data.message || streamRaw || '죄송해요, 다시 시도해주세요.';
+            if (streamBubble) streamBubble.innerHTML = parseMd(msg);
+            else addBubble('assistant', msg);
+            messageLog.push({ role: 'assistant', text: msg });
+
+            if (data.type === 'done') onDone(data, msg);
+          }
+        }
+      }
+      if (!loadingGone) loadingBubble.remove();
+    }
+
     async function sendRefinement(query, bar) {
       addBubble('user', query);
       const loadingBubble = addSkeletonLoader(query);
       sendBtn.disabled = true;
       try {
-        const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            mallId: MALL_ID, query, conversationHistory: chatHistory,
-            sessionId: sessionStorage.getItem('cml_sid') || '',
-            pageUrl: location.href,
-          }),
+        await consumeRecommendStream({
+          mallId: MALL_ID, query, conversationHistory: chatHistory,
+          sessionId: sessionStorage.getItem('cml_sid') || '',
+          pageUrl: location.href,
+        }, {
+          loadingBubble,
+          onDone: (data, msg) => {
+            if (data.products?.length) renderInlineRecommendation(msg, data.products, data.refinement_chips);
+            if (bar) messagesEl.appendChild(bar);
+            chatHistory.push({ role: 'user', content: query });
+            chatHistory.push({ role: 'assistant', content: msg });
+            if (chatHistory.length > 20) chatHistory.splice(0, 2);
+          },
         });
-        const data = await res.json();
-        loadingBubble.remove();
-        const msg = data.message || data.error || '죄송해요, 다시 시도해주세요.';
-        if (data.type === 'recommendation' && data.products?.length) {
-          renderInlineRecommendation(msg, data.products, data.refinement_chips);
-        } else {
-          addBubble('assistant', msg);
-        }
-        // Re-append existing bar to bottom so it stays visible after new results
-        if (bar) messagesEl.appendChild(bar);
-        chatHistory.push({ role: 'user', content: query });
-        chatHistory.push({ role: 'assistant', content: msg });
-        if (chatHistory.length > 20) chatHistory.splice(0, 2);
       } catch {
         loadingBubble.remove();
         addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
@@ -1727,34 +1770,41 @@
     // ── 채팅 전송 ──
     async function sendChat(query) {
       if (!query.trim()) return;
-      // 새 메시지 입력 시 리파인 칩 바 + 저장된 칩 초기화
       if (_refineBar) { _refineBar.remove(); _refineBar = null; }
       _lastChips = [];
       addBubble('user', query);
       const loadingBubble = addSkeletonLoader(query);
       sendBtn.disabled = true;
+      const pendingMode = _pendingMode; _pendingMode = null;
       try {
-        const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            mallId: MALL_ID, query, conversationHistory: chatHistory,
-            sessionId: sessionStorage.getItem('cml_sid') || '',
-            pageUrl: location.href,
-            mode: _pendingMode || undefined,
-          }),
+        await consumeRecommendStream({
+          mallId: MALL_ID, query, conversationHistory: chatHistory,
+          sessionId: sessionStorage.getItem('cml_sid') || '',
+          pageUrl: location.href,
+          mode: pendingMode || undefined,
+        }, {
+          loadingBubble,
+          onDone: (data, msg) => {
+            if (data.products?.length) {
+              lastProducts = data.products;
+              const container = document.createElement('div');
+              container.className = 'cml-msg-products';
+              data.products.forEach((p, i) => container.appendChild(createMsgProductCard(p, i + 1)));
+              messagesEl.appendChild(container);
+              scrollToBottom();
+            }
+            if (data.refinement_chips?.length) {
+              _lastChips = data.refinement_chips;
+              if (_refineBar) _refineBar.remove();
+              _refineBar = renderRefinementChips(data.refinement_chips);
+              if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+            }
+            chatHistory.push({ role: 'user', content: query });
+            chatHistory.push({ role: 'assistant', content: msg });
+            if (chatHistory.length > 20) chatHistory.splice(0, 2);
+            saveSession(lastProducts);
+          },
         });
-        _pendingMode = null; // 1회 사용 후 초기화
-        const data = await res.json();
-        loadingBubble.remove();
-        const msg = data.message || data.error || '죄송해요, 다시 시도해주세요.';
-        if (data.type === 'recommendation' && data.products?.length) {
-          renderInlineRecommendation(msg, data.products, data.refinement_chips);
-        } else {
-          addBubble('assistant', msg);
-        }
-        chatHistory.push({ role: 'user', content: query });
-        chatHistory.push({ role: 'assistant', content: msg });
-        if (chatHistory.length > 20) chatHistory.splice(0, 2);
       } catch {
         loadingBubble.remove();
         addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');

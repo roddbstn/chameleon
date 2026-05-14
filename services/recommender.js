@@ -95,6 +95,72 @@ async function callGemini(body) {
 }
 
 // ─────────────────────────────────────────────
+// Gemini 스트리밍 — SSE 방식, onChunk 콜백으로 청크 전달
+// ─────────────────────────────────────────────
+async function callGeminiStream(body, onChunk) {
+  for (const { model, api } of GEMINI_CHAIN) {
+    const url = `https://generativelanguage.googleapis.com/${api}/models/${model}:streamGenerateContent?alt=sse&key=${process.env.GOOGLE_AI_API_KEY}`;
+    try {
+      const res = await axios.post(url, body, { responseType: 'stream', timeout: 60000 });
+      let fullText = '';
+      let sseBuffer = '';
+      await new Promise((resolve, reject) => {
+        res.data.on('data', chunk => {
+          sseBuffer += chunk.toString('utf8');
+          const lines = sseBuffer.split('\n');
+          sseBuffer = lines.pop(); // 불완전한 마지막 줄 보류
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const payload = line.slice(6).trim();
+            if (!payload || payload === '[DONE]') continue;
+            try {
+              const parsed = JSON.parse(payload);
+              const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
+              if (text) { fullText += text; onChunk(text); }
+            } catch {}
+          }
+        });
+        res.data.on('end', resolve);
+        res.data.on('error', reject);
+      });
+      if (model !== GEMINI_CHAIN[0].model) console.log(`[Gemini Stream] fallback 성공: ${model}`);
+      return fullText;
+    } catch (e) {
+      const status = e.response?.status;
+      if (status === 503 || status === 404) {
+        console.warn(`[Gemini Stream] ${model} ${status}, 다음 모델 시도...`);
+        continue;
+      }
+      throw e;
+    }
+  }
+  // Gemini 전부 실패 → OpenAI 폴백 (비스트리밍)
+  const fallbackRes = await callOpenAIFallback(body);
+  const text = fallbackRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  onChunk(text);
+  return text;
+}
+
+// PRODUCTS:/REASONS:/CHIPS: 태그 이전 텍스트만 스트림 콜백으로 전달하는 래퍼
+function makeTagFilter(streamCallback) {
+  if (!streamCallback) return null;
+  let buf = '', sentTo = 0, tagHit = false;
+  return (chunk) => {
+    buf += chunk;
+    if (tagHit) return;
+    const tagIdx = buf.indexOf('\nPRODUCTS:');
+    if (tagIdx >= 0) {
+      tagHit = true;
+      const safe = buf.slice(sentTo, tagIdx);
+      if (safe.trim()) streamCallback(safe);
+      return;
+    }
+    const safeEnd = buf.length - 15; // 태그 경계가 청크에 걸릴 수 있으므로 15자 버퍼
+    if (safeEnd > sentTo) { streamCallback(buf.slice(sentTo, safeEnd)); sentTo = safeEnd; }
+  };
+}
+
+// ─────────────────────────────────────────────
 // 브랜드 DNA → AI 시스템 프롬프트 조립
 // agent_config(shops 테이블)의 structured 필드를 사용
 // ─────────────────────────────────────────────
@@ -448,7 +514,7 @@ function formatProductForPrompt(p, index) {
 // systemPrompt: buildSystemPrompt()로 조립된 브랜드 DNA
 // context: { pdpProduct, mode }
 // ─────────────────────────────────────────────
-async function generateRecommendation(query, intent, products, systemPrompt, mode = 'specific', context = {}) {
+async function generateRecommendation(query, intent, products, systemPrompt, mode = 'specific', context = {}, onChunk = null) {
   const productList = products.map((p, i) => formatProductForPrompt(p, i)).join('\n\n');
 
   // ── PDP 컨텍스트 블록 ──
@@ -599,11 +665,14 @@ ${mode === 'discovery' ? `CHIPS 작성 규칙 (스타일 탐색 모드):
 - 단어 조각(예: "캐주얼로", "다른 색상으로") 형태 금지 — 반드시 완성된 문장
 - 각 22자 이내, 2~4개`}`;
 
-  const res = await callGemini({
+  const reqBody = {
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { maxOutputTokens: 8192 },
-  });
+    generationConfig: { maxOutputTokens: 1024 },
+  };
 
+  if (onChunk) return await callGeminiStream(reqBody, onChunk);
+
+  const res = await callGemini(reqBody);
   return res.data.candidates?.[0]?.content?.parts?.[0]?.text || '죄송해요, 다시 시도해주세요.';
 }
 
@@ -699,15 +768,13 @@ function parseChips(raw) {
 // ─────────────────────────────────────────────
 // 메인 추천 파이프라인
 // ─────────────────────────────────────────────
-async function recommend({ mallId, query, conversationHistory = [], context = {} }) {
-  await checkCostLimit();
-
-  // ── 브랜드 DNA 로드 (shops.agent_config) ──
-  const { data: shopData } = await supabase
-    .from('shops')
-    .select('brand_name, agent_config')
-    .eq('mall_id', mallId)
-    .single();
+async function recommend({ mallId, query, conversationHistory = [], context = {} }, streamCallback = null) {
+  // checkCostLimit + 브랜드 DNA 병렬 로드
+  const [, shopResult] = await Promise.all([
+    checkCostLimit(),
+    supabase.from('shops').select('brand_name, agent_config').eq('mall_id', mallId).single(),
+  ]);
+  const shopData = shopResult.data;
 
   const agentConfig = shopData?.agent_config || {};
   const brandName   = shopData?.brand_name   || '';
@@ -795,7 +862,7 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
     }
 
     const enriched = await enrichProducts(palette, mallId);
-    const rawMessage = await generateRecommendation(query, intent, enriched, systemPrompt, 'discovery', { pdpProduct });
+    const rawMessage = await generateRecommendation(query, intent, enriched, systemPrompt, 'discovery', { pdpProduct }, makeTagFilter(streamCallback));
     await logApiCost(mallId, 'response_generation', 3000, 700);
 
     const message = cleanMessage(rawMessage);
@@ -849,7 +916,7 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
 
   // ── 추천 생성 (상위 6개만 AI에게 전달) ──
   const rawMessage = await generateRecommendation(
-    query, intent, enriched.slice(0, 6), systemPrompt, mode, { pdpProduct }
+    query, intent, enriched.slice(0, 6), systemPrompt, mode, { pdpProduct }, makeTagFilter(streamCallback)
   );
   await logApiCost(mallId, 'response_generation', 3000, 700);
 

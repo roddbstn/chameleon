@@ -328,20 +328,11 @@ app.get('/auth/callback', async (req, res) => {
     // ② Scripttag 등록 — 위젯 JS를 스토어 모든 페이지에 자동 삽입
     await registerScripttag(mallId, access_token);
 
-    res.send(`
-      <html>
-        <body style="font-family:sans-serif; padding:40px; text-align:center;">
-          <h2>✅ Chameleon 설치 완료</h2>
-          <p>쇼핑몰 <strong>${mallId}.cafe24.com</strong>에 Adaptive PDP 위젯이 연결되었습니다.</p>
-          <p style="color:#888; font-size:13px;">이제 상품 상세 페이지를 방문하면 위젯이 작동합니다.</p>
-          <a href="https://${mallId}.cafe24.com" style="
-            display:inline-block; margin-top:20px;
-            background:#000; color:#fff; padding:12px 28px;
-            text-decoration:none; font-size:13px; letter-spacing:0.05em;
-          ">쇼핑몰 확인하기</a>
-        </body>
-      </html>
-    `);
+    // ③ 주문 웹훅 등록 — 고객사 설정 불필요, 앱 설치 시 자동 등록
+    await registerOrderWebhook(mallId, access_token);
+
+    // OAuth 완료 → 콘솔 온보딩 플로우로 리다이렉트
+    res.redirect(`/console?mall_id=${mallId}&onboarding=true`);
   } catch (err) {
     console.error('[OAuth Error]', err.response?.data || err.message);
     res.status(500).send(`OAuth 처리 중 오류: ${JSON.stringify(err.response?.data)}`);
@@ -384,6 +375,40 @@ async function registerScripttag(mallId, accessToken) {
 
   console.log(`[Scripttag] Registered: ${widgetUrl} on ${mallId}`);
   return res.data;
+}
+
+// ─────────────────────────────────────────────
+// 주문 웹훅 등록 헬퍼
+// OAuth 완료 시 자동 호출 — 고객사가 직접 설정할 필요 없음
+// ─────────────────────────────────────────────
+async function registerOrderWebhook(mallId, accessToken) {
+  const apiHeaders = { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' };
+  const webhookUrl = `${APP_BASE_URL}/api/webhook/order`;
+
+  // 기존 웹훅 목록 조회 — 중복 등록 방지
+  const listRes = await axios.get(
+    `https://${mallId}.cafe24api.com/api/v2/admin/webhooks`,
+    { headers: apiHeaders }
+  );
+  const existing = listRes.data.webhooks || [];
+  const alreadyRegistered = existing.some(w => w.url === webhookUrl && w.event_type === 'order_completed');
+  if (alreadyRegistered) {
+    console.log(`[Webhook] 주문 웹훅 이미 등록됨: ${mallId}`);
+    return;
+  }
+
+  await axios.post(
+    `https://${mallId}.cafe24api.com/api/v2/admin/webhooks`,
+    {
+      request: {
+        event_type: 'order_completed',
+        url:        webhookUrl,
+        secret_key: process.env.CAFE24_WEBHOOK_SECRET || '',
+      },
+    },
+    { headers: apiHeaders }
+  );
+  console.log(`[Webhook] 주문 웹훅 등록 완료: ${mallId} → ${webhookUrl}`);
 }
 
 // ─────────────────────────────────────────────
@@ -944,17 +969,53 @@ app.post('/api/recommend', async (req, res) => {
   const { mallId, query, conversationHistory, sessionId, pageUrl, mode } = req.body;
   if (!mallId || !query) return res.status(400).json({ error: 'mallId, query 필요' });
 
+  // SSE 헤더
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.flushHeaders();
+
+  const sse = (data) => { try { res.write(`data: ${JSON.stringify(data)}\n\n`); } catch {} };
+
   console.log(`[Recommend] mallId=${mallId} mode=${mode || 'auto'} query="${query}"`);
 
   try {
-    const result = await recommend({
-      mallId, query, conversationHistory,
-      context: { sessionId, pageUrl, mode },
-    });
-    res.json(result);
+    // ── 세션 DB 쿼리 병렬 실행 ──
+    let previousProducts = [];
+    let userPreferences = null;
+
+    if (sessionId) {
+      const [prevLogsResult, prefResult] = await Promise.all([
+        supabase.from('chat_logs').select('product_ids')
+          .eq('store_id', mallId).eq('session_id', sessionId)
+          .not('product_ids', 'is', null).order('created_at', { ascending: false }).limit(3),
+        supabase.from('user_preferences').select('preferences')
+          .eq('store_id', mallId).eq('session_id', sessionId).single(),
+      ]);
+
+      const prevIds = [...new Set((prevLogsResult.data || []).flatMap(l => l.product_ids || []))].slice(0, 9);
+      if (prevIds.length) {
+        const { data: prevProds } = await supabase
+          .from('products').select('product_id, name, price').in('product_id', prevIds);
+        previousProducts = prevProds || [];
+      }
+      if (prefResult.data?.preferences && Object.keys(prefResult.data.preferences).length) {
+        userPreferences = prefResult.data.preferences;
+      }
+    }
+
+    const result = await recommend(
+      { mallId, query, conversationHistory, context: { sessionId, pageUrl, mode, previousProducts, userPreferences } },
+      (chunk) => sse({ type: 'chunk', text: chunk })
+    );
+
+    sse({ type: 'done', ...result });
   } catch (err) {
     console.error('[Recommend Error]', err.message);
-    res.status(500).json({ error: err.message });
+    sse({ type: 'error', message: '죄송해요, 다시 시도해주세요.' });
+  } finally {
+    res.end();
   }
 });
 
@@ -1108,6 +1169,132 @@ app.post('/api/webhook/product', express.raw({ type: '*/*' }), async (req, res) 
 });
 
 // ─────────────────────────────────────────────
+// 6-C. ORDER WEBHOOK — Cafe24 주문 완료 → 실구매 추적
+// POST /api/webhook/order
+// widget_events.purchase + chat_logs 매칭으로 진짜 전환율 측정
+// ─────────────────────────────────────────────
+app.post('/api/webhook/order', express.raw({ type: '*/*' }), async (req, res) => {
+  const secret = process.env.CAFE24_WEBHOOK_SECRET;
+  const sig    = req.headers['x-cafe24-signature'];
+  if (secret && sig) {
+    const expected = crypto.createHmac('sha256', secret).update(req.body).digest('hex');
+    if (!sig.includes(expected)) return res.status(401).json({ error: 'invalid signature' });
+  }
+
+  let body;
+  try { body = JSON.parse(req.body); } catch { return res.status(400).json({ error: 'invalid json' }); }
+
+  const { resource_id: orderNo, mall_id: mallId } = body;
+  if (!mallId || !orderNo) return res.json({ received: true });
+
+  res.json({ received: true }); // 즉시 200 응답
+
+  setImmediate(async () => {
+    try {
+      // 주문 상세에서 상품 목록 조회
+      const token = tokenStore[mallId]?.access_token;
+      if (!token) return;
+
+      const orderRes = await axios.get(
+        `https://${mallId}.cafe24api.com/api/v2/admin/orders/${orderNo}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const items = orderRes.data?.order?.items || [];
+      const productNos = items.map(i => String(i.product_no)).filter(Boolean);
+      if (!productNos.length) return;
+
+      // 최근 2시간 내 cart_add 이벤트에서 session_id 역추적
+      const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+      const { data: cartEvents } = await supabase
+        .from('widget_events')
+        .select('session_id, product_no')
+        .eq('store_id', mallId)
+        .eq('event_type', 'cart_add')
+        .in('product_no', productNos)
+        .gte('occurred_at', twoHoursAgo);
+
+      if (!cartEvents?.length) {
+        // 세션 매칭 안 돼도 집계용 purchase 이벤트는 기록
+        for (const pNo of productNos) {
+          await supabase.from('widget_events').insert({
+            store_id: mallId, event_type: 'purchase',
+            product_no: pNo, session_id: null,
+            occurred_at: new Date().toISOString(),
+          });
+        }
+        return;
+      }
+
+      // session_id가 있는 경우: purchase 이벤트 기록
+      const seen = new Set();
+      for (const evt of cartEvents) {
+        const key = `${evt.session_id}::${evt.product_no}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        await supabase.from('widget_events').insert({
+          store_id:    mallId,
+          event_type:  'purchase',
+          product_no:  evt.product_no,
+          session_id:  evt.session_id,
+          occurred_at: new Date().toISOString(),
+        });
+      }
+      console.log(`[OrderWebhook] ${mallId} order:${orderNo} → ${seen.size}개 purchase 기록`);
+    } catch (e) {
+      console.error('[OrderWebhook] Error:', e.message);
+    }
+  });
+});
+
+// ─────────────────────────────────────────────
+// 취향 누적 — 클릭/장바구니 신호 → user_preferences 갱신
+// ─────────────────────────────────────────────
+async function updateUserPreferences(mallId, sessionId, productNo) {
+  if (!sessionId) return;
+  try {
+    // 이 세션의 가장 최근 chat_log에서 soft_preferences 추출
+    const { data: log } = await supabase
+      .from('chat_logs')
+      .select('soft_preferences, intent_situation, intent_needs')
+      .eq('store_id', mallId)
+      .eq('session_id', sessionId)
+      .not('soft_preferences', 'eq', '{}')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (!log?.soft_preferences) return;
+    const sp = log.soft_preferences;
+
+    // 기존 선호도 로드
+    const { data: existing } = await supabase
+      .from('user_preferences')
+      .select('preferences')
+      .eq('store_id', mallId)
+      .eq('session_id', sessionId)
+      .single();
+
+    const prev = existing?.preferences || {};
+
+    // 선호도 병합 (배열은 union, 단일값은 최신으로 덮어씀)
+    const merged = {
+      style_keywords:    [...new Set([...(prev.style_keywords || []), ...(sp.style_keywords || [])])].slice(0, 10),
+      fit:               sp.fit || prev.fit || null,
+      fabric:            [...new Set([...(prev.fabric || []), ...(sp.fabric || [])])].slice(0, 6),
+      occasions:         [...new Set([...(prev.occasions || []), ...(sp.occasion ? [sp.occasion] : [])])].slice(0, 5),
+      interaction_count: (prev.interaction_count || 0) + 1,
+    };
+
+    await supabase.from('user_preferences').upsert(
+      { store_id: mallId, session_id: sessionId, preferences: merged, updated_at: new Date().toISOString() },
+      { onConflict: 'store_id,session_id' }
+    );
+  } catch (e) {
+    // 취향 업데이트 실패 시 조용히 무시 — 추천 파이프라인 방해 금지
+  }
+}
+
+// ─────────────────────────────────────────────
 // SHOP CONFIG API — 고객사 브랜드/테마 설정
 // ─────────────────────────────────────────────
 
@@ -1227,6 +1414,10 @@ app.post('/api/track', async (req, res) => {
       session_id:  sessionId  || null,
       occurred_at: new Date().toISOString(),
     });
+    // 클릭/장바구니 신호 → 취향 누적 (비동기, 실패 무시)
+    if (sessionId && productNo && ['product_click', 'cart_add'].includes(eventType)) {
+      updateUserPreferences(mallId, sessionId, productNo).catch(() => {});
+    }
   } catch (e) {
     console.warn('[Track]', e.message);
   }
@@ -1250,12 +1441,13 @@ app.get('/api/metrics', async (req, res) => {
   try {
     const { data: events } = await supabase
       .from('widget_events')
-      .select('event_type, product_no, occurred_at')
+      .select('event_type, product_no, chip_label, occurred_at')
       .eq('store_id', mallId)
       .gte('occurred_at', from.toISOString());
 
-    const totals = { impression: 0, chat_start: 0, chip_click: 0, pdp_chip_click: 0, product_click: 0, cart_add: 0, purchase: 0 };
+    const totals = { impression: 0, chat_start: 0, chip_click: 0, pdp_chip_click: 0, refine_chip_click: 0, product_click: 0, cart_add: 0, purchase: 0 };
     const byProduct = {};
+    const byChip = {};
     const daily = {};
 
     (events || []).forEach(e => {
@@ -1266,12 +1458,21 @@ app.get('/api/metrics', async (req, res) => {
         if (byProduct[e.product_no][e.event_type] !== undefined) byProduct[e.product_no][e.event_type]++;
       }
 
+      if (e.chip_label && ['chip_click', 'pdp_chip_click', 'refine_chip_click'].includes(e.event_type)) {
+        byChip[e.chip_label] = (byChip[e.chip_label] || 0) + 1;
+      }
+
       const day = e.occurred_at.slice(0, 10);
       if (!daily[day]) daily[day] = { chat_start: 0, cart_add: 0, purchase: 0 };
       if (daily[day][e.event_type] !== undefined) daily[day][e.event_type]++;
     });
 
-    res.json({ period, from: from.toISOString(), totals, by_product: byProduct, daily });
+    const topChips = Object.entries(byChip)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map(([label, count]) => ({ label, count }));
+
+    res.json({ period, from: from.toISOString(), totals, by_product: byProduct, by_chip: topChips, daily });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
