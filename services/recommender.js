@@ -327,6 +327,7 @@ soft_preferences (선호도 — 벡터 재정렬에만 사용):
 inference_log: 암묵적 단서에서 추론한 것을 배열로. 예: ["'통풍성 좋은' → 루즈핏 + 린넨/면 추론", "성인 남성 대학생 → 20대 캐주얼 스타일"].
 
 search_query: 상황(바닷가→휴양지 여름 시원한)·스타일·소재·핏·시즌을 연상 확장해 풍부하게.
+★ 코디 요청 주의: "A랑 어울리는 B 추천"이면 검색 대상은 B이지 A가 아님. A(이미 가진 아이템)는 제외하고 B(찾아야 할 아이템) 중심으로 쿼리 작성. 예: "데님 스커트랑 어울리는 상의" → search_query는 "여성 캐주얼 상의 니트 블라우스 티셔츠"로 작성 (데님 스커트 제외).
 
 clarification_needed: 항상 false. 단서가 부족해도 합리적으로 추론해 검색하라.
   → 질문 금지. 정보가 부족하면 가장 일반적인 가정을 하면 됨.
@@ -754,6 +755,15 @@ function parseReasons(raw) {
 }
 
 // ─────────────────────────────────────────────
+// PRODUCTS 태그 파싱 — AI가 골라준 후보 인덱스 (1-based)
+// ─────────────────────────────────────────────
+function parseProductIndices(raw) {
+  const match = raw.match(/\nPRODUCTS:\[([^\]]*)\]/);
+  if (!match) return [];
+  return match[1].split(',').map(s => parseInt(s.trim()) - 1).filter(i => !isNaN(i) && i >= 0);
+}
+
+// ─────────────────────────────────────────────
 // CHIPS 태그 파싱
 // ─────────────────────────────────────────────
 function parseChips(raw) {
@@ -923,7 +933,12 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
   const reasons  = parseReasons(rawMessage);
   const chips    = parseChips(rawMessage);
   const message  = cleanMessage(rawMessage);
-  const recommended = matchProductsFromMessage(message, enriched);
+
+  // PRODUCTS 태그 우선 → 이름 매칭 → 폴백
+  const productIndices = parseProductIndices(rawMessage);
+  const recommended = productIndices.length
+    ? productIndices.map(i => enriched[i]).filter(Boolean)
+    : matchProductsFromMessage(message, enriched);
 
   // ── 의도 데이터 저장 ──
   Promise.resolve(supabase.from('chat_logs').insert({
