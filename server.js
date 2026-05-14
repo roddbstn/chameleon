@@ -427,8 +427,10 @@ app.get('/auth/callback', async (req, res) => {
     // ② Scripttag 등록 — 위젯 JS를 스토어 모든 페이지에 자동 삽입
     await registerScripttag(mallId, access_token);
 
-    // ③ 주문 웹훅 등록 — 고객사 설정 불필요, 앱 설치 시 자동 등록
-    await registerOrderWebhook(mallId, access_token);
+    // ③ 주문 웹훅 등록 — 실패해도 OAuth 흐름 유지 (권한 미설정 시 404)
+    registerOrderWebhook(mallId, access_token).catch(e =>
+      console.warn(`[Webhook] 웹훅 등록 실패 (무시): ${e.response?.data?.message || e.message}`)
+    );
 
     // OAuth 완료 → 콘솔 온보딩 플로우로 리다이렉트
     res.redirect(`/console?mall_id=${mallId}&onboarding=true`);
