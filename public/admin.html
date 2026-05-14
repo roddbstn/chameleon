@@ -318,6 +318,18 @@
     </div>
   </div>
 
+  <!-- ── 인기 칩 분석 ── -->
+  <div class="section-title">인기 칩 분석</div>
+  <div class="card" style="margin-bottom:28px;">
+    <div class="card-header">
+      <div class="card-title">클릭 빈도 TOP 20</div>
+      <span class="card-meta" id="chip-total"></span>
+    </div>
+    <div class="bar-wrap" id="chip-bars">
+      <div class="loading">로딩 중...</div>
+    </div>
+  </div>
+
   <!-- ── 대화 품질 모니터링 ── -->
   <div class="section-title">대화 품질 모니터링</div>
   <div class="card">
@@ -334,6 +346,15 @@
 
 <script>
   const SERVER = '';
+
+  // 어드민 키 — localStorage 저장, 없으면 최초 1회 입력
+  let ADMIN_KEY = localStorage.getItem('cml_admin_key') || '';
+  if (!ADMIN_KEY) {
+    ADMIN_KEY = prompt('관리자 키를 입력하세요 (ADMIN_SECRET):') || '';
+    if (ADMIN_KEY) localStorage.setItem('cml_admin_key', ADMIN_KEY);
+  }
+  const adminHeaders = () => ({ 'Content-Type': 'application/json', 'x-admin-key': ADMIN_KEY });
+
   let currentMallId = document.getElementById('mall-select').value;
   let currentPeriod = document.getElementById('period-select').value;
 
@@ -519,7 +540,7 @@
     try {
       // 병렬 요청
       const [statsRes, metricsRes, convRes] = await Promise.all([
-        fetch(qs(`${SERVER}/api/stats`)).then(r => r.json()),
+        fetch(qs(`${SERVER}/api/stats`), { headers: adminHeaders() }).then(r => r.json()),
         fetch(`${SERVER}/api/metrics?mallId=${currentMallId || ''}&period=${currentPeriod}`).then(r => r.json()),
         fetch(`${SERVER}/api/conversations?mallId=${currentMallId || ''}&limit=80`).then(r => r.json()),
       ]);
@@ -566,6 +587,25 @@
           </div>`;
       }).join('');
 
+      // ── 인기 칩 분석 ──
+      const chips = metricsRes.by_chip || [];
+      const totalChipClicks = chips.reduce((s, c) => s + c.count, 0);
+      document.getElementById('chip-total').textContent = `총 ${totalChipClicks.toLocaleString()}회 클릭`;
+      if (chips.length) {
+        const maxChip = chips[0].count;
+        document.getElementById('chip-bars').innerHTML = chips.map(c => {
+          const w = Math.round((c.count / maxChip) * 100);
+          return `
+            <div class="bar-row">
+              <div class="bar-label" style="min-width:110px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${c.label}">${c.label}</div>
+              <div class="bar-bg"><div class="bar-fill" style="width:${w}%;background:#3B82F6"></div></div>
+              <div class="bar-val">${c.count}회</div>
+            </div>`;
+        }).join('');
+      } else {
+        document.getElementById('chip-bars').innerHTML = '<div class="empty">칩 클릭 데이터가 없습니다.</div>';
+      }
+
       // ── 대화 로그 ──
       renderLogTable(convRes.conversations || []);
 
@@ -580,7 +620,7 @@
     if (!mall) return;
     showToast(`${mall} 동기화 시작...`);
     try {
-      const r = await fetch(`${SERVER}/admin/sync/${mall}`, { method: 'POST' });
+      const r = await fetch(`${SERVER}/admin/sync/${mall}`, { method: 'POST', headers: adminHeaders() });
       const d = await r.json();
       showToast(d.message || d.error || '완료');
       loadAll();
@@ -592,7 +632,7 @@
     if (!mall) return;
     showToast(`${mall} 임베딩 시작... (시간이 걸릴 수 있어요)`);
     try {
-      const r = await fetch(`${SERVER}/admin/embed/${mall}`, { method: 'POST' });
+      const r = await fetch(`${SERVER}/admin/embed/${mall}`, { method: 'POST', headers: adminHeaders() });
       const d = await r.json();
       showToast(d.message || d.error || '완료');
       loadAll();

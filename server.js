@@ -23,7 +23,101 @@ const supabase = createClient(
 );
 
 const app = express();
-app.use(cors());
+
+// ─────────────────────────────────────────────
+// CORS — Railway 도메인 + Cafe24 쇼핑몰 도메인만 허용
+// ─────────────────────────────────────────────
+const ALLOWED_ORIGINS = [
+  /^https:\/\/.*\.railway\.app$/,
+  /^https:\/\/.*\.cafe24\.com$/,
+  /^https:\/\/.*\.cafe24shop\.com$/,
+  /^http:\/\/localhost(:\d+)?$/,           // 로컬 개발
+];
+app.use(cors({
+  origin: (origin, cb) => {
+    // origin이 없으면 서버 간 요청(Railway 내부) 또는 curl — 허용
+    if (!origin) return cb(null, true);
+    if (ALLOWED_ORIGINS.some(r => r.test(origin))) return cb(null, true);
+    cb(new Error(`CORS 차단: ${origin}`));
+  },
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-admin-key'],
+}));
+
+// ─────────────────────────────────────────────
+// 관리자 인증 미들웨어 — ADMIN_SECRET 헤더 검증
+// /admin/*, /api/stats, /api/shop-config (POST) 에 적용
+// ─────────────────────────────────────────────
+function requireAdmin(req, res, next) {
+  const secret = process.env.ADMIN_SECRET;
+  if (!secret) {
+    console.warn('[Security] ADMIN_SECRET 미설정 — 관리자 API 열린 상태');
+    return next(); // 미설정 시 경고만, 개발 편의 유지
+  }
+  const provided = req.headers['x-admin-key'] || req.query._key;
+  if (!provided || !crypto.timingSafeEqual(Buffer.from(provided), Buffer.from(secret))) {
+    return res.status(401).json({ error: '관리자 인증 필요 (x-admin-key 헤더)' });
+  }
+  next();
+}
+
+// ─────────────────────────────────────────────
+// mallId 소유권 검증 — OAuth 완료한 쇼핑몰만 임베딩/설정 가능
+// ADMIN_SECRET 헤더로 우회 가능 (어드민 대시보드용)
+// ─────────────────────────────────────────────
+function requireMallAuth(req, res, next) {
+  const adminSecret = process.env.ADMIN_SECRET;
+  const provided    = req.headers['x-admin-key'];
+  if (adminSecret && provided && crypto.timingSafeEqual(Buffer.from(provided), Buffer.from(adminSecret))) {
+    return next();
+  }
+  const mallId = req.params.mallId;
+  if (!mallId || !tokenStore[mallId]) {
+    return res.status(401).json({ error: `${mallId || '?'}: OAuth 인증 필요. /install 에서 먼저 앱을 설치해주세요.` });
+  }
+  next();
+}
+
+function requireMallConfigAuth(req, res, next) {
+  const adminSecret = process.env.ADMIN_SECRET;
+  const provided    = req.headers['x-admin-key'];
+  if (adminSecret && provided && crypto.timingSafeEqual(Buffer.from(provided), Buffer.from(adminSecret))) {
+    return next();
+  }
+  const mallId = req.body.mallId;
+  if (!mallId || !tokenStore[mallId]) {
+    return res.status(401).json({ error: 'OAuth 인증 필요. /install 에서 먼저 앱을 설치해주세요.' });
+  }
+  next();
+}
+
+// ─────────────────────────────────────────────
+// Rate Limiter — AI 과금 엔드포인트 보호 (IP 기반)
+// 분당 30회 초과 시 429 반환
+// ─────────────────────────────────────────────
+const rateLimitMap = new Map();
+function rateLimit(maxPerMin = 30) {
+  return (req, res, next) => {
+    const ip  = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress || 'unknown';
+    const key = `${ip}:${req.path}`;
+    const now = Date.now();
+    const entry = rateLimitMap.get(key) || { count: 0, reset: now + 60_000 };
+
+    if (now > entry.reset) { entry.count = 0; entry.reset = now + 60_000; }
+    entry.count++;
+    rateLimitMap.set(key, entry);
+
+    // 오래된 항목 주기적 정리 (Map 무한 증가 방지)
+    if (rateLimitMap.size > 5000) {
+      for (const [k, v] of rateLimitMap) { if (Date.now() > v.reset) rateLimitMap.delete(k); }
+    }
+
+    if (entry.count > maxPerMin) {
+      return res.status(429).json({ error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' });
+    }
+    next();
+  };
+}
 
 // ── Gemini 폴백 체인 (503 → 다음 모델, 429 → 재시도) ──
 // v1beta = preview/experimental, v1 = stable
@@ -493,7 +587,7 @@ function logEvent(event) {
 // 5-A. CHIPS API — 상품별 동적 FAQ 질문 생성
 // POST /api/chips  { mallId, productNo, persona }
 // ─────────────────────────────────────────────
-app.post('/api/chips', async (req, res) => {
+app.post('/api/chips', rateLimit(30), async (req, res) => {
   const { mallId, productNo, persona } = req.body;
   if (!mallId || !productNo) return res.json({ chips: [] });
 
@@ -548,7 +642,7 @@ app.post('/api/chips', async (req, res) => {
 // ─────────────────────────────────────────────
 const pdpContentCache = new Map(); // 상품별 캐시 (재시작 전까지 유효)
 
-app.post('/api/pdp-content', async (req, res) => {
+app.post('/api/pdp-content', rateLimit(30), async (req, res) => {
   const { mallId, productNo, productName, productDesc } = req.body;
 
   // 캐시 확인
@@ -647,7 +741,7 @@ chips 작성 규칙:
 // ─────────────────────────────────────────────
 // 5. ASK API — 상품 관련 자유 질문 → Claude 응답
 // ─────────────────────────────────────────────
-app.post('/api/ask', async (req, res) => {
+app.post('/api/ask', rateLimit(30), async (req, res) => {
   const { mallId, productNo, productName: domProductName, question, sessionId, pageUrl } = req.body;
   if (!question) return res.status(400).json({ error: 'question required' });
 
@@ -812,7 +906,7 @@ function stripHtml(html) {
   return (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-app.post('/admin/sync/:mallId', async (req, res) => {
+app.post('/admin/sync/:mallId', requireAdmin, async (req, res) => {
   const { mallId } = req.params;
   const token = tokenStore[mallId]?.access_token;
 
@@ -965,7 +1059,7 @@ app.get('/api/options', async (req, res) => {
 // POST /api/recommend
 // { mallId, query, conversationHistory? }
 // ─────────────────────────────────────────────
-app.post('/api/recommend', async (req, res) => {
+app.post('/api/recommend', rateLimit(20), async (req, res) => {
   const { mallId, query, conversationHistory, sessionId, pageUrl, mode } = req.body;
   if (!mallId || !query) return res.status(400).json({ error: 'mallId, query 필요' });
 
@@ -1024,7 +1118,7 @@ app.post('/api/recommend', async (req, res) => {
 //
 // POST /admin/embed/:mallId
 // ─────────────────────────────────────────────
-app.post('/admin/embed/:mallId', async (req, res) => {
+app.post('/admin/embed/:mallId', requireMallAuth, async (req, res) => {
   const { mallId } = req.params;
 
   try {
@@ -1053,7 +1147,7 @@ app.get('/admin', (req, res) => {
 // 6-A. STATS API — 어드민 대시보드용 통계
 // GET /api/stats?mallId=tndbsrkd
 // ─────────────────────────────────────────────
-app.get('/api/stats', async (req, res) => {
+app.get('/api/stats', requireAdmin, async (req, res) => {
   const { mallId } = req.query;
   const monthStart = new Date();
   monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
@@ -1104,13 +1198,13 @@ app.get('/api/stats', async (req, res) => {
 // Cafe24 → 상품 생성/수정/삭제 이벤트 수신 → DB upsert + 임베딩
 // ─────────────────────────────────────────────
 app.post('/api/webhook/product', express.raw({ type: '*/*' }), async (req, res) => {
-  // 서명 검증 (CAFE24_WEBHOOK_SECRET 설정 시)
+  // 서명 검증 — CAFE24_WEBHOOK_SECRET 필수
   const secret = process.env.CAFE24_WEBHOOK_SECRET;
   const sig    = req.headers['x-cafe24-signature'];
-  if (secret && sig) {
-    const expected = crypto.createHmac('sha256', secret).update(req.body).digest('hex');
-    if (!sig.includes(expected)) return res.status(401).json({ error: 'invalid signature' });
-  }
+  if (!secret) { console.error('[Webhook] CAFE24_WEBHOOK_SECRET 미설정 — 웹훅 거부'); return res.status(500).json({ error: 'webhook secret not configured' }); }
+  if (!sig) return res.status(401).json({ error: 'missing signature' });
+  const expected = crypto.createHmac('sha256', secret).update(req.body).digest('hex');
+  if (!sig.includes(expected)) return res.status(401).json({ error: 'invalid signature' });
 
   let body;
   try { body = JSON.parse(req.body); } catch { return res.status(400).json({ error: 'invalid json' }); }
@@ -1324,7 +1418,7 @@ app.get('/api/shop-config/:mallId', async (req, res) => {
 });
 
 // 설정 저장 (upsert) — theme_config + agent_config 통합
-app.post('/api/shop-config', async (req, res) => {
+app.post('/api/shop-config', requireMallConfigAuth, async (req, res) => {
   const { mallId, brandName, theme_config, agent_config } = req.body;
   if (!mallId) return res.status(400).json({ error: 'mallId required' });
   try {
