@@ -25,6 +25,16 @@ const supabase = createClient(
 const app = express();
 
 // ─────────────────────────────────────────────
+// widget.js — Cafe24 scripttag 검증을 위해 CORS 미들웨어보다 먼저 등록
+// Cafe24가 scripttag 등록 시 Access-Control-Allow-Origin: * 요구함
+// ─────────────────────────────────────────────
+app.get('/widget.js', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'public, max-age=60');
+  res.sendFile(path.join(__dirname, 'public', 'widget.js'));
+});
+
+// ─────────────────────────────────────────────
 // CORS — Railway 도메인 + Cafe24 쇼핑몰 도메인만 허용
 // ─────────────────────────────────────────────
 const ALLOWED_ORIGINS = [
@@ -180,11 +190,6 @@ app.use(express.static(path.join(__dirname, 'public'), {
   },
 }));
 
-// widget.js 명시적 라우트 — Cafe24 CORS 검증용
-app.get('/widget.js', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.sendFile(path.join(__dirname, 'public', 'widget.js'));
-});
 
 const {
   CAFE24_CLIENT_ID,
