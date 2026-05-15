@@ -669,37 +669,6 @@
     }
     .cml-pdp-welcome-chip:hover { border-color: #5E4637; background: rgba(94,70,55,0.05); }
 
-    /* ── 팔로업 질문 트레이 ── */
-    .cml-follow-chips-tray {
-      flex-shrink: 0;
-      padding: 10px 0 6px;
-      border-top: 1px solid #F0F0EE;
-    }
-    .cml-follow-chips-scroll {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      gap: 8px;
-      padding: 2px 16px 4px;
-      scrollbar-width: none;
-    }
-    .cml-follow-chips-scroll::-webkit-scrollbar { display: none; }
-    .cml-follow-chip {
-      flex: 0 0 auto;
-      scroll-snap-align: start;
-      border: 1px solid rgba(94,70,55,0.20);
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 13px;
-      color: #5E4637;
-      white-space: nowrap;
-      cursor: pointer;
-      background: #fff;
-      font-family: inherit;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .cml-follow-chip:hover { border-color: #5E4637; background: rgba(94,70,55,0.05); }
 
     /* ── backdrop (overlay 모드) ── */
     #cml-backdrop {
@@ -1045,9 +1014,7 @@
       <div class="cml-pdp-welcome-tray" id="cml-pdp-welcome-tray" style="display:none">
         <div class="cml-pdp-welcome-scroll" id="cml-pdp-welcome-scroll"></div>
       </div>
-      <div class="cml-follow-chips-tray" id="cml-follow-chips-tray" style="display:none">
-        <div class="cml-follow-chips-scroll" id="cml-follow-chips-scroll"></div>
-      </div>
+
       <div class="cml-chat-input-row">
         <div class="cml-chat-input-wrap">
           <input class="cml-chat-input" id="cml-chat-input" type="text" placeholder="무엇을 도와드릴까요?" autocomplete="off" />
@@ -1084,51 +1051,6 @@
     let _pdpChips      = [];
     let _pdpProductNo  = '';
     let _pdpProductName = '';
-    let _stopAutoScroll = null;
-
-    // ── 팔로업 칩 트레이 ──
-    const followTray   = panel.querySelector('#cml-follow-chips-tray');
-    const followScroll = panel.querySelector('#cml-follow-chips-scroll');
-
-    function startChipAutoScroll(el) {
-      let paused = false;
-      const pause  = () => { paused = true; };
-      const resume = () => { setTimeout(() => { paused = false; }, 1500); };
-      el.addEventListener('touchstart', pause,  { passive: true });
-      el.addEventListener('mousedown',  pause);
-      el.addEventListener('touchend',  resume,  { passive: true });
-      el.addEventListener('mouseup',   resume);
-      let rafId;
-      function tick() {
-        if (!paused) {
-          const max = el.scrollWidth - el.clientWidth;
-          if (el.scrollLeft < max) el.scrollLeft += 0.45;
-        }
-        rafId = requestAnimationFrame(tick);
-      }
-      rafId = requestAnimationFrame(tick);
-      return () => cancelAnimationFrame(rafId);
-    }
-
-    function showFollowUpChips(askedQuery) {
-      const remaining = _pdpChips.filter(c => c !== askedQuery);
-      if (!remaining.length) { followTray.style.display = 'none'; return; }
-      followScroll.innerHTML = remaining.map(c =>
-        `<button class="cml-follow-chip" data-q="${c}">${c}</button>`
-      ).join('');
-      followTray.style.display = 'block';
-      followScroll.scrollLeft = 0;
-      if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
-      _stopAutoScroll = startChipAutoScroll(followScroll);
-    }
-
-    followScroll.addEventListener('click', e => {
-      const chip = e.target.closest('.cml-follow-chip');
-      if (!chip) return;
-      const q = chip.dataset.q;
-      showFollowUpChips(q);
-      sendProductQA(q, _pdpProductNo, _pdpProductName);
-    });
 
     // ── 세션 유지 ──
     const SESSION_KEY = `cml_session_${MALL_ID}`;
@@ -1847,8 +1769,6 @@
         chatHistory.push({ role: 'user', content: query });
         chatHistory.push({ role: 'assistant', content: data.answer || '' });
         if (chatHistory.length > 20) chatHistory.splice(0, 2);
-        // 답변 후 팔로업 질문 트레이 표시
-        showFollowUpChips(query);
       } catch {
         loadingBubble.remove();
         addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
@@ -1868,10 +1788,6 @@
         _pdpProductNo   = productNo   || '';
         _pdpProductName = productName || '';
         _pdpChips       = fullChips   || [];
-        // 팔로업 트레이 초기화
-        followTray.style.display = 'none';
-        followScroll.innerHTML   = '';
-        if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
         // 이 상품에 특정된 Q&A → /api/ask
         setTimeout(() => sendProductQA(query, productNo, productName), 160);
       } else {
@@ -1962,8 +1878,61 @@
       ).join('');
       tray.style.display = 'block';
 
-      // 칩 클릭 → product_qa
-      scroll.addEventListener('click', e => {
+      // rAF 기반 좌측 자동스크롤 + 마우스 드래그 스크롤
+      let paused = false;
+      let isDragging = false;
+      let didDrag = false;
+      let dragStartX = 0;
+      let dragStartScrollLeft = 0;
+      let half = 0;
+      const speed = 0.4;
+      let rafId;
+
+      const raf = () => {
+        if (!paused) {
+          if (!half) half = scroll.scrollWidth / 2;
+          scroll.scrollLeft += speed;
+          if (half > 0 && scroll.scrollLeft >= half) scroll.scrollLeft = 0;
+        }
+        rafId = requestAnimationFrame(raf);
+      };
+      rafId = requestAnimationFrame(raf);
+
+      // 드래그 시작
+      scroll.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        didDrag = false;
+        dragStartX = e.clientX;
+        dragStartScrollLeft = scroll.scrollLeft;
+        paused = true;
+        scroll.style.cursor = 'grabbing';
+      });
+
+      // 드래그 중
+      scroll.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - dragStartX;
+        if (Math.abs(dx) > 4) didDrag = true;
+        scroll.scrollLeft = dragStartScrollLeft - dx;
+      });
+
+      // 드래그 끝 → 자동스크롤 재개
+      const stopDrag = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        scroll.style.cursor = '';
+        paused = false;
+      };
+      scroll.addEventListener('mouseup', stopDrag);
+      scroll.addEventListener('mouseleave', stopDrag);
+
+      // 터치
+      scroll.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+      scroll.addEventListener('touchend',   () => { paused = false; }, { passive: true });
+
+      // 칩 클릭 (드래그와 구분)
+      scroll.addEventListener('click', (e) => {
+        if (didDrag) { didDrag = false; return; }
         const chip = e.target.closest('.cml-pdp-welcome-chip');
         if (!chip) return;
         document.dispatchEvent(new CustomEvent('chameleon:ask', {
@@ -1976,28 +1945,6 @@
           },
         }));
       });
-
-      // rAF 기반 좌측 자동스크롤 (0.4px/frame, 터치/클릭 시 일시정지)
-      let paused = false;
-      let rafId;
-      const speed = 0.4;
-      let half = 0; // 패널이 열린 후 첫 프레임에서 측정
-      const raf = () => {
-        if (!paused) {
-          if (!half) half = scroll.scrollWidth / 2; // lazy: 레이아웃 완료 후 측정
-          scroll.scrollLeft += speed;
-          if (half > 0 && scroll.scrollLeft >= half) scroll.scrollLeft = 0;
-        }
-        rafId = requestAnimationFrame(raf);
-      };
-      rafId = requestAnimationFrame(raf);
-      scroll.addEventListener('mouseenter', () => { paused = true; });
-      scroll.addEventListener('mouseleave', () => { paused = false; });
-      scroll.addEventListener('touchstart',  () => { paused = true; }, { passive: true });
-      scroll.addEventListener('touchend',    () => { paused = false; });
-
-      // SneakPeek 억제 후 사이드바 자동 오픈
-      setTimeout(() => openSidebar(), 600);
     }
 
     function updateConfig(newConfig) {
