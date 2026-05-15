@@ -1924,9 +1924,7 @@
     }
 
     function setupPdpWelcome(productName, chips, productNo) {
-      if (messageLog.length > 0) return; // 로드된 메시지가 있으면 (기존 대화) 건드리지 않음
-
-      // 웰컴 타이틀 PDP 전용으로 교체
+      // 웰컴 타이틀 PDP 전용으로 교체 (세션 복원 여부와 무관하게 항상 갱신)
       const welcomeTitleEl = welcomeEl?.querySelector('.cml-chat-welcome-title');
       if (welcomeTitleEl) {
         // 받침 여부에 따라 을/를 선택
@@ -1940,6 +1938,8 @@
       if (welcomeBodyEl) {
         welcomeBodyEl.textContent = '상품에 대해 마음껏 질문하거나, 아래의 질문을 골라보세요';
       }
+
+      if (messageLog.length > 0) return; // 기존 대화가 있으면 칩 교체는 건드리지 않음
 
       const chipPool = chips?.length ? chips : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '관리 방법이 어떻게 되나요?'];
 
