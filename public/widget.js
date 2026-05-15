@@ -2101,8 +2101,9 @@
           renderPanel(pdpContent, config, { productNo: signals.productNo, productName: productInfo.name });
           const updated = document.getElementById('cml-panel');
           if (updated) { updated.style.transition = 'opacity 0.2s'; updated.style.opacity = '1'; }
-          if (fab?.setupPdpWelcome && productInfo.name) {
-            fab.setupPdpWelcome(productInfo.name, pdpContent?.chips || [], signals.productNo);
+          const nameForWelcome = pdpContent?.productName || productInfo.name;
+          if (fab?.setupPdpWelcome && nameForWelcome) {
+            fab.setupPdpWelcome(nameForWelcome, pdpContent?.chips || [], signals.productNo);
           }
         });
       });

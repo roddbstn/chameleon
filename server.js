@@ -683,6 +683,7 @@ app.post('/api/pdp-content', rateLimit(30), async (req, res) => {
       body: '',
       chips: ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'],
       accentColor: '#2C3E50',
+      productName: '',
     });
   }
 
@@ -730,6 +731,7 @@ chips 작성 규칙:
       .trim();
     const jsonStr = cleaned.match(/\{[\s\S]*\}/)?.[0] || '{}';
     const content = JSON.parse(jsonStr);
+    content.productName = enrichedName; // 클라이언트가 DOM 파싱 실패해도 이름 사용 가능하도록
     console.log(`[PdpContent] ${mallId} product:${productNo} → ${content.badge} chips:${content.chips?.length}`);
     pdpContentCache.set(cacheKey, content);
     res.json(content);
@@ -741,6 +743,7 @@ chips 작성 규칙:
       body: enrichedDesc.slice(0, 120),
       chips: ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'],
       accentColor: '#2C3E50',
+      productName: enrichedName,
     });
   }
 });
