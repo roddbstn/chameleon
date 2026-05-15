@@ -1847,7 +1847,8 @@
       return scored.slice(0, count).map(s => s.c);
     }
 
-    // PDP 트레이 scroll 요소 참조 (done 이벤트 chips를 트레이에 업데이트하기 위해)
+    // PDP 트레이 참조 (done 이벤트 chips를 트레이에 업데이트하기 위해)
+    let _pdpTray = null;
     let _pdpTrayScroll = null;
     let _pdpTrayChipPool = [];
 
@@ -1884,11 +1885,12 @@
         ).join('');
       }
 
-      // PDP 트레이 구성 (자동 스크롤 영역)
+      // PDP 트레이 구성 (자동 스크롤 영역) — 초기에는 숨김, AI 응답 후 표시
       const tray = panel.querySelector('#cml-pdp-welcome-tray');
+      _pdpTray = tray;
       _pdpTrayScroll = panel.querySelector('#cml-pdp-welcome-scroll');
       fillPdpTray(chipPool, productNo, productName);
-      tray.style.display = 'block';
+      tray.style.display = 'none';
 
       // rAF 자동스크롤 + 마우스 드래그
       let paused = false, isDragging = false, didDrag = false;
@@ -1936,12 +1938,12 @@
       });
     }
 
-    // done 이벤트 chips → PDP 트레이 업데이트
+    // done 이벤트 chips → PDP 트레이 업데이트 + 트레이 표시
     function updatePdpTrayChips(chips) {
       if (!_pdpTrayScroll || !chips?.length) return;
       fillPdpTray(chips, _pdpProductNo, _pdpProductName);
-      // half 리셋 (innerHTML 교체 후 scrollWidth가 바뀌므로)
       _pdpTrayScroll.scrollLeft = 0;
+      if (_pdpTray) _pdpTray.style.display = 'block'; // 첫 AI 응답 후 트레이 표시
     }
 
     function updateConfig(newConfig) {
@@ -2029,36 +2031,32 @@
       const signals     = collectSignals();
       const productInfo = getProductInfo();
 
-      // PHASE 1 — 즉시 렌더 (<50ms): AI 콘텐츠 없이 기본 칩으로 패널 표시
-      renderPanel(null, null, { productNo: signals.productNo, productName: productInfo.name });
-
-      // PHASE 2 — config + AI 콘텐츠 병렬 대기 후 패널 교체
+      // config + AI 콘텐츠 모두 준비된 후에만 인라인 패널 + 사이드바를 표시
+      // (제네릭 placeholder는 표시하지 않음)
       const pdpPromise = fetchPdpContent(signals.productNo, productInfo.name, productInfo.desc);
       Promise.all([configPromise, pdpPromise]).then(([config, pdpContent]) => {
-        // adaptivePdp 비활성화 시 패널 제거
-        if (config?.adaptivePdp?.enabled === false) {
-          document.getElementById('cml-panel')?.remove();
-          return;
-        }
-        if (!config && !pdpContent) return; // 둘 다 없으면 기본 패널 유지
+        if (config?.adaptivePdp?.enabled === false) return;
+        if (!config && !pdpContent) return;
+
+        // 인라인 패널: 상품별 콘텐츠로 바로 렌더 (페이드인)
+        renderPanel(pdpContent, config, { productNo: signals.productNo, productName: productInfo.name });
         const panel = document.getElementById('cml-panel');
-        if (panel) { panel.style.transition = 'opacity 0.2s'; panel.style.opacity = '0'; }
-        requestAnimationFrame(() => {
-          renderPanel(pdpContent, config, { productNo: signals.productNo, productName: productInfo.name });
-          const updated = document.getElementById('cml-panel');
-          if (updated) { updated.style.transition = 'opacity 0.2s'; updated.style.opacity = '1'; }
-          const nameForWelcome = pdpContent?.productName || productInfo.name;
-          if (fab?.setupPdpWelcome && nameForWelcome) {
-            fab.setupPdpWelcome(nameForWelcome, pdpContent?.chips || [], signals.productNo);
-          }
-          // 사이드패널 자동 오픈: 상품별 콘텐츠가 완전히 준비된 후,
-          // 페이지 로드 기준 최소 500ms가 지나도록 맞춰서 오픈
-          if (fab?.openSidebar) {
-            const elapsed  = Date.now() - pageLoadTime;
-            const delay    = Math.max(0, 500 - elapsed);
-            setTimeout(() => fab.openSidebar(), delay);
-          }
-        });
+        if (panel) {
+          panel.style.opacity = '0';
+          panel.style.transition = 'opacity 0.3s';
+          requestAnimationFrame(() => requestAnimationFrame(() => { panel.style.opacity = '1'; }));
+        }
+
+        // 사이드바 FAB: 상품별 타이틀/칩 세팅 후 자동 오픈
+        const nameForWelcome = pdpContent?.productName || productInfo.name;
+        if (fab?.setupPdpWelcome && nameForWelcome) {
+          fab.setupPdpWelcome(nameForWelcome, pdpContent?.chips || [], signals.productNo);
+        }
+        if (fab?.openSidebar) {
+          const elapsed = Date.now() - pageLoadTime;
+          const delay   = Math.max(0, 500 - elapsed);
+          setTimeout(() => fab.openSidebar(), delay);
+        }
       });
     }
   }
