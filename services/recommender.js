@@ -679,7 +679,7 @@ ${mode === 'discovery' ? `CHIPS 작성 규칙 (스타일 탐색 모드):
 
   const reqBody = {
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { maxOutputTokens: 1024 },
+    generationConfig: { maxOutputTokens: 2048 },
   };
 
   if (onChunk) return await callGeminiStream(reqBody, onChunk);
