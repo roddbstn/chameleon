@@ -1929,13 +1929,16 @@
       // 웰컴 타이틀 PDP 전용으로 교체
       const welcomeTitleEl = welcomeEl?.querySelector('.cml-chat-welcome-title');
       if (welcomeTitleEl) {
-        welcomeTitleEl.innerHTML = `지금 <strong>${productName}</strong>에 대해<br>무엇이든 물어보세요.`;
+        // 받침 여부에 따라 을/를 선택
+        const last = productName.charCodeAt(productName.length - 1);
+        const particle = (last >= 0xAC00 && last <= 0xD7A3 && (last - 0xAC00) % 28 !== 0) ? '을' : '를';
+        welcomeTitleEl.innerHTML = `<strong>${productName}</strong>${particle} 보고 있군요`;
       }
 
       // 웰컴 바디 텍스트 교체
       const welcomeBodyEl = welcomeEl?.querySelector('.cml-chat-welcome-body');
       if (welcomeBodyEl) {
-        welcomeBodyEl.textContent = '아래 질문을 클릭하거나 직접 입력해보세요';
+        welcomeBodyEl.textContent = '상품에 대해 마음껏 질문하거나, 아래의 질문을 골라보세요';
       }
 
       const chipPool = chips?.length ? chips : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '관리 방법이 어떻게 되나요?'];
