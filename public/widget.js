@@ -1777,6 +1777,9 @@
         chatHistory.push({ role: 'user', content: query });
         chatHistory.push({ role: 'assistant', content: data.answer || '' });
         if (chatHistory.length > 20) chatHistory.splice(0, 2);
+        // 답변 후 하단 칩 트레이: 방금 물어본 칩 제외 나머지로 갱신
+        const remaining = _pdpChips.filter(c => c !== query);
+        if (remaining.length) updatePdpTrayChips(remaining);
       } catch {
         loadingBubble.remove();
         addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
