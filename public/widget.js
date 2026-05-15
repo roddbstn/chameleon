@@ -2004,7 +2004,7 @@
       applyCssVars(newConfig?.theme);
     }
 
-    return { setupPdpWelcome, updateConfig };
+    return { setupPdpWelcome, updateConfig, openSidebar };
   }
 
   // ── after_cart 모드용 1회성 모드 플래그 ──
@@ -2070,6 +2070,8 @@
     track('impression'); // 페이지 로드 = 위젯 노출
     setupCartDetection(); // 장바구니 이벤트 감지 시작
 
+    const pageLoadTime = Date.now(); // PDP 자동 오픈 타이밍 계산용
+
     // config + pdpContent 요청을 동시에 시작 (직렬 await 제거)
     const configPromise = fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)
       .then(r => r.json()).catch(() => null);
@@ -2104,6 +2106,13 @@
           const nameForWelcome = pdpContent?.productName || productInfo.name;
           if (fab?.setupPdpWelcome && nameForWelcome) {
             fab.setupPdpWelcome(nameForWelcome, pdpContent?.chips || [], signals.productNo);
+          }
+          // 사이드패널 자동 오픈: 상품별 콘텐츠가 완전히 준비된 후,
+          // 페이지 로드 기준 최소 500ms가 지나도록 맞춰서 오픈
+          if (fab?.openSidebar) {
+            const elapsed  = Date.now() - pageLoadTime;
+            const delay    = Math.max(0, 500 - elapsed);
+            setTimeout(() => fab.openSidebar(), delay);
           }
         });
       });
