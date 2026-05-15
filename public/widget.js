@@ -1679,12 +1679,16 @@
         scrollToBottom();
       }
 
-      // 리파인 칩 바
+      // 칩 → PDP 트레이 업데이트 (또는 일반 리파인 바)
       if (chips && chips.length) {
         _lastChips = chips;
-        if (_refineBar) _refineBar.remove();
-        _refineBar = renderRefinementChips(chips);
-        if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+        if (_pdpTrayScroll) {
+          updatePdpTrayChips(chips);
+        } else {
+          if (_refineBar) _refineBar.remove();
+          _refineBar = renderRefinementChips(chips);
+          if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+        }
         saveSession(lastProducts);
       }
     }
@@ -1717,9 +1721,13 @@
             }
             if (data.refinement_chips?.length) {
               _lastChips = data.refinement_chips;
-              if (_refineBar) _refineBar.remove();
-              _refineBar = renderRefinementChips(data.refinement_chips);
-              if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+              if (_pdpTrayScroll) {
+                updatePdpTrayChips(data.refinement_chips);
+              } else {
+                if (_refineBar) _refineBar.remove();
+                _refineBar = renderRefinementChips(data.refinement_chips);
+                if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+              }
             }
             chatHistory.push({ role: 'user', content: query });
             chatHistory.push({ role: 'assistant', content: msg });
@@ -1839,27 +1847,35 @@
       return scored.slice(0, count).map(s => s.c);
     }
 
+    // PDP 트레이 scroll 요소 참조 (done 이벤트 chips를 트레이에 업데이트하기 위해)
+    let _pdpTrayScroll = null;
+    let _pdpTrayChipPool = [];
+
+    function fillPdpTray(chipPool, productNo, productName) {
+      if (!_pdpTrayScroll) return;
+      _pdpTrayChipPool = chipPool;
+      const doubled = [...chipPool, ...chipPool];
+      _pdpTrayScroll.innerHTML = doubled.map(c =>
+        `<button class="cml-pdp-welcome-chip" data-q="${c}" data-pid="${productNo}" data-pname="${productName}">${c}</button>`
+      ).join('');
+    }
+
     function setupPdpWelcome(productName, chips, productNo) {
-      // 웰컴 타이틀 PDP 전용으로 교체 (세션 복원 여부와 무관하게 항상 갱신)
+      // 타이틀/서브타이틀 항상 갱신 (세션 복원 여부 무관)
       const welcomeTitleEl = welcomeEl?.querySelector('.cml-chat-welcome-title');
       if (welcomeTitleEl) {
-        // 받침 여부에 따라 을/를 선택
         const last = productName.charCodeAt(productName.length - 1);
         const particle = (last >= 0xAC00 && last <= 0xD7A3 && (last - 0xAC00) % 28 !== 0) ? '을' : '를';
         welcomeTitleEl.innerHTML = `<strong>${productName}</strong>${particle} 보고 있군요`;
       }
-
-      // 웰컴 바디 텍스트 교체
       const welcomeBodyEl = welcomeEl?.querySelector('.cml-chat-welcome-body');
       if (welcomeBodyEl) {
         welcomeBodyEl.textContent = '상품에 대해 마음껏 질문하거나, 아래의 질문을 골라보세요';
       }
 
-      if (messageLog.length > 0) return; // 기존 대화가 있으면 칩 교체는 건드리지 않음
-
       const chipPool = chips?.length ? chips : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '관리 방법이 어떻게 되나요?'];
 
-      // 웰컴 칩을 상품 특화 칩으로 교체 (이력 기반 개인화)
+      // 웰컴 패널 칩 (항상 상품 특화로 교체)
       const welcomeChipsEl = panel.querySelector('#cml-welcome-chips');
       if (welcomeChipsEl) {
         const selected = selectPdpChips(chipPool, 4);
@@ -1868,90 +1884,71 @@
         ).join('');
       }
 
-      // PDP 웰컴 칩 트레이 구성 (입력창 아래 자동 스크롤)
+      // PDP 트레이 구성 (자동 스크롤 영역)
       const tray = panel.querySelector('#cml-pdp-welcome-tray');
-      const scroll = panel.querySelector('#cml-pdp-welcome-scroll');
-      // 칩 2벌 이어붙여 무한 스크롤처럼 보이게
-      const doubled = [...chipPool, ...chipPool];
-      scroll.innerHTML = doubled.map(c =>
-        `<button class="cml-pdp-welcome-chip" data-q="${c}" data-pid="${productNo}" data-pname="${productName}">${c}</button>`
-      ).join('');
+      _pdpTrayScroll = panel.querySelector('#cml-pdp-welcome-scroll');
+      fillPdpTray(chipPool, productNo, productName);
       tray.style.display = 'block';
 
-      // rAF 기반 좌측 자동스크롤 + 마우스 드래그 스크롤
-      let paused = false;
-      let isDragging = false;
-      let didDrag = false;
-      let dragStartX = 0;
-      let dragStartScrollLeft = 0;
-      let half = 0;
+      // rAF 자동스크롤 + 마우스 드래그
+      let paused = false, isDragging = false, didDrag = false;
+      let dragStartX = 0, dragStartScrollLeft = 0, half = 0;
       const speed = 0.4;
-      let rafId;
 
       const raf = () => {
         if (!paused) {
-          if (!half) half = scroll.scrollWidth / 2;
-          scroll.scrollLeft += speed;
-          if (half > 0 && scroll.scrollLeft >= half) scroll.scrollLeft = 0;
+          if (!half) half = _pdpTrayScroll.scrollWidth / 2;
+          _pdpTrayScroll.scrollLeft += speed;
+          if (half > 0 && _pdpTrayScroll.scrollLeft >= half) _pdpTrayScroll.scrollLeft = 0;
         }
-        rafId = requestAnimationFrame(raf);
+        requestAnimationFrame(raf);
       };
-      rafId = requestAnimationFrame(raf);
+      requestAnimationFrame(raf);
 
-      // 드래그 시작
-      scroll.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        didDrag = false;
-        dragStartX = e.clientX;
-        dragStartScrollLeft = scroll.scrollLeft;
-        paused = true;
-        scroll.style.cursor = 'grabbing';
+      _pdpTrayScroll.addEventListener('mousedown', (e) => {
+        isDragging = true; didDrag = false;
+        dragStartX = e.clientX; dragStartScrollLeft = _pdpTrayScroll.scrollLeft;
+        paused = true; _pdpTrayScroll.style.cursor = 'grabbing';
       });
-
-      // 드래그 중
-      scroll.addEventListener('mousemove', (e) => {
+      _pdpTrayScroll.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
         const dx = e.clientX - dragStartX;
         if (Math.abs(dx) > 4) didDrag = true;
-        scroll.scrollLeft = dragStartScrollLeft - dx;
+        _pdpTrayScroll.scrollLeft = dragStartScrollLeft - dx;
       });
-
-      // 드래그 끝 → 자동스크롤 재개
       const stopDrag = () => {
         if (!isDragging) return;
-        isDragging = false;
-        scroll.style.cursor = '';
-        paused = false;
+        isDragging = false; _pdpTrayScroll.style.cursor = ''; paused = false;
       };
-      scroll.addEventListener('mouseup', stopDrag);
-      scroll.addEventListener('mouseleave', stopDrag);
+      _pdpTrayScroll.addEventListener('mouseup', stopDrag);
+      _pdpTrayScroll.addEventListener('mouseleave', stopDrag);
+      _pdpTrayScroll.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+      _pdpTrayScroll.addEventListener('touchend',   () => { paused = false; }, { passive: true });
 
-      // 터치
-      scroll.addEventListener('touchstart', () => { paused = true; }, { passive: true });
-      scroll.addEventListener('touchend',   () => { paused = false; }, { passive: true });
-
-      // 칩 클릭 (드래그와 구분)
-      scroll.addEventListener('click', (e) => {
+      _pdpTrayScroll.addEventListener('click', (e) => {
         if (didDrag) { didDrag = false; return; }
         const chip = e.target.closest('.cml-pdp-welcome-chip');
         if (!chip) return;
         document.dispatchEvent(new CustomEvent('chameleon:ask', {
-          detail: {
-            query:       chip.dataset.q,
-            mode:        'product_qa',
-            productNo:   chip.dataset.pid,
-            productName: chip.dataset.pname,
-            fullChips:   chipPool,
-          },
+          detail: { query: chip.dataset.q, mode: 'product_qa',
+            productNo: chip.dataset.pid, productName: chip.dataset.pname, fullChips: chipPool },
         }));
       });
+    }
+
+    // done 이벤트 chips → PDP 트레이 업데이트
+    function updatePdpTrayChips(chips) {
+      if (!_pdpTrayScroll || !chips?.length) return;
+      fillPdpTray(chips, _pdpProductNo, _pdpProductName);
+      // half 리셋 (innerHTML 교체 후 scrollWidth가 바뀌므로)
+      _pdpTrayScroll.scrollLeft = 0;
     }
 
     function updateConfig(newConfig) {
       applyCssVars(newConfig?.theme);
     }
 
-    return { setupPdpWelcome, updateConfig, openSidebar };
+    return { setupPdpWelcome, updateConfig, openSidebar, updatePdpTrayChips };
   }
 
   // ── after_cart 모드용 1회성 모드 플래그 ──
