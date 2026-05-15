@@ -68,12 +68,23 @@
 
   // ── 3. 상품별 AI 콘텐츠 로딩 ────────────────────
   async function fetchPdpContent(productNo, productName, productDesc) {
+    const cacheKey = `cml_pdp_${MALL_ID}_${productNo}`;
+    // 캐시 확인 (24시간 TTL)
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const { data, ts } = JSON.parse(cached);
+        if (Date.now() - ts < 86400000) return data;
+      }
+    } catch {}
+    // 서버 요청
     try {
       const res = await fetch(`${CHAMELEON_SERVER}/api/pdp-content`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mallId: MALL_ID, productNo, productName, productDesc }),
       });
       const data = await res.json();
+      try { localStorage.setItem(cacheKey, JSON.stringify({ data, ts: Date.now() })); } catch {}
       return data;
     } catch { return null; }
   }
@@ -769,6 +780,33 @@
     }
     .cml-msg-product-btn:hover { opacity: 0.82; }
 
+    /* ── Companion (Cross-sell) 세션 ── */
+    .cml-companion-section {
+      margin: 8px 0 4px;
+      animation: cml-fade-in 0.35s ease;
+    }
+    @keyframes cml-fade-in {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cml-companion-divider {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 8px;
+    }
+    .cml-companion-divider::before,
+    .cml-companion-divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: rgba(94,70,55,0.12);
+    }
+    .cml-companion-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--cml-accent, #5E4637); white-space: nowrap;
+      opacity: 0.75; text-transform: uppercase;
+    }
+    .cml-companion-cards {
+      display: flex; flex-direction: row; gap: 8px;
+    }
+
     /* ── 추천 정제 칩 바 (결과 아래 리파인 옵션) ── */
     .cml-refine-bar {
       overflow: hidden;
@@ -1051,6 +1089,7 @@
     let _pdpChips      = [];
     let _pdpProductNo  = '';
     let _pdpProductName = '';
+    let _pdpInitialized = false; // RAF + 이벤트 리스너 중복 방지
 
     // ── 세션 유지 ──
     const SESSION_KEY = `cml_session_${MALL_ID}`;
@@ -1777,6 +1816,12 @@
         chatHistory.push({ role: 'user', content: query });
         chatHistory.push({ role: 'assistant', content: data.answer || '' });
         if (chatHistory.length > 20) chatHistory.splice(0, 2);
+
+        // ── Cross-sell Companion 카드 렌더 ──
+        if (data.companionProducts?.length) {
+          renderCompanionCards(data.companionProducts, data.companionContext);
+        }
+
         // 답변 후 하단 칩 트레이: 방금 물어본 칩 제외 나머지로 갱신
         const remaining = _pdpChips.filter(c => c !== query);
         if (remaining.length) updatePdpTrayChips(remaining);
@@ -1787,6 +1832,40 @@
         sendBtn.disabled = false;
         inputEl.focus();
       }
+    }
+
+    // ── Cross-sell Companion 카드 렌더링 ──
+    // 답변 버블 아래에 세션 네임랩과 함께 상품 카드 노출
+    function renderCompanionCards(products, contextTitle) {
+      const section = document.createElement('div');
+      section.className = 'cml-companion-section';
+
+      // 라벨 ("\ud568께 코디하면 좋은 티셔츠" 등)
+      const divider = document.createElement('div');
+      divider.className = 'cml-companion-divider';
+      const label = document.createElement('span');
+      label.className = 'cml-companion-label';
+      label.textContent = contextTitle || '어울리는 아이템';
+      divider.appendChild(label);
+      section.appendChild(divider);
+
+      // 카드 레이아웃
+      const cardsWrap = document.createElement('div');
+      cardsWrap.className = 'cml-companion-cards';
+
+      products.forEach(p => {
+        // 기존 createMsgProductCard 재활용, 다만 companion 추적 이벤트 사용
+        const card = createMsgProductCard(p, null);
+        // 기존 product_click 공유 렌주지 않고 companion_click 별도 발사
+        card.querySelector('.cml-msg-product-btn')?.addEventListener('click', () => {
+          track('companion_click', { productNo: String(p.id), context: contextTitle || '' });
+        }, { once: true });
+        cardsWrap.appendChild(card);
+      });
+
+      section.appendChild(cardsWrap);
+      messagesEl.appendChild(section);
+      scrollToBottom();
     }
 
     // PDP 인라인 패널의 질문 칩 클릭 이벤트 수신
@@ -1899,6 +1978,10 @@
       _pdpTrayScroll = panel.querySelector('#cml-pdp-welcome-scroll');
       fillPdpTray(chipPool, productNo, productName);
       tray.style.display = 'none';
+
+      // RAF + 이벤트 리스너는 최초 1회만 (두 번째 호출 시 스킵)
+      if (_pdpInitialized) return;
+      _pdpInitialized = true;
 
       // rAF 자동스크롤 + 마우스 드래그
       let paused = false, isDragging = false, didDrag = false;
@@ -2021,32 +2104,47 @@
   // ── 11. 실행 ────────────────────────────────────
   async function init() {
     injectStyles();
-    track('impression'); // 페이지 로드 = 위젯 노출
-    setupCartDetection(); // 장바구니 이벤트 감지 시작
+    track('impression');
+    setupCartDetection();
 
-    const pageLoadTime = Date.now(); // PDP 자동 오픈 타이밍 계산용
+    const pageLoadTime = Date.now();
 
-    // config + pdpContent 요청을 동시에 시작 (직렬 await 제거)
     const configPromise = fetch(`${CHAMELEON_SERVER}/api/config/${MALL_ID}`)
       .then(r => r.json()).catch(() => null);
 
-    // FAB: config 로드 후 렌더 (브랜딩 텍스트·색상 모두 정확하게)
-    // config 요청은 보통 <200ms이므로 탭 출현 지연이 체감되지 않음
     let fab = null;
-    configPromise.then(config => { fab = renderFab(config); });
 
     if (isPDP) {
       const signals     = collectSignals();
       const productInfo = getProductInfo();
 
-      // config + AI 콘텐츠 모두 준비된 후에만 인라인 패널 + 사이드바를 표시
-      // (제네릭 placeholder는 표시하지 않음)
+      // AI 콘텐츠 요청 시작 (localStorage 캐시 히트 시 즉시 반환)
       const pdpPromise = fetchPdpContent(signals.productNo, productInfo.name, productInfo.desc);
+
+      // ── Phase 1: config 준비 → FAB 렌더 + 사이드바 즉시 오픈 ──
+      // DOM에서 읽은 상품명 + 폴백 칩으로 사이드바를 바로 표시
+      // (캐시 히트 시 Phase 2가 거의 동시에 실행되므로 실질적 지연 없음)
+      configPromise.then(config => {
+        if (config?.adaptivePdp?.enabled === false) return;
+        fab = renderFab(config);
+
+        const namePhase1 = productInfo.name || '상품';
+        if (fab?.setupPdpWelcome) {
+          fab.setupPdpWelcome(namePhase1, [], signals.productNo);
+        }
+        if (fab?.openSidebar) {
+          const elapsed = Date.now() - pageLoadTime;
+          const delay   = Math.max(0, 500 - elapsed);
+          setTimeout(() => fab.openSidebar(), delay);
+        }
+      });
+
+      // ── Phase 2: AI 콘텐츠 도착 → 인라인 패널 + 사이드바 칩/타이틀 업데이트 ──
       Promise.all([configPromise, pdpPromise]).then(([config, pdpContent]) => {
         if (config?.adaptivePdp?.enabled === false) return;
-        if (!config && !pdpContent) return;
+        if (!pdpContent) return;
 
-        // 인라인 패널: 상품별 콘텐츠로 바로 렌더 (페이드인)
+        // 인라인 패널 렌더 (페이드인)
         renderPanel(pdpContent, config, { productNo: signals.productNo, productName: productInfo.name });
         const panel = document.getElementById('cml-panel');
         if (panel) {
@@ -2055,17 +2153,14 @@
           requestAnimationFrame(() => requestAnimationFrame(() => { panel.style.opacity = '1'; }));
         }
 
-        // 사이드바 FAB: 상품별 타이틀/칩 세팅 후 자동 오픈
-        const nameForWelcome = pdpContent?.productName || productInfo.name;
+        // 사이드바: 실제 상품명 + AI 칩으로 업데이트 (이미 열려 있어도 자연스럽게 갱신)
+        const nameForWelcome = pdpContent.productName || productInfo.name;
         if (fab?.setupPdpWelcome && nameForWelcome) {
-          fab.setupPdpWelcome(nameForWelcome, pdpContent?.chips || [], signals.productNo);
-        }
-        if (fab?.openSidebar) {
-          const elapsed = Date.now() - pageLoadTime;
-          const delay   = Math.max(0, 500 - elapsed);
-          setTimeout(() => fab.openSidebar(), delay);
+          fab.setupPdpWelcome(nameForWelcome, pdpContent.chips || [], signals.productNo);
         }
       });
+    } else {
+      configPromise.then(config => { fab = renderFab(config); });
     }
   }
 

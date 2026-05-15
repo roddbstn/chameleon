@@ -16,6 +16,7 @@ const path    = require('path');
 const crypto  = require('crypto');
 const { Pool } = require('pg');
 const { createClient } = require('@supabase/supabase-js');
+const { findCompanionProducts } = require('./services/companionSearch');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -758,6 +759,8 @@ app.post('/api/ask', rateLimit(30), async (req, res) => {
   if (!process.env.GOOGLE_AI_API_KEY) {
     return res.json({
       answer: `"${question}"에 대한 답변 기능은 준비 중입니다. 곧 연결될 예정이에요!`,
+      companionProducts: [],
+      companionContext: null,
     });
   }
 
@@ -766,6 +769,7 @@ app.post('/api/ask', rateLimit(30), async (req, res) => {
   try {
     // Supabase에서 실제 상품 데이터 조회
     let productContext = '';
+    let productRow = null;
     if (mallId && productNo) {
       const { data: product } = await supabase
         .from('products')
@@ -775,6 +779,7 @@ app.post('/api/ask', rateLimit(30), async (req, res) => {
         .single();
 
       if (product) {
+        productRow = product;
         const attrs = product.attributes || {};
         productContext = `
 상품명: ${product.name}
@@ -808,6 +813,9 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
 - 정보가 없을 경우에도 소재·디자인에서 추론하여 솔직하게 안내할 것
 - 2~3문장, 간결하게`;
 
+    // ── AI 답변 생성 먼저, companion은 답변 나온 뒤 병렬 탐색 ──
+    // 이유: companion 감지에 answer 텍스트가 필요하므로 직렬이 불가피하나,
+    // answer 생성 자체가 가장 오래 걸리는 작업이므로 전체 latency는 동일
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { maxOutputTokens: 8192 },
@@ -815,15 +823,42 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
 
     const answer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text
       || '죄송해요, 다시 시도해주세요.';
+
+    // ── Cross-sell companion 탐색 (답변과 질문 기반, 실패해도 무시) ──
+    // mallId와 상품 데이터가 있는 경우에만 시도
+    let companionProducts = [];
+    let companionContext  = null;
+    if (mallId && productNo && productRow) {
+      const companionResult = await findCompanionProducts({
+        mallId, productNo, question, answer,
+      });
+      companionProducts = companionResult.companionProducts;
+      companionContext  = companionResult.companionContext;
+    }
+
+    // ── 로그 기록 ──
     Promise.resolve(supabase.from('chat_logs').insert({
-      store_id: mallId, query: question, result_type: 'pdp_qa', product_count: 1,
-      product_ids: productNo ? [String(productNo)] : null,
-      session_id: sessionId || null, page_url: pageUrl || null,
+      store_id:          mallId,
+      query:             question,
+      result_type:       'pdp_qa',
+      product_count:     1,
+      product_ids:       productNo ? [String(productNo)] : null,
+      session_id:        sessionId || null,
+      page_url:          pageUrl   || null,
+      companion_shown:   companionProducts.length > 0,
+      companion_ids:     companionProducts.length > 0
+                           ? companionProducts.map(c => String(c.id))
+                           : null,
     })).catch(() => {});
-    res.json({ answer });
+
+    res.json({ answer, companionProducts, companionContext });
   } catch (err) {
     console.error('[Ask API Error]', err.response?.data || err.message);
-    res.status(500).json({ answer: '죄송해요, 지금 답변을 생성할 수 없어요. 잠시 후 다시 시도해주세요.' });
+    res.status(500).json({
+      answer: '죄송해요, 지금 답변을 생성할 수 없어요. 잠시 후 다시 시도해주세요.',
+      companionProducts: [],
+      companionContext: null,
+    });
   }
 });
 
