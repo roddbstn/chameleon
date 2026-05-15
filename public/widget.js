@@ -1879,6 +1879,11 @@
 
       const chipPool = chips?.length ? chips : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '관리 방법이 어떻게 되나요?'];
 
+      // welcome 칩 클릭 시 _pdpChips가 필요하므로 여기서 미리 세팅
+      _pdpChips       = chipPool;
+      _pdpProductNo   = productNo;
+      _pdpProductName = productName;
+
       // 웰컴 패널 칩 (항상 상품 특화로 교체)
       const welcomeChipsEl = panel.querySelector('#cml-welcome-chips');
       if (welcomeChipsEl) {
