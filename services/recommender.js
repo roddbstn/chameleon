@@ -146,24 +146,30 @@ async function callGeminiStream(body, onChunk) {
 function makeTagFilter(streamCallback) {
   if (!streamCallback) return null;
   let buf = '', sentTo = 0, tagHit = false;
+  const STOP_TAGS = ['\nPRODUCTS:', '\nREASONS:', '\nCHIPS:'];
+  function firstTagIdx(str) {
+    return STOP_TAGS.reduce((min, tag) => {
+      const idx = str.indexOf(tag);
+      return idx >= 0 && idx < min ? idx : min;
+    }, Infinity);
+  }
   function onChunk(chunk) {
     buf += chunk;
     if (tagHit) return;
-    const tagIdx = buf.indexOf('\nPRODUCTS:');
-    if (tagIdx >= 0) {
+    const idx = firstTagIdx(buf);
+    if (idx < Infinity) {
       tagHit = true;
-      const safe = buf.slice(sentTo, tagIdx);
+      const safe = buf.slice(sentTo, idx);
       if (safe.trim()) streamCallback(safe);
       return;
     }
-    const safeEnd = buf.length - 15; // 태그 경계가 청크에 걸릴 수 있으므로 15자 버퍼
+    const safeEnd = buf.length - 15;
     if (safeEnd > sentTo) { streamCallback(buf.slice(sentTo, safeEnd)); sentTo = safeEnd; }
   }
-  // 스트림 종료 시 남은 버퍼 flush (PRODUCTS 태그 없는 경우 포함)
   onChunk.flush = () => {
     if (tagHit) return;
-    const tagIdx = buf.indexOf('\nPRODUCTS:');
-    const end = tagIdx >= 0 ? tagIdx : buf.length;
+    const idx = firstTagIdx(buf);
+    const end = idx < Infinity ? idx : buf.length;
     const safe = buf.slice(sentTo, end);
     if (safe.trim()) streamCallback(safe);
     sentTo = end;
