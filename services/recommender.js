@@ -691,8 +691,7 @@ async function enrichProducts(products, mallId = null) {
   if (mallId) query = query.eq('store_id', mallId);
 
   const { data: rows, error } = await query;
-  console.log(`[Enrich] ids=${JSON.stringify(ids)} rows=${rows?.length ?? 0} error=${error?.message || 'none'}`);
-  if (rows?.length) console.log(`[Enrich] sample raw_data keys:`, Object.keys(rows[0].raw_data || {}));
+  if (error) console.warn(`[Enrich] error: ${error.message}`);
 
   const imgMap = {}, priceMap = {};
   (rows || []).forEach(r => {
