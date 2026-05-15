@@ -657,7 +657,7 @@ ${productList}
 ★ 공통 규칙:
 - 문장을 반드시 완성해서 끝낼 것
 - 이모지 금지
-- 상품 설명은 상품당 최대 2문장 이내로 핵심만 — 길게 쓰지 말 것
+- 상품 설명은 상품당 반드시 1문장만 — 30자 이내, 핵심 특징 하나만
 - 상품 설명 시 **굵게** 핵심 셀링포인트 1개 반드시 포함
 - 질문 절대 금지 — 궁금한 것은 CHIPS로만 유도
 
@@ -679,7 +679,7 @@ ${mode === 'discovery' ? `CHIPS 작성 규칙 (스타일 탐색 모드):
 
   const reqBody = {
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { maxOutputTokens: 2048 },
+    generationConfig: { maxOutputTokens: 3000 },
   };
 
   if (onChunk) return await callGeminiStream(reqBody, onChunk);
