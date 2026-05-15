@@ -1111,7 +1111,7 @@ app.post('/api/recommend', rateLimit(20), async (req, res) => {
       (chunk) => sse({ type: 'chunk', text: chunk })
     );
 
-    sse({ type: 'done', ...result });
+    sse({ ...result, type: 'done' });
   } catch (err) {
     console.error('[Recommend Error]', err.message);
     sse({ type: 'error', message: '죄송해요, 다시 시도해주세요.' });
