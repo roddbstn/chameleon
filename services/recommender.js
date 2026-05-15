@@ -961,6 +961,8 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
 
   // PRODUCTS 태그 우선 → 이름 매칭 → 폴백
   const productIndices = parseProductIndices(rawMessage);
+  console.log(`[Debug] rawMessage tail: ${rawMessage.slice(-200)}`);
+  console.log(`[Debug] productIndices: ${JSON.stringify(productIndices)}, enriched: ${enriched.length}개`);
   const recommended = productIndices.length
     ? productIndices.map(i => enriched[i]).filter(Boolean)
     : matchProductsFromMessage(message, enriched);
