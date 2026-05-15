@@ -121,7 +121,7 @@ async function callGeminiStream(body, onChunk) {
             } catch {}
           }
         });
-        res.data.on('end', resolve);
+        res.data.on('end', () => { onChunk.flush?.(); resolve(); });
         res.data.on('error', reject);
       });
       if (model !== GEMINI_CHAIN[0].model) console.log(`[Gemini Stream] fallback 성공: ${model}`);
@@ -146,7 +146,7 @@ async function callGeminiStream(body, onChunk) {
 function makeTagFilter(streamCallback) {
   if (!streamCallback) return null;
   let buf = '', sentTo = 0, tagHit = false;
-  return (chunk) => {
+  function onChunk(chunk) {
     buf += chunk;
     if (tagHit) return;
     const tagIdx = buf.indexOf('\nPRODUCTS:');
@@ -158,7 +158,17 @@ function makeTagFilter(streamCallback) {
     }
     const safeEnd = buf.length - 15; // 태그 경계가 청크에 걸릴 수 있으므로 15자 버퍼
     if (safeEnd > sentTo) { streamCallback(buf.slice(sentTo, safeEnd)); sentTo = safeEnd; }
+  }
+  // 스트림 종료 시 남은 버퍼 flush (PRODUCTS 태그 없는 경우 포함)
+  onChunk.flush = () => {
+    if (tagHit) return;
+    const tagIdx = buf.indexOf('\nPRODUCTS:');
+    const end = tagIdx >= 0 ? tagIdx : buf.length;
+    const safe = buf.slice(sentTo, end);
+    if (safe.trim()) streamCallback(safe);
+    sentTo = end;
   };
+  return onChunk;
 }
 
 // ─────────────────────────────────────────────
