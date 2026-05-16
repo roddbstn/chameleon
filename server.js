@@ -909,6 +909,7 @@ CHIPS 규칙:
     Promise.resolve(supabase.from('chat_logs').insert({
       store_id:          mallId,
       query:             question,
+      answer:            answer,
       result_type:       'pdp_qa',
       product_count:     1,
       product_ids:       productNo ? [String(productNo)] : null,
@@ -2165,6 +2166,9 @@ const MIGRATIONS = [
   `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS inference_log    text[]`,
   `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS hard_filters     jsonb NOT NULL DEFAULT '{}'`,
   `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS soft_preferences jsonb NOT NULL DEFAULT '{}'`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS answer           text`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS companion_shown  boolean DEFAULT false`,
+  `ALTER TABLE chat_logs ADD COLUMN IF NOT EXISTS companion_ids    text[]`,
 ];
 
 async function runMigrations() {

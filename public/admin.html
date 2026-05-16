@@ -533,6 +533,10 @@
                 <div class="expand-section-label">파악된 니즈</div>
                 <div style="font-size:12px;color:#555;">${l.intent_needs}</div>
               </div>` : ''}
+              ${l.answer ? `<div>
+                <div class="expand-section-label">AI 답변</div>
+                <div style="font-size:12px;color:#333;white-space:pre-wrap;line-height:1.6;">${l.answer}</div>
+              </div>` : ''}
             </div>
           </td>
         </tr>`;
