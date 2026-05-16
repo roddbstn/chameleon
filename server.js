@@ -103,28 +103,35 @@ function requireMallConfigAuth(req, res, next) {
 }
 
 // ─────────────────────────────────────────────
-// Rate Limiter — AI 과금 엔드포인트 보호 (IP 기반)
-// 분당 30회 초과 시 429 반환
+// Rate Limiter — AI 과금 엔드포인트 보호
+// IP 기반 + 고객사(mallId) 기반 이중 제한
 // ─────────────────────────────────────────────
 const rateLimitMap = new Map();
-function rateLimit(maxPerMin = 30) {
+
+function checkRateLimit(key, maxPerMin) {
+  const now   = Date.now();
+  const entry = rateLimitMap.get(key) || { count: 0, reset: now + 60_000 };
+  if (now > entry.reset) { entry.count = 0; entry.reset = now + 60_000; }
+  entry.count++;
+  rateLimitMap.set(key, entry);
+  if (rateLimitMap.size > 10000) {
+    for (const [k, v] of rateLimitMap) { if (Date.now() > v.reset) rateLimitMap.delete(k); }
+  }
+  return entry.count > maxPerMin;
+}
+
+function rateLimit(maxPerMin = 30, mallMaxPerMin = 200) {
   return (req, res, next) => {
-    const ip  = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress || 'unknown';
-    const key = `${ip}:${req.path}`;
-    const now = Date.now();
-    const entry = rateLimitMap.get(key) || { count: 0, reset: now + 60_000 };
+    const ip     = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress || 'unknown';
+    const mallId = req.body?.mallId || req.query?.mallId || '';
 
-    if (now > entry.reset) { entry.count = 0; entry.reset = now + 60_000; }
-    entry.count++;
-    rateLimitMap.set(key, entry);
-
-    // 오래된 항목 주기적 정리 (Map 무한 증가 방지)
-    if (rateLimitMap.size > 5000) {
-      for (const [k, v] of rateLimitMap) { if (Date.now() > v.reset) rateLimitMap.delete(k); }
-    }
-
-    if (entry.count > maxPerMin) {
+    // IP 기반 제한
+    if (checkRateLimit(`ip:${ip}:${req.path}`, maxPerMin)) {
       return res.status(429).json({ error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' });
+    }
+    // 고객사 기반 제한 (한 쇼핑몰에서 비정상적으로 많은 요청 방지)
+    if (mallId && checkRateLimit(`mall:${mallId}:${req.path}`, mallMaxPerMin)) {
+      return res.status(429).json({ error: '쇼핑몰 요청 한도 초과. 잠시 후 다시 시도해주세요.' });
     }
     next();
   };
@@ -2209,6 +2216,20 @@ runMigrations().catch(() => {});
     console.warn('[Storage] 버킷 확인 실패:', e.message);
   }
 })();
+
+// ─────────────────────────────────────────────
+// HEALTH CHECK — Railway / UptimeRobot 용
+// GET /health → { status: 'ok', uptime, stores, timestamp }
+// ─────────────────────────────────────────────
+const SERVER_START = Date.now();
+app.get('/health', (req, res) => {
+  res.json({
+    status:    'ok',
+    uptime_s:  Math.floor((Date.now() - SERVER_START) / 1000),
+    stores:    Object.keys(tokenStore).length,
+    timestamp: new Date().toISOString(),
+  });
+});
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`
