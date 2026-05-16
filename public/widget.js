@@ -665,11 +665,11 @@
     .cml-pdp-tray-track {
       display: flex;
       width: max-content;
-      animation: cml-tray-scroll 22s linear infinite;
+      animation: cml-tray-scroll var(--cml-chips-duration, 18s) linear infinite;
       cursor: grab;
     }
     .cml-pdp-tray-track.cml-tray-dragging { cursor: grabbing; animation-play-state: paused; }
-    .cml-pdp-tray-set { display: flex; gap: 8px; padding: 4px 16px 2px; }
+    .cml-pdp-tray-set { display: flex; gap: 8px; padding-right: 8px; padding-top: 4px; padding-bottom: 2px; }
     @keyframes cml-tray-scroll {
       from { transform: translateX(0); }
       to   { transform: translateX(-50%); }
@@ -1240,10 +1240,8 @@
       chatHistory.splice(0);
       lastProducts = [];
       messagesEl.innerHTML = '';
-      followTray.style.display = 'none';
-      followScroll.innerHTML = '';
-      if (_stopAutoScroll) { _stopAutoScroll(); _stopAutoScroll = null; }
-      _refineBar = null; _lastChips = []; // already removed by innerHTML = ''
+      if (_pdpTray) _pdpTray.style.display = 'none';
+      _refineBar = null; _lastChips = [];
       showWelcome();
     });
 
@@ -1307,13 +1305,13 @@
       messagesEl.appendChild(div);
 
       if (role === 'user' && messageLog.length === 0) {
-        // 첫 유저 메시지: 웰컴 화면이 사라지고 버블이 상단에 보이도록 스크롤
-        requestAnimationFrame(() => {
+        // 첫 유저 메시지: 스켈레톤 로더 추가 등 동기 작업 완료 후 스크롤
+        setTimeout(() => {
           const bubbleTop = div.getBoundingClientRect().top
             - scrollArea.getBoundingClientRect().top
             + scrollArea.scrollTop - 16;
-          scrollArea.scrollTo({ top: bubbleTop, behavior: 'smooth' });
-        });
+          scrollArea.scrollTo({ top: Math.max(0, bubbleTop), behavior: 'smooth' });
+        }, 50);
       } else {
         scrollToBottom();
       }
@@ -1864,9 +1862,14 @@
           renderCompanionCards(data.companionProducts, data.companionContext);
         }
 
-        // 답변 후 하단 칩 트레이: 방금 물어본 칩 제외 나머지로 갱신
-        const remaining = _pdpChips.filter(c => c !== query);
-        if (remaining.length) updatePdpTrayChips(remaining);
+        // 답변 후 하단 칩 트레이: AI 맥락 칩 우선, 없으면 나머지 칩으로 갱신
+        if (data.chips?.length) {
+          _pdpChips = data.chips; // 풀 교체 (다음 질문 맥락 기준)
+          updatePdpTrayChips(data.chips);
+        } else {
+          const remaining = _pdpChips.filter(c => c !== query);
+          if (remaining.length) updatePdpTrayChips(remaining);
+        }
       } catch {
         loadingBubble.remove();
         addBubble('assistant', '네트워크 오류가 발생했어요. 잠시 후 다시 시도해주세요.');

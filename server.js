@@ -803,7 +803,7 @@ app.post('/api/ask', rateLimit(30), async (req, res) => {
 ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n` : ''}
 고객 질문: "${question}"
 
-이 상품에 대한 질문에 직접 답변해 드리세요. 다른 상품을 추천하거나 "어떤 상황에 입으실 건가요?" 같은 역질문은 절대 하지 마세요.
+이 상품에 대한 질문에 직접 답변해 드리세요. 다른 상품을 추천하거나 역질문은 절대 하지 마세요.
 
 규칙:
 - 인사말 없이 바로 핵심 답변으로 시작할 것 — '안녕하세요', '고객님', '보고 계신' 같은 도입부 금지
@@ -814,7 +814,18 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
 - 유머나 가벼운 말투 금지 — 신뢰감 있는 전문가 톤 유지
 - 다른 페이지나 링크로 안내하지 말 것 — 지금 이 자리에서 바로 답변할 것
 - 정보가 없을 경우에도 소재·디자인에서 추론하여 솔직하게 안내할 것
-- 2~3문장, 간결하게`;
+- 2~3문장, 간결하게
+
+답변 후 반드시 아래 형식을 줄바꿈 후 추가:
+CHIPS:["질문1","질문2","질문3","질문4","질문5"]
+
+CHIPS 규칙:
+- 방금 한 질문("${question}")과 답변 맥락에서 자연스럽게 이어지는 다음 질문 5개
+- 실제 사람이 대화하듯 구어체로 — "세탁기 돌려도 돼요?", "다른 색도 있어요?" 형태
+- 각 15자 이내, 이 상품에만 해당하는 질문으로 구성
+- CHIPS: 태그 이외 다른 텍스트 추가 금지`;
+
+
 
     // ── AI 답변 생성 먼저, companion은 답변 나온 뒤 병렬 탐색 ──
     // 이유: companion 감지에 answer 텍스트가 필요하므로 직렬이 불가피하나,
@@ -824,7 +835,15 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
       generationConfig: { maxOutputTokens: 8192 },
     });
 
-    const answer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text
+    const rawAnswer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+    // CHIPS 파싱 후 답변에서 제거
+    let answerChips = [];
+    const chipsMatch = rawAnswer.match(/\nCHIPS:(\[[\s\S]*?\])/);
+    if (chipsMatch) {
+      try { answerChips = JSON.parse(chipsMatch[1]); } catch {}
+    }
+    const answer = rawAnswer.replace(/\n?CHIPS:\[[\s\S]*?\]/, '').trim()
       || '죄송해요, 다시 시도해주세요.';
 
     // ── Cross-sell companion 탐색 (답변과 질문 기반, 실패해도 무시) ──
@@ -854,7 +873,7 @@ ${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n
                            : null,
     })).catch(() => {});
 
-    res.json({ answer, companionProducts, companionContext });
+    res.json({ answer, chips: answerChips, companionProducts, companionContext });
   } catch (err) {
     console.error('[Ask API Error]', err.response?.data || err.message);
     res.status(500).json({
