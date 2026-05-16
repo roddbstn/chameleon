@@ -301,6 +301,14 @@
       <button class="btn btn-primary btn-sm" onclick="runEmbed()">실행</button>
     </div>
     <div class="action-card">
+      <div class="action-icon">🤖</div>
+      <div class="action-info">
+        <div class="action-name">PDP 콘텐츠 분석</div>
+        <div class="action-desc">미분석 상품 AI 일괄 분석</div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="runAnalyze()">실행</button>
+    </div>
+    <div class="action-card">
       <div class="action-icon">🔗</div>
       <div class="action-info">
         <div class="action-name">위젯 데모</div>
@@ -636,6 +644,19 @@
       const d = await r.json();
       showToast(d.message || d.error || '완료');
       loadAll();
+    } catch (e) { showToast('오류: ' + e.message); }
+  }
+
+  async function runAnalyze() {
+    const mall = currentMallId || prompt('분석할 mall_id를 입력하세요');
+    if (!mall) return;
+    const force = confirm('기존 분석 결과도 재생성할까요?\n(취소: 미분석 상품만 처리)');
+    showToast(`${mall} PDP 콘텐츠 분석 시작... (백그라운드 실행)`);
+    try {
+      const url = `${SERVER}/admin/analyze/${mall}${force ? '?force=true' : ''}`;
+      const r = await fetch(url, { method: 'POST', headers: adminHeaders() });
+      const d = await r.json();
+      showToast(d.message || d.error || '완료');
     } catch (e) { showToast('오류: ' + e.message); }
   }
 

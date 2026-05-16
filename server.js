@@ -648,17 +648,13 @@ app.post('/api/chips', rateLimit(30), async (req, res) => {
 // 5-B. PDP CONTENT API — 상품별 AI UX 라이팅 생성
 // POST /api/pdp-content  { mallId, productNo, productName, productDesc }
 // ─────────────────────────────────────────────
-const pdpContentCache = new Map(); // 상품별 캐시 (재시작 전까지 유효)
+const pdpContentCache = new Map(); // L1 메모리 캐시 (Supabase 조회 전 빠른 히트용)
 
-app.post('/api/pdp-content', rateLimit(30), async (req, res) => {
-  const { mallId, productNo, productName, productDesc } = req.body;
-
-  // 캐시 확인
-  const cacheKey = `${mallId}__${productNo}__${productName}`;
-  if (pdpContentCache.has(cacheKey)) {
-    return res.json(pdpContentCache.get(cacheKey));
-  }
-
+/**
+ * PDP 콘텐츠 생성 함수 (재사용 가능 — /api/pdp-content, /admin/analyze 양쪽에서 호출)
+ * @returns {Object} content — badge, title, body, chips, accentColor, productName
+ */
+async function generatePdpContent(mallId, productNo, productName, productDesc) {
   // Supabase에서 상품 정보 보강 (없으면 DOM에서 받은 정보 사용)
   let enrichedName = productName || '';
   let enrichedDesc = productDesc || '';
@@ -666,26 +662,32 @@ app.post('/api/pdp-content', rateLimit(30), async (req, res) => {
     try {
       const { data: product } = await supabase
         .from('products')
-        .select('name, attributes, embed_text')
+        .select('name, attributes, embed_text, pdp_content, pdp_content_at')
         .eq('store_id', mallId)
         .eq('product_id', String(productNo))
         .single();
       if (product) {
         enrichedName = product.name || enrichedName;
         enrichedDesc = product.embed_text || enrichedDesc;
+        // DB 캐시 히트: pdp_content가 이미 있으면 바로 반환
+        if (product.pdp_content && product.pdp_content_at) {
+          const content = { ...product.pdp_content, productName: enrichedName };
+          pdpContentCache.set(`${mallId}__${productNo}`, content); // L1 갱신
+          return content;
+        }
       }
     } catch {}
   }
 
   if (!enrichedName && !enrichedDesc) {
-    return res.json({
+    return {
       badge: 'AI 쇼핑 도우미',
       title: '',
       body: '',
       chips: ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'],
       accentColor: '#2C3E50',
       productName: '',
-    });
+    };
   }
 
   const prompt = `당신은 한국 패션 브랜드의 시니어 UX 라이터입니다.
@@ -722,33 +724,59 @@ chips 작성 규칙:
 - 소재·핏·착용감·세탁·코디·재고·사이즈 등 다양한 각도로 구성
 - 답변을 들으면 구매를 결정할 수 있는 질문 우선`;
 
+  const geminiRes = await callGemini({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { maxOutputTokens: 4096 },
+  });
+  const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+  const cleaned = raw
+    .replace(/```json\n?/g, '').replace(/```\n?/g, '')
+    .replace(/'/g, '"')
+    .replace(/,\s*}/g, '}')
+    .replace(/,\s*]/g, ']')
+    .trim();
+  const jsonStr = cleaned.match(/\{[\s\S]*\}/)?.[0] || '{}';
+  const content = JSON.parse(jsonStr);
+  content.productName = enrichedName;
+  console.log(`[PdpContent] ${mallId} product:${productNo} → ${content.badge} chips:${content.chips?.length}`);
+
+  // Supabase에 영구 저장
+  if (mallId && productNo) {
+    supabase.from('products')
+      .update({ pdp_content: content, pdp_content_at: new Date().toISOString() })
+      .eq('store_id', mallId)
+      .eq('product_id', String(productNo))
+      .then(({ error }) => { if (error) console.warn('[PdpContent] DB 저장 실패:', error.message); });
+  }
+
+  // L1 캐시 갱신
+  pdpContentCache.set(`${mallId}__${productNo}`, content);
+  return content;
+}
+
+app.post('/api/pdp-content', rateLimit(30), async (req, res) => {
+  const { mallId, productNo, productName, productDesc } = req.body;
+
+  // L1 메모리 캐시 확인 (가장 빠른 경로)
+  const cacheKey = `${mallId}__${productNo}`;
+  if (pdpContentCache.has(cacheKey)) {
+    return res.json(pdpContentCache.get(cacheKey));
+  }
+
   try {
-    const geminiRes = await callGemini({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 4096 },
-    });
-    const raw = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-    const cleaned = raw
-      .replace(/```json\n?/g, '').replace(/```\n?/g, '')
-      .replace(/'/g, '"')             // single → double quote
-      .replace(/,\s*}/g, '}')         // trailing comma
-      .replace(/,\s*]/g, ']')
-      .trim();
-    const jsonStr = cleaned.match(/\{[\s\S]*\}/)?.[0] || '{}';
-    const content = JSON.parse(jsonStr);
-    content.productName = enrichedName; // 클라이언트가 DOM 파싱 실패해도 이름 사용 가능하도록
-    console.log(`[PdpContent] ${mallId} product:${productNo} → ${content.badge} chips:${content.chips?.length}`);
-    pdpContentCache.set(cacheKey, content);
+    const content = await generatePdpContent(mallId, productNo, productName, productDesc);
     res.json(content);
   } catch (err) {
     console.error('[PdpContent Error]', err.message);
+    const fallbackName = productName || '';
+    const fallbackDesc = productDesc || '';
     res.json({
       badge: '이 상품 알아보기',
-      title: enrichedName,
-      body: enrichedDesc.slice(0, 120),
+      title: fallbackName,
+      body: fallbackDesc.slice(0, 120),
       chips: ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'],
       accentColor: '#2C3E50',
-      productName: enrichedName,
+      productName: fallbackName,
     });
   }
 });
@@ -1077,6 +1105,57 @@ app.post('/admin/sync/:mallId', requireAdmin, async (req, res) => {
 });
 
 // ─────────────────────────────────────────────
+// 8-A-2. PDP CONTENT BULK ANALYZE
+//
+// POST /admin/analyze/:mallId
+// products 테이블에서 pdp_content가 NULL인 활성 상품을 순차적으로 분석해 DB에 저장.
+// force=true 파라미터를 보내면 기존 pdp_content도 재생성.
+// 응답: { queued: N } → 즉시 반환, 실제 분석은 백그라운드 실행
+// ─────────────────────────────────────────────
+app.post('/admin/analyze/:mallId', requireAdmin, async (req, res) => {
+  const { mallId } = req.params;
+  const force = req.body?.force === true || req.query.force === 'true';
+
+  // 분석 대상 상품 조회
+  let query = supabase
+    .from('products')
+    .select('product_id, name, embed_text')
+    .eq('store_id', mallId)
+    .eq('status', 'active');
+
+  if (!force) query = query.is('pdp_content', null);
+
+  const { data: targets, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  if (!targets || targets.length === 0) {
+    return res.json({ queued: 0, message: '분석할 상품이 없습니다 (force=true로 재생성 가능)' });
+  }
+
+  res.json({ queued: targets.length, message: `${targets.length}개 상품 분석 시작 — 백그라운드 실행 중` });
+
+  // 백그라운드 순차 실행 (Gemini rate limit 고려 — 상품당 1초 간격)
+  setImmediate(async () => {
+    let done = 0, failed = 0;
+    for (const p of targets) {
+      try {
+        await generatePdpContent(mallId, p.product_id, p.name, p.embed_text);
+        done++;
+        // Gemini 무료 할당량 보호용 딜레이
+        await new Promise(r => setTimeout(r, 1000));
+      } catch (e) {
+        console.error(`[Analyze] ${mallId} product:${p.product_id} failed:`, e.message);
+        failed++;
+        await new Promise(r => setTimeout(r, 2000)); // 실패 시 더 길게 대기
+      }
+      if (done % 10 === 0) {
+        console.log(`[Analyze] ${mallId} progress: ${done}/${targets.length} (failed: ${failed})`);
+      }
+    }
+    console.log(`[Analyze] ${mallId} 완료: ${done}개 성공, ${failed}개 실패`);
+  });
+});
+
+// ─────────────────────────────────────────────
 // 8-B. OPTIONS API — 상품 옵션 + 바리안트 조회 (위젯 장바구니용)
 //
 // GET /api/options?mallId=X&productNo=Y
@@ -1297,18 +1376,23 @@ app.post('/api/webhook/product', express.raw({ type: '*/*' }), async (req, res) 
       const material    = p.product_material || '';
       const embedText   = [p.product_name, material, description].filter(Boolean).join(' | ').slice(0, 3000);
 
-      // products 테이블 upsert
+      // products 테이블 upsert (상품 변경 → pdp_content 초기화 → 다음 방문 시 재생성)
       await supabase.from('products').upsert({
-        store_id:   mallId,
-        product_id: String(p.product_no),
-        name:       p.product_name,
-        price:      parseInt(p.price) || 0,
-        status:     p.display === 'T' ? 'active' : 'deleted',
-        attributes: { material: material || null },
-        raw_data:   p,
-        embed_text: embedText,
-        synced_at:  new Date().toISOString(),
+        store_id:       mallId,
+        product_id:     String(p.product_no),
+        name:           p.product_name,
+        price:          parseInt(p.price) || 0,
+        status:         p.display === 'T' ? 'active' : 'deleted',
+        attributes:     { material: material || null },
+        raw_data:       p,
+        embed_text:     embedText,
+        synced_at:      new Date().toISOString(),
+        pdp_content:    null,   // 상품 정보 변경 → 캐시 무효화
+        pdp_content_at: null,
       }, { onConflict: 'store_id,product_id' });
+
+      // L1 메모리 캐시도 제거
+      pdpContentCache.delete(`${mallId}__${p.product_no}`);
 
       // 임베딩 재생성 (해당 상품만)
       const { data: row } = await supabase.from('products').select('id').eq('store_id', mallId).eq('product_id', String(productNo)).single();
