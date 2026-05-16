@@ -1241,7 +1241,7 @@
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     }
 
-    // ── 쿼리 내용에 따른 로딩 텍스트 ──
+    // ── 추천 모드 로딩 텍스트 ──
     function getLoadingText(query) {
       const q = (query || '').toLowerCase();
       if (/선물|gift/.test(q))                      return '선물에 딱 맞는 상품을 찾고 있어요...';
@@ -1254,13 +1254,29 @@
       return '상품을 찾고 있어요...';
     }
 
-    function addSkeletonLoader(query) {
+    // ── 상품 Q&A 모드 로딩 텍스트 (특정 상품에 대한 질문) ──
+    function getProductQALoadingText(query) {
+      const q = (query || '').toLowerCase();
+      if (/소재|원단|재질|면|울|나일론|폴리|데님|코튼/.test(q)) return '소재 정보를 확인하고 있어요...';
+      if (/세탁|관리|보관|드라이클리닝/.test(q))               return '관리 방법을 찾고 있어요...';
+      if (/사이즈|핏|크기|크|작|키|몸무게|허리|체형/.test(q))   return '사이즈 정보를 확인하고 있어요...';
+      if (/쾌적|시원|따뜻|덥|춥|통기|착용감|입|걸치|신어/.test(q)) return '착용감을 분석하고 있어요...';
+      if (/여름|봄|가을|겨울|한여름|초봄|간절기|계절/.test(q))   return '시즌 착용감을 확인하고 있어요...';
+      if (/코디|어울|매치|함께|같이/.test(q))                   return '코디 아이디어를 정리하고 있어요...';
+      if (/색상|컬러|다른 색/.test(q))                         return '상품 정보를 확인하고 있어요...';
+      return '답변을 준비하고 있어요...';
+    }
+
+    function addSkeletonLoader(query, mode) {
+      const loadingText = mode === 'product_qa'
+        ? getProductQALoadingText(query)
+        : getLoadingText(query);
       const el = document.createElement('div');
       el.className = 'cml-skeleton';
       el.innerHTML = `
         <div class="cml-skeleton-top">
           <div class="cml-skeleton-spinner"></div>
-          <span class="cml-skeleton-label">${getLoadingText(query)}</span>
+          <span class="cml-skeleton-label">${loadingText}</span>
         </div>
         <div class="cml-skeleton-bar" style="width:83%"></div>
         <div class="cml-skeleton-bar" style="width:64%"></div>
@@ -1805,7 +1821,7 @@
     async function sendProductQA(query, productNo, productName) {
       if (!query.trim()) return;
       addBubble('user', query);
-      const loadingBubble = addSkeletonLoader('이 상품에 대해');
+      const loadingBubble = addSkeletonLoader(query, 'product_qa');
       sendBtn.disabled = true;
       try {
         const res = await fetch(`${CHAMELEON_SERVER}/api/ask`, {
