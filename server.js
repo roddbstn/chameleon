@@ -203,10 +203,12 @@ const {
 // 토큰 저장소 (메모리 + Supabase 영속화)
 const tokenStore = {};
 
-async function saveTokenToDb(mallId, access_token, refresh_token) {
+async function saveTokenToDb(mallId, access_token, refresh_token, token_expires_at) {
   try {
     await supabase.from('store_tokens').upsert(
-      { store_id: mallId, access_token, refresh_token, updated_at: new Date().toISOString() },
+      { store_id: mallId, access_token, refresh_token,
+        token_expires_at: token_expires_at || null,
+        updated_at: new Date().toISOString() },
       { onConflict: 'store_id' }
     );
   } catch (e) {
@@ -216,9 +218,13 @@ async function saveTokenToDb(mallId, access_token, refresh_token) {
 
 async function loadTokensFromDb() {
   try {
-    const { data } = await supabase.from('store_tokens').select('store_id, access_token, refresh_token');
+    const { data } = await supabase.from('store_tokens').select('store_id, access_token, refresh_token, token_expires_at');
     (data || []).forEach(row => {
-      tokenStore[row.store_id] = { access_token: row.access_token, refresh_token: row.refresh_token };
+      tokenStore[row.store_id] = {
+        access_token:     row.access_token,
+        refresh_token:    row.refresh_token,
+        token_expires_at: row.token_expires_at ? new Date(row.token_expires_at) : null,
+      };
     });
     console.log(`[Token] DB에서 ${(data || []).length}개 스토어 토큰 로드`);
   } catch (e) {
@@ -236,10 +242,11 @@ async function refreshTokenIfNeeded(mallId) {
       { auth: { username: CAFE24_CLIENT_ID, password: CAFE24_CLIENT_SECRET },
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
-    const { access_token, refresh_token } = res.data;
-    tokenStore[mallId] = { access_token, refresh_token };
-    await saveTokenToDb(mallId, access_token, refresh_token);
-    console.log(`[Token] ${mallId} 토큰 갱신 완료`);
+    const { access_token, refresh_token, expires_at } = res.data;
+    const token_expires_at = expires_at ? new Date(expires_at) : null;
+    tokenStore[mallId] = { access_token, refresh_token, token_expires_at };
+    await saveTokenToDb(mallId, access_token, refresh_token, token_expires_at);
+    console.log(`[Token] ${mallId} 토큰 갱신 완료 (만료: ${token_expires_at?.toISOString() || '불명'})`);
     return access_token;
   } catch (e) {
     console.error('[Token] 갱신 실패:', e.message);
@@ -247,12 +254,21 @@ async function refreshTokenIfNeeded(mallId) {
   }
 }
 
-// 유효한 액세스 토큰 반환 (만료 시 자동 갱신)
+// 유효한 액세스 토큰 반환 — 만료 5분 전이면 사전 갱신
 async function getValidToken(mallId) {
-  const token = tokenStore[mallId]?.access_token;
-  if (!token) return null;
-  // 간단한 검증: API 호출 실패(401)시 상위에서 refresh 처리
-  return token;
+  const stored = tokenStore[mallId];
+  if (!stored?.access_token) return null;
+
+  // 만료 시각을 알고 있고 5분 이내로 남았으면 사전 갱신
+  if (stored.token_expires_at) {
+    const minsLeft = (stored.token_expires_at - Date.now()) / 60000;
+    if (minsLeft < 5) {
+      console.log(`[Token] ${mallId} 만료 임박 (${minsLeft.toFixed(1)}분 남음) — 사전 갱신`);
+      const newToken = await refreshTokenIfNeeded(mallId);
+      if (newToken) return newToken;
+    }
+  }
+  return stored.access_token;
 }
 
 // ─────────────────────────────────────────────
@@ -420,9 +436,10 @@ app.get('/auth/callback', async (req, res) => {
       }
     );
 
-    const { access_token, refresh_token } = tokenRes.data;
-    tokenStore[mallId] = { access_token, refresh_token };
-    await saveTokenToDb(mallId, access_token, refresh_token);
+    const { access_token, refresh_token, expires_at } = tokenRes.data;
+    const token_expires_at = expires_at ? new Date(expires_at) : null;
+    tokenStore[mallId] = { access_token, refresh_token, token_expires_at };
+    await saveTokenToDb(mallId, access_token, refresh_token, token_expires_at);
     console.log(`[OAuth] Token saved for ${mallId}`);
 
     // ② Scripttag 등록 — 위젯 JS를 스토어 모든 페이지에 자동 삽입
