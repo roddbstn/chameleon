@@ -2017,7 +2017,7 @@
       }
       const welcomeBodyEl = welcomeEl?.querySelector('.cml-chat-welcome-body');
       if (welcomeBodyEl) {
-        welcomeBodyEl.textContent = '상품에 대해 마음껏 질문하거나, 아래의 질문을 골라보세요';
+        welcomeBodyEl.textContent = '상품에 대해 질문하거나, 아래의 질문을 골라보세요';
       }
 
       const chipPool = chips?.length ? chips : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '관리 방법이 어떻게 되나요?'];
