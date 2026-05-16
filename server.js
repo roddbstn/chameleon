@@ -29,11 +29,20 @@ const app = express();
 // widget.js — Cafe24 scripttag 검증을 위해 CORS 미들웨어보다 먼저 등록
 // Cafe24가 scripttag 등록 시 Access-Control-Allow-Origin: * 요구함
 // ─────────────────────────────────────────────
-app.get('/widget.js', (req, res) => {
+const WIDGET_VERSION = '1.0.0';
+
+// /widget.js (현재 버전 alias) + /widget/v1.js (버전 고정 경로)
+// Cafe24 scripttag는 /widget.js를 등록하며, 배포 시 cache-busting을 위해
+// Cache-Control: max-age=60 (1분) 설정 — 고객사는 버전 고정 URL로 전환 가능
+function serveWidget(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'public, max-age=60');
+  res.setHeader('X-Chameleon-Version', WIDGET_VERSION);
   res.sendFile(path.join(__dirname, 'public', 'widget.js'));
-});
+}
+
+app.get('/widget.js',      serveWidget);
+app.get('/widget/v1.js',   serveWidget); // 버전 고정 URL — 롤백 시 사용
 
 // ─────────────────────────────────────────────
 // CORS — Railway 도메인 + Cafe24 쇼핑몰 도메인만 허용
@@ -2224,10 +2233,11 @@ runMigrations().catch(() => {});
 const SERVER_START = Date.now();
 app.get('/health', (req, res) => {
   res.json({
-    status:    'ok',
-    uptime_s:  Math.floor((Date.now() - SERVER_START) / 1000),
-    stores:    Object.keys(tokenStore).length,
-    timestamp: new Date().toISOString(),
+    status:         'ok',
+    widget_version: WIDGET_VERSION,
+    uptime_s:       Math.floor((Date.now() - SERVER_START) / 1000),
+    stores:         Object.keys(tokenStore).length,
+    timestamp:      new Date().toISOString(),
   });
 });
 

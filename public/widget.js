@@ -1,5 +1,6 @@
 /**
  * Chameleon Widget — Cafe24 Adaptive PDP
+ * @version 1.0.0
  *
  * 이 파일은 Scripttag API를 통해 카페24 상점의 상품 상세 페이지(PDP)에
  * 자동으로 로드됩니다. 브라우저에서 실행되며 페이지를 수정하지 않고
