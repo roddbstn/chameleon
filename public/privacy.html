@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>개인정보처리방침 — Chameleon</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Apple SD Gothic Neo', -apple-system, 'Noto Sans KR', sans-serif; background: #fff; color: #111; line-height: 1.8; }
+    .header { background: #111; color: #fff; padding: 0 32px; height: 56px; display: flex; align-items: center; }
+    .header-logo { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; color: #fff; }
+    .header-logo span { color: #A8FF78; }
+    .container { max-width: 780px; margin: 0 auto; padding: 56px 24px 80px; }
+    h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .updated { font-size: 13px; color: #999; margin-bottom: 40px; }
+    h2 { font-size: 17px; font-weight: 700; margin: 36px 0 12px; }
+    p, li { font-size: 15px; color: #333; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th, td { border: 1px solid #E0E0E0; padding: 10px 14px; text-align: left; }
+    th { background: #F5F5F3; font-weight: 600; }
+    .contact-box { background: #F5F5F3; border-radius: 12px; padding: 20px 24px; margin-top: 40px; }
+    .contact-box p { font-size: 14px; color: #555; }
+  </style>
+</head>
+<body>
+<header class="header">
+  <a class="header-logo" href="/"><span>C</span>hameleon</a>
+</header>
+
+<div class="container">
+  <h1>개인정보처리방침</h1>
+  <p class="updated">최종 수정일: 2026년 5월 16일 · 시행일: 2026년 5월 16일</p>
+
+  <p>Chameleon(이하 "서비스")은 카페24 입점 쇼핑몰에 AI 쇼핑 도우미 위젯을 제공합니다. 본 방침은 서비스 이용 과정에서 수집되는 정보의 종류, 목적, 보호 방법을 설명합니다.</p>
+
+  <h2>1. 수집하는 정보</h2>
+  <table>
+    <thead><tr><th>정보 유형</th><th>항목</th><th>수집 시점</th></tr></thead>
+    <tbody>
+      <tr><td>서비스 이용 기록</td><td>위젯 노출·클릭·대화 이벤트, 세션 ID</td><td>위젯 로드 시</td></tr>
+      <tr><td>쇼핑 행동</td><td>조회 상품 번호, 장바구니 담기 여부, 구매 여부</td><td>이벤트 발생 시</td></tr>
+      <tr><td>대화 내용</td><td>사용자가 입력한 질문, AI 답변</td><td>채팅 시</td></tr>
+      <tr><td>환경 정보</td><td>참조 URL, UTM 파라미터, 기기 유형</td><td>페이지 진입 시</td></tr>
+      <tr><td>쇼핑몰 운영자</td><td>카페24 mall_id, OAuth 토큰</td><td>앱 설치 시</td></tr>
+    </tbody>
+  </table>
+  <p>※ 이름, 이메일, 전화번호 등 직접 식별 가능한 개인정보는 수집하지 않습니다.</p>
+
+  <h2>2. 수집 목적</h2>
+  <ul>
+    <li>AI 쇼핑 도우미 서비스 제공 및 개인화 추천</li>
+    <li>서비스 품질 개선 및 오류 분석</li>
+    <li>쇼핑몰 운영자 대상 통계 리포트 제공 (전환율, 인기 질문 등)</li>
+    <li>부정 이용 탐지 및 보안</li>
+  </ul>
+
+  <h2>3. 보유 및 이용 기간</h2>
+  <ul>
+    <li>대화 로그: 1년</li>
+    <li>이벤트 로그: 2년</li>
+    <li>쇼핑몰 운영자 토큰: 앱 삭제 시 즉시 삭제</li>
+  </ul>
+
+  <h2>4. 제3자 제공 및 위탁</h2>
+  <table>
+    <thead><tr><th>업체</th><th>목적</th><th>제공 정보</th></tr></thead>
+    <tbody>
+      <tr><td>Google (Gemini API)</td><td>AI 응답 생성</td><td>질문 텍스트, 상품 정보</td></tr>
+      <tr><td>Supabase</td><td>데이터 저장·조회</td><td>이벤트 로그, 대화 내용</td></tr>
+      <tr><td>Railway</td><td>서버 호스팅</td><td>서버 트래픽 처리</td></tr>
+    </tbody>
+  </table>
+  <p>수집된 정보는 위 목적 이외의 목적으로 이용하거나 제3자에게 제공하지 않습니다.</p>
+
+  <h2>5. 정보 보호 조치</h2>
+  <ul>
+    <li>데이터 전송 시 TLS 1.2 이상 암호화</li>
+    <li>OAuth 토큰 DB 저장 시 접근 권한 제한</li>
+    <li>관리자 API 접근 시 별도 인증키 요구</li>
+    <li>쇼핑몰별 데이터 격리 (mall_id 기준)</li>
+  </ul>
+
+  <h2>6. 이용자의 권리</h2>
+  <p>쇼핑몰 최종 이용자(소비자)는 수집된 데이터 열람·삭제를 요청할 수 있습니다. 해당 쇼핑몰 운영자 또는 아래 연락처로 문의하세요.</p>
+
+  <h2>7. 개인정보 보호책임자</h2>
+  <div class="contact-box">
+    <p><strong>서비스명:</strong> Chameleon</p>
+    <p><strong>이메일:</strong> privacy@chameleon.kr (예시 — 실제 이메일로 교체하세요)</p>
+    <p><strong>처리 시간:</strong> 영업일 기준 3일 이내 회신</p>
+  </div>
+
+  <h2>8. 방침 변경 고지</h2>
+  <p>본 방침이 변경되는 경우 서비스 내 공지 또는 이메일로 최소 7일 전에 고지합니다.</p>
+</div>
+</body>
+</html>

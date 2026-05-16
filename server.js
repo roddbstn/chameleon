@@ -1620,6 +1620,12 @@ async function updateUserPreferences(mallId, sessionId, productNo) {
 app.get('/onboarding', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'onboarding.html'));
 });
+app.get('/privacy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
+});
+app.get('/terms', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'terms.html'));
+});
 
 // ─────────────────────────────────────────────
 // 에이전트 콘솔
