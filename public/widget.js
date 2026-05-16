@@ -671,6 +671,7 @@
       animation: cml-tray-scroll var(--cml-chips-duration, 18s) linear infinite;
       cursor: grab;
     }
+    .cml-pdp-tray-wrap:hover .cml-pdp-tray-track { animation-play-state: paused; }
     .cml-pdp-tray-track.cml-tray-dragging { cursor: grabbing; animation-play-state: paused; }
     .cml-pdp-tray-set { display: flex; gap: 8px; padding-right: 8px; padding-top: 4px; padding-bottom: 2px; }
     @keyframes cml-tray-scroll {
@@ -828,7 +829,7 @@
     }
     .cml-refine-track {
       display: flex; width: max-content; gap: 8px;
-      animation: cml-chips-scroll 24s linear infinite;
+      animation: cml-chips-scroll var(--cml-chips-duration, 18s) linear infinite;
     }
     .cml-refine-bar:hover .cml-refine-track,
     .cml-refine-bar.cml-paused .cml-refine-track { animation-play-state: paused; }
