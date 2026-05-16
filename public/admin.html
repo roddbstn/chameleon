@@ -270,6 +270,31 @@
     </div>
   </div>
 
+  <!-- ── 상품 분석 현황 ── -->
+  <div class="section-title">상품 분석 현황</div>
+  <div class="stats-grid" style="margin-bottom:28px;">
+    <div class="stat-card">
+      <div class="stat-label">전체 활성 상품</div>
+      <div class="stat-value" id="stat-product-total">—</div>
+      <div class="stat-sub">Supabase 동기화 기준</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">PDP 분석 완료</div>
+      <div class="stat-value" id="stat-analyzed">—</div>
+      <div class="stat-sub" id="stat-analyzed-rate">전체 대비 —</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">미분석 상품</div>
+      <div class="stat-value" id="stat-unanalyzed">—</div>
+      <div class="stat-sub">분석 실행 버튼으로 처리 가능</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">토큰 만료</div>
+      <div class="stat-value" id="stat-token-expires" style="font-size:16px;">—</div>
+      <div class="stat-sub" id="stat-token-status">확인 중</div>
+    </div>
+  </div>
+
   <!-- ── 전환 퍼널 ── -->
   <div class="section-title">Chameleon 기여 전환 퍼널</div>
   <div class="funnel-card" style="margin-bottom:28px;">
@@ -570,6 +595,32 @@
       const total = statsRes.chat_count || 1;
       const rec   = statsRes.by_type?.recommendation || 0;
       document.getElementById('stat-success').textContent = `${total ? Math.round((rec/total)*100) : 0}%`;
+
+      // ── 상품 분석 현황 ──
+      const productTotal  = statsRes.product_count  || 0;
+      const analyzedCount = statsRes.analyzed_count || 0;
+      const unanalyzed    = statsRes.unanalyzed_count || 0;
+      document.getElementById('stat-product-total').textContent = productTotal.toLocaleString();
+      document.getElementById('stat-analyzed').textContent      = analyzedCount.toLocaleString();
+      document.getElementById('stat-analyzed-rate').textContent = productTotal
+        ? `전체의 ${Math.round((analyzedCount/productTotal)*100)}%` : '—';
+      document.getElementById('stat-unanalyzed').textContent    = unanalyzed.toLocaleString();
+
+      // ── 토큰 만료 ──
+      const expiresAt = statsRes.token_expires_at ? new Date(statsRes.token_expires_at) : null;
+      if (expiresAt) {
+        const minsLeft = Math.round((expiresAt - Date.now()) / 60000);
+        const hLeft    = Math.floor(Math.abs(minsLeft) / 60);
+        const mLeft    = Math.abs(minsLeft) % 60;
+        document.getElementById('stat-token-expires').textContent =
+          minsLeft < 0 ? '만료됨' : (hLeft > 0 ? `${hLeft}h ${mLeft}m` : `${mLeft}m`);
+        document.getElementById('stat-token-status').textContent =
+          minsLeft < 5 ? '⚠️ 곧 만료 — 자동 갱신 예정' :
+          minsLeft < 0 ? '❌ 만료 — 재인증 필요' : '✅ 유효';
+      } else {
+        document.getElementById('stat-token-expires').textContent = '—';
+        document.getElementById('stat-token-status').textContent  = '만료 시각 미확인';
+      }
 
       // ── 퍼널 ──
       renderFunnel(t);

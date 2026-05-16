@@ -1332,10 +1332,15 @@ app.get('/api/stats', requireAdmin, async (req, res) => {
     // 이번 달 분만 카운트
     const monthLogs = (logData || []).filter(l => new Date(l.created_at) >= monthStart);
 
-    // 등록 상품 수
-    let prodQ = supabase.from('products').select('product_id', { count: 'exact', head: true }).eq('status', 'active');
+    // 등록 상품 수 + pdp_content 분석 현황
+    let prodQ = supabase.from('products').select('product_id, pdp_content_at', { count: 'exact' }).eq('status', 'active');
     if (mallId) prodQ = prodQ.eq('store_id', mallId);
-    const { count: productCount } = await prodQ;
+    const { data: prodData, count: productCount } = await prodQ;
+    const analyzedCount = (prodData || []).filter(p => p.pdp_content_at).length;
+
+    // 토큰 상태
+    const tokenInfo = tokenStore[mallId] || {};
+    const tokenExpiresAt = tokenInfo.token_expires_at;
 
     // 결과 유형별 집계
     const byType = monthLogs.reduce((acc, l) => {
@@ -1348,6 +1353,9 @@ app.get('/api/stats', requireAdmin, async (req, res) => {
       total_cost_usd: parseFloat(totalCost.toFixed(4)),
       chat_count: monthLogs.length,
       product_count: productCount || 0,
+      analyzed_count: analyzedCount,
+      unanalyzed_count: (productCount || 0) - analyzedCount,
+      token_expires_at: tokenExpiresAt ? tokenExpiresAt.toISOString() : null,
       by_type: byType,
       recent_chats: logData || [],
     });
