@@ -78,7 +78,7 @@
 
   // ── 3. 상품별 AI 콘텐츠 로딩 ────────────────────
   async function fetchPdpContent(productNo, productName, productDesc) {
-    const cacheKey = `cml_pdp_${MALL_ID}_${productNo}`;
+    const cacheKey = `cml_pdp_v2_${MALL_ID}_${productNo}`;
     // 캐시 확인 (24시간 TTL)
     try {
       const cached = localStorage.getItem(cacheKey);
@@ -121,24 +121,16 @@
       ${t.aiBubbleText    ? `--cml-ai-text:     ${t.aiBubbleText};`    : ''}
     `;
     const badge = content?.badge || 'AI 쇼핑 도우미';
-    const title = content?.title || '';
-    const body  = content?.body  || '';
-    // 칩 개수 config 기반 제한
-    const chipLimit = config?.adaptivePdp?.chipCount || 4;
+    // 칩 최대 5개 (config로 재정의 가능)
+    const chipLimit = config?.adaptivePdp?.chipCount || 5;
     const rawChips = content?.chips?.length
       ? content.chips
-      : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?'];
+      : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '착용감이 어때요?', '코디 어떻게 해요?'];
     const allChips = rawChips.slice(0, chipLimit);
     const chipsHTML = allChips.map(c => `<button class="cml-chip" data-q="${c}">${c}</button>`).join('');
     return `
       <div class="cml-panel" id="cml-panel" style="${cssVars}">
         <div class="cml-badge"><span class="cml-dot"></span>${badge}</div>
-        ${title || body ? `
-        <div class="cml-card">
-          ${title ? `<div class="cml-card-header"><span class="cml-card-icon"></span><span class="cml-card-title">${title}</span></div>` : ''}
-          ${body  ? `<div class="cml-card-body">${body.replace(/\n/g, '<br>')}</div>` : ''}
-        </div>` : ''}
-        <div class="cml-chips-label">원하는 질문을 클릭하세요 →</div>
         <div class="cml-chips-wrap">
           <div class="cml-chips-track">
             <div class="cml-chips-set">${chipsHTML}</div>
