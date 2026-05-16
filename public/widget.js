@@ -1091,8 +1091,24 @@
 
     function scrollToBottom() { scrollArea.scrollTop = scrollArea.scrollHeight; }
     // 웰컴 화면은 항상 스크롤 영역 상단에 존재 — hide/show 대신 스크롤로 전환
-    function showWelcome()  { messagesEl.innerHTML = ''; scrollArea.scrollTop = 0; }
+    let _chatStarted = false;
+    function showWelcome()  {
+      messagesEl.innerHTML = '';
+      messagesEl.style.minHeight = '';
+      scrollArea.scrollTop = 0;
+      _chatStarted = false;
+    }
     function hideWelcome()  { /* no-op: welcome stays visible at top */ }
+    function scrollPastWelcome() {
+      if (_chatStarted) return;
+      _chatStarted = true;
+      // 스켈레톤 로더 등 동기 작업 후 실행:
+      // messagesEl에 최소 높이를 부여해 welcomeEl 너머까지 스크롤 가능하게 만든 뒤 smooth scroll
+      setTimeout(() => {
+        messagesEl.style.minHeight = scrollArea.clientHeight + 'px';
+        scrollArea.scrollTo({ top: welcomeEl.offsetHeight, behavior: 'smooth' });
+      }, 30);
+    }
 
     const chatHistory = [];
     let lastProducts  = [];
@@ -1304,17 +1320,10 @@
       else div.textContent = text;
       messagesEl.appendChild(div);
 
-      if (role === 'user' && messageLog.length === 0) {
-        // 첫 유저 메시지: 스켈레톤 로더 추가 등 동기 작업 완료 후 스크롤
-        setTimeout(() => {
-          const bubbleTop = div.getBoundingClientRect().top
-            - scrollArea.getBoundingClientRect().top
-            + scrollArea.scrollTop - 16;
-          scrollArea.scrollTo({ top: Math.max(0, bubbleTop), behavior: 'smooth' });
-        }, 50);
-      } else {
-        scrollToBottom();
+      if (role === 'user') {
+        scrollPastWelcome(); // 웰컴 화면을 스크롤 아웃 (첫 메시지에만 실행)
       }
+      scrollToBottom();
 
       if (role === 'user' || role === 'assistant') {
         messageLog.push({ role, text });
@@ -1985,11 +1994,18 @@
       const chipsHTML = chipPool.map(c =>
         `<button class="cml-pdp-welcome-chip" data-q="${c}" data-pid="${productNo}" data-pname="${productName}">${c}</button>`
       ).join('');
-      // 두 세트 모두 동일하게 채움 (CSS translateX(-50%) 무한 루프)
       _pdpTrayTrack.querySelectorAll('.cml-pdp-tray-set').forEach(s => { s.innerHTML = chipsHTML; });
-      // 애니메이션 재시작 (칩 변경 시 처음부터)
+      // 애니메이션 재시작 + 인라인 패널과 동일한 px/s 속도로 duration 계산
       _pdpTrayTrack.style.animation = 'none';
-      requestAnimationFrame(() => { _pdpTrayTrack.style.animation = ''; });
+      requestAnimationFrame(() => {
+        _pdpTrayTrack.style.animation = '';
+        requestAnimationFrame(() => {
+          // 인라인 패널 기준: 약 50px/s (10칩 × ~90px / 18s)
+          const halfWidth = _pdpTrayTrack.scrollWidth / 2 || 1;
+          const duration  = Math.max(6, halfWidth / 50);
+          _pdpTrayTrack.style.animationDuration = `${duration}s`;
+        });
+      });
     }
 
     function setupPdpWelcome(productName, chips, productNo) {
