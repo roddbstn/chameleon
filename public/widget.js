@@ -616,7 +616,7 @@
 
     /* ── 입력창 ── */
     .cml-chat-input-row {
-      padding: 14px 20px 10px; border-top: 1px solid #F0F0EE;
+      padding: 8px 20px 10px;
       background: #fff;
     }
     .cml-chat-input-wrap {
@@ -655,7 +655,7 @@
     .cml-pdp-welcome-tray {
       flex-shrink: 0;
       padding: 6px 0 10px;
-      border-bottom: 1px solid #F0F0EE;
+      border-bottom: none;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
@@ -2121,7 +2121,7 @@
     function updatePdpTrayChips(chips) {
       if (!_pdpTrayTrack || !chips?.length) return;
       fillPdpTray(chips, _pdpProductNo, _pdpProductName);
-      if (_pdpTray) { _pdpTray.style.opacity = '1'; _pdpTray.style.pointerEvents = ''; }
+      if (_pdpTray) { _pdpTray.style.opacity = '1'; _pdpTray.style.pointerEvents = 'auto'; }
     }
 
     function updateConfig(newConfig) {
