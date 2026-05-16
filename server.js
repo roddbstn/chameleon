@@ -74,7 +74,8 @@ function requireAdmin(req, res, next) {
     console.warn('[Security] ADMIN_SECRET 미설정 — 관리자 API 열린 상태');
     return next(); // 미설정 시 경고만, 개발 편의 유지
   }
-  const provided = req.headers['x-admin-key'] || req.query._key;
+  // 쿼리스트링 허용하지 않음 — 서버 접속 로그에 노출될 수 있음
+  const provided = req.headers['x-admin-key'];
   if (!provided || !crypto.timingSafeEqual(Buffer.from(provided), Buffer.from(secret))) {
     return res.status(401).json({ error: '관리자 인증 필요 (x-admin-key 헤더)' });
   }
@@ -109,6 +110,33 @@ function requireMallConfigAuth(req, res, next) {
     return res.status(401).json({ error: 'OAuth 인증 필요. /install 에서 먼저 앱을 설치해주세요.' });
   }
   next();
+}
+
+// ─────────────────────────────────────────────
+// AI API 접근 제한 — 등록된 고객사만 AI 엔드포인트 호출 가능
+// /api/ask, /api/pdp-content, /api/recommend, /api/chips 에 적용
+// ─────────────────────────────────────────────
+function requireRegisteredMall(req, res, next) {
+  const mallId = req.body?.mallId || req.query?.mallId;
+  if (!mallId) return res.status(400).json({ error: 'mallId 필수' });
+  if (!tokenStore[mallId]) {
+    return res.status(403).json({ error: '등록되지 않은 쇼핑몰입니다. /install 에서 앱을 먼저 설치해주세요.' });
+  }
+  next();
+}
+
+// ─────────────────────────────────────────────
+// 입력 새니타이징 — 프롬프트 인젝션 기본 방어
+// 사용자 입력에서 프롬프트 제어 패턴 제거
+// ─────────────────────────────────────────────
+function sanitizeInput(text, maxLen = 500) {
+  if (!text || typeof text !== 'string') return '';
+  return text
+    .slice(0, maxLen)                               // 길이 제한
+    .replace(/\bsystem\s*:/gi, '')                  // "system:" 제거
+    .replace(/\bignore\s+(previous|above)\b/gi, '') // 무시 명령 제거
+    .replace(/```[\s\S]*?```/g, '')                 // 코드 블록 제거
+    .trim();
 }
 
 // ─────────────────────────────────────────────
@@ -628,7 +656,7 @@ function logEvent(event) {
 // 5-A. CHIPS API — 상품별 동적 FAQ 질문 생성
 // POST /api/chips  { mallId, productNo, persona }
 // ─────────────────────────────────────────────
-app.post('/api/chips', rateLimit(30), async (req, res) => {
+app.post('/api/chips', rateLimit(30), requireRegisteredMall, async (req, res) => {
   const { mallId, productNo, persona } = req.body;
   if (!mallId || !productNo) return res.json({ chips: [] });
 
@@ -787,7 +815,7 @@ chips 작성 규칙:
   return content;
 }
 
-app.post('/api/pdp-content', rateLimit(30), async (req, res) => {
+app.post('/api/pdp-content', rateLimit(30), requireRegisteredMall, async (req, res) => {
   const { mallId, productNo, productName, productDesc } = req.body;
 
   // L1 메모리 캐시 확인 (가장 빠른 경로)
@@ -817,8 +845,9 @@ app.post('/api/pdp-content', rateLimit(30), async (req, res) => {
 // ─────────────────────────────────────────────
 // 5. ASK API — 상품 관련 자유 질문 → Claude 응답
 // ─────────────────────────────────────────────
-app.post('/api/ask', rateLimit(30), async (req, res) => {
-  const { mallId, productNo, productName: domProductName, question, sessionId, pageUrl } = req.body;
+app.post('/api/ask', rateLimit(30), requireRegisteredMall, async (req, res) => {
+  const { mallId, productNo, productName: domProductName, question: rawQuestion, sessionId, pageUrl } = req.body;
+  const question = sanitizeInput(rawQuestion, 300);
   if (!question) return res.status(400).json({ error: 'question required' });
 
   if (!process.env.GOOGLE_AI_API_KEY) {
@@ -1241,7 +1270,7 @@ app.get('/api/options', async (req, res) => {
 // POST /api/recommend
 // { mallId, query, conversationHistory? }
 // ─────────────────────────────────────────────
-app.post('/api/recommend', rateLimit(20), async (req, res) => {
+app.post('/api/recommend', rateLimit(20), requireRegisteredMall, async (req, res) => {
   const { mallId, query, conversationHistory, sessionId, pageUrl, mode } = req.body;
   if (!mallId || !query) return res.status(400).json({ error: 'mallId, query 필요' });
 
