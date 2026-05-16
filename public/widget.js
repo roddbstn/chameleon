@@ -59,7 +59,17 @@
 
   // ── 2. 현재 상품 정보 DOM에서 읽기 ─────────────
   function getProductInfo() {
-    const name  = document.querySelector('.xans-product-detail .product-name, [class*="product-name"]')?.textContent?.trim() || '';
+    // og:title이 가장 신뢰할 수 있는 상품명 소스 (Cafe24는 항상 포함)
+    const ogTitle = document.querySelector('meta[property="og:title"]')?.content?.trim() || '';
+    // document.title은 보통 "상품명 : 쇼핑몰명" 형태 — 콜론/대시 앞만 추출
+    const titleRaw = document.title?.trim() || '';
+    const titleName = titleRaw.split(/\s*[:|-]\s*/)[0]?.trim() || '';
+    // DOM 셀렉터 (테마마다 클래스명이 다를 수 있음)
+    const domName = document.querySelector(
+      '.xans-product-detail .product-name, [class*="product-name"], h2.headingArea, .headingArea h2'
+    )?.textContent?.trim() || '';
+
+    const name  = ogTitle || titleName || domName;
     const price = document.querySelector('[id*="price_text"], .product-price')?.textContent?.trim() || '';
     const code  = document.querySelector('.product-code, [class*="product-code"]')?.textContent?.trim() || '';
     const desc  = document.querySelector('[class*="product-desc"] p, .product-desc p, .xans-product-detail p')?.textContent?.trim() || '';
@@ -2121,25 +2131,25 @@
       // AI 콘텐츠 요청 시작 (localStorage 캐시 히트 시 즉시 반환)
       const pdpPromise = fetchPdpContent(signals.productNo, productInfo.name, productInfo.desc);
 
-      // ── Phase 1: config 준비 → FAB 렌더 + 사이드바 즉시 오픈 ──
-      // DOM에서 읽은 상품명 + 폴백 칩으로 사이드바를 바로 표시
-      // (캐시 히트 시 Phase 2가 거의 동시에 실행되므로 실질적 지연 없음)
+      // ── Phase 1: config 준비 → FAB 렌더 ──
+      // og:title로 상품명을 읽을 수 있으면 즉시 사이드바 오픈
+      // 상품명이 없으면 Phase 2(AI 콘텐츠 도착)까지 오픈 보류
+      let phase1Opened = false;
       configPromise.then(config => {
         if (config?.adaptivePdp?.enabled === false) return;
         fab = renderFab(config);
 
-        const namePhase1 = productInfo.name || '상품';
-        if (fab?.setupPdpWelcome) {
-          fab.setupPdpWelcome(namePhase1, [], signals.productNo);
-        }
-        if (fab?.openSidebar) {
-          const elapsed = Date.now() - pageLoadTime;
-          const delay   = Math.max(0, 500 - elapsed);
-          setTimeout(() => fab.openSidebar(), delay);
+        if (productInfo.name) {
+          fab?.setupPdpWelcome?.(productInfo.name, [], signals.productNo);
+          if (fab?.openSidebar) {
+            const elapsed = Date.now() - pageLoadTime;
+            const delay   = Math.max(0, 500 - elapsed);
+            setTimeout(() => { fab.openSidebar(); phase1Opened = true; }, delay);
+          }
         }
       });
 
-      // ── Phase 2: AI 콘텐츠 도착 → 인라인 패널 + 사이드바 칩/타이틀 업데이트 ──
+      // ── Phase 2: AI 콘텐츠 도착 → 인라인 패널 + 사이드바 업데이트 ──
       Promise.all([configPromise, pdpPromise]).then(([config, pdpContent]) => {
         if (config?.adaptivePdp?.enabled === false) return;
         if (!pdpContent) return;
@@ -2153,10 +2163,16 @@
           requestAnimationFrame(() => requestAnimationFrame(() => { panel.style.opacity = '1'; }));
         }
 
-        // 사이드바: 실제 상품명 + AI 칩으로 업데이트 (이미 열려 있어도 자연스럽게 갱신)
+        // 사이드바: AI 상품명 + 칩으로 갱신 (Phase 1에서 이미 열었어도 자연스럽게 업데이트)
         const nameForWelcome = pdpContent.productName || productInfo.name;
         if (fab?.setupPdpWelcome && nameForWelcome) {
           fab.setupPdpWelcome(nameForWelcome, pdpContent.chips || [], signals.productNo);
+        }
+        // Phase 1에서 상품명 없어서 못 열었으면 여기서 오픈
+        if (!phase1Opened && fab?.openSidebar) {
+          const elapsed = Date.now() - pageLoadTime;
+          const delay   = Math.max(0, 500 - elapsed);
+          setTimeout(() => fab.openSidebar(), delay);
         }
       });
     } else {
