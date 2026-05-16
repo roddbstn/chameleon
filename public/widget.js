@@ -654,19 +654,26 @@
     /* ── PDP 웰컴 칩 트레이 (상품 상세 진입 시 자동 표시) ── */
     .cml-pdp-welcome-tray {
       flex-shrink: 0;
-      overflow: hidden;
       padding: 6px 0 10px;
       border-bottom: 1px solid #F0F0EE;
     }
-    .cml-pdp-welcome-scroll {
-      display: flex;
-      gap: 8px;
-      padding: 4px 16px 2px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      white-space: nowrap;
+    .cml-pdp-tray-wrap {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+      mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
     }
-    .cml-pdp-welcome-scroll::-webkit-scrollbar { display: none; }
+    .cml-pdp-tray-track {
+      display: flex;
+      width: max-content;
+      animation: cml-tray-scroll 22s linear infinite;
+      cursor: grab;
+    }
+    .cml-pdp-tray-track.cml-tray-dragging { cursor: grabbing; animation-play-state: paused; }
+    .cml-pdp-tray-set { display: flex; gap: 8px; padding: 4px 16px 2px; }
+    @keyframes cml-tray-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
     .cml-pdp-welcome-chip {
       flex: 0 0 auto;
       border: 1px solid rgba(94,70,55,0.20);
@@ -1052,7 +1059,12 @@
         <div class="cml-chat-messages" id="cml-chat-messages"></div>
       </div>
       <div class="cml-pdp-welcome-tray" id="cml-pdp-welcome-tray" style="display:none">
-        <div class="cml-pdp-welcome-scroll" id="cml-pdp-welcome-scroll"></div>
+        <div class="cml-pdp-tray-wrap">
+          <div class="cml-pdp-tray-track" id="cml-pdp-tray-track">
+            <div class="cml-pdp-tray-set"></div>
+            <div class="cml-pdp-tray-set" aria-hidden="true"></div>
+          </div>
+        </div>
       </div>
 
       <div class="cml-chat-input-row">
@@ -1293,7 +1305,19 @@
       if (role === 'assistant') div.innerHTML = parseMd(text);
       else div.textContent = text;
       messagesEl.appendChild(div);
-      scrollToBottom();
+
+      if (role === 'user' && messageLog.length === 0) {
+        // 첫 유저 메시지: 웰컴 화면이 사라지고 버블이 상단에 보이도록 스크롤
+        requestAnimationFrame(() => {
+          const bubbleTop = div.getBoundingClientRect().top
+            - scrollArea.getBoundingClientRect().top
+            + scrollArea.scrollTop - 16;
+          scrollArea.scrollTo({ top: bubbleTop, behavior: 'smooth' });
+        });
+      } else {
+        scrollToBottom();
+      }
+
       if (role === 'user' || role === 'assistant') {
         messageLog.push({ role, text });
         saveSession(lastProducts);
@@ -1947,22 +1971,26 @@
       return scored.slice(0, count).map(s => s.c);
     }
 
-    // PDP 트레이 참조 (done 이벤트 chips를 트레이에 업데이트하기 위해)
+    // PDP 트레이 참조
     let _pdpTray = null;
-    let _pdpTrayScroll = null;
+    let _pdpTrayTrack = null; // CSS 애니메이션 트랙
     let _pdpTrayChipPool = [];
 
     function fillPdpTray(chipPool, productNo, productName) {
-      if (!_pdpTrayScroll) return;
+      if (!_pdpTrayTrack) return;
       _pdpTrayChipPool = chipPool;
-      const doubled = [...chipPool, ...chipPool];
-      _pdpTrayScroll.innerHTML = doubled.map(c =>
+      const chipsHTML = chipPool.map(c =>
         `<button class="cml-pdp-welcome-chip" data-q="${c}" data-pid="${productNo}" data-pname="${productName}">${c}</button>`
       ).join('');
+      // 두 세트 모두 동일하게 채움 (CSS translateX(-50%) 무한 루프)
+      _pdpTrayTrack.querySelectorAll('.cml-pdp-tray-set').forEach(s => { s.innerHTML = chipsHTML; });
+      // 애니메이션 재시작 (칩 변경 시 처음부터)
+      _pdpTrayTrack.style.animation = 'none';
+      requestAnimationFrame(() => { _pdpTrayTrack.style.animation = ''; });
     }
 
     function setupPdpWelcome(productName, chips, productNo) {
-      // 타이틀/서브타이틀 항상 갱신 (세션 복원 여부 무관)
+      // 타이틀/서브타이틀 항상 갱신
       const welcomeTitleEl = welcomeEl?.querySelector('.cml-chat-welcome-title');
       if (welcomeTitleEl) {
         const last = productName.charCodeAt(productName.length - 1);
@@ -1976,7 +2004,6 @@
 
       const chipPool = chips?.length ? chips : ['소재가 어떻게 되나요?', '사이즈 선택 어떻게 하나요?', '어떤 상황에 어울려요?', '관리 방법이 어떻게 되나요?'];
 
-      // welcome 칩 클릭 시 _pdpChips가 필요하므로 여기서 미리 세팅
       _pdpChips       = chipPool;
       _pdpProductNo   = productNo;
       _pdpProductName = productName;
@@ -1990,69 +2017,93 @@
         ).join('');
       }
 
-      // PDP 트레이 구성 (자동 스크롤 영역) — 초기에는 숨김, AI 응답 후 표시
+      // PDP 트레이 구성 — 초기에는 숨김, AI 응답 후 표시
       const tray = panel.querySelector('#cml-pdp-welcome-tray');
       _pdpTray = tray;
-      _pdpTrayScroll = panel.querySelector('#cml-pdp-welcome-scroll');
+      _pdpTrayTrack = panel.querySelector('#cml-pdp-tray-track');
       fillPdpTray(chipPool, productNo, productName);
       tray.style.display = 'none';
 
-      // RAF + 이벤트 리스너는 최초 1회만 (두 번째 호출 시 스킵)
+      // 이벤트 리스너는 최초 1회만
       if (_pdpInitialized) return;
       _pdpInitialized = true;
 
-      // rAF 자동스크롤 + 마우스 드래그
-      let paused = false, isDragging = false, didDrag = false;
-      let dragStartX = 0, dragStartScrollLeft = 0, half = 0;
-      const speed = 0.4;
+      // 드래그: CSS 애니메이션 일시정지 + transform 직접 제어
+      let isDragging = false, didDrag = false;
+      let dragStartX = 0, dragBaseX = 0;
 
-      const raf = () => {
-        if (!paused) {
-          if (!half) half = _pdpTrayScroll.scrollWidth / 2;
-          _pdpTrayScroll.scrollLeft += speed;
-          if (half > 0 && _pdpTrayScroll.scrollLeft >= half) _pdpTrayScroll.scrollLeft = 0;
-        }
-        requestAnimationFrame(raf);
-      };
-      requestAnimationFrame(raf);
-
-      _pdpTrayScroll.addEventListener('mousedown', (e) => {
-        isDragging = true; didDrag = false;
-        dragStartX = e.clientX; dragStartScrollLeft = _pdpTrayScroll.scrollLeft;
-        paused = true; _pdpTrayScroll.style.cursor = 'grabbing';
+      _pdpTrayTrack.addEventListener('mousedown', (e) => {
+        isDragging = true; didDrag = false; dragStartX = e.clientX;
+        const m = new DOMMatrix(getComputedStyle(_pdpTrayTrack).transform);
+        dragBaseX = m.m41;
+        _pdpTrayTrack.classList.add('cml-tray-dragging');
+        _pdpTrayTrack.style.transform = `translateX(${dragBaseX}px)`;
       });
-      _pdpTrayScroll.addEventListener('mousemove', (e) => {
+      _pdpTrayTrack.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
         const dx = e.clientX - dragStartX;
         if (Math.abs(dx) > 4) didDrag = true;
-        _pdpTrayScroll.scrollLeft = dragStartScrollLeft - dx;
+        _pdpTrayTrack.style.transform = `translateX(${dragBaseX + dx}px)`;
       });
-      const stopDrag = () => {
+      const stopDrag = (e) => {
         if (!isDragging) return;
-        isDragging = false; _pdpTrayScroll.style.cursor = ''; paused = false;
+        isDragging = false;
+        _pdpTrayTrack.classList.remove('cml-tray-dragging');
+        if (didDrag) {
+          // 현재 위치에서 애니메이션 재개 (negative delay로 seek)
+          const dx = (e?.clientX ?? dragStartX) - dragStartX;
+          const curX = dragBaseX + dx;
+          const halfW = _pdpTrayTrack.scrollWidth / 2 || 1;
+          const norm  = ((-curX % halfW) + halfW) % halfW;
+          const delay = -((norm / halfW) * 22);
+          _pdpTrayTrack.style.transform = '';
+          _pdpTrayTrack.style.animation = `cml-tray-scroll 22s ${delay}s linear infinite`;
+        } else {
+          _pdpTrayTrack.style.transform = '';
+          _pdpTrayTrack.style.animation = '';
+        }
       };
-      _pdpTrayScroll.addEventListener('mouseup', stopDrag);
-      _pdpTrayScroll.addEventListener('mouseleave', stopDrag);
-      _pdpTrayScroll.addEventListener('touchstart', () => { paused = true; }, { passive: true });
-      _pdpTrayScroll.addEventListener('touchend',   () => { paused = false; }, { passive: true });
+      _pdpTrayTrack.addEventListener('mouseup', stopDrag);
+      _pdpTrayTrack.addEventListener('mouseleave', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        _pdpTrayTrack.classList.remove('cml-tray-dragging');
+        _pdpTrayTrack.style.transform = '';
+        _pdpTrayTrack.style.animation = '';
+      });
+      _pdpTrayTrack.addEventListener('touchstart', (e) => {
+        dragStartX = e.touches[0].clientX;
+        const m = new DOMMatrix(getComputedStyle(_pdpTrayTrack).transform);
+        dragBaseX = m.m41;
+        _pdpTrayTrack.classList.add('cml-tray-dragging');
+        _pdpTrayTrack.style.transform = `translateX(${dragBaseX}px)`;
+      }, { passive: true });
+      _pdpTrayTrack.addEventListener('touchmove', (e) => {
+        const dx = e.touches[0].clientX - dragStartX;
+        _pdpTrayTrack.style.transform = `translateX(${dragBaseX + dx}px)`;
+      }, { passive: true });
+      _pdpTrayTrack.addEventListener('touchend', () => {
+        _pdpTrayTrack.classList.remove('cml-tray-dragging');
+        _pdpTrayTrack.style.transform = '';
+        _pdpTrayTrack.style.animation = '';
+      });
 
-      _pdpTrayScroll.addEventListener('click', (e) => {
+      _pdpTrayTrack.addEventListener('click', (e) => {
         if (didDrag) { didDrag = false; return; }
         const chip = e.target.closest('.cml-pdp-welcome-chip');
         if (!chip) return;
         document.dispatchEvent(new CustomEvent('chameleon:ask', {
           detail: { query: chip.dataset.q, mode: 'product_qa',
-            productNo: chip.dataset.pid, productName: chip.dataset.pname, fullChips: chipPool },
+            productNo: chip.dataset.pid, productName: chip.dataset.pname, fullChips: _pdpChips },
         }));
       });
     }
 
     // done 이벤트 chips → PDP 트레이 업데이트 + 트레이 표시
     function updatePdpTrayChips(chips) {
-      if (!_pdpTrayScroll || !chips?.length) return;
+      if (!_pdpTrayTrack || !chips?.length) return;
       fillPdpTray(chips, _pdpProductNo, _pdpProductName);
-      _pdpTrayScroll.scrollLeft = 0;
-      if (_pdpTray) _pdpTray.style.display = 'block'; // 첫 AI 응답 후 트레이 표시
+      if (_pdpTray) _pdpTray.style.display = 'block';
     }
 
     function updateConfig(newConfig) {
