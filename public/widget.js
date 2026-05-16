@@ -656,6 +656,9 @@
       flex-shrink: 0;
       padding: 6px 0 10px;
       border-bottom: 1px solid #F0F0EE;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
     }
     .cml-pdp-tray-wrap {
       overflow: hidden;
@@ -1016,6 +1019,10 @@
       if (t.userBubbleText)   panel.style.setProperty('--cml-user-text',   t.userBubbleText);
       if (t.aiBubbleBg)       panel.style.setProperty('--cml-ai-bg',       t.aiBubbleBg);
       if (t.aiBubbleText)     panel.style.setProperty('--cml-ai-text',     t.aiBubbleText);
+      // 인라인 패널과 동일한 칩 스크롤 속도
+      const _chipSpeed    = config?.chipScrollSpeed || 5;
+      const _chipDuration = `${(11 - _chipSpeed) * 3}s`;
+      panel.style.setProperty('--cml-chips-duration', _chipDuration);
     }
     applyCssVars(config?.theme);
 
@@ -1058,7 +1065,7 @@
         </div>
         <div class="cml-chat-messages" id="cml-chat-messages"></div>
       </div>
-      <div class="cml-pdp-welcome-tray" id="cml-pdp-welcome-tray" style="display:none">
+      <div class="cml-pdp-welcome-tray" id="cml-pdp-welcome-tray">
         <div class="cml-pdp-tray-wrap">
           <div class="cml-pdp-tray-track" id="cml-pdp-tray-track">
             <div class="cml-pdp-tray-set"></div>
@@ -1256,7 +1263,7 @@
       chatHistory.splice(0);
       lastProducts = [];
       messagesEl.innerHTML = '';
-      if (_pdpTray) _pdpTray.style.display = 'none';
+      if (_pdpTray) { _pdpTray.style.opacity = '0'; _pdpTray.style.pointerEvents = 'none'; }
       _refineBar = null; _lastChips = [];
       showWelcome();
     });
@@ -1995,17 +2002,9 @@
         `<button class="cml-pdp-welcome-chip" data-q="${c}" data-pid="${productNo}" data-pname="${productName}">${c}</button>`
       ).join('');
       _pdpTrayTrack.querySelectorAll('.cml-pdp-tray-set').forEach(s => { s.innerHTML = chipsHTML; });
-      // 애니메이션 재시작 + 인라인 패널과 동일한 px/s 속도로 duration 계산
+      // 애니메이션 재시작 (duration은 --cml-chips-duration CSS 변수 사용 — 인라인 패널과 동일)
       _pdpTrayTrack.style.animation = 'none';
-      requestAnimationFrame(() => {
-        _pdpTrayTrack.style.animation = '';
-        requestAnimationFrame(() => {
-          // 인라인 패널 기준: 약 50px/s (10칩 × ~90px / 18s)
-          const halfWidth = _pdpTrayTrack.scrollWidth / 2 || 1;
-          const duration  = Math.max(6, halfWidth / 50);
-          _pdpTrayTrack.style.animationDuration = `${duration}s`;
-        });
-      });
+      requestAnimationFrame(() => { _pdpTrayTrack.style.animation = ''; });
     }
 
     function setupPdpWelcome(productName, chips, productNo) {
@@ -2041,7 +2040,7 @@
       _pdpTray = tray;
       _pdpTrayTrack = panel.querySelector('#cml-pdp-tray-track');
       fillPdpTray(chipPool, productNo, productName);
-      tray.style.display = 'none';
+      // 트레이는 CSS에서 opacity:0으로 기본 숨김 (display:none 사용 안 함 — 레이아웃 공간 유지)
 
       // 이벤트 리스너는 최초 1회만
       if (_pdpInitialized) return;
@@ -2122,7 +2121,7 @@
     function updatePdpTrayChips(chips) {
       if (!_pdpTrayTrack || !chips?.length) return;
       fillPdpTray(chips, _pdpProductNo, _pdpProductName);
-      if (_pdpTray) _pdpTray.style.display = 'block';
+      if (_pdpTray) { _pdpTray.style.opacity = '1'; _pdpTray.style.pointerEvents = ''; }
     }
 
     function updateConfig(newConfig) {
