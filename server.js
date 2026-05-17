@@ -76,7 +76,12 @@ function requireAdmin(req, res, next) {
   }
   // 쿼리스트링 허용하지 않음 — 서버 접속 로그에 노출될 수 있음
   const provided = req.headers['x-admin-key'];
-  if (!provided || !crypto.timingSafeEqual(Buffer.from(provided), Buffer.from(secret))) {
+  const providedBuf = Buffer.from(provided || '');
+  const secretBuf   = Buffer.from(secret);
+  // timingSafeEqual은 길이가 다르면 예외를 던지므로 길이 먼저 확인
+  const valid = providedBuf.length === secretBuf.length &&
+                crypto.timingSafeEqual(providedBuf, secretBuf);
+  if (!valid) {
     return res.status(401).json({ error: '관리자 인증 필요 (x-admin-key 헤더)' });
   }
   next();
@@ -89,8 +94,9 @@ function requireAdmin(req, res, next) {
 function requireMallAuth(req, res, next) {
   const adminSecret = process.env.ADMIN_SECRET;
   const provided    = req.headers['x-admin-key'];
-  if (adminSecret && provided && crypto.timingSafeEqual(Buffer.from(provided), Buffer.from(adminSecret))) {
-    return next();
+  if (adminSecret && provided) {
+    const a = Buffer.from(provided), b = Buffer.from(adminSecret);
+    if (a.length === b.length && crypto.timingSafeEqual(a, b)) return next();
   }
   const mallId = req.params.mallId;
   if (!mallId || !tokenStore[mallId]) {
@@ -102,8 +108,9 @@ function requireMallAuth(req, res, next) {
 function requireMallConfigAuth(req, res, next) {
   const adminSecret = process.env.ADMIN_SECRET;
   const provided    = req.headers['x-admin-key'];
-  if (adminSecret && provided && crypto.timingSafeEqual(Buffer.from(provided), Buffer.from(adminSecret))) {
-    return next();
+  if (adminSecret && provided) {
+    const a = Buffer.from(provided), b = Buffer.from(adminSecret);
+    if (a.length === b.length && crypto.timingSafeEqual(a, b)) return next();
   }
   const mallId = req.body.mallId;
   if (!mallId || !tokenStore[mallId]) {
