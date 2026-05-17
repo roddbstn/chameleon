@@ -505,6 +505,43 @@ app.get('/auth/callback', async (req, res) => {
       console.warn(`[Webhook] 웹훅 등록 실패 (무시): ${e.response?.data?.message || e.message}`)
     );
 
+    // ④ 최초 설치 시 전체 상품 동기화 + PDP 분석 자동 실행 (백그라운드)
+    // 유저를 기다리게 하지 않고 콘솔로 먼저 리다이렉트 후 백그라운드 처리
+    setImmediate(async () => {
+      try {
+        console.log(`[Onboarding] ${mallId} 자동 동기화 시작`);
+        // 전체 상품 동기화 (Cafe24 → Supabase)
+        const syncRes = await axios.post(
+          `${APP_BASE_URL}/admin/sync/${mallId}`,
+          {},
+          { headers: { 'x-admin-key': process.env.ADMIN_SECRET || '' } }
+        );
+        console.log(`[Onboarding] ${mallId} 동기화 완료: ${syncRes.data?.synced}개`);
+
+        // 전체 상품 PDP 콘텐츠 분석
+        if (!analyzeRunning.has(mallId)) {
+          const { data: targets } = await supabase
+            .from('products').select('product_id, name, embed_text')
+            .eq('store_id', mallId).eq('status', 'active').is('pdp_content', null);
+          if (targets?.length) {
+            analyzeRunning.add(mallId);
+            console.log(`[Onboarding] ${mallId} PDP 분석 시작: ${targets.length}개`);
+            let done = 0;
+            try {
+              for (const p of targets) {
+                try { await generatePdpContent(mallId, p.product_id, p.name, p.embed_text); done++; }
+                catch (e) { console.warn(`[Onboarding] product:${p.product_id} 실패:`, e.message); }
+                await new Promise(r => setTimeout(r, 1000));
+              }
+            } finally { analyzeRunning.delete(mallId); }
+            console.log(`[Onboarding] ${mallId} PDP 분석 완료: ${done}/${targets.length}개`);
+          }
+        }
+      } catch (e) {
+        console.error(`[Onboarding] ${mallId} 자동 초기화 실패:`, e.message);
+      }
+    });
+
     // OAuth 완료 → 콘솔 온보딩 플로우로 리다이렉트
     res.redirect(`/console?mall_id=${mallId}&onboarding=true`);
   } catch (err) {
