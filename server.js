@@ -119,7 +119,11 @@ function requireMallConfigAuth(req, res, next) {
 function requireRegisteredMall(req, res, next) {
   const mallId = req.body?.mallId || req.query?.mallId;
   if (!mallId) return res.status(400).json({ error: 'mallId 필수' });
-  if (!tokenStore[mallId]) {
+  // tokenStore가 완전히 비어 있으면 서버 재시작 직후 DB 로드 실패 상태일 수 있음
+  // → 이 경우 차단하지 않고 경고만 (서비스 중단 방지)
+  const hasAnyStores = Object.keys(tokenStore).length > 0;
+  if (hasAnyStores && !tokenStore[mallId]) {
+    console.warn(`[Security] 미등록 mallId 요청: ${mallId}`);
     return res.status(403).json({ error: '등록되지 않은 쇼핑몰입니다. /install 에서 앱을 먼저 설치해주세요.' });
   }
   next();
