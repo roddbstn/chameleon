@@ -1190,9 +1190,15 @@ app.post('/admin/sync/:mallId', requireAdmin, async (req, res) => {
 // force=true 파라미터를 보내면 기존 pdp_content도 재생성.
 // 응답: { queued: N } → 즉시 반환, 실제 분석은 백그라운드 실행
 // ─────────────────────────────────────────────
+const analyzeRunning = new Set(); // 고객사별 중복 실행 방지
+
 app.post('/admin/analyze/:mallId', requireAdmin, async (req, res) => {
   const { mallId } = req.params;
   const force = req.body?.force === true || req.query.force === 'true';
+
+  if (analyzeRunning.has(mallId)) {
+    return res.json({ queued: 0, message: `${mallId} 분석이 이미 실행 중입니다. 완료 후 다시 시도하세요.` });
+  }
 
   // 분석 대상 상품 조회
   let query = supabase
@@ -1209,27 +1215,31 @@ app.post('/admin/analyze/:mallId', requireAdmin, async (req, res) => {
     return res.json({ queued: 0, message: '분석할 상품이 없습니다 (force=true로 재생성 가능)' });
   }
 
+  analyzeRunning.add(mallId);
   res.json({ queued: targets.length, message: `${targets.length}개 상품 분석 시작 — 백그라운드 실행 중` });
 
   // 백그라운드 순차 실행 (Gemini rate limit 고려 — 상품당 1초 간격)
   setImmediate(async () => {
     let done = 0, failed = 0;
-    for (const p of targets) {
-      try {
-        await generatePdpContent(mallId, p.product_id, p.name, p.embed_text);
-        done++;
-        // Gemini 무료 할당량 보호용 딜레이
-        await new Promise(r => setTimeout(r, 1000));
-      } catch (e) {
-        console.error(`[Analyze] ${mallId} product:${p.product_id} failed:`, e.message);
-        failed++;
-        await new Promise(r => setTimeout(r, 2000)); // 실패 시 더 길게 대기
+    try {
+      for (const p of targets) {
+        try {
+          await generatePdpContent(mallId, p.product_id, p.name, p.embed_text);
+          done++;
+          await new Promise(r => setTimeout(r, 1000));
+        } catch (e) {
+          console.error(`[Analyze] ${mallId} product:${p.product_id} failed:`, e.message);
+          failed++;
+          await new Promise(r => setTimeout(r, 2000));
+        }
+        if ((done + failed) % 10 === 0) {
+          console.log(`[Analyze] ${mallId} progress: ${done}/${targets.length} (failed: ${failed})`);
+        }
       }
-      if (done % 10 === 0) {
-        console.log(`[Analyze] ${mallId} progress: ${done}/${targets.length} (failed: ${failed})`);
-      }
+      console.log(`[Analyze] ${mallId} 완료: ${done}개 성공, ${failed}개 실패`);
+    } finally {
+      analyzeRunning.delete(mallId); // 완료·에러 모두 잠금 해제
     }
-    console.log(`[Analyze] ${mallId} 완료: ${done}개 성공, ${failed}개 실패`);
   });
 });
 
