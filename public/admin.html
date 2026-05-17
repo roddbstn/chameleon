@@ -752,14 +752,27 @@
   async function runAnalyze() {
     const mall = currentMallId || prompt('분석할 mall_id를 입력하세요');
     if (!mall) return;
-    const force = confirm('기존 분석 결과도 재생성할까요?\n(취소: 미분석 상품만 처리)');
-    showToast(`${mall} PDP 콘텐츠 분석 시작... (백그라운드 실행)`);
+    const force = confirm(
+      '📦 PDP 콘텐츠 분석\n\n' +
+      '상품마다 AI가 뱃지·질문칩·상품 설명을 사전 생성해 DB에 저장합니다.\n' +
+      '이후 유저가 상품 페이지에 방문하면 즉시 표시됩니다.\n\n' +
+      '기존 분석 결과도 재생성할까요?\n(취소: 미분석 상품만 처리)'
+    );
+    const btn = document.querySelector('[onclick="runAnalyze()"]');
+    if (btn) { btn.disabled = true; btn.textContent = '분석 중...'; }
+    showToast(`${mall} AI 분석 시작 — 상품 수에 따라 수 분 소요됩니다`);
     try {
       const url = `${SERVER}/admin/analyze/${mall}${force ? '?force=true' : ''}`;
       const r = await fetch(url, { method: 'POST', headers: adminHeaders() });
       const d = await r.json();
       showToast(d.message || d.error || '완료');
-    } catch (e) { showToast('오류: ' + e.message); }
+      // 30초 후 통계 새로고침 (백그라운드 분석이 진행 중)
+      setTimeout(() => loadAll(), 30000);
+    } catch (e) {
+      showToast('오류: ' + e.message);
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = '실행'; }
+    }
   }
 
   loadAll();

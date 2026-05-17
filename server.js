@@ -1079,11 +1079,15 @@ function stripHtml(html) {
 
 app.post('/admin/sync/:mallId', requireAdmin, async (req, res) => {
   const { mallId } = req.params;
-  const token = tokenStore[mallId]?.access_token;
+  let token = await getValidToken(mallId);
 
-  if (!token) {
+  // 만료된 경우 강제 갱신 시도
+  if (!token || !tokenStore[mallId]) {
     return res.status(401).json({ error: `${mallId} 토큰 없음. /install 먼저 실행하세요.` });
   }
+
+  // 토큰 갱신 후 재조회
+  token = await refreshTokenIfNeeded(mallId) || token;
 
   const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
   let offset = 0;
@@ -1630,6 +1634,9 @@ async function updateUserPreferences(mallId, sessionId, productNo) {
 // 온보딩 페이지 서빙
 app.get('/onboarding', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'onboarding.html'));
+});
+app.get('/demo', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'demo.html'));
 });
 app.get('/privacy', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
