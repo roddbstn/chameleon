@@ -16,7 +16,7 @@ const path    = require('path');
 const crypto  = require('crypto');
 const { Pool } = require('pg');
 const { createClient } = require('@supabase/supabase-js');
-const { findCompanionProducts } = require('./services/companionSearch');
+const { findCompanionProducts, findCompanionProductsByQuestion } = require('./services/companionSearch');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -967,12 +967,15 @@ CHIPS 규칙:
 
 
 
-    // ── AI 답변 생성 먼저, companion은 답변 나온 뒤 병렬 탐색 ──
-    // 이유: companion 감지에 answer 텍스트가 필요하므로 직렬이 불가피하나,
-    // answer 생성 자체가 가장 오래 걸리는 작업이므로 전체 latency는 동일
+    // ── Gemini 답변 생성 + companion 탐색 병렬 실행 ──
+    // companion은 question 텍스트만으로 카테고리 추출 → Gemini 대기 없이 동시 실행
+    const companionPromise = (mallId && productNo && productRow)
+      ? findCompanionProductsByQuestion({ mallId, productNo, question })
+      : Promise.resolve({ companionProducts: [], companionContext: null });
+
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 8192 },
+      generationConfig: { maxOutputTokens: 1024 },
     });
 
     const rawAnswer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
@@ -986,17 +989,7 @@ CHIPS 규칙:
     const answer = rawAnswer.replace(/\n?CHIPS:\[[\s\S]*?\]/, '').trim()
       || '죄송해요, 다시 시도해주세요.';
 
-    // ── Cross-sell companion 탐색 (답변과 질문 기반, 실패해도 무시) ──
-    // mallId와 상품 데이터가 있는 경우에만 시도
-    let companionProducts = [];
-    let companionContext  = null;
-    if (mallId && productNo && productRow) {
-      const companionResult = await findCompanionProducts({
-        mallId, productNo, question, answer,
-      });
-      companionProducts = companionResult.companionProducts;
-      companionContext  = companionResult.companionContext;
-    }
+    const { companionProducts, companionContext } = await companionPromise;
 
     // ── 로그 기록 ──
     Promise.resolve(supabase.from('chat_logs').insert({

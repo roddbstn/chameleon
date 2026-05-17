@@ -148,6 +148,54 @@ async function vectorSearchCompanion(mallId, searchQuery, excludeProductId) {
 }
 
 /**
+ * 질문 텍스트만으로 크로스셀 기회 감지 (answer 불필요 — Gemini와 병렬 실행 가능)
+ */
+function detectCrossSellByQuestion(question) {
+  return QUESTION_TRIGGER_RE.test(question);
+}
+
+/**
+ * 메인 Cross-sell 파이프라인 (question-only 버전 — Gemini와 병렬 실행용)
+ *
+ * @param {object} params
+ * @param {string} params.mallId
+ * @param {string} params.productNo  - 현재 보고 있는 상품 번호
+ * @param {string} params.question   - 유저 질문
+ * @returns {{ companionProducts: Array, companionContext: string|null }}
+ */
+async function findCompanionProductsByQuestion({ mallId, productNo, question }) {
+  if (!detectCrossSellByQuestion(question)) {
+    return { companionProducts: [], companionContext: null };
+  }
+  // 질문 텍스트에서 카테고리 추출 (answer 없이)
+  const categories = extractCompanionCategories(question);
+  if (!categories.length) {
+    return { companionProducts: [], companionContext: null };
+  }
+  try {
+    const companions = [];
+    const seen = new Set();
+    for (const cat of categories) {
+      const results = await vectorSearchCompanion(mallId, cat.query, productNo);
+      for (const p of results) {
+        if (!seen.has(p.id) && companions.length < 2) {
+          seen.add(p.id);
+          companions.push(p);
+        }
+      }
+      if (companions.length >= 2) break;
+    }
+    if (!companions.length) return { companionProducts: [], companionContext: null };
+    const companionContext = categories[0].label;
+    console.log(`[CompanionSearch] ${mallId} question="${question.slice(0, 30)}" → ${categories.map(c => c.category).join(',')} → ${companions.length}개 추천`);
+    return { companionProducts: companions, companionContext };
+  } catch (err) {
+    console.warn('[CompanionSearch] 검색 실패 (무시):', err.message);
+    return { companionProducts: [], companionContext: null };
+  }
+}
+
+/**
  * 메인 Cross-sell 파이프라인
  *
  * @param {object} params
@@ -203,4 +251,4 @@ async function findCompanionProducts({ mallId, productNo, question, answer }) {
   }
 }
 
-module.exports = { findCompanionProducts, detectCrossSellOpportunity };
+module.exports = { findCompanionProducts, findCompanionProductsByQuestion, detectCrossSellOpportunity, detectCrossSellByQuestion };
