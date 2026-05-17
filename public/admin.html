@@ -368,11 +368,19 @@
   <div class="card">
     <div class="card-header">
       <div class="card-title">대화 로그</div>
-      <span class="card-meta" id="log-count"></span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="card-meta" id="log-count"></span>
+        <select id="log-page-size" class="period-select" style="background:#F5F5F3;color:#111;border-color:#E0E0E0;" onchange="onPageSizeChange()">
+          <option value="10">10개 보기</option>
+          <option value="30" selected>30개 보기</option>
+          <option value="50">50개 보기</option>
+        </select>
+      </div>
     </div>
     <div id="log-table-wrap">
       <div class="loading">로딩 중...</div>
     </div>
+    <div id="log-pagination" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px 0 4px;"></div>
   </div>
 
 </main>
@@ -478,17 +486,55 @@
     }).join('');
   }
 
+  // ── 대화 로그 페이지네이션 ──
+  let _allConversations = [];
+  let _currentPage = 1;
+
+  function onPageSizeChange() { _currentPage = 1; renderLogTable(_allConversations); }
+  function goPage(p)          { _currentPage = p; renderLogTable(_allConversations); }
+
+  function renderPagination(total, pageSize) {
+    const totalPages = Math.ceil(total / pageSize);
+    const el = document.getElementById('log-pagination');
+    if (totalPages <= 1) { el.innerHTML = ''; return; }
+
+    let html = '';
+    html += `<button onclick="goPage(${_currentPage - 1})" ${_currentPage === 1 ? 'disabled' : ''}
+      style="padding:5px 10px;border:1px solid #E0E0E0;border-radius:6px;background:#fff;cursor:pointer;font-size:12px;">‹</button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+      const active = i === _currentPage;
+      html += `<button onclick="goPage(${i})"
+        style="padding:5px 10px;border:1px solid ${active ? '#111' : '#E0E0E0'};border-radius:6px;
+               background:${active ? '#111' : '#fff'};color:${active ? '#fff' : '#111'};
+               cursor:pointer;font-size:12px;font-weight:${active ? '600' : '400'};">${i}</button>`;
+    }
+
+    html += `<button onclick="goPage(${_currentPage + 1})" ${_currentPage === totalPages ? 'disabled' : ''}
+      style="padding:5px 10px;border:1px solid #E0E0E0;border-radius:6px;background:#fff;cursor:pointer;font-size:12px;">›</button>`;
+
+    el.innerHTML = html;
+  }
+
   // ── 대화 로그 테이블 렌더 ──
   function renderLogTable(conversations) {
-    if (!conversations.length) {
+    _allConversations = conversations;
+    const pageSize = parseInt(document.getElementById('log-page-size')?.value || '30');
+    const total    = conversations.length;
+    const start    = (_currentPage - 1) * pageSize;
+    const paged    = conversations.slice(start, start + pageSize);
+
+    if (!total) {
       document.getElementById('log-table-wrap').innerHTML =
         '<div class="empty">아직 대화 로그가 없어요.<br>채팅을 시작하면 여기에 기록됩니다.</div>';
+      document.getElementById('log-pagination').innerHTML = '';
       return;
     }
 
-    document.getElementById('log-count').textContent = `최근 ${conversations.length}건`;
+    document.getElementById('log-count').textContent = `총 ${total}건 · ${start + 1}–${Math.min(start + pageSize, total)}`;
+    renderPagination(total, pageSize);
 
-    const rows = conversations.map((l, idx) => {
+    const rows = paged.map((l, idx) => {
       const hasInference = l.inference_log?.length > 0;
       const hasProducts  = l.product_ids?.length > 0;
       const expandable   = hasInference || hasProducts;
@@ -507,8 +553,9 @@
             하드 필터: ${JSON.stringify(l.hard_filters)}</div>`
         : '';
 
+      const rid = start + idx;
       return `
-        <tr onclick="toggleExpand(${idx})" id="row-${idx}">
+        <tr onclick="toggleExpand(${rid})" id="row-${rid}">
           <td class="time-text">${timeAgo(l.created_at)}</td>
           <td><div class="query-text" title="${l.query||''}">${l.query||'—'}</div></td>
           <td style="font-size:12px;color:#666;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${l.intent_situation||'—'}</td>
@@ -517,9 +564,9 @@
           <td style="text-align:center;color:#888;">${l.product_count ?? '—'}</td>
           <td style="color:#CCC;font-size:12px;">${expandable ? '▸' : ''}</td>
         </tr>
-        <tr class="expand-row" id="expand-${idx}">
+        <tr class="expand-row" id="expand-${rid}">
           <td colspan="7">
-            <div class="expand-panel" id="panel-${idx}">
+            <div class="expand-panel" id="panel-${rid}">
               <div>
                 <div class="expand-section-label">AI 추론 내역</div>
                 ${inferenceHtml}
