@@ -578,8 +578,8 @@
       // 병렬 요청
       const [statsRes, metricsRes, convRes] = await Promise.all([
         fetch(qs(`${SERVER}/api/stats`), { headers: adminHeaders() }).then(r => r.json()),
-        fetch(`${SERVER}/api/metrics?mallId=${currentMallId || ''}&period=${currentPeriod}`).then(r => r.json()),
-        fetch(`${SERVER}/api/conversations?mallId=${currentMallId || ''}&limit=80`).then(r => r.json()),
+        fetch(`${SERVER}/api/metrics?mallId=${currentMallId || ''}&period=${currentPeriod}`, { headers: adminHeaders() }).then(r => r.json()),
+        fetch(`${SERVER}/api/conversations?mallId=${currentMallId || ''}&limit=80`, { headers: adminHeaders() }).then(r => r.json()),
       ]);
 
       // ── 핵심 지표 카드 ──
