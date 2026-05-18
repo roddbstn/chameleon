@@ -654,12 +654,7 @@
 
     /* ── PDP 웰컴 칩 트레이 (상품 상세 진입 시 자동 표시) ── */
     .cml-pdp-welcome-tray {
-      flex-shrink: 0;
-      padding: 6px 0 10px;
-      border-bottom: none;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      display: none;
     }
     .cml-pdp-tray-wrap {
       overflow: hidden;
@@ -834,6 +829,7 @@
     }
     .cml-refine-bar:hover .cml-refine-track,
     .cml-refine-bar.cml-paused .cml-refine-track { animation-play-state: paused; }
+    .cml-refine-track.cml-refine-dragging { cursor: grabbing; animation-play-state: paused; }
     .cml-refine-set { display: flex; gap: 8px; padding-right: 8px; }
     .cml-refine-chip {
       border: 1px solid rgba(94,70,55,0.22); border-radius: 999px;
@@ -1681,10 +1677,73 @@
       bar.className = 'cml-refine-bar';
       const track = document.createElement('div');
       track.className = 'cml-refine-track';
-      track.style.animationDuration = _refineDurationValue; // CSS 변수 상속 불안정 → 인라인 직접 설정
+      track.style.animationDuration = _refineDurationValue;
       track.appendChild(makeSet(false));
       track.appendChild(makeSet(true));
       bar.appendChild(track);
+
+      // ── 드래그 스크롤 (인라인 칩 트레이와 동일한 패턴) ──
+      let _rdIsDragging = false, _rdDidDrag = false;
+      let _rdStartX = 0, _rdBaseX = 0;
+      track.addEventListener('mousedown', (e) => {
+        _rdIsDragging = true; _rdDidDrag = false; _rdStartX = e.clientX;
+        const m = new DOMMatrix(getComputedStyle(track).transform);
+        _rdBaseX = m.m41;
+        track.classList.add('cml-refine-dragging');
+        track.style.transform = `translateX(${_rdBaseX}px)`;
+      });
+      track.addEventListener('mousemove', (e) => {
+        if (!_rdIsDragging) return;
+        const dx = e.clientX - _rdStartX;
+        if (Math.abs(dx) > 4) _rdDidDrag = true;
+        track.style.transform = `translateX(${_rdBaseX + dx}px)`;
+      });
+      const stopRefineDrag = (e) => {
+        if (!_rdIsDragging) return;
+        _rdIsDragging = false;
+        track.classList.remove('cml-refine-dragging');
+        if (_rdDidDrag) {
+          const dx = (e?.clientX ?? _rdStartX) - _rdStartX;
+          const curX = _rdBaseX + dx;
+          const halfW = track.scrollWidth / 2 || 1;
+          const norm  = ((-curX % halfW) + halfW) % halfW;
+          const dur   = parseFloat(_refineDurationValue) || 36;
+          const delay = -((norm / halfW) * dur);
+          track.style.transform = '';
+          track.style.animation = `cml-chips-scroll ${dur}s ${delay}s linear infinite`;
+        } else {
+          track.style.transform = '';
+          track.style.animation = '';
+        }
+      };
+      track.addEventListener('mouseup', stopRefineDrag);
+      track.addEventListener('mouseleave', (e) => {
+        if (!_rdIsDragging) return;
+        _rdIsDragging = false;
+        track.classList.remove('cml-refine-dragging');
+        track.style.transform = '';
+        track.style.animation = '';
+      });
+      // 터치 지원
+      track.addEventListener('touchstart', (e) => {
+        _rdStartX = e.touches[0].clientX;
+        const m = new DOMMatrix(getComputedStyle(track).transform);
+        _rdBaseX = m.m41;
+        track.classList.add('cml-refine-dragging');
+        track.style.transform = `translateX(${_rdBaseX}px)`;
+      }, { passive: true });
+      track.addEventListener('touchmove', (e) => {
+        const dx = e.touches[0].clientX - _rdStartX;
+        track.style.transform = `translateX(${_rdBaseX + dx}px)`;
+      }, { passive: true });
+      track.addEventListener('touchend', () => {
+        track.classList.remove('cml-refine-dragging');
+        track.style.transform = '';
+        track.style.animation = '';
+      });
+      // 드래그 중 클릭 방지
+      track.addEventListener('click', (e) => { if (_rdDidDrag) { _rdDidDrag = false; e.stopPropagation(); } });
+
       return bar;
     }
 
