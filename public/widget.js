@@ -1870,6 +1870,14 @@
     // ── 채팅 전송 ──
     async function sendChat(query) {
       if (!query.trim()) return;
+      // PDP 컨텍스트가 있을 때: 다른 상품을 찾는 게 아니면 이 상품 Q&A로 라우팅
+      if (_pdpProductNo) {
+        const isSeekingOther = /다른\s*(상품|옷|바지|아이템|것|거|제품|스타일)|추천\s*(해|받|좀|좀만)?|비슷한\s*(거|것|상품|옷)|대신할|대체|더\s*있|뭐가\s*있|뭔가\s*있|어떤\s*게\s*(있|좋)/.test(query);
+        if (!isSeekingOther) {
+          sendProductQA(query, _pdpProductNo, _pdpProductName);
+          return;
+        }
+      }
       if (_refineBar) { _refineBar.remove(); _refineBar = null; }
       _lastChips = [];
       addBubble('user', query);
@@ -1934,9 +1942,11 @@
       }
     });
 
-    // ── 상품 특정 Q&A (PDP 칩 클릭 전용) ──
+    // ── 상품 특정 Q&A (PDP 칩 클릭 + 타이핑 라우팅) ──
     async function sendProductQA(query, productNo, productName) {
       if (!query.trim()) return;
+      if (_refineBar) { _refineBar.remove(); _refineBar = null; }
+      _lastChips = [];
       addBubble('user', query);
       const loadingBubble = addSkeletonLoader(query, 'product_qa');
       sendBtn.disabled = true;
