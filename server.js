@@ -980,10 +980,9 @@ CHIPS 규칙:
 
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 1024 },
-      // gemini-2.5-flash: thinking 토큰도 maxOutputTokens에 포함됨
-      // 짧은 Q&A 답변에 thinking 불필요 — 비활성화해서 실제 답변 토큰 확보
-      thinkingConfig: { thinkingBudget: 0 },
+      // gemini-2.5-flash은 thinking 토큰도 maxOutputTokens에 포함됨
+      // thinking이 최대 ~8192 토큰을 소모할 수 있으므로 여유 있게 설정
+      generationConfig: { maxOutputTokens: 16384 },
     });
 
     const rawAnswer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
