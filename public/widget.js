@@ -830,7 +830,7 @@
     }
     .cml-refine-track {
       display: flex; width: max-content; gap: 8px;
-      animation: cml-chips-scroll var(--cml-chips-duration, 18s) linear infinite;
+      animation: cml-chips-scroll var(--cml-refine-duration, 36s) linear infinite;
     }
     .cml-refine-bar:hover .cml-refine-track,
     .cml-refine-bar.cml-paused .cml-refine-track { animation-play-state: paused; }
@@ -1021,10 +1021,12 @@
       if (t.userBubbleText)   panel.style.setProperty('--cml-user-text',   t.userBubbleText);
       if (t.aiBubbleBg)       panel.style.setProperty('--cml-ai-bg',       t.aiBubbleBg);
       if (t.aiBubbleText)     panel.style.setProperty('--cml-ai-text',     t.aiBubbleText);
-      // 인라인 패널과 동일한 칩 스크롤 속도
+      // 인라인 칩과 팔로업 칩 스크롤 속도 (팔로업은 패널이 좁아 2배 느리게 설정)
       const _chipSpeed    = config?.chipScrollSpeed || 5;
       const _chipDuration = `${(11 - _chipSpeed) * 3}s`;
+      const _refineDuration = `${(11 - _chipSpeed) * 6}s`;
       panel.style.setProperty('--cml-chips-duration', _chipDuration);
+      panel.style.setProperty('--cml-refine-duration', _refineDuration);
     }
     applyCssVars(config?.theme);
 
