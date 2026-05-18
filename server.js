@@ -986,12 +986,18 @@ CHIPS 규칙:
     const rawAnswer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
     // CHIPS 파싱 후 답변에서 제거
-    // - 배열이 잘린 경우(]없음)에도 CHIPS: 이후 전체를 제거
+    // - CHIPS: 이후 공백 허용, 배열이 잘린 경우에도 CHIPS: 이후 전체 제거
     let answerChips = [];
-    const chipsMatch = rawAnswer.match(/CHIPS:(\[[\s\S]*?\])/);
+    const chipsMatch = rawAnswer.match(/CHIPS:\s*(\[[\s\S]*\])/);
     if (chipsMatch) {
-      try { answerChips = JSON.parse(chipsMatch[1]); } catch {}
+      try {
+        answerChips = JSON.parse(chipsMatch[1]);
+      } catch {
+        // 싱글쿼트 → 더블쿼트 교정 후 재시도
+        try { answerChips = JSON.parse(chipsMatch[1].replace(/'/g, '"')); } catch {}
+      }
     }
+    if (!Array.isArray(answerChips)) answerChips = [];
     const answer = rawAnswer.replace(/\n?CHIPS:[\s\S]*$/, '').trim()
       || '죄송해요, 다시 시도해주세요.';
 
