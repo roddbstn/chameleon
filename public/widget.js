@@ -1692,25 +1692,34 @@
         track.classList.add('cml-refine-dragging');
         track.style.transform = `translateX(${_rdBaseX}px)`;
       });
+      const resumeRefineAnim = (wrappedX) => {
+        const halfW = track.scrollWidth / 2 || 1;
+        const norm  = ((-wrappedX % halfW) + halfW) % halfW;
+        const dur   = parseFloat(_refineDurationValue) || 36;
+        const delay = -((norm / halfW) * dur);
+        track.style.transform = '';
+        track.style.animation = `cml-chips-scroll ${dur}s ${delay}s linear infinite`;
+      };
       track.addEventListener('mousemove', (e) => {
         if (!_rdIsDragging) return;
         const dx = e.clientX - _rdStartX;
         if (Math.abs(dx) > 4) _rdDidDrag = true;
-        track.style.transform = `translateX(${_rdBaseX + dx}px)`;
+        // 무한 스크롤 wrap: [-halfW, 0) 범위 유지
+        const halfW = track.scrollWidth / 2 || 1;
+        const rawX = _rdBaseX + dx;
+        const wrappedX = ((rawX % halfW) + halfW) % halfW - halfW;
+        track.style.transform = `translateX(${wrappedX}px)`;
       });
       const stopRefineDrag = (e) => {
         if (!_rdIsDragging) return;
         _rdIsDragging = false;
         track.classList.remove('cml-refine-dragging');
+        const dx = (e?.clientX ?? _rdStartX) - _rdStartX;
+        const halfW = track.scrollWidth / 2 || 1;
+        const rawX = _rdBaseX + dx;
+        const wrappedX = ((rawX % halfW) + halfW) % halfW - halfW;
         if (_rdDidDrag) {
-          const dx = (e?.clientX ?? _rdStartX) - _rdStartX;
-          const curX = _rdBaseX + dx;
-          const halfW = track.scrollWidth / 2 || 1;
-          const norm  = ((-curX % halfW) + halfW) % halfW;
-          const dur   = parseFloat(_refineDurationValue) || 36;
-          const delay = -((norm / halfW) * dur);
-          track.style.transform = '';
-          track.style.animation = `cml-chips-scroll ${dur}s ${delay}s linear infinite`;
+          resumeRefineAnim(wrappedX);
         } else {
           track.style.transform = '';
           track.style.animation = '';
@@ -1721,8 +1730,11 @@
         if (!_rdIsDragging) return;
         _rdIsDragging = false;
         track.classList.remove('cml-refine-dragging');
-        track.style.transform = '';
-        track.style.animation = '';
+        const dx = (e?.clientX ?? _rdStartX) - _rdStartX;
+        const halfW = track.scrollWidth / 2 || 1;
+        const rawX = _rdBaseX + dx;
+        const wrappedX = ((rawX % halfW) + halfW) % halfW - halfW;
+        resumeRefineAnim(wrappedX);
       });
       // 터치 지원
       track.addEventListener('touchstart', (e) => {
@@ -2131,21 +2143,29 @@
         if (!isDragging) return;
         const dx = e.clientX - dragStartX;
         if (Math.abs(dx) > 4) didDrag = true;
-        _pdpTrayTrack.style.transform = `translateX(${dragBaseX + dx}px)`;
+        // 무한 스크롤 wrap: [-halfW, 0) 범위 유지
+        const halfW = _pdpTrayTrack.scrollWidth / 2 || 1;
+        const rawX = dragBaseX + dx;
+        const wrappedX = ((rawX % halfW) + halfW) % halfW - halfW;
+        _pdpTrayTrack.style.transform = `translateX(${wrappedX}px)`;
       });
+      const resumeTrayAnim = (curTransform) => {
+        const halfW = _pdpTrayTrack.scrollWidth / 2 || 1;
+        const norm  = ((-curTransform % halfW) + halfW) % halfW;
+        const delay = -((norm / halfW) * 22);
+        _pdpTrayTrack.style.transform = '';
+        _pdpTrayTrack.style.animation = `cml-tray-scroll 22s ${delay}s linear infinite`;
+      };
       const stopDrag = (e) => {
         if (!isDragging) return;
         isDragging = false;
         _pdpTrayTrack.classList.remove('cml-tray-dragging');
+        const dx = (e?.clientX ?? dragStartX) - dragStartX;
+        const halfW = _pdpTrayTrack.scrollWidth / 2 || 1;
+        const rawX = dragBaseX + dx;
+        const wrappedX = ((rawX % halfW) + halfW) % halfW - halfW;
         if (didDrag) {
-          // 현재 위치에서 애니메이션 재개 (negative delay로 seek)
-          const dx = (e?.clientX ?? dragStartX) - dragStartX;
-          const curX = dragBaseX + dx;
-          const halfW = _pdpTrayTrack.scrollWidth / 2 || 1;
-          const norm  = ((-curX % halfW) + halfW) % halfW;
-          const delay = -((norm / halfW) * 22);
-          _pdpTrayTrack.style.transform = '';
-          _pdpTrayTrack.style.animation = `cml-tray-scroll 22s ${delay}s linear infinite`;
+          resumeTrayAnim(wrappedX);
         } else {
           _pdpTrayTrack.style.transform = '';
           _pdpTrayTrack.style.animation = '';
@@ -2156,8 +2176,11 @@
         if (!isDragging) return;
         isDragging = false;
         _pdpTrayTrack.classList.remove('cml-tray-dragging');
-        _pdpTrayTrack.style.transform = '';
-        _pdpTrayTrack.style.animation = '';
+        const dx = (e?.clientX ?? dragStartX) - dragStartX;
+        const halfW = _pdpTrayTrack.scrollWidth / 2 || 1;
+        const rawX = dragBaseX + dx;
+        const wrappedX = ((rawX % halfW) + halfW) % halfW - halfW;
+        resumeTrayAnim(wrappedX);
       });
       _pdpTrayTrack.addEventListener('touchstart', (e) => {
         dragStartX = e.touches[0].clientX;
