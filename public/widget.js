@@ -891,9 +891,44 @@
     target.insertAdjacentElement(position, panel);
 
     // PDP 칩 클릭 → pdp_chip_click 이벤트 + 사이드바 열기
-    panel.querySelector('.cml-chips-wrap').addEventListener('click', e => {
+    const chipsWrap = panel.querySelector('.cml-chips-wrap');
+    const chipsTrack = panel.querySelector('.cml-chips-track');
+    let _cpIsDragging = false, _cpDidDrag = false, _cpStartX = 0, _cpBaseX = 0;
+
+    chipsTrack.addEventListener('mousedown', (e) => {
+      _cpIsDragging = true; _cpDidDrag = false; _cpStartX = e.clientX;
+      const m = new DOMMatrix(getComputedStyle(chipsTrack).transform);
+      _cpBaseX = m.m41;
+      chipsTrack.style.animation = 'none';
+      chipsTrack.style.transform = `translateX(${_cpBaseX}px)`;
+      chipsTrack.style.cursor = 'grabbing';
+      e.preventDefault();
+
+      const onMove = (ev) => {
+        const dx = ev.clientX - _cpStartX;
+        if (Math.abs(dx) > 4) _cpDidDrag = true;
+        chipsTrack.style.transform = `translateX(${_cpBaseX + dx}px)`;
+      };
+      const onUp = (ev) => {
+        _cpIsDragging = false;
+        chipsTrack.style.cursor = '';
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        const finalX = _cpBaseX + (ev.clientX - _cpStartX);
+        const halfW = chipsTrack.scrollWidth / 2 || 1;
+        const wrappedX = ((finalX % halfW) + halfW) % halfW - halfW;
+        const dur = parseFloat(getComputedStyle(panel).getPropertyValue('--cml-chips-duration')) || 18;
+        const delay = -((-wrappedX / halfW) * dur);
+        chipsTrack.style.transform = '';
+        chipsTrack.style.animation = `cml-chips-scroll ${dur}s ${delay}s linear infinite`;
+      };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+
+    chipsWrap.addEventListener('click', e => {
       const chip = e.target.closest('.cml-chip');
-      if (!chip) return;
+      if (!chip || _cpDidDrag) { _cpDidDrag = false; return; }
       track('pdp_chip_click', { chipLabel: chip.dataset.q, productNo: productCtx?.productNo || null });
       document.dispatchEvent(new CustomEvent('chameleon:ask', {
         detail: {
