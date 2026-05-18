@@ -1846,11 +1846,29 @@
         }, {
           loadingBubble,
           onDone: (data, msg) => {
-            if (data.products?.length) renderInlineRecommendation(msg, data.products, data.refinement_chips);
-            if (bar) messagesEl.appendChild(bar);
+            // 스트림 버블이 이미 텍스트를 표시 → addBubble 호출 없이 카드/칩만 추가
+            if (data.products?.length) {
+              lastProducts = data.products;
+              const container = document.createElement('div');
+              container.className = 'cml-msg-products';
+              data.products.forEach((p, i) => container.appendChild(createMsgProductCard(p, i + 1)));
+              messagesEl.appendChild(container);
+              scrollToBottom();
+            }
+            if (data.refinement_chips?.length) {
+              _lastChips = data.refinement_chips;
+              if (_pdpTrayTrack) {
+                updatePdpTrayChips(data.refinement_chips);
+              } else {
+                if (_refineBar) _refineBar.remove();
+                _refineBar = renderRefinementChips(data.refinement_chips);
+                if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+              }
+            }
             chatHistory.push({ role: 'user', content: query });
             chatHistory.push({ role: 'assistant', content: msg });
             if (chatHistory.length > 20) chatHistory.splice(0, 2);
+            saveSession(lastProducts);
           },
         });
       } catch {
@@ -1881,7 +1899,7 @@
       // 칩 → PDP 트레이 업데이트 (또는 일반 리파인 바)
       if (chips && chips.length) {
         _lastChips = chips;
-        if (_pdpTrayScroll) {
+        if (_pdpTrayTrack) {
           updatePdpTrayChips(chips);
         } else {
           if (_refineBar) _refineBar.remove();
@@ -1928,7 +1946,7 @@
             }
             if (data.refinement_chips?.length) {
               _lastChips = data.refinement_chips;
-              if (_pdpTrayScroll) {
+              if (_pdpTrayTrack) {
                 updatePdpTrayChips(data.refinement_chips);
               } else {
                 if (_refineBar) _refineBar.remove();
