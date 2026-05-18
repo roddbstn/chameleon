@@ -1781,8 +1781,28 @@ select {
         <p style="font-size:12px;color:var(--text-2);margin-bottom:14px;">
           카페24 상품을 Chameleon에 동기화해야 AI가 상품을 검색하고 추천할 수 있습니다.
         </p>
-        <button class="btn btn-secondary" onclick="runSync()">지금 동기화</button>
-        <span id="syncStatus" style="font-size:12px;color:var(--text-3);margin-left:10px;"></span>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="runSync()">상품 동기화</button>
+          <button class="btn btn-primary" id="embedBtn" onclick="runEmbed()">임베딩 실행</button>
+        </div>
+        <span id="syncStatus" style="font-size:12px;color:var(--text-3);margin-top:8px;display:block;"></span>
+        <div id="embedProgress" style="display:none;margin-top:10px;">
+          <div style="height:4px;background:#E8E8E4;border-radius:2px;overflow:hidden;">
+            <div id="embedBar" style="height:100%;background:var(--accent);width:0%;transition:width 0.4s ease;border-radius:2px;"></div>
+          </div>
+          <span id="embedMsg" style="font-size:11px;color:var(--text-3);margin-top:5px;display:block;"></span>
+        </div>
+      </div>
+
+      <div class="form-section" id="installSection">
+        <div class="form-section-title">위젯 설치 코드</div>
+        <p style="font-size:12px;color:var(--text-2);margin-bottom:12px;">
+          Cafe24 관리자 → 디자인 편집 → HTML 편집에서 <code style="background:#F0F0EE;padding:1px 5px;border-radius:4px;">&lt;/body&gt;</code> 바로 위에 붙여넣으세요.
+        </p>
+        <div style="background:#1A1A1A;border-radius:10px;padding:14px 16px;position:relative;">
+          <pre id="installCode" style="font-family:'SF Mono','Fira Mono',monospace;font-size:11px;color:#A8FF78;white-space:pre-wrap;word-break:break-all;line-height:1.7;margin:0;"></pre>
+          <button onclick="copyInstallCode()" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,.1);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:inherit;" id="copyInstallBtn">복사</button>
+        </div>
       </div>
     </section>
 
@@ -1812,6 +1832,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // 사이드바 mall 표시
   document.getElementById('sidebarMallId').textContent = mallId + '.cafe24.com';
   document.getElementById('settingMallId').textContent = mallId;
+
+  // 설치 코드 초기 렌더
+  showInstallCode();
+
+  // 온보딩 플로우: ?onboarding=true → 설정 탭으로 자동 이동 + 안내 배너
+  const isOnboarding = new URLSearchParams(location.search).get('onboarding') === 'true';
+  if (isOnboarding) {
+    switchSection('settings');
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:#4F46E5;color:#fff;padding:12px 20px;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:12px;';
+    banner.innerHTML = `
+      <span>처음 시작하시나요? <strong>① 에이전트 설정 저장 → ② 상품 동기화 → ③ 임베딩 실행 → ④ 설치 코드 복사</strong> 순서로 진행하세요.</span>
+      <button onclick="this.parentNode.remove()" style="background:none;border:none;color:#fff;opacity:.7;cursor:pointer;font-size:16px;flex-shrink:0;">×</button>`;
+    document.querySelector('.main').prepend(banner);
+  }
 
   // 네비게이션
   document.querySelectorAll('.nav-item').forEach(btn => {
@@ -2248,6 +2283,54 @@ async function runSync() {
   } catch {
     status.textContent = '동기화 실패';
   }
+}
+
+async function runEmbed() {
+  const btn      = document.getElementById('embedBtn');
+  const progress = document.getElementById('embedProgress');
+  const bar      = document.getElementById('embedBar');
+  const msg      = document.getElementById('embedMsg');
+  btn.disabled   = true;
+  btn.textContent = '실행 중...';
+  progress.style.display = 'block';
+  msg.textContent = '임베딩 시작 중...';
+
+  let fake = 0;
+  const ticker = setInterval(() => {
+    fake = Math.min(fake + Math.random() * 8, 85);
+    bar.style.width = fake + '%';
+  }, 800);
+
+  try {
+    const r = await fetch(`/admin/embed/${mallId}`, { method: 'POST' });
+    const data = await r.json();
+    clearInterval(ticker);
+    bar.style.width = '100%';
+    msg.textContent = data.message || (data.error ? '오류: ' + data.error : '완료');
+    btn.textContent = '다시 실행';
+    btn.disabled = false;
+    showInstallCode();
+  } catch (e) {
+    clearInterval(ticker);
+    msg.textContent = '오류: ' + e.message;
+    btn.textContent = '다시 실행';
+    btn.disabled = false;
+  }
+}
+
+function showInstallCode() {
+  const code = `<!-- Chameleon AI Widget -->\n<script src="${location.origin}/widget.js"\n  data-mall-id="${mallId}"\n  data-server="${location.origin}">\n<\/script>`;
+  document.getElementById('installCode').textContent = code;
+  document.getElementById('installSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyInstallCode() {
+  const code = document.getElementById('installCode').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyInstallBtn');
+    btn.textContent = '복사됨!';
+    setTimeout(() => { btn.textContent = '복사'; }, 2000);
+  });
 }
 
 // ── 색상 동기화 ──

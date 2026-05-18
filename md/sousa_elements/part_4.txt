@@ -1,0 +1,787 @@
+                <path class="shape-divider-stroke" vector-effect="non-scaling-stroke"
+                  d="M1 8.46126C9 3.84592 17 3.84592 25 8.46126C33 13.0766 41 13.0766 49 8.46127C57 3.84593 65 3.84593 73 8.46127C81 13.0766 89 13.0766 97 8.46128C105 3.84594 113 3.84594 121 8.46128C129 13.0766 137 13.0766 145 8.46128C153 3.84594 161 3.84595 169 8.46129C177 13.0766 185 13.0766 193 8.46129C201 3.84595 209 3.84596 217 8.4613C225 13.0766 233 13.0766 241 8.4613C249 3.84596 257 3.84596 265 8.46131C273 13.0766 281 13.0766 289 8.46131C297 3.84597 305 3.84597 313 8.46131C321 13.0767 329 13.0767 337 8.46132C345 3.84598 353 3.84598 361 8.46132C369 13.0767 377 13.0767 385 8.46132C393 3.84599 401 3.84599 409 8.46133C417 13.0767 425 13.0767 433 8.46133C441 3.846 449 3.846 457 8.46134C465 13.0767 473 13.0767 481 8.46134C489 3.846 497 3.846 505 8.46135C513 13.0767 521 13.0767 529 8.46135C537 3.84601 545 3.84601 553 8.46135C561 13.0767 569 13.0767 577 8.46136C585 3.84602 593 3.84602 601 8.46136C609 13.0767 617 13.0767 625 8.46137C633 3.84603 641 3.84603 649 8.46137C657 13.0767 665 13.0767 673 8.46138C681 3.84604 689 3.84604 697 8.46138C705 13.0767 713 13.0767 721 8.46138C729 3.84604 737 3.84604 745 8.46139C753 13.0767 761 13.0767 769 8.46139C777 3.84605 785 3.84605 793 8.4614C801 13.0767 809 13.0767 817 8.4614C825 3.84606 833 3.84606 841 8.4614C849 13.0767 857 13.0767 865 8.46141C873 3.84607 881 3.84607 889 8.46141C897 13.0768 905 13.0768 913 8.46142C921 3.84608 929 3.84608 937 8.46142C945 13.0768 953 13.0768 961 8.46142C969 3.84608 977 3.84609 985 8.46143C993 13.0768 1001 13.0768 1009 8.46143C1017 3.84609 1025 3.8461 1033 8.46144C1041 13.0768 1049 13.0768 1057 8.46144C1065 3.8461 1073 3.8461 1081 8.46145C1089 13.0768 1097 13.0768 1105 8.46145C1113 3.84611 1121 3.84611 1129 8.46145C1137 13.0768 1145 13.0768 1153 8.46146C1161 3.84612 1169 3.84612 1177 8.46146C1185 13.0768 1193 13.0768 1201 8.46147"
+                  stroke="black"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #shape-divider-shape_divider_VVDTKV svg {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(1);
+        }
+
+        #shape-divider-shape_divider_VVDTKV svg:nth-child(2) {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(1) translateX(100%);
+        }
+
+        #shopify-section-template--26988430360855__image_with_text_dQBeLL>data-island,
+        #shopify-section-template--26988430360855__image_with_text_dQBeLL>section,
+        #shopify-section-template--26988430360855__image_with_text_dQBeLL>footer,
+        #shopify-section-template--26988430360855__image_with_text_dQBeLL [data-related-products-section] {
+          padding-bottom: 1.6666666666666665%;
+        }
+      </style>
+
+    </div>
+    <div id="shopify-section-template--26988430360855__scrolling_text_with_icons_hyKLdD" class="shopify-section">
+
+
+      <section class="bg-scheme-background text-scheme-text  section-scrolling-text-icons homeScrolling"
+        data-color-scheme="scheme1">
+        <div id="scrolling-text-template--26988430360855__scrolling_text_with_icons_hyKLdD"
+          class="scrolling-text overflow-hidden py-2.5 py-half-section-vertical-spacing"><scrolling-items-container
+            class="block">
+            <scrolling-items style="--base-scrolling-items-speed: 15s; --local-scrolling-items-speed-multiplier: 3.0715968788627936; --scrolling-items-speed: calc(
+        var(--base-scrolling-items-speed) * var(--global-scrolling-items-speed-multiplier) *
+        var(--local-scrolling-items-speed-multiplier)
+        ); --scrolling-items-direction: ;"
+              class="block w-max whitespace-nowrap motion-safe:animate-[scrolling-items_var(--scrolling-items-speed)_linear_infinite_var(--scrolling-items-direction)] motion-safe:hover:[animation-play-state:paused] font-heading heading-secondary text-sm motion-reduce:px-section-horizontal-spacing motion-reduce:block motion-reduce:-translate-x-1/4 motion-reduce:whitespace-normal motion-reduce:text-center">
+              <scrolling-items-surface class="flex flex-nowrap items-center gap-20">
+                <scrolling-items-content class="grow-0 shrink-0">
+                  <div class="flex shrink-0 grow-0 items-center font-heading heading-secondary"><span class="text-sm ">
+                      <div class="flex items-center gap-20">
+                        <div class="flex items-center justify-start">
+
+
+                          <div class="scrolling-img">
+                            <img src="//sousasupps.com/cdn/shop/files/Icons_Scrolling_Protein_300x.png?v=1760152947"
+                              alt="20g whey protein">
+                          </div>
+
+                          <span class="scrolling-title">
+                            20g whey protein
+                          </span>
+                        </div>
+                        <div class="flex items-center justify-start">
+
+
+                          <div class="scrolling-img">
+                            <img
+                              src="//sousasupps.com/cdn/shop/files/Icons_Scrolling_Electrolytes_300x.png?v=1760152947"
+                              alt="1500mg electrolytes">
+                          </div>
+
+                          <span class="scrolling-title">
+                            1500mg electrolytes
+                          </span>
+                        </div>
+                        <div class="flex items-center justify-start">
+
+
+                          <div class="scrolling-img">
+                            <img src="//sousasupps.com/cdn/shop/files/Icons_Scrolling_Calories_300x.png?v=1760152946"
+                              alt="100 cal &amp; 4g sugar">
+                          </div>
+
+                          <span class="scrolling-title">
+                            100 cal &amp; 4g sugar
+                          </span>
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+                </scrolling-items-content>
+
+
+                <scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center font-heading heading-secondary"><span class="text-sm ">
+                      <div class="flex items-center gap-20">
+                        <div class="flex items-center justify-start">
+
+
+                          <div class="scrolling-img">
+                            <img src="//sousasupps.com/cdn/shop/files/Icons_Scrolling_Protein_300x.png?v=1760152947"
+                              alt="20g whey protein">
+                          </div>
+
+                          <span class="scrolling-title">
+                            20g whey protein
+                          </span>
+                        </div>
+                        <div class="flex items-center justify-start">
+
+
+                          <div class="scrolling-img">
+                            <img
+                              src="//sousasupps.com/cdn/shop/files/Icons_Scrolling_Electrolytes_300x.png?v=1760152947"
+                              alt="1500mg electrolytes">
+                          </div>
+
+                          <span class="scrolling-title">
+                            1500mg electrolytes
+                          </span>
+                        </div>
+                        <div class="flex items-center justify-start">
+
+
+                          <div class="scrolling-img">
+                            <img src="//sousasupps.com/cdn/shop/files/Icons_Scrolling_Calories_300x.png?v=1760152946"
+                              alt="100 cal &amp; 4g sugar">
+                          </div>
+
+                          <span class="scrolling-title">
+                            100 cal &amp; 4g sugar
+                          </span>
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+                </scrolling-items-content></scrolling-items-surface>
+            </scrolling-items>
+          </scrolling-items-container>
+        </div>
+
+        <style>
+
+        </style>
+
+      </section>
+
+      <style data-shopify="">
+        #shopify-section-template--26988430360855__scrolling_text_with_icons_hyKLdD {
+          --icon-thickness: 1.5;
+        }
+      </style>
+
+
+
+    </div>
+    <div id="shopify-section-template--26988430360855__collection-focus-carousel" class="shopify-section">
+      <section
+        class="collection-focus-carousel relative overflow-hidden bg-scheme-background  text-scheme-text  overflow-hidden"
+        data-color-scheme="scheme1">
+        <div class="section-content relative z-10 py-section-vertical-spacing">
+
+          <h2
+            class="inline-heading-rte font-heading heading-standard  heading-style break-words px-section text-center full_shadow">
+            choose your flavor
+          </h2>
+
+
+
+          <div class="inline-rte mx-auto mt-5 max-w-2xl px-section text-center">
+            No messy scoops, no excess sugar, no compromise between taste and function. Just one mix that does recovery
+            without the clutter.
+          </div>
+
+          <data-island x-data="FocusCarousel('slideshow-template--26988430360855__collection-focus-carousel-')"
+            role="banner" id="slideshow-template--26988430360855__collection-focus-carousel-"
+            class="section-content-top-margin splide is-overflow is-initialized splide--loop splide--ltr splide--draggable is-active"
+            data-focus-carousel="" data-enlarge-active-slide="" style="--desktop-slide-width: 45%;"
+            aria-roledescription="carousel" ready="">
+            <div
+              class="splide__track splide__track--focus-carousel overflow-visible splide__track--loop splide__track--ltr splide__track--draggable"
+              id="slideshow-template--26988430360855__collection-focus-carousel--track"
+              style="padding-left: 1.25rem; padding-right: 1.25rem;" aria-live="polite" aria-atomic="true">
+              <ul class="splide__list items-center "
+                id="slideshow-template--26988430360855__collection-focus-carousel--list" role="presentation"
+                style="transform: translateX(-1352.37px);">
+
+                <li class="splide__slide w-3/5 lg:w-[var(--desktop-slide-width)] splide__slide--clone is-active"
+                  id="slideshow-template--26988430360855__collection-focus-carousel--clone01" role="group"
+                  aria-roledescription="slide" aria-label="1 of 5" style="margin-right: 1.25rem;" aria-hidden="true">
+                  <div data-slide-scale-container="" class="scale-100 transition-transform">
+                    <div class="product-tile relative  ">
+
+                      <div class="product-tile__container "><a href="/products/variety-sample-pack"
+                          class="product-tile__featured-media group block" tabindex="-1">
+                          <div class="product-media-object relative pb-media-shadow">
+                            <div
+                              class="media media--css-only media-template--26988430360855__collection-focus-carousel-41953523663127-0  default">
+                              <div class="media__styled-element object-wrapper aspect-w-1 aspect-h-1">
+                                <img
+                                  src="//sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=2000"
+                                  alt="Sousa Starter Variety Pack, 6-count pouch with Vanilla, Strawberry Milkshake, and Salted Caramel single-serve protein and electrolyte packets"
+                                  srcset="//sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=200 200w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=350 350w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=450 450w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=750 750w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=850 850w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=960 960w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1920 1920w"
+                                  width="2000" height="2000" loading="lazy" class=" bg-scheme-background"
+                                  onerror="this.style.color=&quot;currentColor&quot;"
+                                  onload="this.style.color=&quot;currentColor&quot;"
+                                  sizes="(min-width: 990px) 45vw, 60vw">
+                                <div
+                                  class="pointer-events-none absolute inset-0 z-10 h-full w-full opacity-0 transition-opacity duration-300 will-change-[opacity] group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100 motion-reduce:transition-none">
+                                  <img
+                                    src="//sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=2000"
+                                    alt="Sousa Starter Variety Pack back label showing supplement facts for Vanilla, Strawberry Milkshake, and Salted Caramel, with ingredients and usage instructions"
+                                    srcset="//sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=200 200w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=350 350w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=450 450w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=750 750w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=850 850w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=960 960w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1920 1920w"
+                                    width="2000" height="2000" loading="lazy"
+                                    class="absolute w-full h-full inset-0 object-cover bg-scheme-background"
+                                    onerror="this.style.color=&quot;currentColor&quot;"
+                                    onload="this.style.color=&quot;currentColor&quot;"
+                                    sizes="(min-width: 990px) 45vw, 60vw" style="color: currentcolor;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                        <div class="product-tile mt-5 break-words text-center">
+                          <a href="/products/variety-sample-pack" class="block h-full w-full" tabindex="-1">
+
+                            <h3 class="product-title">Variety Starter Pack </h3>
+
+
+
+                            <div class="
+    price mt-2 price--on-sale ">
+                              <div class="price__container">
+                                <div class="price__regular hidden">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span class="price-item price-item--regular">
+                                    $19.99
+                                  </span>
+                                </div>
+                                <div class="price__sale ">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span>
+                                    <s class="price-item price-item--regular">
+
+                                      $30.00
+
+                                    </s>
+                                  </span><span class="visually-hidden visually-hidden--inline">Save!</span>
+                                  <span class="price-item price-item--sale price-item--last">
+                                    $19.99
+                                  </span>
+                                </div>
+                                <small class="unit-price caption hidden">
+                                  <span class="visually-hidden">Unit price</span>
+                                  <span class="price-item price-item--last">
+                                    <span></span>
+                                    <span aria-hidden="true">/</span>
+                                    <span class="visually-hidden">&nbsp;per&nbsp;</span>
+                                    <span>
+                                    </span>
+                                  </span>
+                                </small>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        <div
+                          class="sticker-on-sale-sticker-10122325950743 pointer-events-none absolute z-20 origin-top-left will-change-transform">
+                          <div class="sticker__container rotate-anim relative">
+                            <div class="relative max-w-none">
+                              <div class="absolute inset-0 bg-scheme-accent-1 text-scheme-accent-1-contrast"
+                                style="clip-path: url(#clip-on-sale)">
+                                <div
+                                  class="sticker__text sticker-text-on-sale absolute inset-0 flex items-center justify-center text-center font-heading">
+                                  <div>save!</div>
+                                </div>
+                              </div>
+                              <svg class="sticker__width-container relative max-w-none text-scheme-accent-1-contrast"
+                                viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <use class="sticker__svg fill-transparent" href="#outline-on-sale"></use>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                        <style>
+                          .sticker-on-sale-sticker-10122325950743 {
+                            top: 15%;
+                            left: 90%;
+                            transform: rotate(-5deg) translate(-50%, -50%);
+                          }
+
+                          .sticker-on-sale-sticker-10122325950743 img,
+                          .sticker-on-sale-sticker-10122325950743 svg,
+                          .sticker-on-sale-sticker-10122325950743 .sticker-text-container {
+                            width: calc(100 * 0.75px);
+
+                            @media (min-width: 640px) {
+                              width: 100px;
+                            }
+                          }
+
+                          .sticker-text-on-sale {
+                            padding: calc(2rem * 100 / 300);
+                          }
+
+                          .sticker-text-on-sale,
+                          .sticker-on-sale-sticker-10122325950743 .sticker__fit-to-text {
+                            --adjusted-sticker-font-size: calc(1.953rem * 1.5);
+                            font-size: calc(var(--adjusted-sticker-font-size) * 100 / 300);
+                            line-height: 1;
+                          }
+                        </style>
+
+
+                      </div>
+
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-3/5 lg:w-[var(--desktop-slide-width)] splide__slide--clone"
+                  id="slideshow-template--26988430360855__collection-focus-carousel--clone02" role="group"
+                  aria-roledescription="slide" aria-label="2 of 5" style="margin-right: 1.25rem;" aria-hidden="true">
+                  <div data-slide-scale-container="" class="scale-[0.8] transition-transform">
+                    <div class="product-tile relative  ">
+
+                      <div class="product-tile__container "><a href="/products/variety-pack"
+                          class="product-tile__featured-media group block" tabindex="-1">
+                          <div class="product-media-object relative pb-media-shadow">
+                            <div
+                              class="media media--css-only media-template--26988430360855__collection-focus-carousel-41354568237335-1  default">
+                              <div class="media__styled-element object-wrapper aspect-w-1 aspect-h-1">
+                                <img
+                                  src="//sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=2000"
+                                  alt="Sousa protein and hydration boxes in all three flavors, Salted Caramel, Strawberry Milkshake, and Vanilla, each with 14 single-serve packets"
+                                  srcset="//sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=200 200w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=350 350w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=450 450w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=750 750w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=850 850w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=960 960w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/BoxesAllSquare.jpg?v=1774450604&amp;width=1920 1920w"
+                                  width="2000" height="2000" loading="lazy" class=" bg-scheme-background"
+                                  onerror="this.style.color=&quot;currentColor&quot;"
+                                  onload="this.style.color=&quot;currentColor&quot;"
+                                  sizes="(min-width: 990px) 45vw, 60vw" style="color: currentcolor;">
+                                <div
+                                  class="pointer-events-none absolute inset-0 z-10 h-full w-full opacity-0 transition-opacity duration-300 will-change-[opacity] group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100 motion-reduce:transition-none">
+                                  <img src="//sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=2000"
+                                    alt="Sousa protein and hydration boxes in all three flavors, Salted Caramel, Strawberry Milkshake, and Vanilla, each with 14 single-serve packets"
+                                    srcset="//sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=200 200w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=350 350w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=450 450w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=750 750w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=850 850w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=960 960w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/Group_54.png?v=1774450604&amp;width=1920 1920w"
+                                    width="2000" height="2000" loading="lazy"
+                                    class="absolute w-full h-full inset-0 object-cover bg-scheme-background"
+                                    onerror="this.style.color=&quot;currentColor&quot;"
+                                    onload="this.style.color=&quot;currentColor&quot;"
+                                    sizes="(min-width: 990px) 45vw, 60vw" style="color: currentcolor;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                        <div class="product-tile mt-5 break-words text-center">
+                          <a href="/products/variety-pack" class="block h-full w-full" tabindex="-1">
+
+                            <h3 class="product-title">Variety Bundle Protein + Hydration </h3>
+
+
+
+                            <div class="
+    price mt-2 price--on-sale ">
+                              <div class="price__container">
+                                <div class="price__regular hidden">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span class="price-item price-item--regular">
+                                    $89.99
+                                  </span>
+                                </div>
+                                <div class="price__sale ">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span>
+                                    <s class="price-item price-item--regular">
+
+                                      $140.00
+
+                                    </s>
+                                  </span><span class="visually-hidden visually-hidden--inline">Save!</span>
+                                  <span class="price-item price-item--sale price-item--last">
+                                    $89.99
+                                  </span>
+                                </div>
+                                <small class="unit-price caption hidden">
+                                  <span class="visually-hidden">Unit price</span>
+                                  <span class="price-item price-item--last">
+                                    <span></span>
+                                    <span aria-hidden="true">/</span>
+                                    <span class="visually-hidden">&nbsp;per&nbsp;</span>
+                                    <span>
+                                    </span>
+                                  </span>
+                                </small>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        <div
+                          class="sticker-on-sale-sticker-10077787062551 pointer-events-none absolute z-20 origin-top-left will-change-transform">
+                          <div class="sticker__container rotate-anim relative">
+                            <div class="relative max-w-none">
+                              <div class="absolute inset-0 bg-scheme-accent-1 text-scheme-accent-1-contrast"
+                                style="clip-path: url(#clip-on-sale)">
+                                <div
+                                  class="sticker__text sticker-text-on-sale absolute inset-0 flex items-center justify-center text-center font-heading">
+                                  <div>save!</div>
+                                </div>
+                              </div>
+                              <svg class="sticker__width-container relative max-w-none text-scheme-accent-1-contrast"
+                                viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <use class="sticker__svg fill-transparent" href="#outline-on-sale"></use>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                        <style>
+                          .sticker-on-sale-sticker-10077787062551 {
+                            top: 15%;
+                            left: 90%;
+                            transform: rotate(5deg) translate(-50%, -50%);
+                          }
+
+                          .sticker-on-sale-sticker-10077787062551 img,
+                          .sticker-on-sale-sticker-10077787062551 svg,
+                          .sticker-on-sale-sticker-10077787062551 .sticker-text-container {
+                            width: calc(100 * 0.75px);
+
+                            @media (min-width: 640px) {
+                              width: 100px;
+                            }
+                          }
+
+                          .sticker-text-on-sale {
+                            padding: calc(2rem * 100 / 300);
+                          }
+
+                          .sticker-text-on-sale,
+                          .sticker-on-sale-sticker-10077787062551 .sticker__fit-to-text {
+                            --adjusted-sticker-font-size: calc(1.953rem * 1.5);
+                            font-size: calc(var(--adjusted-sticker-font-size) * 100 / 300);
+                            line-height: 1;
+                          }
+                        </style>
+
+
+                      </div>
+
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-3/5 lg:w-[var(--desktop-slide-width)] splide__slide--clone"
+                  id="slideshow-template--26988430360855__collection-focus-carousel--clone03" role="group"
+                  aria-roledescription="slide" aria-label="3 of 5" style="margin-right: 1.25rem;" aria-hidden="true">
+                  <div data-slide-scale-container="" class="scale-100 transition-transform">
+                    <div class="product-tile relative  ">
+
+                      <div class="product-tile__container "><a
+                          href="/products/protein-hydration-recovery-drink-mix?variant=52818915655959"
+                          class="product-tile__featured-media group block" tabindex="-1">
+                          <div class="product-media-object relative pb-media-shadow">
+                            <div
+                              class="media media--css-only media-template--26988430360855__collection-focus-carousel-41476884824343-0  default">
+                              <div class="media__styled-element object-wrapper aspect-w-1 aspect-h-1">
+                                <img
+                                  src="//sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=2000"
+                                  alt="Protein + Hydration Recovery Drink Mix"
+                                  srcset="//sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=200 200w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=350 350w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=450 450w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=750 750w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=850 850w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=960 960w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/CROPVanillaFrontSquareBlue.png?v=1762291079&amp;width=1920 1920w"
+                                  width="2000" height="2000" loading="lazy" class=" bg-scheme-background"
+                                  onerror="this.style.color=&quot;currentColor&quot;"
+                                  onload="this.style.color=&quot;currentColor&quot;"
+                                  sizes="(min-width: 990px) 45vw, 60vw" style="color: currentcolor;">
+                                <div
+                                  class="pointer-events-none absolute inset-0 z-10 h-full w-full opacity-0 transition-opacity duration-300 will-change-[opacity] group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100 motion-reduce:transition-none">
+                                  <img
+                                    src="//sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=2000"
+                                    alt="Protein + Hydration Recovery Drink Mix"
+                                    srcset="//sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=200 200w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=350 350w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=450 450w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=750 750w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=850 850w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=960 960w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1920 1920w"
+                                    width="2000" height="2000" loading="lazy"
+                                    class="absolute w-full h-full inset-0 object-cover bg-scheme-background"
+                                    onerror="this.style.color=&quot;currentColor&quot;"
+                                    onload="this.style.color=&quot;currentColor&quot;"
+                                    sizes="(min-width: 990px) 45vw, 60vw" style="color: currentcolor;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                        <div class="product-tile mt-5 break-words text-center">
+                          <a href="/products/protein-hydration-recovery-drink-mix?variant=52818915655959"
+                            class="block h-full w-full" tabindex="-1">
+
+                            <h3 class="product-title">Protein + Hydration Recovery Drink Mix (Vanilla)</h3>
+
+
+
+                            <div class="
+    price mt-2 price--on-sale ">
+                              <div class="price__container">
+                                <div class="price__regular hidden">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span class="price-item price-item--regular">
+                                    $34.99
+                                  </span>
+                                </div>
+                                <div class="price__sale ">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span>
+                                    <s class="price-item price-item--regular">
+
+                                      $50.00
+
+                                    </s>
+                                  </span><span class="visually-hidden visually-hidden--inline">Save!</span>
+                                  <span class="price-item price-item--sale price-item--last">
+                                    $34.99
+                                  </span>
+                                </div>
+                                <small class="unit-price caption hidden">
+                                  <span class="visually-hidden">Unit price</span>
+                                  <span class="price-item price-item--last">
+                                    <span></span>
+                                    <span aria-hidden="true">/</span>
+                                    <span class="visually-hidden">&nbsp;per&nbsp;</span>
+                                    <span>
+                                    </span>
+                                  </span>
+                                </small>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        <div
+                          class="sticker-on-sale-sticker-10291191644439 pointer-events-none absolute z-20 origin-top-left will-change-transform">
+                          <div class="sticker__container rotate-anim relative">
+                            <div class="relative max-w-none">
+                              <div class="absolute inset-0 bg-scheme-accent-1 text-scheme-accent-1-contrast"
+                                style="clip-path: url(#clip-on-sale)">
+                                <div
+                                  class="sticker__text sticker-text-on-sale absolute inset-0 flex items-center justify-center text-center font-heading">
+                                  <div>save!</div>
+                                </div>
+                              </div>
+                              <svg class="sticker__width-container relative max-w-none text-scheme-accent-1-contrast"
+                                viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <use class="sticker__svg fill-transparent" href="#outline-on-sale"></use>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                        <style>
+                          .sticker-on-sale-sticker-10291191644439 {
+                            top: 15%;
+                            left: 90%;
+                            transform: rotate(-5deg) translate(-50%, -50%);
+                          }
+
+                          .sticker-on-sale-sticker-10291191644439 img,
+                          .sticker-on-sale-sticker-10291191644439 svg,
+                          .sticker-on-sale-sticker-10291191644439 .sticker-text-container {
+                            width: calc(100 * 0.75px);
+
+                            @media (min-width: 640px) {
+                              width: 100px;
+                            }
+                          }
+
+                          .sticker-text-on-sale {
+                            padding: calc(2rem * 100 / 300);
+                          }
+
+                          .sticker-text-on-sale,
+                          .sticker-on-sale-sticker-10291191644439 .sticker__fit-to-text {
+                            --adjusted-sticker-font-size: calc(1.953rem * 1.5);
+                            font-size: calc(var(--adjusted-sticker-font-size) * 100 / 300);
+                            line-height: 1;
+                          }
+                        </style>
+
+
+                      </div>
+
+                    </div>
+                  </div>
+                </li>
+
+                <li class="splide__slide w-3/5 lg:w-[var(--desktop-slide-width)] splide__slide--clone"
+                  id="slideshow-template--26988430360855__collection-focus-carousel--clone04" role="group"
+                  aria-roledescription="slide" aria-label="4 of 5" style="margin-right: 1.25rem;" aria-hidden="true">
+                  <div data-slide-scale-container="" class="scale-[0.8] transition-transform">
+                    <div class="product-tile relative  ">
+
+                      <div class="product-tile__container "><a
+                          href="/products/protein-hydration-recovery-drink-mix?variant=52818915688727"
+                          class="product-tile__featured-media group block" tabindex="-1">
+                          <div class="product-media-object relative pb-media-shadow">
+                            <div
+                              class="media media--css-only media-template--26988430360855__collection-focus-carousel-41476881940759-1  default">
+                              <div class="media__styled-element object-wrapper aspect-w-1 aspect-h-1">
+                                <img
+                                  src="//sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=2000"
+                                  alt="Protein + Hydration Recovery Drink Mix"
+                                  srcset="//sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=200 200w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=350 350w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=450 450w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=750 750w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=850 850w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=960 960w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/CROPStrawberryMilkshakeFrontSquareBlue.png?v=1762291057&amp;width=1920 1920w"
+                                  width="2000" height="2000" loading="lazy" class=" bg-scheme-background"
+                                  onerror="this.style.color=&quot;currentColor&quot;"
+                                  onload="this.style.color=&quot;currentColor&quot;"
+                                  sizes="(min-width: 990px) 45vw, 60vw" style="color: currentcolor;">
+                                <div
+                                  class="pointer-events-none absolute inset-0 z-10 h-full w-full opacity-0 transition-opacity duration-300 will-change-[opacity] group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100 motion-reduce:transition-none">
+                                  <img
+                                    src="//sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=2000"
+                                    alt="Protein + Hydration Recovery Drink Mix"
+                                    srcset="//sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=200 200w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=350 350w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=450 450w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=750 750w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=850 850w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=960 960w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/VanillaYellow_c7d16e73-f6b5-4bb6-a38e-80d9145c47b2.png?v=1763145721&amp;width=1920 1920w"
+                                    width="2000" height="2000" loading="lazy"
+                                    class="absolute w-full h-full inset-0 object-cover bg-scheme-background"
+                                    onerror="this.style.color=&quot;currentColor&quot;"
+                                    onload="this.style.color=&quot;currentColor&quot;"
+                                    sizes="(min-width: 990px) 45vw, 60vw" style="color: currentcolor;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                        <div class="product-tile mt-5 break-words text-center">
+                          <a href="/products/protein-hydration-recovery-drink-mix?variant=52818915688727"
+                            class="block h-full w-full" tabindex="-1">
+
+                            <h3 class="product-title">Protein + Hydration Recovery Drink Mix (Strawberry Milkshake)</h3>
+
+
+
+                            <div class="
+    price mt-2 price--on-sale ">
+                              <div class="price__container">
+                                <div class="price__regular hidden">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span class="price-item price-item--regular">
+                                    $34.99
+                                  </span>
+                                </div>
+                                <div class="price__sale ">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span>
+                                    <s class="price-item price-item--regular">
+
+                                      $50.00
+
+                                    </s>
+                                  </span><span class="visually-hidden visually-hidden--inline">Save!</span>
+                                  <span class="price-item price-item--sale price-item--last">
+                                    $34.99
+                                  </span>
+                                </div>
+                                <small class="unit-price caption hidden">
+                                  <span class="visually-hidden">Unit price</span>
+                                  <span class="price-item price-item--last">
+                                    <span></span>
+                                    <span aria-hidden="true">/</span>
+                                    <span class="visually-hidden">&nbsp;per&nbsp;</span>
+                                    <span>
+                                    </span>
+                                  </span>
+                                </small>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        <div
+                          class="sticker-on-sale-sticker-10291191644439 pointer-events-none absolute z-20 origin-top-left will-change-transform">
+                          <div class="sticker__container rotate-anim relative">
+                            <div class="relative max-w-none">
+                              <div class="absolute inset-0 bg-scheme-accent-1 text-scheme-accent-1-contrast"
+                                style="clip-path: url(#clip-on-sale)">
+                                <div
+                                  class="sticker__text sticker-text-on-sale absolute inset-0 flex items-center justify-center text-center font-heading">
+                                  <div>save!</div>
+                                </div>
+                              </div>
+                              <svg class="sticker__width-container relative max-w-none text-scheme-accent-1-contrast"
+                                viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <use class="sticker__svg fill-transparent" href="#outline-on-sale"></use>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                        <style>
+                          .sticker-on-sale-sticker-10291191644439 {
+                            top: 15%;
+                            left: 90%;
+                            transform: rotate(5deg) translate(-50%, -50%);
+                          }
+
+                          .sticker-on-sale-sticker-10291191644439 img,
+                          .sticker-on-sale-sticker-10291191644439 svg,
+                          .sticker-on-sale-sticker-10291191644439 .sticker-text-container {
+                            width: calc(100 * 0.75px);
+
+                            @media (min-width: 640px) {
+                              width: 100px;
+                            }
+                          }
+
+                          .sticker-text-on-sale {
+                            padding: calc(2rem * 100 / 300);
+                          }
+
+                          .sticker-text-on-sale,
+                          .sticker-on-sale-sticker-10291191644439 .sticker__fit-to-text {
+                            --adjusted-sticker-font-size: calc(1.953rem * 1.5);
+                            font-size: calc(var(--adjusted-sticker-font-size) * 100 / 300);
+                            line-height: 1;
+                          }
+                        </style>
+
+
+                      </div>
+
+                    </div>
+                  </div>
+                </li>
+
+                <li class="splide__slide w-3/5 lg:w-[var(--desktop-slide-width)] splide__slide--clone is-active"
+                  id="slideshow-template--26988430360855__collection-focus-carousel--clone06" role="group"
+                  aria-roledescription="slide" aria-label="1 of 5" style="margin-right: 1.25rem;" aria-hidden="true">
+                  <div data-slide-scale-container="" class="scale-100 transition-transform">
+                    <div class="product-tile relative  ">
+
+                      <div class="product-tile__container "><a href="/products/variety-sample-pack"
+                          class="product-tile__featured-media group block" tabindex="-1">
+                          <div class="product-media-object relative pb-media-shadow">
+                            <div
+                              class="media media--css-only media-template--26988430360855__collection-focus-carousel-41953523663127-0  default">
+                              <div class="media__styled-element object-wrapper aspect-w-1 aspect-h-1">
+                                <img
+                                  src="//sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=2000"
+                                  alt="Sousa Starter Variety Pack, 6-count pouch with Vanilla, Strawberry Milkshake, and Salted Caramel single-serve protein and electrolyte packets"
+                                  srcset="//sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=200 200w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=350 350w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=450 450w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=750 750w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=850 850w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=960 960w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/pouchrendermockupbluefront.png?v=1774896785&amp;width=1920 1920w"
+                                  width="2000" height="2000" loading="lazy" class=" bg-scheme-background"
+                                  onerror="this.style.color=&quot;currentColor&quot;"
+                                  onload="this.style.color=&quot;currentColor&quot;"
+                                  sizes="(min-width: 990px) 45vw, 60vw">
+                                <div
+                                  class="pointer-events-none absolute inset-0 z-10 h-full w-full opacity-0 transition-opacity duration-300 will-change-[opacity] group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100 motion-reduce:transition-none">
+                                  <img
+                                    src="//sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=2000"
+                                    alt="Sousa Starter Variety Pack back label showing supplement facts for Vanilla, Strawberry Milkshake, and Salted Caramel, with ingredients and usage instructions"
+                                    srcset="//sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=200 200w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=350 350w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=450 450w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=750 750w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=850 850w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=960 960w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/pouchrendermockupblueback.png?v=1765472409&amp;width=1920 1920w"
+                                    width="2000" height="2000" loading="lazy"
+                                    class="absolute w-full h-full inset-0 object-cover bg-scheme-background"
+                                    onerror="this.style.color=&quot;currentColor&quot;"
+                                    onload="this.style.color=&quot;currentColor&quot;"
+                                    sizes="(min-width: 990px) 45vw, 60vw" style="color: currentcolor;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                        <div class="product-tile mt-5 break-words text-center">
+                          <a href="/products/variety-sample-pack" class="block h-full w-full" tabindex="-1">
+
+                            <h3 class="product-title">Variety Starter Pack </h3>
+
+
+
+                            <div class="
+    price mt-2 price--on-sale ">
+                              <div class="price__container">
+                                <div class="price__regular hidden">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span class="price-item price-item--regular">
+                                    $19.99
+                                  </span>
+                                </div>
+                                <div class="price__sale ">
+                                  <span class="visually-hidden visually-hidden--inline">Regular price</span>
+                                  <span>
+                                    <s class="price-item price-item--regular">
+
+                                      $30.00
+
+                                    </s>
+                                  </span><span class="visually-hidden visually-hidden--inline">Save!</span>
+                                  <span class="price-item price-item--sale price-item--last">
+                                    $19.99
+                                  </span>
+                                </div>
+                                <small class="unit-price caption hidden">
+                                  <span class="visually-hidden">Unit price</span>
+                                  <span class="price-item price-item--last">
+                                    <span></span>

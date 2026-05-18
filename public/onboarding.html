@@ -152,6 +152,50 @@
     .toggle input:checked + .toggle-track { background: #111; }
     .toggle input:checked + .toggle-track::after { transform: translateX(18px); }
 
+    /* ── 임베딩 진행 ── */
+    .embed-section { margin-top: 4px; }
+    .embed-btn {
+      width: 100%; padding: 11px; border-radius: 10px;
+      background: #111; color: #fff; border: none;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: inherit; transition: opacity 0.15s;
+    }
+    .embed-btn:hover { opacity: 0.82; }
+    .embed-btn:disabled { opacity: 0.4; cursor: default; }
+    .embed-progress {
+      margin-top: 10px; display: none;
+    }
+    .embed-progress.visible { display: block; }
+    .embed-progress-bar-bg {
+      height: 4px; background: #E8E8E4; border-radius: 2px; overflow: hidden; margin-bottom: 6px;
+    }
+    .embed-progress-bar-fill {
+      height: 100%; background: #22C55E; border-radius: 2px;
+      width: 0%; transition: width 0.4s ease;
+    }
+    .embed-progress-msg { font-size: 11px; color: #888; }
+
+    /* ── 설치 코드 ── */
+    .install-section { display: none; }
+    .install-section.visible { display: block; }
+    .install-code-block {
+      background: #1A1A1A; border-radius: 10px;
+      padding: 14px 16px; position: relative; overflow: hidden;
+    }
+    .install-code-block pre {
+      font-family: 'SF Mono', 'Fira Mono', monospace;
+      font-size: 11px; color: #A8FF78; white-space: pre-wrap;
+      word-break: break-all; line-height: 1.7; margin: 0;
+    }
+    .install-copy-btn {
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(255,255,255,0.1); color: #fff; border: none;
+      border-radius: 6px; padding: 5px 10px; font-size: 11px;
+      cursor: pointer; font-family: inherit; transition: background 0.15s;
+    }
+    .install-copy-btn:hover { background: rgba(255,255,255,0.2); }
+    .install-hint { font-size: 11px; color: #AAA; margin-top: 8px; line-height: 1.6; }
+
     /* ── 저장 버튼 ── */
     .save-bar {
       position: fixed; bottom: 0; left: 0; width: 440px;
@@ -630,6 +674,44 @@
       </div>
     </div>
 
+    <!-- AI 에이전트 설정 -->
+    <div class="settings-section">
+      <div class="section-label">AI 에이전트 설정</div>
+
+      <div class="field">
+        <label class="field-label">에이전트 이름</label>
+        <input type="text" id="f-agent-name" placeholder="예: 솔리드 스타일리스트" maxlength="20">
+        <div class="field-hint">위젯 헤더에 표시되는 AI 이름</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">응대 톤</label>
+        <select id="f-agent-tone">
+          <option value="friendly">친근 · 따뜻 — "~해요" 체</option>
+          <option value="formal">격식 · 정중 — "~습니다" 체</option>
+          <option value="expert">전문가 · 간결 — 스펙·수치 중심</option>
+          <option value="sensory">감성 · 서정적 — 분위기 중심 묘사</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label">주요 고객 페르소나</label>
+        <textarea id="f-agent-persona" placeholder="예: 20~30대 직장 여성, 포멀과 캐주얼 사이의 오피스룩을 주로 찾음" maxlength="200"></textarea>
+        <div class="field-hint">AI가 추천 시 이 고객 유형을 염두에 둡니다</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">브랜드 가이드라인</label>
+        <textarea id="f-agent-guidelines" placeholder="예: 할인·세일 표현 자제, 소재와 품질 강조, 시즌 아이템 우선 추천" maxlength="300"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">금지 표현 <span style="color:#CCC;font-weight:400;">(선택)</span></label>
+        <input type="text" id="f-agent-prohibited" placeholder="예: 싸다, 저렴하다, 무조건" maxlength="100">
+        <div class="field-hint">쉼표로 구분</div>
+      </div>
+    </div>
+
     <!-- 패널 설정 -->
     <div class="settings-section">
       <div class="section-label">패널 설정</div>
@@ -653,6 +735,31 @@
             <span class="toggle-track"></span>
           </label>
         </div>
+      </div>
+    </div>
+
+    <!-- 상품 임베딩 -->
+    <div class="settings-section embed-section">
+      <div class="section-label">상품 동기화</div>
+      <div class="field-hint" style="margin-bottom:10px;">설정 저장 후 상품 벡터 임베딩을 실행하세요. 처음 실행 시 상품 수에 따라 수 분 걸릴 수 있습니다.</div>
+      <button class="embed-btn" id="btn-embed" onclick="runEmbed()">임베딩 실행</button>
+      <div class="embed-progress" id="embed-progress">
+        <div class="embed-progress-bar-bg">
+          <div class="embed-progress-bar-fill" id="embed-bar"></div>
+        </div>
+        <div class="embed-progress-msg" id="embed-msg">진행 중...</div>
+      </div>
+    </div>
+
+    <!-- 설치 코드 -->
+    <div class="settings-section install-section" id="install-section">
+      <div class="section-label">위젯 설치</div>
+      <div class="install-code-block">
+        <pre id="install-code"></pre>
+        <button class="install-copy-btn" onclick="copyInstallCode()">복사</button>
+      </div>
+      <div class="install-hint">
+        Cafe24 쇼핑몰 관리자 → <strong>디자인 편집 → HTML 편집</strong>에서 <code style="background:#F0F0EE;padding:1px 4px;border-radius:3px;">&lt;/body&gt;</code> 태그 바로 위에 붙여넣으세요.
       </div>
     </div>
 
@@ -778,6 +885,12 @@
     userBubbleBorderColor: '#E0E0DC',
     // 사이드 탭 돋보기 색
     tabIconColor:    '#FFFFFF',
+    // AI 에이전트 설정
+    agentName:       '',
+    agentTone:       'friendly',
+    agentPersona:    '',
+    agentGuidelines: '',
+    agentProhibited: '',
   };
 
   // 폰트 이름 → Google Fonts / CDN URL 매핑
@@ -815,7 +928,6 @@
     if (urlMallId) {
       state.mallId = urlMallId;
       document.getElementById('f-mall-id').value = urlMallId;
-      document.getElementById('header-mall-id').textContent = urlMallId + '.cafe24.com';
       // 기존 설정 불러오기
       await loadExisting(urlMallId);
     }
@@ -877,6 +989,14 @@
         document.getElementById('f-user-border').checked = c.userBubbleBorder;
         document.getElementById('user-border-sub').classList.toggle('visible', c.userBubbleBorder);
       }
+      // agent_config 로드
+      const ac = data.agent_config || {};
+      if (ac.agentName)       { state.agentName = ac.agentName; document.getElementById('f-agent-name').value = ac.agentName; }
+      if (ac.tone)            { state.agentTone = ac.tone; document.getElementById('f-agent-tone').value = ac.tone; }
+      if (ac.targetPersona)   { state.agentPersona = ac.targetPersona; document.getElementById('f-agent-persona').value = ac.targetPersona; }
+      if (ac.guidelines)      { state.agentGuidelines = ac.guidelines; document.getElementById('f-agent-guidelines').value = ac.guidelines; }
+      if (ac.prohibitedExpressions) { state.agentProhibited = ac.prohibitedExpressions; document.getElementById('f-agent-prohibited').value = ac.prohibitedExpressions; }
+
       document.getElementById('save-status').textContent = '기존 설정 불러옴';
       setTimeout(() => { document.getElementById('save-status').textContent = ''; }, 3000);
     } catch (e) {
@@ -918,7 +1038,12 @@
 
   // ── 이벤트 바인딩 ─────────────────────────────────────
   function bindEvents() {
-    bind('f-brand-name',    v => { state.brandName = v; });
+    bind('f-brand-name',      v => { state.brandName = v; });
+    bind('f-agent-name',      v => { state.agentName = v; });
+    bind('f-agent-persona',   v => { state.agentPersona = v; });
+    bind('f-agent-guidelines',v => { state.agentGuidelines = v; });
+    bind('f-agent-prohibited',v => { state.agentProhibited = v; });
+    document.getElementById('f-agent-tone').addEventListener('change', e => { state.agentTone = e.target.value; });
     bind('f-logo-url',      v => { state.logoUrl = v; updatePreview(); });
 
     // 글꼴 선택
@@ -1155,6 +1280,13 @@
     const payload = {
       mallId,
       brandName: document.getElementById('f-brand-name').value.trim() || state.brandName,
+      agent_config: {
+        agentName:             state.agentName   || null,
+        tone:                  state.agentTone   || 'friendly',
+        targetPersona:         state.agentPersona || null,
+        guidelines:            state.agentGuidelines || null,
+        prohibitedExpressions: state.agentProhibited || null,
+      },
       theme_config: {
         accentColor:           state.accentColor,
         bgColor:               state.bgColor,
@@ -1189,6 +1321,7 @@
         document.getElementById('save-status').textContent = '✓ 저장 완료';
         btn.textContent = '저장하기';
         btn.disabled = false;
+        showInstallCode(mallId);
         setTimeout(() => { document.getElementById('save-status').textContent = ''; }, 3000);
       } else {
         throw new Error(data.error || '저장 실패');
@@ -1196,6 +1329,64 @@
     } catch (e) {
       document.getElementById('save-status').textContent = '✗ ' + e.message;
       btn.textContent = '저장하기';
+      btn.disabled = false;
+    }
+  }
+
+  // ── 설치 코드 표시 ────────────────────────────────────
+  function showInstallCode(mallId) {
+    const SERVER_ORIGIN = location.origin;
+    const code = `<!-- Chameleon AI Widget -->\n<script src="${SERVER_ORIGIN}/widget.js"\n  data-mall-id="${mallId}"\n  data-server="${SERVER_ORIGIN}">\n<\/script>`;
+    document.getElementById('install-code').textContent = code;
+    document.getElementById('install-section').classList.add('visible');
+    document.getElementById('install-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function copyInstallCode() {
+    const code = document.getElementById('install-code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.querySelector('.install-copy-btn');
+      btn.textContent = '복사됨!';
+      setTimeout(() => { btn.textContent = '복사'; }, 2000);
+    });
+  }
+
+  // ── 상품 임베딩 실행 ──────────────────────────────────
+  async function runEmbed() {
+    const mallId = state.mallId || document.getElementById('f-mall-id').value.trim();
+    if (!mallId) {
+      alert('먼저 설정을 저장해주세요.');
+      return;
+    }
+    const btn = document.getElementById('btn-embed');
+    const progress = document.getElementById('embed-progress');
+    const bar = document.getElementById('embed-bar');
+    const msg = document.getElementById('embed-msg');
+
+    btn.disabled = true;
+    btn.textContent = '실행 중...';
+    progress.classList.add('visible');
+    msg.textContent = '임베딩 시작 중...';
+
+    // 진행 애니메이션 (실제 진행률 알 수 없어서 시간 기반 추정)
+    let fakeProgress = 0;
+    const ticker = setInterval(() => {
+      fakeProgress = Math.min(fakeProgress + Math.random() * 8, 85);
+      bar.style.width = fakeProgress + '%';
+    }, 800);
+
+    try {
+      const res = await fetch(`/admin/embed/${mallId}`, { method: 'POST' });
+      const data = await res.json();
+      clearInterval(ticker);
+      bar.style.width = '100%';
+      msg.textContent = data.message || (data.error ? '오류: ' + data.error : '완료');
+      btn.textContent = '다시 실행';
+      btn.disabled = false;
+    } catch (e) {
+      clearInterval(ticker);
+      msg.textContent = '오류: ' + e.message;
+      btn.textContent = '다시 실행';
       btn.disabled = false;
     }
   }

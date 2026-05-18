@@ -1,0 +1,1600 @@
+
+    .go3600011406.go3600011406.go3600011406 [href]:focus-visible {
+      outline-width: 2px;
+      outline-style: auto;
+      outline-color: rgba(0, 0, 0, 1);
+    }
+
+    .go1231371783.go1231371783.go1231371783::placeholder {
+      color: #F4F0EC;
+      font-family: 'bicyclette', Verdana, Geneva, sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0px;
+    }
+
+    .go1231371783.go1231371783.go1231371783::-moz-placeholder {
+      line-height: 53px;
+    }
+
+    .go1231371783.go1231371783.go1231371783:hover {
+      border-color: #FFF7E4 !important;
+    }
+
+    .go1231371783.go1231371783.go1231371783:focus-visible {
+      outline-width: 2px;
+      outline-style: auto;
+      outline-color: #FFF7E4;
+      outline-offset: 0;
+    }
+
+    .go1642924675.go1642924675.go1642924675:focus-visible {
+      outline-width: 2px;
+      outline-style: auto;
+      outline-color: #FFF7E4;
+      outline-offset: 0;
+    }
+
+    .go2324193863.go2324193863.go2324193863:focus-visible {
+      outline-width: 2px;
+      outline-style: auto;
+      outline-color: #1C65AD;
+      outline-offset: 0;
+    }
+  </style>
+  <style></style>
+  <link rel="dns-prefetch preconnect" href="https://cdn.shopify.com" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/polyfills.CgsWKOqO.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script" href="/cdn/shopifycloud/checkout-web/assets/c1/app.DHsyljj7.js"
+    crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/dist-vendor.Ci0dSXZP.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/browser.DegC2jOA.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/utilities-FullScreenBackground.BZlJeAkz.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/graphql-unactionable-errors.CTtb6GFr.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/actions-shop-discount-offer.mTu7Rxko.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/utilities-alternativePaymentCurrency.DkQsV2Im.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/utilities-shared.CEwEVciX.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/utils-BusinessCustomerShippingAddressManager.DX_v0kY6.js"
+    crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/helpers-shared.kaHgZYG3.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/shop-pay-Page.C43i33ob.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/images-flag-icon.C_eXYJRt.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/images-payment-icon.D2Fpq5Mq.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/locale-en.CPcIxq2M.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/page-OnePage.l-cpKOFY.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/Captcha-MarketsProDisclaimer.Duvb0_2m.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/Menu-CrossBorderConsolidation.CWpopSED.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/hooks-useSubscribeMessenger.Dg6WeCw-.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/types-useHasOrdersFromMultipleShops.jgSlJoKh.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/utilities-PaymentButtons.5lRVqq96.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/icons-OffsitePaymentFailed.CiQYd7Ra.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/hooks-useSuppressShopPayModalOnLoad.BkEBkVUY.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/BuyWithPrimeChangeLink-VaultedPayment.DKxJB84x.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/DeliveryMacros-ShippingGroupsSummaryLine.vG1X0mRQ.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/MerchandisePreviewThumbnail-StackedMerchandisePreview.BDlYHJ5w.js"
+    crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/Map-PickupPointCarrierLogo.Cp2Yw2tb.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script" href="/cdn/shopifycloud/checkout-web/assets/c1/hooks.BKBEv8Nv.js"
+    crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/PostPurchaseShouldRender-LocalizationExtensionField.DyaAyQWK.js"
+    crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/graphql-ShopPayOptInDisclaimer.BnvwvuQf.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/adapter-RememberMeDescriptionText.rNMQ6i56.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/utilities-MobileOrderSummary.D_cM4soB.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/hooks-OrderEditVaultedDelivery.BNfIqFUF.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/captcha-SeparatePaymentsNotice.BCBr4Nwe.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/StockProblems-StockProblemsLineItemList.1X3kqBYb.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/redemption-constants.Dfth8Kg0.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/negotiated-ShipmentBreakdown.B0Ul2xTC.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/hooks-MerchandiseModal.Bo8IYa80.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/utilities-shipping-options.CLzE3S7X.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/graphql-DutyOptions.CPXIF7C2.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/DeliveryInstructionsFooter-ShippingMethodSelector.BbAaLIDO.js"
+    crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/hooks-SubscriptionPriceBreakdown.BSDFiSap.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/component-RuntimeExtension.D9d4JMrP.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/DatePicker-AnnouncementRuntimeExtensions.CUVizN6B.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/standard-rendering-extension-targets.9eKUWXQ6.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/esm-browser-v4.BKrj-4V8.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="script"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/ExtensionsInner.WZAlonBc.js" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/app.Ct4r0T82.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/FullScreenBackground.CfHxiIwO.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/Page.PaEnwh9S.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/OnePage.BB2ha-x7.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/CrossBorderConsolidation.CvXXnYCy.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/LocalizationExtensionField.CFFbuBu-.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/MobileOrderSummary.Cko1fUoG.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/OrderEditVaultedDelivery.CSQKPDv7.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/useSubscribeMessenger.BrcQzLuH.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/DutyOptions.LcqrKXE1.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/VaultedPayment.OxMVm7u-.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/PickupPointCarrierLogo.cbVP6Hp_.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/OffsitePaymentFailed.BxwwfmsJ.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/StackedMerchandisePreview.D6OuIVjc.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/ShippingMethodSelector.B0hio2RO.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/SubscriptionPriceBreakdown.BSemv9tH.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/RuntimeExtension.DWkDBM73.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="style"
+    href="/cdn/shopifycloud/checkout-web/assets/c1/assets/AnnouncementRuntimeExtensions.V0VYEO4K.css" crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="font" type="font/woff2"
+    href="https://fonts.shopifycdn.com/archivo_black/archivoblack_n4.b08d53f45e5ceb17a38677219b15fcdd9c5f3519.woff2?h1=c291c2FzdXBwcy5jb20&amp;hmac=158d5f28a1f492deb5eaa004b4e15e16ec209bc5064e21c7980c41732b543f0a"
+    crossorigin="">
+  <link rel="prefetch" fetchpriority="low" as="image"
+    href="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/Logo_Footer_x320.png?v=1760320821" crossorigin="">
+</head>
+
+<body data-color-scheme="scheme1" class="earlybird__valid kinect-resizing kinect-page-shift kinect-page-shift-right"
+  data-new-gr-c-s-check-loaded="14.1287.0" data-gr-ext-installed="" style="--kinect-page-shift-offset: 320.6484375px;"
+  data-new-gr-c-s-loaded="14.1287.0" data-kinect-page-shift="kinect"><svg width="0" height="0" viewBox="0 0 200 200">
+    <defs>
+      <clipPath id="clip-on-sale" clipPathUnits="objectBoundingBox">
+        <path clip-rule="evenodd" transform="scale(0.005,0.005)"
+          d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z"
+          fill="black"></path>
+      </clipPath>
+      <path id="outline-on-sale" vector-effect="non-scaling-stroke"
+        d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z">
+      </path>
+    </defs>
+  </svg>
+  <svg width="0" height="0" viewBox="0 0 200 200">
+    <defs>
+      <clipPath id="clip-sold-out" clipPathUnits="objectBoundingBox">
+        <path clip-rule="evenodd" transform="scale(0.005,0.005)" d="M5,100a95,95 0 1,0 190,0a95,95 0 1,0 -190,0"
+          fill="black"></path>
+      </clipPath>
+      <path id="outline-sold-out" vector-effect="non-scaling-stroke" d="M5,100a95,95 0 1,0 190,0a95,95 0 1,0 -190,0">
+      </path>
+    </defs>
+  </svg>
+  <svg width="0" height="0" viewBox="0 0 200 200">
+    <defs>
+      <clipPath id="clip-metafield-badge" clipPathUnits="objectBoundingBox">
+        <path clip-rule="evenodd" transform="scale(0.005,0.005)"
+          d="M116.415 33L127.981 69.2844L158.713 56.2224L151.845 84.6096H195L172.762 107.703L177.885 140.528L151.845 132.035L150.371 167.039L124.952 140.528L100 164.905L81.4796 140.528L29.7588 164.905L45.1263 130.328L5 125.674L34.4948 104.715L5 84.6096L51.5129 82.0907L41.2868 56.2224L84.8661 69.2844L116.415 33Z"
+          fill="black"></path>
+      </clipPath>
+      <path id="outline-metafield-badge" vector-effect="non-scaling-stroke"
+        d="M116.415 33L127.981 69.2844L158.713 56.2224L151.845 84.6096H195L172.762 107.703L177.885 140.528L151.845 132.035L150.371 167.039L124.952 140.528L100 164.905L81.4796 140.528L29.7588 164.905L45.1263 130.328L5 125.674L34.4948 104.715L5 84.6096L51.5129 82.0907L41.2868 56.2224L84.8661 69.2844L116.415 33Z">
+      </path>
+    </defs>
+  </svg>
+  <a class="skip-link" href="#MainContent">Skip to content</a><!-- BEGIN sections: header-group -->
+  <div id="shopify-section-sections--26988423905559__free_shipping_bar_EUapxy"
+    class="shopify-section shopify-section-group-header-group"><data-island role="banner"
+      class="border-section-border relative border-b-section text-center" data-color-scheme="scheme4"
+      id="sections--26988423905559__free_shipping_bar_EUapxy" x-data="FreeShippingBar" style="--progress: 0.0%;"
+      :style="styleString" ready="">
+      <div class="bg-scheme-background text-scheme-text ">
+
+        <div id="scrolling-text-sections--26988423905559__free_shipping_bar_EUapxy"
+          class="scrolling-text overflow-hidden py-1 lg:py-2"><scrolling-items-container class="block">
+            <scrolling-items style="--base-scrolling-items-speed: 15s; --local-scrolling-items-speed-multiplier: 2.3292065822002472; --scrolling-items-speed: calc(
+        var(--base-scrolling-items-speed) * var(--global-scrolling-items-speed-multiplier) *
+        var(--local-scrolling-items-speed-multiplier)
+        ); --scrolling-items-direction: ;"
+              class="block w-max whitespace-nowrap motion-safe:animate-[scrolling-items_var(--scrolling-items-speed)_linear_infinite_var(--scrolling-items-direction)] motion-safe:hover:[animation-play-state:paused] body text-sm motion-reduce:px-section-horizontal-spacing motion-reduce:block motion-reduce:-translate-x-1/4 motion-reduce:whitespace-normal motion-reduce:text-center">
+              <scrolling-items-surface class="flex flex-nowrap items-center">
+                <scrolling-items-content class="grow-0 shrink-0">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content>
+
+
+                <scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content><scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content><scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content><scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content><scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content></scrolling-items-surface>
+            </scrolling-items>
+          </scrolling-items-container>
+        </div>
+
+        <style>
+          @media (prefers-reduced-motion: no-preference) {
+            #scrolling-text-sections--26988423905559__free_shipping_bar_EUapxy .rotate-anim {
+              animation-iteration-count: infinite;
+              animation-timing-function: linear;
+              animation-name: rotate;
+              animation-duration: 3s;
+            }
+          }
+        </style>
+
+
+      </div>
+
+      <div
+        class="absolute inset-0 bg-scheme-accent-1 text-scheme-accent-1-contrast transition-[clip-path_150ms_cubic-bezier(0.4,_0,_1,_1)]"
+        style="clip-path: inset(0% calc(100% - var(--progress)) 0% 0%);" aria-hidden="true">
+
+        <div id="scrolling-text-sections--26988423905559__free_shipping_bar_EUapxy"
+          class="scrolling-text overflow-hidden py-1 lg:py-2"><scrolling-items-container class="block">
+            <scrolling-items style="--base-scrolling-items-speed: 15s; --local-scrolling-items-speed-multiplier: 2.3292065822002472; --scrolling-items-speed: calc(
+        var(--base-scrolling-items-speed) * var(--global-scrolling-items-speed-multiplier) *
+        var(--local-scrolling-items-speed-multiplier)
+        ); --scrolling-items-direction: ;"
+              class="block w-max whitespace-nowrap motion-safe:animate-[scrolling-items_var(--scrolling-items-speed)_linear_infinite_var(--scrolling-items-direction)] motion-safe:hover:[animation-play-state:paused] body text-sm motion-reduce:px-section-horizontal-spacing motion-reduce:block motion-reduce:-translate-x-1/4 motion-reduce:whitespace-normal motion-reduce:text-center">
+              <scrolling-items-surface class="flex flex-nowrap items-center">
+                <scrolling-items-content class="grow-0 shrink-0">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content>
+
+
+                <scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content><scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content><scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content><scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content><scrolling-items-content class="grow-0 shrink-0" aria-hidden="true">
+                  <div class="flex shrink-0 grow-0 items-center body"><span class="text-sm "><span data-content=""
+                        x-html-if-set="contentHTML">Spend $50.00 to get free shipping</span></span><span
+                      class="flex-shrink-0 px-2 text-current">
+                      <svg class="h-4 w-4 rotate-anim" viewBox="0 0 200 200" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z"
+                          fill="currentColor"></path>
+                      </svg>
+                    </span></div>
+                </scrolling-items-content></scrolling-items-surface>
+            </scrolling-items>
+          </scrolling-items-container>
+        </div>
+
+        <style>
+          @media (prefers-reduced-motion: no-preference) {
+            #scrolling-text-sections--26988423905559__free_shipping_bar_EUapxy .rotate-anim {
+              animation-iteration-count: infinite;
+              animation-timing-function: linear;
+              animation-name: rotate;
+              animation-duration: 3s;
+            }
+          }
+        </style>
+
+
+      </div>
+
+    </data-island>
+    <style>
+      #sections--26988423905559__free_shipping_bar_EUapxy {
+        --section-border-thickness: 2px;
+      }
+    </style>
+  </div>
+  <div id="HeaderSentinel"></div>
+  <div id="shopify-section-sections--26988423905559__header"
+    class="shopify-section shopify-section-group-header-group section-site-header relative z-40">
+
+
+
+
+
+
+
+    <data-island id="site-header-main"
+      class="site-header w-full text-scheme-text relative bg-scheme-background border-b-section border-section-border transition-[background-color,border-color] duration-200 ease-in-out lg:w-auto"
+      role="banner" x-data="Header(2)" data-color-scheme="scheme2"
+      :data-color-scheme="headerIsActive ? 'scheme1' : 'scheme2'" data-sticky-header="" :class="
+        {
+          'header-is-active' : headerIsActive,
+          
+        }
+      " style="
+    --active-color-scheme-text: rgb(var(--color-scheme-scheme1-text));
+    --active-color-scheme-background: rgb(var(--color-scheme-scheme1-background));
+  " ready="">
+      <div id="headerBorderWrap" class="headerBorderWrap">
+        <div id="headerContainer" class="z-10">
+          <div class="header-wrapper overflow-hidden px-section py-2">
+            <div class="flex items-center justify-items-center gap-x-3 lg:gap-x-5">
+
+              <div class="w-1/3 grow">
+
+
+                <div class="w-auto hidden lg:block">
+                  <h1
+                    class="h1 font-heading font-heading text-l md:text-xl lg:text-3xl py-2.5 w-full flex  justify-start">
+
+                    <a href="/" class="site-header__logo-link inline w-full">
+                      <div class="logo-image">
+                        <img src="//sousasupps.com/cdn/shop/files/logo.png?v=1759780660&amp;width=300"
+                          srcset="//sousasupps.com/cdn/shop/files/logo.png?v=1759780660&amp;width=300 1x,//sousasupps.com/cdn/shop/files/logo.png?v=1759780660&amp;width=600 2x,//sousasupps.com/cdn/shop/files/logo.png?v=1759780660&amp;width=900 3x"
+                          alt="Sousa" width="925" height="279" loading="eager" class="text-transparent">
+
+                      </div>
+                    </a>
+
+                  </h1>
+                </div>
+
+
+
+                <div class="z-10 flex items-center lg:hidden"><button
+                    class="font-main normal-case js-enabled -m-1 inline-block p-1 lg:hidden" type="button"
+                    x-bind:aria-expanded="$store.modals.leftDrawer.contents === 'nav'"
+                    @click="$store.modals.open('nav')" data-menu-drawer-toggle="" aria-expanded="false">
+
+                    <span class="visually-hidden pointer-events-none">Menu</span><span
+                      class="icon pointer-events-none block">
+                      <span class="inline-block h-7 w-7 align-middle"><svg class="theme-icon" viewBox="0 0 48 48"
+                          fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" d="M43 38H5m38-14H5m38-14H5"></path>
+                        </svg>
+                      </span>
+                    </span></button>
+                  <noscript>
+                    <div class="no-js-focus-wrapper">
+                      <button class="-m-1 inline-block p-1 lg:hidden" type="button" data-menu-drawer-toggle>
+                        <span class="visually-hidden">Menu</span><span class="icon block">
+                          <span class="inline-block h-7 w-7 align-middle"><svg class="theme-icon" viewBox="0 0 48 48"
+                              fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2" d="M43 38H5m38-14H5m38-14H5" />
+                            </svg>
+                          </span>
+                        </span></button>
+
+                      <div
+                        class="no-js-focus-container z-100 absolute top-full left-0 py-section-vertical-spacing px-section transform hidden w-11/12 md:w-7/12 lg:w-5/12 text-center max-h-three-quarters-screen-height overflow-hidden overflow-y-auto bg-scheme-background text-scheme-text">
+                        <div class="sidebar-nav ">
+                          <div class="relative flex items-center justify-between pb-5">
+                            <h2 class="sr-only" class="" tabindex="-1">
+                              Main menu
+                            </h2>
+                          </div>
+                          <ul class="mt-5">
+
+
+
+                            <li class="text-lg lg:text-xl" style="--first-delay-tap: 0;">
+
+                              <div x-data="
+              {
+                expanded: false
+              }
+            ">
+                                <button class="font-heading flex w-full flex-row items-center justify-between py-2.5"
+                                  @click="expanded = ! expanded" :aria-expanded="expanded">
+                                  <span>Shop</span>
+                                  <div class="ml-auto">
+                                    <span class="block h-3 w-3" :class="{'rotate-180': expanded}"><svg
+                                        class="theme-icon" viewBox="0 0 48 48" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path vector-effect="non-scaling-stroke" stroke="currentColor"
+                                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14" />
+                                      </svg>
+                                    </span>
+                                  </div>
+                                </button>
+                                <div x-show="expanded" x-collapse>
+                                  <ul class="pb-5 text-base font-main">
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 0;">
+
+                                      <a class=""
+                                        href="https://sousasupps.com/collections/all/products/protein-hydration-recovery-drink-mix?variant=52818915721495">
+                                        Salted Caramel
+                                      </a>
+
+                                    </li>
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 1;">
+
+                                      <a class=""
+                                        href="https://sousasupps.com/products/protein-hydration-recovery-drink-mix?variant=52818915655959">
+                                        Vanilla
+                                      </a>
+
+                                    </li>
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 2;">
+
+                                      <a class=""
+                                        href="https://sousasupps.com/collections/all/products/protein-hydration-recovery-drink-mix?variant=52818915688727">
+                                        Strawberry Milkshake
+                                      </a>
+
+                                    </li>
+
+                                  </ul>
+
+                                </div>
+                              </div>
+
+                            </li>
+
+
+
+                            <li class="text-lg lg:text-xl" style="--first-delay-tap: 1;">
+
+                              <div x-data="
+              {
+                expanded: false
+              }
+            ">
+                                <button class="font-heading flex w-full flex-row items-center justify-between py-2.5"
+                                  @click="expanded = ! expanded" :aria-expanded="expanded">
+                                  <span> Learn</span>
+                                  <div class="ml-auto">
+                                    <span class="block h-3 w-3" :class="{'rotate-180': expanded}"><svg
+                                        class="theme-icon" viewBox="0 0 48 48" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path vector-effect="non-scaling-stroke" stroke="currentColor"
+                                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14" />
+                                      </svg>
+                                    </span>
+                                  </div>
+                                </button>
+                                <div x-show="expanded" x-collapse>
+                                  <ul class="pb-5 text-base font-main">
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 3;">
+
+                                      <a class="" href="/pages/about-us">
+                                        About Us
+                                      </a>
+
+                                    </li>
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 4;">
+
+                                      <a class="" href="/pages/compare">
+                                        Compare
+                                      </a>
+
+                                    </li>
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 5;">
+
+                                      <a class="" href="/pages/learn">
+                                        Learn
+                                      </a>
+
+                                    </li>
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 6;">
+
+                                      <a class="" href="/pages/faq">
+                                        FAQ
+                                      </a>
+
+                                    </li>
+
+                                  </ul>
+
+                                </div>
+                              </div>
+
+                            </li>
+
+
+
+                            <li class="text-lg lg:text-xl" style="--first-delay-tap: 2;">
+
+                              <a class="font-heading block py-2.5" href="/pages/contact">
+                                Contact
+                              </a>
+
+                            </li>
+
+                          </ul>
+
+                          <div class="mt-5 space-y-5">
+                            <ul class="space-y-1.5">
+
+                              <li>
+                                <a href="https://sousasupps.com/customer_authentication/redirect?locale=en&amp;region_country=US"
+                                  id="customer_login_link">Log in</a>
+                              </li>
+                              <li>
+                                <a href="https://shopify.com/96044581143/account?locale=en&buyer_flags=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb3VzYS10cmYubXlzaG9waWZ5LmNvbSIsImZsYWdzIjpbXSwiZXhwIjoxNzc4MDMzNTYwLCJuYmYiOjE3Nzc0Mjg3NjB9.uBirWLIZjGPg5V7JOKWgMxUxHpj3vgwVzkM_a-qlEqA"
+                                  id="customer_register_link">Create account</a>
+                              </li>
+
+                            </ul>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </noscript>
+                  <data-island x-data="" on="idle" ready="">
+                    <div>
+
+                      <template x-teleport="#left-drawer-slot" data-teleport-template="true">
+                        <div :data-modal-label="$store.modals.leftDrawer.contents === 'nav' ? 'Main menu' : false"
+                          x-show="$store.modals.leftDrawer.contents === 'nav'" class="sidebar-nav px-section py-5 ">
+                          <div class="relative flex items-center justify-between pb-5">
+                            <h2 class="sr-only" tabindex="-1">
+                              Main menu
+                            </h2>
+                            <button @click.prevent="$store.modals.close('nav')" class="top-0 block">
+                              <span class="sr-only">Close (esc)</span>
+                              <span class="inline-block h-5 w-5"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" d="M43 5 5 43m38 0L5 5"></path>
+                                </svg>
+                              </span>
+                            </button>
+                          </div>
+                          <ul class="mt-5">
+
+                            <li class="text-lg lg:text-xl" style="--first-delay-tap: 0;">
+
+                              <data-island x-data="
+        {
+          expanded: false
+        }
+      ">
+                                <button
+                                  class="font-heading flex w-full flex-row items-center justify-center py-2.5 text-left nav-list-item heading-secondary"
+                                  @click="expanded = ! expanded" :aria-expanded="expanded">
+                                  <span>Shop</span>
+                                  <div class="icon-chevron-down">
+                                    <span class="block h-3 w-3" :class="{'rotate-180': expanded}"><svg
+                                        class="theme-icon" viewBox="0 0 48 48" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path vector-effect="non-scaling-stroke" stroke="currentColor"
+                                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                                      </svg>
+                                    </span>
+                                  </div>
+                                </button>
+                                <div x-show="expanded" x-collapse="">
+
+
+
+
+
+
+
+
+
+                                  <div class="mega-menu-wrapper">
+                                    <div class="mega-menu-right">
+
+                                      <h2>shop by flavor</h2>
+
+                                      <ul class="mega-child-nav">
+
+                                        <li>
+                                          <a
+                                            href="https://sousasupps.com/collections/all/products/protein-hydration-recovery-drink-mix?variant=52818915721495">
+
+                                            <img
+                                              src="//sousasupps.com/cdn/shop/files/nav-salted-caramel_large.png?v=20139536889053184"
+                                              alt="Salted Caramel">
+                                            <span>Salted Caramel</span>
+                                          </a>
+                                        </li>
+
+                                        <li>
+                                          <a
+                                            href="https://sousasupps.com/products/protein-hydration-recovery-drink-mix?variant=52818915655959">
+
+                                            <img
+                                              src="//sousasupps.com/cdn/shop/files/nav-vanilla_large.png?v=2355158988840234439"
+                                              alt="Vanilla">
+                                            <span>Vanilla</span>
+                                          </a>
+                                        </li>
+
+                                        <li>
+                                          <a
+                                            href="https://sousasupps.com/collections/all/products/protein-hydration-recovery-drink-mix?variant=52818915688727">
+
+                                            <img
+                                              src="//sousasupps.com/cdn/shop/files/nav-strawberry-milkshake_large.png?v=10119771110715019941"
+                                              alt="Strawberry Milkshake">
+                                            <span>Strawberry Milkshake</span>
+                                          </a>
+                                        </li>
+
+                                      </ul>
+
+                                      <a href="/collections/all" class="push-btn inline-block">
+                                        <span class="push-btn__surface">Shop All</span>
+                                      </a>
+
+                                    </div>
+                                  </div>
+
+
+
+
+
+                                </div>
+                              </data-island>
+
+                            </li>
+
+
+
+                            <li class="text-lg lg:text-xl" style="--first-delay-tap: 0;">
+
+                              <data-island x-data="
+        {
+          expanded: false
+        }
+      ">
+                                <button
+                                  class="font-heading flex w-full flex-row items-center justify-center py-2.5 text-left nav-list-item heading-secondary"
+                                  @click="expanded = ! expanded" :aria-expanded="expanded">
+                                  <span> Learn</span>
+                                  <div class="icon-chevron-down">
+                                    <span class="block h-3 w-3" :class="{'rotate-180': expanded}"><svg
+                                        class="theme-icon" viewBox="0 0 48 48" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path vector-effect="non-scaling-stroke" stroke="currentColor"
+                                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                                      </svg>
+                                    </span>
+                                  </div>
+                                </button>
+                                <div x-show="expanded" x-collapse="">
+
+
+
+
+
+                                  <ul class="pb-5 text-base font-main sub-menu-wrapper">
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 0;">
+
+                                      <a class="" href="/pages/about-us">
+                                        About Us
+                                      </a>
+
+                                    </li>
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 1;">
+
+                                      <a class="" href="/pages/compare">
+                                        Compare
+                                      </a>
+
+                                    </li>
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 2;">
+
+                                      <a class="" href="/pages/learn">
+                                        Learn
+                                      </a>
+
+                                    </li>
+
+
+
+                                    <li class="my-3 text-base" style="--second-delay-tap: 3;">
+
+                                      <a class="" href="/pages/faq">
+                                        FAQ
+                                      </a>
+
+                                    </li>
+
+                                  </ul>
+
+
+
+                                </div>
+                              </data-island>
+
+                            </li>
+
+
+                            <li class="text-lg lg:text-xl" style="--first-delay-tap: 0;">
+
+                              <a class="nav-single-item font-heading block py-2.5 heading-secondary"
+                                href="/pages/contact">
+                                Contact
+                              </a>
+
+                            </li>
+                          </ul>
+
+                          <div class="space-y-5 footer-nav">
+
+                            <div class="feature-content">
+
+                              <a href="/products/variety-pack"
+                                class="push-btn push-btn--pop inline-block push-btn--no-shadow">
+                                <span class="push-btn__surface ">Bundle &amp; Save</span>
+                              </a>
+
+                              <img class="mt-5 lg:hidden"
+                                src="//sousasupps.com/cdn/shop/files/Boxes_1_900x.png?v=1759994066"
+                                alt="Bundle &amp; Save">
+
+
+
+                            </div>
+                            <ul class="hidden space-y-1.5">
+
+                              <li>
+                                <a href="https://sousasupps.com/customer_authentication/redirect?locale=en&amp;region_country=US"
+                                  id="customer_login_link">Log in</a>
+                              </li>
+                              <li>
+                                <a href="https://shopify.com/96044581143/account?locale=en&amp;buyer_flags=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb3VzYS10cmYubXlzaG9waWZ5LmNvbSIsImZsYWdzIjpbXSwiZXhwIjoxNzc4MDMzNTYwLCJuYmYiOjE3Nzc0Mjg3NjB9.uBirWLIZjGPg5V7JOKWgMxUxHpj3vgwVzkM_a-qlEqA"
+                                  id="customer_register_link">Create account</a>
+                              </li>
+
+                            </ul>
+
+                            <form class="hidden relative mx-auto mt-10 block max-w-2xl" action="/search" method="get"
+                              role="search">
+                              <label for="Search" class="visually-hidden">
+                                Search
+                              </label>
+                              <input type="search" name="q" id="Search" class="input w-full pr-12 placeholder-current"
+                                value="" placeholder="Search">
+                              <button class="absolute right-2 top-1/2 flex -translate-y-1/2 transform p-1"
+                                type="submit">
+                                <span class="inline-block h-5 w-5 shrink-0"><svg class="theme-icon" viewBox="0 0 48 48"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path vector-effect="non-scaling-stroke" stroke="currentColor"
+                                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M7 21.5a15.5 15.5 0 1 0 31 0 15.5 15.5 0 0 0-31 0v0ZM43 42l-9-9"></path>
+                                  </svg>
+                                </span>
+                                <span class="visually-hidden">Search</span>
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+                      </template>
+
+                    </div>
+                  </data-island>
+                </div>
+              </div>
+
+
+              <div class="hidden lg:block w-3/4 xl:w-4/5 grow text-right header-nav-items">
+
+
+                <nav role="navigation">
+
+                  <ul x-ref="navigation" class="flex flex-wrap justify-center items-center text-base  py-2 gap-2">
+
+                    <li id="navId-shop" class="no-js-focus-wrapper inline-block h-full">
+                      <button
+                        class="relative h-full items-stretch font-main px-2.5 py-3.5 flex items-center transition normal-case"
+                        @click="toggleMenu(0)" x-bind:aria-expanded="menuOpen.menu0? true: 'false'"
+                        aria-controls="menu0" data-dropdown-parent="menu0" aria-expanded="false">
+
+                        <span class="relative flex h-full items-center text-center">
+                          <span class="inline-block pr-1">Shop</span>
+                          <span
+                            class="svg-scale rotate ml-1 mr-1 inline-block h-2 w-2 shrink-0 origin-center transform align-middle transition-transform duration-150"
+                            :class="{'rotate-180': menuOpen.menu0}"><svg class="theme-icon" viewBox="0 0 48 48"
+                              fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2"
+                                d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                            </svg>
+                          </span>
+                        </span>
+                      </button>
+                      <div
+                        class="shop-dropdown-wrapper no-js-focus-container z-100 absolute top-full left-0 py-half-section-vertical-spacing  w-full max-h-three-quarters-screen-height px-section transform text-center overflow-hidden overflow-y-auto bg-[--active-color-scheme-background] text-[--active-color-scheme-text]"
+                        :class="
+                {
+                  'z-header-dropdown': menuOpen.menu0,
+                }
+              " id="menu0" x-show="menuOpen.menu0" x-transition:enter="transition ease-in-out duration-200"
+                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                        x-transition:leave="transition ease-in-out duration-200" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0" data-header-dropdown="" @focusout="focusOut($event, 'menu0')"
+                        @click.away.prevent="menuOpen.menu0 = false" style="display: none;">
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="mega-menu-wrapper">
+                          <div class="mega-menu-left">
+                            <div class="flex items-center justify-center gap-6">
+
+                              <div class="mega-menu-content">
+                                <h2>bundle &amp; save</h2>
+                                <ol>
+                                  <li>choose our 3-flavor bundle</li>
+                                  <li>save an additional 15%!</li>
+                                </ol>
+                              </div>
+
+
+                              <div class="mega-menu-image">
+                                <img
+                                  src="//sousasupps.com/cdn/shop/files/Stacked_Boxes_lighter_glow_600x.png?v=1761639425"
+                                  alt="">
+                              </div>
+
+                            </div>
+
+                            <a href="/products/variety-pack" class="push-btn inline-block">
+                              <span class="push-btn__surface">Try Them All!</span>
+                            </a>
+
+                          </div>
+                          <div class="mega-menu-right">
+
+                            <h2>shop by flavor</h2>
+
+                            <ul class="mega-child-nav">
+
+                              <li>
+                                <a
+                                  href="https://sousasupps.com/collections/all/products/protein-hydration-recovery-drink-mix?variant=52818915721495">
+
+                                  <img
+                                    src="//sousasupps.com/cdn/shop/files/nav-salted-caramel_large.png?v=20139536889053184"
+                                    alt="Salted Caramel">
+                                  Salted Caramel
+                                </a>
+                              </li>
+
+                              <li>
+                                <a
+                                  href="https://sousasupps.com/products/protein-hydration-recovery-drink-mix?variant=52818915655959">
+
+                                  <img src="//sousasupps.com/cdn/shop/files/nav-vanilla_large.png?v=2355158988840234439"
+                                    alt="Vanilla">
+                                  Vanilla
+                                </a>
+                              </li>
+
+                              <li>
+                                <a
+                                  href="https://sousasupps.com/collections/all/products/protein-hydration-recovery-drink-mix?variant=52818915688727">
+
+                                  <img
+                                    src="//sousasupps.com/cdn/shop/files/nav-strawberry-milkshake_large.png?v=10119771110715019941"
+                                    alt="Strawberry Milkshake">
+                                  Strawberry Milkshake
+                                </a>
+                              </li>
+
+                            </ul>
+
+                            <a href="/collections/all" class="push-btn inline-block">
+                              <span class="push-btn__surface">Shop All Products</span>
+                            </a>
+
+                          </div>
+                        </div>
+
+
+
+
+
+
+                      </div>
+
+                    </li>
+
+                    <li id="navId-learn" class="no-js-focus-wrapper inline-block h-full">
+                      <button
+                        class="relative h-full items-stretch font-main px-2.5 py-3.5 flex items-center transition normal-case"
+                        @click="toggleMenu(1)" x-bind:aria-expanded="menuOpen.menu1? true: 'false'"
+                        aria-controls="menu1" data-dropdown-parent="menu1" aria-expanded="false">
+
+                        <span class="relative flex h-full items-center text-center">
+                          <span class="inline-block pr-1"> Learn</span>
+                          <span
+                            class="svg-scale rotate ml-1 mr-1 inline-block h-2 w-2 shrink-0 origin-center transform align-middle transition-transform duration-150"
+                            :class="{'rotate-180': menuOpen.menu1}"><svg class="theme-icon" viewBox="0 0 48 48"
+                              fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2"
+                                d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                            </svg>
+                          </span>
+                        </span>
+                      </button>
+                      <div
+                        class="learn-dropdown-wrapper no-js-focus-container z-100 absolute top-full left-0 py-half-section-vertical-spacing  w-full max-h-three-quarters-screen-height px-section transform text-center overflow-hidden overflow-y-auto bg-[--active-color-scheme-background] text-[--active-color-scheme-text]"
+                        :class="
+                {
+                  'z-header-dropdown': menuOpen.menu1,
+                }
+              " id="menu1" x-show="menuOpen.menu1" x-transition:enter="transition ease-in-out duration-200"
+                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                        x-transition:leave="transition ease-in-out duration-200" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0" data-header-dropdown="" @focusout="focusOut($event, 'menu1')"
+                        @click.away.prevent="menuOpen.menu1 = false" style="display: none;">
+
+
+
+
+
+
+                        <ul class="mega-menu-wrapper flex items-top justify-center -mx-5 text-center">
+
+
+                          <li class="px-5">
+
+                            <a href="/pages/about-us" class="-mx-5 text-base inline-block font-body px-5 py-1">
+                              About Us
+                            </a>
+
+                          </li>
+
+                          <li class="px-5">
+
+                            <a href="/pages/compare" class="-mx-5 text-base inline-block font-body px-5 py-1">
+                              Compare
+                            </a>
+
+                          </li>
+
+                          <li class="px-5">
+
+                            <a href="/pages/learn" class="-mx-5 text-base inline-block font-body px-5 py-1">
+                              Learn
+                            </a>
+
+                          </li>
+
+                          <li class="px-5">
+
+                            <a href="/pages/faq" class="-mx-5 text-base inline-block font-body px-5 py-1">
+                              FAQ
+                            </a>
+
+                          </li>
+                        </ul>
+
+
+
+
+                      </div>
+
+                    </li>
+
+                    <li id="navId-contact" class="no-js-focus-wrapper inline-block h-full">
+                      <a href="/pages/contact" class="font-main px-2.5 py-3.5 flex items-center transition normal-case">
+                        Contact
+                      </a>
+
+                    </li>
+
+
+                    <li class="no-js-focus-wrapper relative z-10 flex h-full items-center px-2.5 nav-feature-button">
+                      <div class="">
+
+                        <a href="/products/variety-pack"
+                          class="push-btn push-btn--pop inline-block push-btn--no-shadow">
+                          <span class="push-btn__surface ">Bundle &amp; Save</span>
+                        </a>
+
+                        <img class="mt-5 lg:hidden" src="//sousasupps.com/cdn/shop/files/Boxes_1_900x.png?v=1759994066"
+                          alt="Bundle &amp; Save">
+
+
+
+                      </div>
+                    </li>
+                  </ul>
+                </nav>
+
+
+              </div>
+
+              <div class="grow-0 text-right header-nav-items lg:hidden">
+                <h1
+                  class="h1 font-heading font-heading text-l md:text-xl lg:text-3xl py-2.5 w-full flex  justify-start">
+
+                  <a href="/" class="site-header__logo-link inline w-full">
+                    <div class="logo-image">
+                      <img src="//sousasupps.com/cdn/shop/files/logo.png?v=1759780660&amp;width=300"
+                        srcset="//sousasupps.com/cdn/shop/files/logo.png?v=1759780660&amp;width=300 1x,//sousasupps.com/cdn/shop/files/logo.png?v=1759780660&amp;width=600 2x,//sousasupps.com/cdn/shop/files/logo.png?v=1759780660&amp;width=900 3x"
+                        alt="Sousa" width="925" height="279" loading="eager" class="text-transparent">
+
+                    </div>
+                  </a>
+
+                </h1>
+              </div>
+
+
+              <div class="header-right-wrapper w-1/3 grow flex flex-wrap items-center justify-end gap-x-3"
+                data-utility-links="">
+
+                <div class="hidden h-full lg:block">
+
+
+                  <a class="font-main normal-case h-full flex items-center" href="/a/account/login">
+                    <span class="visually-hidden">Log in</span><span class="inline-block h-7 w-7 align-middle"><svg
+                        class="theme-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke="currentColor" vector-effect="non-scaling-stroke" stroke-linecap="round"
+                          stroke-linejoin="round" stroke-width="2"
+                          d="M15 15a9 9 0 1 0 18 0 9 9 0 0 0-18 0v0ZM9 42a15 15 0 0 1 30 0H9Z"></path>
+                      </svg>
+                    </span></a>
+
+
+
+                </div>
+
+
+                <a data-open-search="" x-ref="search" @click.prevent="openSearch" @keydown.space="openSearch"
+                  href="/search"
+                  class="hidden lg:block font-main px-2.5 py-3.5 flex items-center transition normal-case search-btn"
+                  role="button">
+                  <span class="inline-block h-7 w-7 fill-current align-middle"><svg class="theme-icon"
+                      viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2"
+                        d="M7 21.5a15.5 15.5 0 1 0 31 0 15.5 15.5 0 0 0-31 0v0ZM43 42l-9-9"></path>
+                    </svg>
+                  </span>
+                  <span class="visually-hidden">Search our site</span>
+                </a>
+                <div
+                  class="absolute bottom-0 left-0 right-0 top-0 z-20 flex w-full max-h-three-quarters-screen-height px-section items-center bg-[--active-color-scheme-background] text-scheme-text"
+                  x-show="searchOpen" x-transition:enter="transition ease-in-out duration-200"
+                  x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                  x-transition:leave="transition ease-in-out duration-200" x-transition:leave-start="opacity-100"
+                  x-transition:leave-end="opacity-0" @click.away.prevent="searchOpen = false" data-header-search=""
+                  style="display: none;">
+                  <data-island class="w-full" x-data="PredictiveSearch('product,collection,article,page')"
+                    @keyup="onKeyup" @keydown="onKeydown" @click.outside.prevent="close()"
+                    @keyup.escape.prevent.stop="close(false)"
+                    @focusin.window="( searchOpen &amp;&amp; ! $root.contains($event.target) ) &amp;&amp; close()"
+                    x-trap.inert.noscroll="searchOpen" on="idle" ready="">
+                    <form x-ref="searchForm" action="/search" method="get" role="search" @submit="onFormSubmit"
+                      @click.away.prevent="searchOpen = false">
+                      <div x-ref="searchFieldComponent" class="relative py-2">
+                        <input id="header-search" type="search" name="q" value=""
+                          class="header-search-input font-secondary w-full border-0 bg-transparent py-2 pl-9 shadow-none placeholder:text-scheme-text"
+                          placeholder="Search" aria-expanded="false" aria-owns="predictive-search-results-list"
+                          aria-controls="predictive-search-results-list" aria-autocomplete="list" autocorrect="off"
+                          autocomplete="off" autocapitalize="off" spellcheck="false" x-ref="input" x-model="rawQuery"
+                          @input.debounce.300="onChange" @focus="onFocus">
+                        <label class="visually-hidden" for="header-search">Search</label>
+                        <input type="hidden" name="options[prefix]" value="last"><button
+                          class="absolute left-0 top-1/2 flex -translate-y-1/2 transform p-1" aria-label="Search">
+                          <span class="inline-block h-6 w-6 shrink-0"><svg class="theme-icon" viewBox="0 0 48 48"
+                              fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2"
+                                d="M7 21.5a15.5 15.5 0 1 0 31 0 15.5 15.5 0 0 0-31 0v0ZM43 42l-9-9"></path>
+                            </svg>
+                          </span>
+                        </button>
+                        <button @click="close()" class="absolute right-0 top-1/2 flex -translate-y-1/2 transform p-1"
+                          type="button">
+                          <span class="visually-hidden">Close (esc)</span>
+                          <span class="inline-block h-6 w-6 shrink-0"><svg class="theme-icon" viewBox="0 0 48 48"
+                              fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2" d="M43 5 5 43m38 0L5 5"></path>
+                            </svg>
+                          </span>
+                        </button>
+                      </div>
+                      <div id="predictiveSearchResults" tabindex="-1"
+                        class="absolute left-0 right-0 z-40 h-screen text-scheme-text">
+                        <div x-show="resultsOpen" class="absolute left-0 right-0 z-50 h-screen bg-scheme-text/75"
+                          @click="close()" style="display: none;"></div>
+                        <template x-if="loading &amp;&amp; !results">
+                          <div class="relative z-50 bg-scheme-background">
+                            <div class="mx-auto h-6 w-6 pb-12 pt-12" data-predictive-loading="">
+                              <div class="loading"></div>
+                            </div>
+                          </div>
+                        </template>
+                        <template x-if="resultsOpen">
+                          <div x-show="resultsOpen"
+                            class="relative z-50 max-h-three-quarters-screen-height scroll-pb-5 overflow-hidden overflow-y-auto bg-scheme-background px-section pb-5 lg:scroll-pb-10 lg:pb-10"
+                            x-ref="results">
+                          </div>
+                        </template>
+                      </div>
+                      <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+                    </form>
+                  </data-island>
+                </div>
+
+
+                <div class="flex h-full items-center justify-end">
+
+                  <button class="js-enabled whitespace-nowrap font-main normal-case h-full flex items-center"
+                    type="button" id="CartButton" @click.prevent="$store.modals.open('cart')">
+
+                    <div class="pointer-events-none relative my-auto align-middle">
+                      <span class="inline-block h-7 w-7 fill-current align-top"><svg class="theme-icon"
+                          viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke="currentColor" vector-effect="non-scaling-stroke" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2"
+                            d="M38.316 17H9.684C8.754 17 8 17.746 8 18.667v21.666C8 41.253 8.754 42 9.684 42h28.632c.93 0 1.684-.746 1.684-1.667V18.667c0-.92-.754-1.667-1.684-1.667ZM16 13v-2.5a7.5 7.5 0 0 1 15 0V13">
+                          </path>
+                        </svg>
+                        <span class="visually-hidden">Cart </span>
+                      </span>
+                      <span x-show="$store.cart_count.count &gt; 0"
+                        class="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-scheme-text text-[0.625rem] tracking-normal text-scheme-background"
+                        x-text="$store.cart_count.count" style="display: none;">0</span>
+                      <span class="visually-hidden">items</span>
+                    </div>
+                  </button>
+                  <noscript>
+                    <a class="whitespace-nowrap font-main px-2.5 py-3.5 flex items-center transition normal-case"
+                      href="/cart">
+
+                      <div class="pointer-events-none relative my-auto align-middle">
+                        <span class="inline-block h-7 w-7 fill-current align-top"><svg class="theme-icon"
+                            viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke="currentColor" vector-effect="non-scaling-stroke" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="M38.316 17H9.684C8.754 17 8 17.746 8 18.667v21.666C8 41.253 8.754 42 9.684 42h28.632c.93 0 1.684-.746 1.684-1.667V18.667c0-.92-.754-1.667-1.684-1.667ZM16 13v-2.5a7.5 7.5 0 0 1 15 0V13" />
+                          </svg>
+                          <span class="visually-hidden">Cart </span>
+                        </span>
+                        <span x-show="$store.cart_count.count > 0"
+                          class="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-scheme-text text-[0.625rem] tracking-normal text-scheme-background"
+                          x-text="$store.cart_count.count" style="display: none;">
+                          0
+                        </span>
+                        <span class="visually-hidden">items</span>
+                      </div>
+                    </a>
+                  </noscript>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </data-island>
+    <noscript>
+      <style>
+        html.no-js .no-js-focus-wrapper:focus-within>.no-js-focus-container {
+          display: block !important;
+        }
+      </style>
+    </noscript>
+
+    <style data-shopify="">
+      #shopify-section-sections--26988423905559__header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+      }
+    </style>
+
+
+
+    <style>
+      .logo-image {
+        max-width: 300px;
+      }
+    </style>
+
+
+
+    <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": "Sousa",
+    
+      
+      "logo": "https:\/\/sousasupps.com\/cdn\/shop\/files\/logo.png?v=1759780660\u0026width=925",
+    
+    "sameAs": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "url": "https:\/\/sousasupps.com"
+  }
+</script>
+
+
+
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "Sousa",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https:\/\/sousasupps.com\/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "url": "https:\/\/sousasupps.com"
+    }
+  </script>
+
+
+
+  </div>
+  <!-- END sections: header-group -->
+  <script type="module">
+    const calculateHeaderHeights = () => {
+      const headerGroupHeights = [];
+
+      document
+        .querySelectorAll(
+          '.shopify-section-group-header-group:not(.has-no-height)'
+        )
+        .forEach((headerGroupSectionEl, i, list) => {
+          window.requestAnimationFrame(() => {
+            headerGroupHeights.push(
+              headerGroupSectionEl.getBoundingClientRect().height
+            );
+
+            if (i === list.length - 1) {
+              document.documentElement.style.setProperty(
+                '--header-group-height',
+                `${headerGroupHeights.reduce((subtotal, a) => subtotal + a, 0)}px`
+              );
+            }
+          });
+        });
+    };
+
+    calculateHeaderHeights();
+
+    const debouncedCalculateHeaderHeights = debounce(calculateHeaderHeights, 300);
+
+    window.addEventListener('resize', debouncedCalculateHeaderHeights);
+  </script>
+
+
+  <main id="MainContent" class="overflow-hidden">
+    <div id="shopify-section-template--26988430360855__image_with_text_dQBeLL" class="shopify-section">
+      <section
+        class="bg-scheme-background text-scheme-text  relative overflow-hidden section-image-with-text homeImgText"
+        data-color-scheme="scheme2">
+        <div class="section-content relative z-10 py-section-vertical-spacing">
+          <div class="relative z-10 mx-auto max-w-site px-section">
+            <div class="">
+              <div class=" section-content text_alignment relative z-10 mx-auto">
+                <div class="grid grid-flow-row-dense items-center grid-cols-1 gap-10 lg:grid-cols-12">
+                  <div class="lg:col-start-6 lg:col-end-13 img-with-text-img">
+                    <div
+                      class="media media--css-only media-template--26988430360855__image_with_text_dQBeLL-41266032017687 media--disable-styles default ">
+                      <img src="//sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=3000" alt=""
+                        srcset="//sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=200 200w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=350 350w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=450 450w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=750 750w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=850 850w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=960 960w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/Boxes_1.png?v=1759994066&amp;width=3000 3000w"
+                        width="3000" height="2582" loading="eager" class="media__styled-element bg-scheme-card"
+                        sizes="(min-width: 990px) calc((100vw / 12) * 7), 100vw"
+                        onerror="this.style.color=&quot;currentColor&quot;"
+                        onload="this.style.color=&quot;currentColor&quot;" style="color: currentcolor;">
+                    </div>
+                  </div>
+                  <div class="flex items-center lg:col-span-5 img-with-text-content">
+                    <div class="text-center w-full">
+
+                      <h2
+                        class="inline-heading-rte font-heading  heading-standard heading-style full_shadow break-words">
+                        protein meets<br> hydration
+                      </h2>
+
+
+                      <div class="rte mt-5 max-w-2xl mx-auto">
+                        <h4>in ONE delicious mix</h4>
+                        <p>Sousa Total Recovery Formula™ combines 20g of high-quality whey protein, 1500+ mg of
+                          electrolytes, and essential Vitamins C, B3, B6, and B12, all in a single convenient mix. Each
+                          packet is easy to use and can be enjoyed after training, at work, or while relaxing.</p>
+                      </div>
+                      <div class="img-with-text-buttons mt-5"><a href="/products/protein-hydration-recovery-drink-mix"
+                          class="push-btn inline-block">
+                          <span class="push-btn__surface">Subscribe &amp; Save</span>
+                        </a><a href="/products/variety-sample-pack" class="push-btn inline-block">
+                          <span class="push-btn__surface">Try Our Starter Pack</span>
+                        </a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section><svg width="0" height="0" viewBox="0 0 200 200">
+        <defs>
+          <clipPath id="clip-sticker_AmLVA7" clipPathUnits="objectBoundingBox">
+            <path clip-rule="evenodd" transform="scale(0.005,0.005)"
+              d="M100.5 11.7492L115.94 2L127.624 16.0484L145.318 11.5414L152.079 28.5146L170.3 29.6973L171.499 47.9171L188.458 54.6777L183.966 72.386L198 84.0531L188.25 99.492L198 114.947L183.966 126.614L188.458 144.306L171.499 151.067L170.3 169.303L152.079 170.485L145.318 187.459L127.624 182.952L115.94 197L100.5 187.251L85.0598 197L73.3918 182.952L55.682 187.459L48.9209 170.485L30.6996 169.303L29.5008 151.067L12.5422 144.306L17.0496 126.614L3 114.947L12.75 99.492L3 84.0531L17.0496 72.386L12.5422 54.6777L29.5008 47.9171L30.6996 29.6973L48.9209 28.5146L55.682 11.5414L73.3918 16.0484L85.0598 2L100.5 11.7492Z"
+              fill="black"></path>
+          </clipPath>
+          <path id="outline-sticker_AmLVA7" vector-effect="non-scaling-stroke"
+            d="M100.5 11.7492L115.94 2L127.624 16.0484L145.318 11.5414L152.079 28.5146L170.3 29.6973L171.499 47.9171L188.458 54.6777L183.966 72.386L198 84.0531L188.25 99.492L198 114.947L183.966 126.614L188.458 144.306L171.499 151.067L170.3 169.303L152.079 170.485L145.318 187.459L127.624 182.952L115.94 197L100.5 187.251L85.0598 197L73.3918 182.952L55.682 187.459L48.9209 170.485L30.6996 169.303L29.5008 151.067L12.5422 144.306L17.0496 126.614L3 114.947L12.75 99.492L3 84.0531L17.0496 72.386L12.5422 54.6777L29.5008 47.9171L30.6996 29.6973L48.9209 28.5146L55.682 11.5414L73.3918 16.0484L85.0598 2L100.5 11.7492Z">
+          </path>
+        </defs>
+      </svg>
+      <div class="sticker pointer-events-none absolute z-sticker homeImgText homeImgTextSticker  "
+        id="sticker-sticker_AmLVA7" data-color-scheme="scheme1">
+        <div class="sticker__translate-container">
+          <div class="sticker__parallax-container" data-sticker="">
+            <div class="sticker__parallax-element">
+              <div class="sticker__rotate-container sticker-rotate-when-scrolling "
+                style="transform: rotate(2315.83deg);">
+                <div class="sticker__image rotate-anim">
+                  <img src="//sousasupps.com/cdn/shop/files/badge-low-cal.png?v=1759994758&amp;width=600" alt=""
+                    srcset="//sousasupps.com/cdn/shop/files/badge-low-cal.png?v=1759994758&amp;width=200 200w, //sousasupps.com/cdn/shop/files/badge-low-cal.png?v=1759994758&amp;width=400 400w, //sousasupps.com/cdn/shop/files/badge-low-cal.png?v=1759994758&amp;width=600 600w"
+                    width="600" height="372" class="sticker__width-container max-w-none" sizes="200px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #sticker-sticker_AmLVA7 {
+          --block-width: 200;
+        }
+
+
+        #sticker-sticker_AmLVA7 {
+          top: 36%;
+          left: 84%;
+        }
+
+        #sticker-sticker_AmLVA7 .sticker__translate-container {
+          transform: translate(-50%, -50%);
+        }
+
+        #sticker-sticker_AmLVA7 .sticker__rotate-container {
+          transform: rotate(16deg);
+        }
+
+        #sticker-text-sticker_AmLVA7,
+        #sticker-sticker_AmLVA7 .sticker__fit-to-text {
+          --adjusted-sticker-font-size: calc(1.25rem * 1.5);
+          font-size: calc(var(--adjusted-sticker-font-size) * var(--block-width) / 300);
+          line-height: 1;
+        }
+
+        #sticker-text-sticker_AmLVA7 {
+          padding: calc(2rem * var(--block-width) / 300);
+        }
+
+        #sticker-sticker_AmLVA7 .sticker__width-container {
+          width: calc(var(--block-width) * 1px);
+        }
+      </style>
+
+
+
+      <script src="//sousasupps.com/cdn/shop/t/6/assets/shapes-animations.js?v=111376164229927584001776097046"
+        defer=""></script>
+
+
+      <div id="shape-divider-shape_divider_VVDTKV"
+        class="shape-divider pointer-events-none z-20 w-full absolute bottom-0 left-0 w-full shape-divider-homeImgText-below">
+        <div class="shape-divider-transform-reset">
+          <div class="shape-divider-svg-container relative left-0 flex min-w-full  -mb-shape-divider"
+            style="padding-top: 1.6666666666666665%;">
+            <div class=" absolute bottom-0 left-0 right-0 top-0 z-0 h-full w-full text-scheme-background">
+              <svg class="absolute bottom-0 left-0 right-0  top-0 z-0 h-full w-full  text-scheme-background "
+                data-color-scheme="scheme1" width="100%" height="100%" viewBox="0 0 1200.0 20.0" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0 8.46126C8 3.84592 16 3.84592 24 8.46126C32 13.0766 40 13.0766 48 8.46127C56 3.84593 64 3.84593 72 8.46127C80 13.0766 88 13.0766 96 8.46128C104 3.84594 112 3.84594 120 8.46128C128 13.0766 136 13.0766 144 8.46128C152 3.84594 160 3.84595 168 8.46129C176 13.0766 184 13.0766 192 8.46129C200 3.84595 208 3.84596 216 8.4613C224 13.0766 232 13.0766 240 8.4613C248 3.84596 256 3.84596 264 8.46131C272 13.0766 280 13.0766 288 8.46131C296 3.84597 304 3.84597 312 8.46131C320 13.0767 328 13.0767 336 8.46132C344 3.84598 352 3.84598 360 8.46132C368 13.0767 376 13.0767 384 8.46132C392 3.84599 400 3.84599 408 8.46133C416 13.0767 424 13.0767 432 8.46133C440 3.846 448 3.846 456 8.46134C464 13.0767 472 13.0767 480 8.46134C488 3.846 496 3.846 504 8.46135C512 13.0767 520 13.0767 528 8.46135C536 3.84601 544 3.84601 552 8.46135C560 13.0767 568 13.0767 576 8.46136C584 3.84602 592 3.84602 600 8.46136C608 13.0767 616 13.0767 624 8.46137C632 3.84603 640 3.84603 648 8.46137C656 13.0767 664 13.0767 672 8.46138C680 3.84604 688 3.84604 696 8.46138C704 13.0767 712 13.0767 720 8.46138C728 3.84604 736 3.84604 744 8.46139C752 13.0767 760 13.0767 768 8.46139C776 3.84605 784 3.84605 792 8.4614C800 13.0767 808 13.0767 816 8.4614C824 3.84606 832 3.84606 840 8.4614C848 13.0767 856 13.0767 864 8.46141C872 3.84607 880 3.84607 888 8.46141C896 13.0768 904 13.0768 912 8.46142C920 3.84608 928 3.84608 936 8.46142C944 13.0768 952 13.0768 960 8.46142C968 3.84608 976 3.84609 984 8.46143C992 13.0768 1000 13.0768 1008 8.46143C1016 3.84609 1024 3.8461 1032 8.46144C1040 13.0768 1048 13.0768 1056 8.46144C1064 3.8461 1072 3.8461 1080 8.46145C1088 13.0768 1096 13.0768 1104 8.46145C1112 3.84611 1120 3.84611 1128 8.46145C1136 13.0768 1144 13.0768 1152 8.46146C1160 3.84612 1168 3.84612 1176 8.46146C1184 13.0768 1192 13.0768 1200 8.46147V19.9999H0V8.46126Z"
+                  fill="currentColor"></path>

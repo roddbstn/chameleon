@@ -1,0 +1,1598 @@
+<html class="js" lang="en" data-yd-content-ready="true"
+  style="--header-group-height: 166.125px; --global-scrolling-items-speed-multiplier: 0.7900390625; --header-height: 127px;"
+  data-jetski-tab-id="error">
+
+<head>
+  <meta name="google-site-verification" content="ONY3wK2nNCsDsClAnTULW-iCqRGxu6InrCasCozrSq8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="">
+  <link rel="canonical" href="https://sousasupps.com/">
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin="">
+  <link rel="icon" type="image/png" href="//sousasupps.com/cdn/shop/files/favicon.png?v=1759780630&amp;width=32">
+  <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin="">
+  <title>
+    Sousa
+  </title>
+
+
+  <meta name="description"
+    content="Sousa is an all-in-one recovery drink that combines protein with electrolytes and vitamins. It tastes great and fuels your recovery!">
+
+
+
+  <meta property="og:site_name" content="Sousa">
+  <meta property="og:url" content="https://sousasupps.com/">
+  <meta property="og:title" content="Sousa">
+  <meta property="og:type" content="website">
+  <meta property="og:description"
+    content="Sousa is an all-in-one recovery drink that combines protein with electrolytes and vitamins. It tastes great and fuels your recovery!">
+  <meta property="og:image" content="http://sousasupps.com/cdn/shop/files/sousa_box_square.png?v=1769148024">
+  <meta property="og:image:secure_url"
+    content="https://sousasupps.com/cdn/shop/files/sousa_box_square.png?v=1769148024">
+  <meta property="og:image:width" content="3780">
+  <meta property="og:image:height" content="3780">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sousa">
+  <meta name="twitter:description"
+    content="Sousa is an all-in-one recovery drink that combines protein with electrolytes and vitamins. It tastes great and fuels your recovery!">
+
+  <script type="text/javascript" async=""
+    src="https://www.googletagmanager.com/gtag/js?id=G-TP10FLQ9HG&amp;cx=c&amp;gtm=4e64r1h1"></script>
+  <script
+    src="https://connect.facebook.net/signals/config/2372714429884180?v=2.9.310&amp;r=stable&amp;domain=sousasupps.com&amp;hme=97937018cefade17726f0472876fc101316b2ce9008a35a6a5a7977d7436151a&amp;ex_m=104%2C205%2C154%2C22%2C72%2C73%2C145%2C68%2C67%2C11%2C162%2C90%2C16%2C138%2C127%2C39%2C75%2C78%2C134%2C159%2C164%2C8%2C4%2C5%2C7%2C6%2C3%2C91%2C101%2C165%2C170%2C219%2C62%2C186%2C187%2C55%2C276%2C30%2C74%2C231%2C230%2C229%2C23%2C33%2C103%2C61%2C10%2C63%2C97%2C98%2C99%2C105%2C130%2C31%2C29%2C132%2C133%2C129%2C128%2C155%2C76%2C158%2C156%2C157%2C50%2C60%2C123%2C15%2C161%2C45%2C263%2C264%2C262%2C26%2C27%2C28%2C48%2C146%2C77%2C112%2C18%2C20%2C44%2C40%2C42%2C41%2C83%2C92%2C96%2C110%2C144%2C147%2C46%2C111%2C24%2C21%2C119%2C69%2C36%2C149%2C148%2C150%2C141%2C139%2C25%2C35%2C59%2C109%2C160%2C70%2C17%2C152%2C114%2C81%2C66%2C19%2C85%2C86%2C116%2C84%2C136%2C135%2C34%2C278%2C293%2C212%2C201%2C202%2C200%2C296%2C288%2C52%2C213%2C107%2C131%2C80%2C121%2C54%2C47%2C49%2C113%2C120%2C126%2C58%2C64%2C151%2C115%2C37%2C32%2C53%2C56%2C100%2C163%2C1%2C124%2C14%2C122%2C12%2C2%2C57%2C93%2C65%2C118%2C89%2C88%2C166%2C167%2C94%2C95%2C9%2C125%2C102%2C51%2C142%2C87%2C79%2C71%2C117%2C106%2C43%2C143%2C0%2C82%2C137%2C140%2C153%2C38%2C108%2C13%2C168"
+    async=""></script>
+  <script async="true" src="https://connect.facebook.net/en_US/fbevents.js"></script>
+  <script type="text/javascript" async=""
+    src="//sousasupps.com/cdn/s/trekkie.storefront.40cf76d5f324d17d3a4347e25c36a3e219ef9f79.min.js"></script>
+  <script async="" crossorigin="" fetchpriority="high"
+    src="/cdn/shopifycloud/importmap-polyfill/es-modules-shim.2.4.0.js"></script>
+  <script type="esms-options">{"noLoadEventRetriggers":true,"shimMode":true}</script>
+
+  <script type="importmap">
+      {
+        "imports": {
+          "vendor": "//sousasupps.com/cdn/shop/t/6/assets/vendor.bundle.min.js?v=77486261865371124441776097046",
+          "deferrable-data": "//sousasupps.com/cdn/shop/t/6/assets/deferrable-data.bundle.js?v=160370895301608380811776097046",
+          "product": "//sousasupps.com/cdn/shop/t/6/assets/island-product.bundle.js?v=1029340326137444871776097046",
+          "product-model": "//sousasupps.com/cdn/shop/t/6/assets/island-product-model.bundle.js?v=4401951654989154921776097046"
+        }
+      }
+    </script>
+
+  <script>window.performance && window.performance.mark && window.performance.mark('shopify.content_for_header.start');</script>
+  <meta name="google-site-verification" content="_lypjI5IKcH9hpPwQvRJm_SBKTs1n-D85pDHG_6zDGg">
+  <meta id="shopify-digital-wallet" name="shopify-digital-wallet" content="/96044581143/digital_wallets/dialog">
+  <meta name="shopify-checkout-api-token" content="8b6663de5570154626b2f7198d6867e0">
+  <meta id="in-context-paypal-metadata" data-shop-id="96044581143" data-venmo-supported="false"
+    data-environment="production" data-locale="en_US" data-paypal-v4="true" data-currency="USD">
+  <script async="async" src="/checkouts/internal/preloads.js?locale=en-US"></script>
+  <link rel="preconnect" href="https://shop.app" crossorigin="anonymous">
+  <script async="async" src="https://shop.app/checkouts/internal/preloads.js?locale=en-US&amp;shop_id=96044581143"
+    crossorigin="anonymous"></script>
+  <script id="apple-pay-shop-capabilities"
+    type="application/json">{"shopId":96044581143,"countryCode":"US","currencyCode":"USD","merchantCapabilities":["supports3DS"],"merchantId":"gid:\/\/shopify\/Shop\/96044581143","merchantName":"Sousa","requiredBillingContactFields":["postalAddress","email","phone"],"requiredShippingContactFields":["postalAddress","email","phone"],"shippingType":"shipping","supportedNetworks":["visa","masterCard","amex","discover","elo","jcb"],"total":{"type":"pending","label":"Sousa","amount":"1.00"},"shopifyPaymentsEnabled":true,"supportsSubscriptions":true}</script>
+  <script id="shopify-features"
+    type="application/json">{"accessToken":"8b6663de5570154626b2f7198d6867e0","betas":["rich-media-storefront-analytics"],"domain":"sousasupps.com","predictiveSearch":true,"shopId":96044581143,"locale":"en"}</script>
+  <script>var Shopify = Shopify || {};
+    Shopify.shop = "sousa-trf.myshopify.com";
+    Shopify.locale = "en";
+    Shopify.currency = { "active": "USD", "rate": "1.0" };
+    Shopify.country = "US";
+    Shopify.theme = { "name": "SKIO Copy of Sousa Live Theme", "id": 187553513751, "schema_name": "Shapes", "schema_version": "4.3.0", "theme_store_id": 1535, "role": "main" };
+    Shopify.theme.handle = "null";
+    Shopify.theme.style = { "id": null, "handle": null };
+    Shopify.cdnHost = "sousasupps.com/cdn";
+    Shopify.routes = Shopify.routes || {};
+    Shopify.routes.root = "/";
+    Shopify.shopJsCdnBaseUrl = "https://cdn.shopify.com/shopifycloud/shop-js";</script>
+  <script type="module">!function (o) { (o.Shopify = o.Shopify || {}).modules = !0 }(window);</script>
+  <script>!function (o) { function n() { var o = []; function n() { o.push(Array.prototype.slice.apply(arguments)) } return n.q = o, n } var t = o.Shopify = o.Shopify || {}; t.loadFeatures = n(), t.autoloadFeatures = n() }(window);</script>
+  <script>
+    window.ShopifyPay = window.ShopifyPay || {};
+    window.ShopifyPay.apiHost = "shop.app\/pay";
+    window.ShopifyPay.redirectState = null;
+  </script>
+  <script id="shop-js-analytics" type="application/json">{"pageType":"index"}</script>
+  <script defer="defer" async="" type="module"
+    src="//sousasupps.com/cdn/shopifycloud/shop-js/modules/v2/loader.init-shop-cart-sync.en.esm.js"></script>
+  <script type="module">
+    await import("//sousasupps.com/cdn/shopifycloud/shop-js/modules/v2/loader.init-shop-cart-sync.en.esm.js");
+
+    window.Shopify.SignInWithShop?.initShopCartSync?.({ "fedCMEnabled": true, "windoidEnabled": true });
+
+  </script>
+  <script>
+    window.Shopify = window.Shopify || {};
+    if (!window.Shopify.featureAssets) window.Shopify.featureAssets = {};
+    window.Shopify.featureAssets['shop-js'] = { "shop-toast-manager": ["modules/v2/loader.shop-toast-manager.en.esm.js"], "shop-button": ["modules/v2/loader.shop-button.en.esm.js"], "init-shop-user-recognition": ["modules/v2/loader.init-shop-user-recognition.en.esm.js"], "shop-cash-offers": ["modules/v2/loader.shop-cash-offers.en.esm.js"], "avatar": ["modules/v2/loader.avatar.en.esm.js"], "init-fed-cm": ["modules/v2/loader.init-fed-cm.en.esm.js"], "init-windoid": ["modules/v2/loader.init-windoid.en.esm.js"], "init-shop-email-lookup-coordinator": ["modules/v2/loader.init-shop-email-lookup-coordinator.en.esm.js"], "init-shop-cart-sync": ["modules/v2/loader.init-shop-cart-sync.en.esm.js"], "init-customer-accounts-sign-up": ["modules/v2/loader.init-customer-accounts-sign-up.en.esm.js"], "shop-cart-sync": ["modules/v2/loader.shop-cart-sync.en.esm.js"], "shop-login-button": ["modules/v2/loader.shop-login-button.en.esm.js"], "checkout-modal": ["modules/v2/loader.checkout-modal.en.esm.js"], "pay-button": ["modules/v2/loader.pay-button.en.esm.js"], "init-shop-for-new-customer-accounts": ["modules/v2/loader.init-shop-for-new-customer-accounts.en.esm.js"], "shop-user-recognition": ["modules/v2/loader.shop-user-recognition.en.esm.js"], "init-customer-accounts": ["modules/v2/loader.init-customer-accounts.en.esm.js"], "shop-login": ["modules/v2/loader.shop-login.en.esm.js"], "shop-follow-button": ["modules/v2/loader.shop-follow-button.en.esm.js"], "lead-capture": ["modules/v2/loader.lead-capture.en.esm.js"], "payment-terms": ["modules/v2/loader.payment-terms.en.esm.js"] };
+  </script>
+  <script
+    id="__st">var __st = { "a": 96044581143, "offset": -14400, "reqid": "73857c01-f2d3-4452-927a-dc32ec55d735-1777428760", "pageurl": "sousasupps.com\/", "u": "249392466d5d", "p": "home" };</script>
+  <script>window.ShopifyPaypalV4VisibilityTracking = true;</script>
+  <script
+    id="captcha-bootstrap">!function () { 'use strict'; const t = 'contact', e = 'account', n = 'new_comment', o = [[t, t], ['blogs', n], ['comments', n], [t, 'customer']], c = [[e, 'customer_login'], [e, 'guest_login'], [e, 'recover_customer_password'], [e, 'create_customer']], r = t => t.map((([t, e]) => `form[action*='/${t}']:not([data-nocaptcha='true']) input[name='form_type'][value='${e}']`)).join(','), a = t => () => t ? [...document.querySelectorAll(t)].map((t => t.form)) : []; function s() { const t = [...o], e = r(t); return a(e) } const i = 'password', u = 'form_key', d = ['recaptcha-v3-token', 'g-recaptcha-response', 'h-captcha-response', i], f = () => { try { return window.sessionStorage } catch { return } }, m = '__shopify_v', _ = t => t.elements[u]; function p(t, e, n = !1) { try { const o = window.sessionStorage, c = JSON.parse(o.getItem(e)), { data: r } = function (t) { const { data: e, action: n } = t; return t[m] || n ? { data: e, action: n } : { data: t, action: n } }(c); for (const [e, n] of Object.entries(r)) t.elements[e] && (t.elements[e].value = n); n && o.removeItem(e) } catch (o) { console.error('form repopulation failed', { error: o }) } } const l = 'form_type', E = 'cptcha'; function T(t) { t.dataset[E] = !0 } const w = window, h = w.document, L = 'Shopify', v = 'ce_forms', y = 'captcha'; let A = !1; ((t, e) => { const n = (g = 'f06e6c50-85a8-45c8-87d0-21a2b65856fe', I = 'https://cdn.shopify.com/shopifycloud/storefront-forms-hcaptcha/ce_storefront_forms_captcha_hcaptcha.v1.5.2.iife.js', D = { infoText: 'Protected by hCaptcha', privacyText: 'Privacy', termsText: 'Terms' }, (t, e, n) => { const o = w[L][v], c = o.bindForm; if (c) return c(t, g, e, D).then(n); var r; o.q.push([[t, g, e, D], n]), r = I, A || (h.body.append(Object.assign(h.createElement('script'), { id: 'captcha-provider', async: !0, src: r })), A = !0) }); var g, I, D; w[L] = w[L] || {}, w[L][v] = w[L][v] || {}, w[L][v].q = [], w[L][y] = w[L][y] || {}, w[L][y].protect = function (t, e) { n(t, void 0, e), T(t) }, Object.freeze(w[L][y]), function (t, e, n, w, h, L) { const [v, y, A, g] = function (t, e, n) { const i = e ? o : [], u = t ? c : [], d = [...i, ...u], f = r(d), m = r(i), _ = r(d.filter((([t, e]) => n.includes(e)))); return [a(f), a(m), a(_), s()] }(w, h, L), I = t => { const e = t.target; return e instanceof HTMLFormElement ? e : e && e.form }, D = t => v().includes(t); t.addEventListener('submit', (t => { const e = I(t); if (!e) return; const n = D(e) && !e.dataset.hcaptchaBound && !e.dataset.recaptchaBound, o = _(e), c = g().includes(e) && (!o || !o.value); (n || c) && t.preventDefault(), c && !n && (function (t) { try { if (!f()) return; !function (t) { const e = f(); if (!e) return; const n = _(t); if (!n) return; const o = n.value; o && e.removeItem(o) }(t); const e = Array.from(Array(32), (() => Math.random().toString(36)[2])).join(''); !function (t, e) { _(t) || t.append(Object.assign(document.createElement('input'), { type: 'hidden', name: u })), t.elements[u].value = e }(t, e), function (t, e) { const n = f(); if (!n) return; const o = [...t.querySelectorAll(`input[type='${i}']`)].map((({ name: t }) => t)), c = [...d, ...o], r = {}; for (const [a, s] of new FormData(t).entries()) c.includes(a) || (r[a] = s); n.setItem(e, JSON.stringify({ [m]: 1, action: t.action, data: r })) }(t, e) } catch (e) { console.error('failed to persist form', e) } }(e), e.submit()) })); const S = (t, e) => { t && !t.dataset[E] && (n(t, e.some((e => e === t))), T(t)) }; for (const o of ['focusin', 'change']) t.addEventListener(o, (t => { const e = I(t); D(e) && S(e, y()) })); const B = e.get('form_key'), M = e.get(l), P = B && M; t.addEventListener('DOMContentLoaded', (() => { const t = y(); if (P) for (const e of t) e.elements[l].value === M && p(e, B);[...new Set([...A(), ...v().filter((t => 'true' === t.dataset.shopifyCaptcha))])].forEach((e => S(e, t))) })) }(h, new URLSearchParams(w.location.search), n, t, e, ['guest_login']) })(!0, !0) }();</script>
+  <script integrity="sha256-JjoPp5ZfB1sSAs5SQaol1x1GgvveM+BgmRzyDexInEQ=" data-source-attribution="shopify.loadfeatures"
+    defer="defer" src="//sousasupps.com/cdn/shopifycloud/storefront/assets/storefront/load_feature-1bd60354.js"
+    crossorigin="anonymous"></script>
+  <script crossorigin="anonymous" defer="defer"
+    src="//sousasupps.com/cdn/shopifycloud/storefront/assets/shopify_pay/storefront-bf1cdb70.js?v=20250812"></script>
+  <script data-source-attribution="shopify.dynamic_checkout.dynamic.init">var Shopify = Shopify || {}; Shopify.PaymentButton = Shopify.PaymentButton || { isStorefrontPortableWallets: !0, init: function () { window.Shopify.PaymentButton.init = function () { }; var t = document.createElement("script"); t.src = "https://sousasupps.com/cdn/shopifycloud/portable-wallets/latest/portable-wallets.en.js", t.type = "module", document.head.appendChild(t) } };
+  </script>
+  <script data-source-attribution="shopify.dynamic_checkout.buyer_consent">
+    function portableWalletsHideBuyerConsent(e) { var t = document.getElementById("shopify-buyer-consent"), n = document.getElementById("shopify-subscription-policy-button"); t && n && (t.classList.add("hidden"), t.setAttribute("aria-hidden", "true"), n.removeEventListener("click", e)) } function portableWalletsShowBuyerConsent(e) { var t = document.getElementById("shopify-buyer-consent"), n = document.getElementById("shopify-subscription-policy-button"); t && n && (t.classList.remove("hidden"), t.removeAttribute("aria-hidden"), n.addEventListener("click", e)) } window.Shopify?.PaymentButton && (window.Shopify.PaymentButton.hideBuyerConsent = portableWalletsHideBuyerConsent, window.Shopify.PaymentButton.showBuyerConsent = portableWalletsShowBuyerConsent);
+  </script>
+  <script data-source-attribution="shopify.dynamic_checkout.cart.bootstrap">document.addEventListener("DOMContentLoaded", (function () { function t() { return document.querySelector("shopify-accelerated-checkout-cart, shopify-accelerated-checkout") } if (t()) Shopify.PaymentButton.init(); else { new MutationObserver((function (e, n) { t() && (Shopify.PaymentButton.init(), n.disconnect()) })).observe(document.body, { childList: !0, subtree: !0 }) } }));
+  </script>
+  <link id="shopify-accelerated-checkout-styles" rel="stylesheet" media="screen"
+    href="https://sousasupps.com/cdn/shopifycloud/portable-wallets/latest/accelerated-checkout-backwards-compat.css"
+    crossorigin="anonymous">
+  <style id="shopify-accelerated-checkout-cart">
+    #shopify-buyer-consent {
+      margin-top: 1em;
+      display: inline-block;
+      width: 100%;
+    }
+
+    #shopify-buyer-consent.hidden {
+      display: none;
+    }
+
+    #shopify-subscription-policy-button {
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: underline;
+      font-size: inherit;
+      cursor: pointer;
+    }
+
+    #shopify-subscription-policy-button::before {
+      box-shadow: none;
+    }
+  </style>
+
+  <script>window.performance && window.performance.mark && window.performance.mark('shopify.content_for_header.end');</script>
+
+  <link href="//sousasupps.com/cdn/shop/t/6/assets/base.bundle.css?v=3131160307571703251776097046" rel="stylesheet"
+    type="text/css" media="all">
+
+  <script>
+    window.THEMENAME = 'Shapes';
+    window.THEMEVERSION = '1.0.1';
+
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+
+    window.theme = {
+      strings: {
+        itemCountOne: "{{ count }} item",
+        itemCountOther: "{{ count }} items",
+        loading: "Loading",
+        addToCart: "Add to Cart",
+        preOrder: "Pre-order",
+        soldOut: "Sold Out",
+        unavailable: "Unavailable",
+        regularPrice: "Regular price",
+        salePrice: "Sale price",
+        sale: "save!",
+        unitPrice: "Unit price",
+        unitPriceSeparator: "per",
+        cartEmpty: "Your cart is currently empty.",
+        cartCookies: "Enable cookies to use the shopping cart",
+        update: "Update Cart",
+        quantity: "Quantity",
+        discountedTotal: "Discounted total",
+        regularTotal: "Regular total",
+        priceColumn: "See Price column for discount details.",
+        addingToCart: "Adding",
+        addedToCart: "Added to Cart!",
+        cartError: "There was an error while updating your cart. Please try again.",
+        cartAddError: "All {{ title }} are in your cart."
+      },
+      routes: {
+        root_url: "\/",
+        cart_url: "\/cart",
+        cart_add_url: "\/cart\/add",
+        cart_change_url: "\/cart\/change",
+        cart_update_url: "\/cart\/update",
+        cart_clear_url: "\/cart\/clear",
+        predictive_search_url: '/search/suggest'
+      },
+      moneyFormat: "${{amount}}",
+      moneyWithCurrencyFormat: "${{amount}} USD",
+      cartItemCount: 0,
+      settings: {
+        cartType: "modal",
+        openModalOnAddToCart: true,
+        parallaxIntensity: 50
+      },
+      info: {
+        name: 'Shapes',
+      }
+    };
+  </script>
+
+
+  <script>
+    document.documentElement.className =
+      document.documentElement.className.replace('no-js', 'js');
+  </script>
+
+  <script>
+    function debounce(fn, wait) {
+      let t;
+      return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+      };
+    }
+  </script>
+
+  <script src="//sousasupps.com/cdn/shop/t/6/assets/utils.js?v=32068786680498309641776097046" defer=""></script>
+
+
+
+
+
+  <script>
+    window.themeEventsDebugMode = false;
+  </script>
+  <script src="//sousasupps.com/cdn/shop/t/6/assets/theme-events.js?v=65979754177087071131776097046" async=""
+    defer=""></script>
+
+  <style>
+    :root {
+      --max-site-width: 1820px;
+    }
+  </style>
+
+  <style data-shopify="">
+    @font-face {
+      font-family: Inter;
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+      src: url("//sousasupps.com/cdn/fonts/inter/inter_n5.d7101d5e168594dd06f56f290dd759fba5431d97.woff2") format("woff2"),
+        url("//sousasupps.com/cdn/fonts/inter/inter_n5.5332a76bbd27da00474c136abb1ca3cbbf259068.woff") format("woff");
+    }
+
+    @font-face {
+      font-family: Prompt;
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+      src: url("//sousasupps.com/cdn/fonts/prompt/prompt_n7.b02601183b05e61fa7be166e9ccbe02488df9d4e.woff2") format("woff2"),
+        url("//sousasupps.com/cdn/fonts/prompt/prompt_n7.0d3eedf3dbfa531020ce942da8ca46feac5ed856.woff") format("woff");
+    }
+
+    @font-face {
+      font-family: Inter;
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+      src: url("//sousasupps.com/cdn/fonts/inter/inter_n7.02711e6b374660cfc7915d1afc1c204e633421e4.woff2") format("woff2"),
+        url("//sousasupps.com/cdn/fonts/inter/inter_n7.6dab87426f6b8813070abd79972ceaf2f8d3b012.woff") format("woff");
+    }
+
+    @font-face {
+      font-family: Inter;
+      font-weight: 500;
+      font-style: italic;
+      font-display: swap;
+      src: url("//sousasupps.com/cdn/fonts/inter/inter_i5.4474f48e6ab2b1e01aa2b6d942dd27fa24f2d99f.woff2") format("woff2"),
+        url("//sousasupps.com/cdn/fonts/inter/inter_i5.493dbd6ee8e49f4ad722ebb68d92f201af2c2f56.woff") format("woff");
+    }
+
+    @font-face {
+      font-family: Inter;
+      font-weight: 700;
+      font-style: italic;
+      font-display: swap;
+      src: url("//sousasupps.com/cdn/fonts/inter/inter_i7.b377bcd4cc0f160622a22d638ae7e2cd9b86ea4c.woff2") format("woff2"),
+        url("//sousasupps.com/cdn/fonts/inter/inter_i7.7c69a6a34e3bb44fcf6f975857e13b9a9b25beb4.woff") format("woff");
+    }
+
+    @font-face {
+      font-family: Inter;
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+      src: url("//sousasupps.com/cdn/fonts/inter/inter_n7.02711e6b374660cfc7915d1afc1c204e633421e4.woff2") format("woff2"),
+        url("//sousasupps.com/cdn/fonts/inter/inter_n7.6dab87426f6b8813070abd79972ceaf2f8d3b012.woff") format("woff");
+    }
+
+    :root {
+      --heading-font-stack: Prompt, sans-serif;
+      --heading-font-weight: 700;
+      --heading-font-style: normal;
+      --heading-letterspacing: 0.0;
+      --heading-capitalize: none;
+      --main-font-stack: Inter, sans-serif;
+      --main-font-weight: 500;
+      --main-font-style: normal;
+    }
+  </style>
+  <style data-shopify="">
+    :root {
+      --payment-button-height: 48px;
+      --checkout-button-height: 48px;
+      --section-x-padding: 1.25rem;
+      --grid-gap: 1.25rem;
+      --icon-thickness: 1.7;
+      --header-height: 60px;
+      --global-scrolling-items-speed-multiplier: 1;
+      --transparent: transparent;
+
+      --section-border-color: 0, 0, 0;
+      --section-border-thickness: 0px;
+      --shape-divider-offset: 2px;
+
+      --button-border-radius: 9999px;
+      --textarea-border-radius: 1rem;
+      --button-border-width: 1px;
+      --input-border-width: 1px;
+      --button-shadow-border-width: 0;
+      --button-text-transform: none;
+      --button-drop-shadow-size: 00px;
+      --button-drop-shadow-top-size: 0px;
+      --button-drop-shadow-left-size: 0px;
+      --button-hover-top-size: 0px;
+      --button-hover-left-size: var(--button-drop-shadow-left-size);
+      --button-shadow-display: none;
+      --sticker-border-radius: 0;
+      --sticker-border-width: 0;
+      --sticker-shadow-border-width: 0;
+      --sticker-text-transform: none;
+      --sticker-drop-shadow-top-size: 0px;
+      --sticker-drop-shadow-left-size: 0px;
+      --sticker-drop-shadow-display: none;
+      --card-border-radius: 0.375rem;
+      --card-drop-shadow-size: 8px;
+      --card-drop-shadow-top-size: 8px;
+      --card-drop-shadow-left-size: 8px;
+      --card-border-width: 3px;
+      --card-shadow-border-width: var(--card-border-width);
+      --media-border-radius: 0.375rem;
+      --media-drop-shadow-display: block;
+      --media-drop-shadow-size: 8px;
+      --media-drop-shadow-top-size: 8px;
+      --media-drop-shadow-left-size: 8px;
+      --media-drop-shadow-size-half: 4.0px;
+      --media-drop-shadow-top-size-half: 4.0px;
+      --media-drop-shadow-left-size-half: 4.0px;
+      --media-border-width: 3px;
+      --media-shadow-border-width: var(--media-border-width);
+      --heading-shadow-spread: 6px;
+      --heading-stroke-thickness: 2px;
+      --product-tiles-text-transform: uppercase;
+      --general-border-width: 2px;
+      --chart-height: 0.5rem;
+      --hover-effect-zoom-media: 1;
+      --hover-effect-enlarge-shape: 1;
+      --hover-effect-lift-shape: 0;
+      --hover-effect-rotate-shape: 0deg;
+    }
+
+
+
+    :root,
+
+    [data-color-scheme="scheme1"] {
+      --color-scheme-text: 93, 33, 19;
+      --color-scheme-text-contrast: 255, 255, 255;
+      --color-scheme-background: 255, 247, 228;
+      --color-scheme-accent-1: 255, 247, 228;
+      --color-scheme-accent-1-contrast: 93, 33, 19;
+      --color-scheme-accent-2: 254, 224, 123;
+      --color-scheme-accent-2-contrast: 93, 33, 19;
+      --color-scheme-card-text: 93, 33, 19;
+      --color-scheme-card: 255, 255, 255;
+      --color-scheme-gradient: ;
+      --color-scheme-secondary-background: var(--color-scheme-background);
+      --color-scheme-secondary-text: var(--color-scheme-text);
+      --select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%235d2113' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+    /* unique values for each scheme */
+    :root {
+      --color-scheme-scheme1-text: 93 33 19;
+      --color-scheme-scheme1-text-contrast: 255, 255, 255;
+      --color-scheme-scheme1-background: 255, 247, 228;
+      --color-scheme-scheme1-accent-1: 255, 247, 228;
+      --color-scheme-scheme1-accent-1-contrast: 93, 33, 19;
+      --color-scheme-scheme1-accent-2: 254, 224, 123;
+      --color-scheme-scheme1-accent-2-contrast: 93, 33, 19;
+      --color-scheme-scheme1-card-text: 93, 33, 19;
+      --color-scheme-scheme1-card: 255, 255, 255;
+      --color-scheme-scheme1-gradient: ;
+      --color-scheme-scheme1-secondary-background: var(--color-scheme-background);
+      --color-scheme-scheme1-secondary-text: var(--color-scheme-text);
+      --color-scheme-scheme1-select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%235d2113' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+
+    [data-color-scheme="scheme2"] {
+      --color-scheme-text: 93, 33, 19;
+      --color-scheme-text-contrast: 255, 255, 255;
+      --color-scheme-background: 157, 192, 228;
+      --color-scheme-accent-1: 255, 247, 228;
+      --color-scheme-accent-1-contrast: 93, 33, 19;
+      --color-scheme-accent-2: 255, 204, 55;
+      --color-scheme-accent-2-contrast: 0, 0, 0;
+      --color-scheme-card-text: 0, 0, 0;
+      --color-scheme-card: 255, 247, 228;
+      --color-scheme-gradient: ;
+      --color-scheme-secondary-background: var(--color-scheme-background);
+      --color-scheme-secondary-text: var(--color-scheme-text);
+      --select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%235d2113' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+    /* unique values for each scheme */
+    :root {
+      --color-scheme-scheme2-text: 93 33 19;
+      --color-scheme-scheme2-text-contrast: 255, 255, 255;
+      --color-scheme-scheme2-background: 157, 192, 228;
+      --color-scheme-scheme2-accent-1: 255, 247, 228;
+      --color-scheme-scheme2-accent-1-contrast: 93, 33, 19;
+      --color-scheme-scheme2-accent-2: 255, 204, 55;
+      --color-scheme-scheme2-accent-2-contrast: 0, 0, 0;
+      --color-scheme-scheme2-card-text: 0, 0, 0;
+      --color-scheme-scheme2-card: 255, 247, 228;
+      --color-scheme-scheme2-gradient: ;
+      --color-scheme-scheme2-secondary-background: var(--color-scheme-background);
+      --color-scheme-scheme2-secondary-text: var(--color-scheme-text);
+      --color-scheme-scheme2-select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%235d2113' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+
+    [data-color-scheme="scheme3"] {
+      --color-scheme-text: 93, 33, 19;
+      --color-scheme-text-contrast: 255, 255, 255;
+      --color-scheme-background: 4, 124, 192;
+      --color-scheme-accent-1: 157, 192, 228;
+      --color-scheme-accent-1-contrast: 93, 33, 19;
+      --color-scheme-accent-2: 244, 135, 142;
+      --color-scheme-accent-2-contrast: 0, 0, 0;
+      --color-scheme-card-text: 0, 0, 0;
+      --color-scheme-card: 255, 247, 228;
+      --color-scheme-gradient: ;
+      --color-scheme-secondary-background: var(--color-scheme-background);
+      --color-scheme-secondary-text: var(--color-scheme-text);
+      --select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%235d2113' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+    /* unique values for each scheme */
+    :root {
+      --color-scheme-scheme3-text: 93 33 19;
+      --color-scheme-scheme3-text-contrast: 255, 255, 255;
+      --color-scheme-scheme3-background: 4, 124, 192;
+      --color-scheme-scheme3-accent-1: 157, 192, 228;
+      --color-scheme-scheme3-accent-1-contrast: 93, 33, 19;
+      --color-scheme-scheme3-accent-2: 244, 135, 142;
+      --color-scheme-scheme3-accent-2-contrast: 0, 0, 0;
+      --color-scheme-scheme3-card-text: 0, 0, 0;
+      --color-scheme-scheme3-card: 255, 247, 228;
+      --color-scheme-scheme3-gradient: ;
+      --color-scheme-scheme3-secondary-background: var(--color-scheme-background);
+      --color-scheme-scheme3-secondary-text: var(--color-scheme-text);
+      --color-scheme-scheme3-select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%235d2113' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+
+    [data-color-scheme="scheme4"] {
+      --color-scheme-text: 93, 33, 19;
+      --color-scheme-text-contrast: 255, 255, 255;
+      --color-scheme-background: 254, 224, 123;
+      --color-scheme-accent-1: 255, 255, 255;
+      --color-scheme-accent-1-contrast: 0, 0, 0;
+      --color-scheme-accent-2: 0, 0, 0;
+      --color-scheme-accent-2-contrast: 255, 255, 255;
+      --color-scheme-card-text: 0, 0, 0;
+      --color-scheme-card: 255, 255, 255;
+      --color-scheme-gradient: ;
+      --color-scheme-secondary-background: var(--color-scheme-background);
+      --color-scheme-secondary-text: var(--color-scheme-text);
+      --select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%235d2113' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+    /* unique values for each scheme */
+    :root {
+      --color-scheme-scheme4-text: 93 33 19;
+      --color-scheme-scheme4-text-contrast: 255, 255, 255;
+      --color-scheme-scheme4-background: 254, 224, 123;
+      --color-scheme-scheme4-accent-1: 255, 255, 255;
+      --color-scheme-scheme4-accent-1-contrast: 0, 0, 0;
+      --color-scheme-scheme4-accent-2: 0, 0, 0;
+      --color-scheme-scheme4-accent-2-contrast: 255, 255, 255;
+      --color-scheme-scheme4-card-text: 0, 0, 0;
+      --color-scheme-scheme4-card: 255, 255, 255;
+      --color-scheme-scheme4-gradient: ;
+      --color-scheme-scheme4-secondary-background: var(--color-scheme-background);
+      --color-scheme-scheme4-secondary-text: var(--color-scheme-text);
+      --color-scheme-scheme4-select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%235d2113' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+
+    [data-color-scheme="scheme5"] {
+      --color-scheme-text: 255, 247, 228;
+      --color-scheme-text-contrast: 93, 33, 19;
+      --color-scheme-background: 4, 124, 192;
+      --color-scheme-accent-1: 255, 204, 55;
+      --color-scheme-accent-1-contrast: 93, 33, 19;
+      --color-scheme-accent-2: 0, 0, 0;
+      --color-scheme-accent-2-contrast: 255, 255, 255;
+      --color-scheme-card-text: 255, 255, 255;
+      --color-scheme-card: 0, 0, 0;
+      --color-scheme-gradient: ;
+      --color-scheme-secondary-background: var(--color-scheme-background);
+      --color-scheme-secondary-text: var(--color-scheme-text);
+      --select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%23fff7e4' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+    /* unique values for each scheme */
+    :root {
+      --color-scheme-scheme5-text: 255 247 228;
+      --color-scheme-scheme5-text-contrast: 93, 33, 19;
+      --color-scheme-scheme5-background: 4, 124, 192;
+      --color-scheme-scheme5-accent-1: 255, 204, 55;
+      --color-scheme-scheme5-accent-1-contrast: 93, 33, 19;
+      --color-scheme-scheme5-accent-2: 0, 0, 0;
+      --color-scheme-scheme5-accent-2-contrast: 255, 255, 255;
+      --color-scheme-scheme5-card-text: 255, 255, 255;
+      --color-scheme-scheme5-card: 0, 0, 0;
+      --color-scheme-scheme5-gradient: ;
+      --color-scheme-scheme5-secondary-background: var(--color-scheme-background);
+      --color-scheme-scheme5-secondary-text: var(--color-scheme-text);
+      --color-scheme-scheme5-select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%23fff7e4' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+
+    [data-color-scheme="scheme6"] {
+      --color-scheme-text: 0, 0, 0;
+      --color-scheme-text-contrast: 255, 255, 255;
+      --color-scheme-background: 255, 255, 255;
+      --color-scheme-accent-1: 0, 0, 0;
+      --color-scheme-accent-1-contrast: 255, 255, 255;
+      --color-scheme-accent-2: 255, 255, 255;
+      --color-scheme-accent-2-contrast: 0, 0, 0;
+      --color-scheme-card-text: 0, 0, 0;
+      --color-scheme-card: 255, 255, 255;
+      --color-scheme-gradient: ;
+      --color-scheme-secondary-background: var(--color-scheme-background);
+      --color-scheme-secondary-text: var(--color-scheme-text);
+      --select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%23000000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+    /* unique values for each scheme */
+    :root {
+      --color-scheme-scheme6-text: 0 0 0;
+      --color-scheme-scheme6-text-contrast: 255, 255, 255;
+      --color-scheme-scheme6-background: 255, 255, 255;
+      --color-scheme-scheme6-accent-1: 0, 0, 0;
+      --color-scheme-scheme6-accent-1-contrast: 255, 255, 255;
+      --color-scheme-scheme6-accent-2: 255, 255, 255;
+      --color-scheme-scheme6-accent-2-contrast: 0, 0, 0;
+      --color-scheme-scheme6-card-text: 0, 0, 0;
+      --color-scheme-scheme6-card: 255, 255, 255;
+      --color-scheme-scheme6-gradient: ;
+      --color-scheme-scheme6-secondary-background: var(--color-scheme-background);
+      --color-scheme-scheme6-secondary-text: var(--color-scheme-text);
+      --color-scheme-scheme6-select-svg:
+        url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 12L23.2826 36.0527C23.3724 36.1542 23.4826 36.2354 23.6062 36.291C23.7297 36.3467 23.8636 36.3755 23.999 36.3755C24.1345 36.3755 24.2684 36.3467 24.3919 36.291C24.5154 36.2354 24.6257 36.1542 24.7155 36.0527L46 12' stroke='%23000000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E%0A");
+    }
+
+    ::selection {
+      background-color: rgb(var(--color-scheme-accent-1));
+      color: rgb(var(--color-scheme-accent-1-contrast));
+    }
+
+
+    .card {
+      --color-scheme-secondary-background: var(--color-scheme-card);
+      --color-scheme-secondary-text: var(--color-scheme-card-text);
+    }
+
+
+
+    [data-color-scheme] {
+      --color-heading-shadow: var(--color-scheme-accent-1);
+      --color-heading-stroke: var(--color-scheme-text);
+      --color-button-background: var(--color-scheme-accent-1);
+      --color-button-text: var(--color-scheme-accent-1-contrast);
+      --color-button-border: var(--color-scheme-text);
+      --color-button-shadow: var(--color-scheme-text);
+      --color-card-border: var(--color-scheme-text);
+      --color-card-shadow: var(--color-scheme-text);
+      --color-sticker-border: var(--color-scheme-text);
+      --color-sticker-shadow: var(--color-scheme-text);
+      --color-media-border: var(--color-scheme-text);
+      --color-media-shadow: var(--color-scheme-text);
+      --color-media-shadow-fill: rgb(var(--color-scheme-text));
+      --color-sticker-shadow: var(--color-scheme-text);
+      --color-sticker-shadow-fill: rgb(var(--color-scheme-text));
+      --heading-color: var(--color-scheme-accent-2);
+      --heading-italics-color: var(--color-scheme-text);
+      --heading-text-shadow: 0.01em 0.01em 0 rgb(var(--color-heading-shadow)), 0.02em 0.02em 0 rgb(var(--color-heading-shadow)), 0.03em 0.03em 0 rgb(var(--color-heading-shadow)), 0.04em 0.04em 0 rgb(var(--color-heading-shadow)), 0.05em 0.05em 0 rgb(var(--color-heading-shadow)), 0.06em 0.06em 0 rgb(var(--color-heading-shadow)), 0.07em 0.07em 0 rgb(var(--color-heading-shadow)), 0.08em 0.08em 0 rgb(var(--color-heading-shadow)), 0.09em 0.09em 0 rgb(var(--color-heading-shadow)), 0.1em 0.1em 0 rgb(var(--color-heading-shadow)), 0.11em 0.11em 0 rgb(var(--color-heading-shadow)), 0.12em 0.12em 0 rgb(var(--color-heading-shadow)), 0.13em 0.13em 0 rgb(var(--color-heading-shadow));
+      --payment-terms-background-color: rgb(var(--color-scheme-background));
+
+      --color-button-background-hover: var(--color-scheme-text);
+      --color-button-text-hover: var(--color-scheme-text-contrast);
+      --color-button-border-hover: var(--color-scheme-text);
+      --color-button-secondary-text-hover: var(--color-scheme-text-contrast);
+      --color-button-secondary-background-hover: var(--color-scheme-text);
+    }
+
+    /*
+  Typography and spacing sizes
+  */
+    :root {
+      --base-font-size: 125.0%;
+      --base-line-height: 1.5;
+      --heading-line-height: 1.2;
+
+      --font-size-ratio-xs: 0.7491535;
+      --font-size-ratio-sm: 0.8908985;
+      --font-size-ratio-base: 1;
+      --font-size-ratio-lg: 1.33484;
+      --font-size-ratio-xl: 1.498307;
+      --font-size-ratio-2xl: 1.681793;
+      --font-size-ratio-3xl: 2;
+      --font-size-ratio-4xl: 2.66968;
+      --font-size-ratio-5xl: 2.996614;
+      --font-size-ratio-6xl: 3.563594;
+      --font-size-ratio-7xl: 4;
+      --font-size-ratio-8xl: 4.519842;
+      --font-size-ratio-9xl: 4.996614;
+      --font-size-ratio-10xl: 5.563594;
+
+      --font-size-xs: calc(var(--font-size-ratio-xs) * 1rem);
+      --font-size-sm: calc(var(--font-size-ratio-sm) * 1rem);
+      --font-size-base: calc(var(--font-size-ratio-base) * 1rem);
+      --font-size-lg: calc(var(--font-size-ratio-lg) * 1rem);
+      --font-size-xl: calc(var(--font-size-ratio-xl) * 1rem);
+      --font-size-2xl: calc(var(--font-size-ratio-2xl) * 1rem);
+      --font-size-3xl: calc(var(--font-size-ratio-3xl) * 1rem);
+      --font-size-4xl: calc(var(--font-size-ratio-4xl) * 1rem);
+      --font-size-5xl: calc(var(--font-size-ratio-5xl) * 1rem);
+      --font-size-6xl: calc(var(--font-size-ratio-6xl) * 1rem);
+      --font-size-7xl: calc(var(--font-size-ratio-7xl) * 1rem);
+      --font-size-8xl: calc(var(--font-size-ratio-8xl) * 1rem);
+      --font-size-9xl: calc(var(--font-size-ratio-9xl) * 1rem);
+      --font-size-10xl: calc(var(--font-size-ratio-10xl) * 1rem);
+
+      --type-scale-n-2: var(--font-size-xs);
+      --type-scale-n-1: var(--font-size-sm);
+      --type-scale-n0: var(--font-size-base);
+      --type-scale-n1: var(--font-size-lg);
+      --type-scale-n2: var(--font-size-xl);
+      --type-scale-n3: var(--font-size-2xl);
+      --type-scale-n4: var(--font-size-3xl);
+      --type-scale-n5: var(--font-size-4xl);
+      --type-scale-n6: var(--font-size-5xl);
+      --type-scale-n7: var(--font-size-6xl);
+      --type-scale-n8: var(--font-size-7xl);
+      --type-scale-n9: var(--font-size-8xl);
+      --type-scale-n10: var(--font-size-9xl);
+      --type-scale-n11: var(--font-size-10xl);
+
+      --standard-heading-size: var(--type-scale-n5);
+      --feature-heading-size: var(--type-scale-n6);
+      --secondary-heading-size: var(--type-scale-n0);
+
+      --section-vertical-spacing: 2rem;
+      --button-font-stack: var(--heading-font-stack);
+      --button-font-weight: var(--heading-font-weight);
+      --button-font-style: var(--heading-font-style);
+      --button-letter-spacing: var(--heading-letterspacing);
+    }
+
+    shopify-accelerated-checkout,
+    shopify-accelerated-checkout-cart {
+      --shopify-accelerated-checkout-button-box-shadow: none;
+    }
+
+    @media (min-width: 990px) {
+      :root {
+        --standard-heading-size: var(--type-scale-n7);
+        --feature-heading-size: var(--type-scale-n10);
+        --secondary-heading-size: var(--type-scale-n2);
+        --section-vertical-spacing: 4rem;
+        --section-x-padding: 2.5rem;
+        --grid-gap: 2.5rem;
+      }
+    }
+
+    .heading-standard {
+      font-size: var(--standard-heading-size);
+    }
+
+    .heading-feature {
+      font-size: var(--feature-heading-size);
+    }
+
+    .heading-secondary {
+      font-size: var(--secondary-heading-size);
+    }
+
+    /*
+  Rich Text Editor
+  */
+    :root,
+    [data-color-scheme] {
+      --rte-spacing: 1.25rem;
+      --rte-link-color: var(--color-scheme-text);
+      --rte-link-color-contrast: var(--color-scheme-background);
+      --rte-link-hover-color: var(--color-scheme-accent-1);
+      --rte-blockquote-background-color: var(--color-scheme-accent-1);
+      --rte-blockquote-text-color: var(--color-scheme-accent-1-contrast);
+      --rte-list-style-type: disc;
+      --underline-thickness: 2px;
+      --rte-link-decoration-style: wavy;
+    }
+
+    .rte a,
+    .inline-rte a {
+      text-decoration-line: underline;
+      text-decoration-style: var(--rte-link-decoration-style);
+      text-decoration-thickness: var(--underline-thickness);
+      color: rgb(var(--rte-link-color));
+    }
+
+    .rte a:hover,
+    .inline-rte a:hover {
+      color: rgb(var(--rte-link-hover-color));
+    }
+
+    .inline-heading-rte a {
+      text-decoration-line: underline;
+      text-decoration-style: var(--rte-link-decoration-style);
+      text-decoration-thickness: var(--underline-thickness);
+    }
+
+    .heading-effects a {
+      text-decoration-line: unset;
+      text-decoration-style: unset;
+      text-decoration-thickness: unset;
+    }
+
+
+    /*
+  Heading effects
+  */
+    :root {
+      --heading-highlight-start: 20%;
+      --heading-highlight-end: 90%;
+      --heading-highlight-opacity-0: rgba(255, 255, 255, 0);
+      --color-heading-highlight: rgba(var(--color-scheme-text), 1);
+      --color-heading-highlight-text: var(--color-scheme-text-contrast);
+      --heading-text-highlight: linear-gradient(180deg, var(--heading-highlight-opacity-0) var(--heading-highlight-start), var(--color-heading-highlight) var(--heading-highlight-start), var(--color-heading-highlight) var(--heading-highlight-end), var(--heading-highlight-opacity-0) var(--heading-highlight-end));
+    }
+
+
+    .heading-effects,
+    .heading-effects a {
+      color: rgb(var(--heading-color));
+      text-shadow: var(--heading-text-shadow);
+      -webkit-text-stroke: var(--heading-stroke-thickness) rgb(var(--color-heading-stroke));
+      text-stroke: var(--heading-stroke-thickness) rgb(var(--color-heading-stroke));
+      text-decoration: none;
+    }
+
+
+    /*
+  Cards
+  */
+    :root {}
+
+    .card::after {
+      -webkit-mask-image: var(--card-shadow-mask-image);
+      mask-image: var(--card-shadow-mask-image);
+      -webkit-mask-position: right top;
+      mask-position: right top;
+    }
+
+    /*
+  Media
+  */
+    .media--css-only::before,
+    .media__drop-shadow--shape {}
+
+
+    /*
+  Custom cursor
+  */
+  </style>
+  <style id="generated-critical-css">
+    .max-w-site {
+      max-width: var(--max-site-width)
+    }
+
+    .\[\&\:not\(\.is-initialized\)\]\:visible:not(.is-initialized) {
+      visibility: visible
+    }
+
+    @media (max-width:989px) {
+      .splide:not(.is-active) .max-lg\:\[\.splide\:not\(\.is-active\)_\&\]\:hidden {
+        display: none
+      }
+    }
+  </style>
+  <style id="manual-critical-css">
+    [x-cloak] {
+      display: none;
+    }
+
+    data-island {
+      display: block;
+    }
+
+    [data-parallax-container] {
+      will-change: opacity;
+      opacity: 0;
+      transition: opacity 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    .no-js [data-parallax-container],
+    [data-parallax-container].animated {
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion) {
+      [data-parallax-container] {
+        opacity: 1;
+      }
+    }
+  </style>
+
+
+
+  <link rel="preload" as="font"
+    href="//sousasupps.com/cdn/fonts/prompt/prompt_n7.b02601183b05e61fa7be166e9ccbe02488df9d4e.woff2" type="font/woff2"
+    crossorigin="">
+
+
+  <link rel="preload" as="font"
+    href="//sousasupps.com/cdn/fonts/inter/inter_n5.d7101d5e168594dd06f56f290dd759fba5431d97.woff2" type="font/woff2"
+    crossorigin="">
+
+
+
+  <!-- Custom Fonts =================================== -->
+  <link rel="stylesheet" href="https://use.typekit.net/gty5hvt.css">
+  <link href="//sousasupps.com/cdn/shop/t/6/assets/custom.css?v=154132806955525917781777391241" rel="stylesheet"
+    type="text/css" media="all">
+
+  <script src="https://runads.ai/pixel/runads-pixel.js" data-id="RA-t543vd9x" async=""></script>
+  <script src="//sousasupps.com/cdn/shop/t/6/assets/skio-cart-upsell.js?v=84723827590521379601776434437"
+    type="module"></script>
+  <!-- BEGIN app block: shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507 -->
+
+
+
+
+
+
+
+
+
+
+
+  <script async="" src="https://static.klaviyo.com/onsite/js/Xv4FPF/klaviyo.js?company_id=Xv4FPF"></script>
+  <script>!function () { if (!window.klaviyo) { window._klOnsite = window._klOnsite || []; try { window.klaviyo = new Proxy({}, { get: function (n, i) { return "push" === i ? function () { var n; (n = window._klOnsite).push.apply(n, arguments) } : function () { for (var n = arguments.length, o = new Array(n), w = 0; w < n; w++)o[w] = arguments[w]; var t = "function" == typeof o[o.length - 1] ? o.pop() : void 0, e = new Promise((function (n) { window._klOnsite.push([i].concat(o, [function (i) { t && t(i), n(i) }])) })); return e } } }) } catch (n) { window.klaviyo = window.klaviyo || [], window.klaviyo.push = function () { var n; (n = window._klOnsite).push.apply(n, arguments) } } } }();</script>
+  <script src="chrome-extension://oglffgiaiekgeicdgkdlnlkhliajdlja/injectScript.js"></script>
+
+
+
+
+
+
+  <script>
+    window.klaviyoReviewsProductDesignMode = false
+  </script>
+
+
+
+
+
+
+
+
+
+  <!-- END app block --><!-- BEGIN app block: shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8 --><!-- Start of Judge.me Core -->
+
+
+
+
+
+
+
+  <link rel="dns-prefetch" href="https://cdn.judge.me">
+  <link rel="dns-prefetch" href="https://cdn1.judge.me">
+  <link rel="dns-prefetch" href="https://api.judge.me">
+
+  <script data-cfasync="false"
+    class="jdgm-settings-script">window.jdgmSettings = { "pagination": 5, "disable_web_reviews": false, "badge_no_review_text": "No reviews", "badge_n_reviews_text": "{{ n }} review/reviews", "badge_star_color": "#037ECE", "hide_badge_preview_if_no_reviews": true, "badge_hide_text": false, "enforce_center_preview_badge": false, "widget_title": "Customer Reviews", "widget_open_form_text": "Write a review", "widget_close_form_text": "Cancel review", "widget_refresh_page_text": "Refresh page", "widget_summary_text": "Based on {{ number_of_reviews }} review/reviews", "widget_no_review_text": "Be the first to write a review", "widget_name_field_text": "Display name", "widget_verified_name_field_text": "Verified Name (public)", "widget_name_placeholder_text": "Display name", "widget_required_field_error_text": "This field is required.", "widget_email_field_text": "Email address", "widget_verified_email_field_text": "Verified Email (private, can not be edited)", "widget_email_placeholder_text": "Your email address", "widget_email_field_error_text": "Please enter a valid email address.", "widget_rating_field_text": "Rating", "widget_review_title_field_text": "Review Title", "widget_review_title_placeholder_text": "Give your review a title", "widget_review_body_field_text": "Review content", "widget_review_body_placeholder_text": "Start writing here...", "widget_pictures_field_text": "Picture/Video (optional)", "widget_submit_review_text": "Submit Review", "widget_submit_verified_review_text": "Submit Verified Review", "widget_submit_success_msg_with_auto_publish": "Thank you! Please refresh the page in a few moments to see your review. You can remove or edit your review by logging into \u003ca href='https://judge.me/login' target='_blank' rel='nofollow noopener'\u003eJudge.me\u003c/a\u003e", "widget_submit_success_msg_no_auto_publish": "Thank you! Your review will be published as soon as it is approved by the shop admin. You can remove or edit your review by logging into \u003ca href='https://judge.me/login' target='_blank' rel='nofollow noopener'\u003eJudge.me\u003c/a\u003e", "widget_show_default_reviews_out_of_total_text": "Showing {{ n_reviews_shown }} out of {{ n_reviews }} reviews.", "widget_show_all_link_text": "Show all", "widget_show_less_link_text": "Show less", "widget_author_said_text": "{{ reviewer_name }} said:", "widget_days_text": "{{ n }} days ago", "widget_weeks_text": "{{ n }} week/weeks ago", "widget_months_text": "{{ n }} month/months ago", "widget_years_text": "{{ n }} year/years ago", "widget_yesterday_text": "Yesterday", "widget_today_text": "Today", "widget_replied_text": "\u003e\u003e {{ shop_name }} replied:", "widget_read_more_text": "Read more", "widget_reviewer_name_as_initial": "first_name_only", "widget_rating_filter_color": "#037ECE", "widget_rating_filter_see_all_text": "See all reviews", "widget_sorting_most_recent_text": "Most Recent", "widget_sorting_highest_rating_text": "Highest Rating", "widget_sorting_lowest_rating_text": "Lowest Rating", "widget_sorting_with_pictures_text": "Only Pictures", "widget_sorting_most_helpful_text": "Most Helpful", "widget_open_question_form_text": "Ask a question", "widget_reviews_subtab_text": "Reviews", "widget_questions_subtab_text": "Questions", "widget_question_label_text": "Question", "widget_answer_label_text": "Answer", "widget_question_placeholder_text": "Write your question here", "widget_submit_question_text": "Submit Question", "widget_question_submit_success_text": "Thank you for your question! We will notify you once it gets answered.", "widget_star_color": "#037ECE", "verified_badge_text": "Verified", "verified_badge_bg_color": "", "verified_badge_text_color": "", "verified_badge_placement": "left-of-reviewer-name", "widget_review_max_height": "", "widget_hide_border": false, "widget_social_share": false, "widget_thumb": true, "widget_review_location_show": false, "widget_location_format": "", "all_reviews_include_out_of_store_products": true, "all_reviews_out_of_store_text": "(out of store)", "all_reviews_pagination": 100, "all_reviews_product_name_prefix_text": "about", "enable_review_pictures": false, "enable_question_anwser": false, "widget_theme": "carousel", "review_date_format": "mm/dd/yyyy", "default_sort_method": "most-recent", "widget_product_reviews_subtab_text": "Product Reviews", "widget_shop_reviews_subtab_text": "Shop Reviews", "widget_other_products_reviews_text": "Reviews for other products", "widget_store_reviews_subtab_text": "Store reviews", "widget_product_variant_reference_text": "Review for", "widget_no_store_reviews_text": "This store hasn't received any reviews yet", "widget_web_restriction_product_reviews_text": "This product hasn't received any reviews yet", "widget_no_items_text": "No items found", "widget_show_more_text": "Show more", "widget_write_a_store_review_text": "Write a Store Review", "widget_product_and_store_reviews_text": "Product and store reviews", "widget_reviews_in_collection_text": "Reviews in this collection", "widget_other_languages_heading": "Reviews in Other Languages", "widget_translate_review_text": "Translate review to {{ language }}", "widget_translating_review_text": "Translating...", "widget_show_original_translation_text": "Show original ({{ language }})", "widget_translate_review_failed_text": "Review couldn't be translated.", "widget_translate_review_retry_text": "Retry", "widget_translate_review_try_again_later_text": "Try again later", "show_product_url_for_grouped_product": false, "widget_sorting_pictures_first_text": "Pictures First", "show_pictures_on_all_rev_page_mobile": false, "show_pictures_on_all_rev_page_desktop": false, "floating_tab_hide_mobile_install_preference": false, "floating_tab_button_name": "★ Reviews", "floating_tab_title": "Let customers speak for us", "floating_tab_button_color": "", "floating_tab_button_background_color": "", "floating_tab_url": "", "floating_tab_url_enabled": false, "floating_tab_tab_style": "text", "all_reviews_text_badge_text": "Customers rate us {{ shop.metafields.judgeme.all_reviews_rating | round: 1 }}/5 based on {{ shop.metafields.judgeme.all_reviews_count }} reviews.", "all_reviews_text_badge_text_branded_style": "{{ shop.metafields.judgeme.all_reviews_rating | round: 1 }} out of 5 stars based on {{ shop.metafields.judgeme.all_reviews_count }} reviews", "is_all_reviews_text_badge_a_link": false, "show_stars_for_all_reviews_text_badge": false, "all_reviews_text_badge_url": "", "all_reviews_text_style": "branded", "all_reviews_text_color_style": "judgeme_brand_color", "all_reviews_text_color": "#108474", "all_reviews_text_show_jm_brand": false, "featured_carousel_show_header": true, "featured_carousel_title": "Let customers speak for us", "testimonials_carousel_title": "Customers are saying", "videos_carousel_title": "Real customer stories", "cards_carousel_title": "Customers are saying", "featured_carousel_count_text": "from {{ n }} reviews", "featured_carousel_add_link_to_all_reviews_page": false, "featured_carousel_url": "", "featured_carousel_show_images": true, "featured_carousel_autoslide_interval": 5, "featured_carousel_arrows_on_the_sides": false, "featured_carousel_height": 250, "featured_carousel_width": 80, "featured_carousel_image_size": 0, "featured_carousel_image_height": 250, "featured_carousel_arrow_color": "#eeeeee", "verified_count_badge_style": "branded", "verified_count_badge_orientation": "horizontal", "verified_count_badge_color_style": "judgeme_brand_color", "verified_count_badge_color": "#108474", "is_verified_count_badge_a_link": false, "verified_count_badge_url": "", "verified_count_badge_show_jm_brand": true, "widget_rating_preset_default": 5, "widget_first_sub_tab": "product-reviews", "widget_show_histogram": true, "widget_histogram_use_custom_color": true, "widget_pagination_use_custom_color": true, "widget_star_use_custom_color": false, "widget_verified_badge_use_custom_color": false, "widget_write_review_use_custom_color": false, "picture_reminder_submit_button": "Upload Pictures", "enable_review_videos": false, "mute_video_by_default": false, "widget_sorting_videos_first_text": "Videos First", "widget_review_pending_text": "Pending", "featured_carousel_items_for_large_screen": 3, "social_share_options_order": "Facebook,Twitter", "remove_microdata_snippet": true, "disable_json_ld": false, "enable_json_ld_products": false, "preview_badge_show_question_text": false, "preview_badge_no_question_text": "No questions", "preview_badge_n_question_text": "{{ number_of_questions }} question/questions", "qa_badge_show_icon": false, "qa_badge_position": "same-row", "remove_judgeme_branding": true, "widget_add_search_bar": false, "widget_search_bar_placeholder": "Search", "widget_sorting_verified_only_text": "Verified only", "featured_carousel_theme": "default", "featured_carousel_show_rating": true, "featured_carousel_show_title": true, "featured_carousel_show_body": true, "featured_carousel_show_date": false, "featured_carousel_show_reviewer": true, "featured_carousel_show_product": false, "featured_carousel_header_background_color": "#108474", "featured_carousel_header_text_color": "#ffffff", "featured_carousel_name_product_separator": "reviewed", "featured_carousel_full_star_background": "#108474", "featured_carousel_empty_star_background": "#dadada", "featured_carousel_vertical_theme_background": "#f9fafb", "featured_carousel_verified_badge_enable": true, "featured_carousel_verified_badge_color": "#108474", "featured_carousel_border_style": "round", "featured_carousel_review_line_length_limit": 3, "featured_carousel_more_reviews_button_text": "Read more reviews", "featured_carousel_view_product_button_text": "View product", "all_reviews_page_load_reviews_on": "scroll", "all_reviews_page_load_more_text": "Load More Reviews", "disable_fb_tab_reviews": false, "enable_ajax_cdn_cache": false, "widget_advanced_speed_features": 5, "widget_public_name_text": "displayed publicly like", "default_reviewer_name": "John Smith", "default_reviewer_name_has_non_latin": true, "widget_reviewer_anonymous": "Anonymous", "medals_widget_title": "Judge.me Review Medals", "medals_widget_background_color": "#f9fafb", "medals_widget_position": "footer_all_pages", "medals_widget_border_color": "#f9fafb", "medals_widget_verified_text_position": "left", "medals_widget_use_monochromatic_version": false, "medals_widget_elements_color": "#108474", "show_reviewer_avatar": false, "widget_invalid_yt_video_url_error_text": "Not a YouTube video URL", "widget_max_length_field_error_text": "Please enter no more than {0} characters.", "widget_show_country_flag": false, "widget_show_collected_via_shop_app": true, "widget_verified_by_shop_badge_style": "light", "widget_verified_by_shop_text": "Verified by Shop", "widget_show_photo_gallery": true, "widget_load_with_code_splitting": true, "widget_ugc_install_preference": false, "widget_ugc_title": "Made by us, Shared by you", "widget_ugc_subtitle": "Tag us to see your picture featured in our page", "widget_ugc_arrows_color": "#ffffff", "widget_ugc_primary_button_text": "Buy Now", "widget_ugc_primary_button_background_color": "#108474", "widget_ugc_primary_button_text_color": "#ffffff", "widget_ugc_primary_button_border_width": "0", "widget_ugc_primary_button_border_style": "none", "widget_ugc_primary_button_border_color": "#108474", "widget_ugc_primary_button_border_radius": "25", "widget_ugc_secondary_button_text": "Load More", "widget_ugc_secondary_button_background_color": "#ffffff", "widget_ugc_secondary_button_text_color": "#108474", "widget_ugc_secondary_button_border_width": "2", "widget_ugc_secondary_button_border_style": "solid", "widget_ugc_secondary_button_border_color": "#108474", "widget_ugc_secondary_button_border_radius": "25", "widget_ugc_reviews_button_text": "View Reviews", "widget_ugc_reviews_button_background_color": "#ffffff", "widget_ugc_reviews_button_text_color": "#108474", "widget_ugc_reviews_button_border_width": "2", "widget_ugc_reviews_button_border_style": "solid", "widget_ugc_reviews_button_border_color": "#108474", "widget_ugc_reviews_button_border_radius": "25", "widget_ugc_reviews_button_link_to": "judgeme-reviews-page", "widget_ugc_show_post_date": true, "widget_ugc_max_width": "800", "widget_rating_metafield_value_type": true, "widget_primary_color": "#108474", "widget_enable_secondary_color": false, "widget_secondary_color": "#edf5f5", "widget_summary_average_rating_text": "{{ average_rating }} out of 5", "widget_media_grid_title": "Customer photos \u0026 videos", "widget_media_grid_see_more_text": "See more", "widget_round_style": true, "widget_show_product_medals": true, "widget_verified_by_judgeme_text": "Verified by Judge.me", "widget_show_store_medals": true, "widget_verified_by_judgeme_text_in_store_medals": "Verified by Judge.me", "widget_media_field_exceed_quantity_message": "Sorry, we can only accept {{ max_media }} for one review.", "widget_media_field_exceed_limit_message": "{{ file_name }} is too large, please select a {{ media_type }} less than {{ size_limit }}MB.", "widget_review_submitted_text": "Review Submitted!", "widget_question_submitted_text": "Question Submitted!", "widget_close_form_text_question": "Cancel", "widget_write_your_answer_here_text": "Write your answer here", "widget_enabled_branded_link": true, "widget_show_collected_by_judgeme": false, "widget_reviewer_name_color": "", "widget_write_review_text_color": "", "widget_write_review_bg_color": "#5D2214", "widget_collected_by_judgeme_text": "collected by Judge.me", "widget_pagination_type": "standard", "widget_load_more_text": "Load More", "widget_load_more_color": "#037ECE", "widget_full_review_text": "Full Review", "widget_read_more_reviews_text": "Read More Reviews", "widget_read_questions_text": "Read Questions", "widget_questions_and_answers_text": "Questions \u0026 Answers", "widget_verified_by_text": "Verified by", "widget_verified_text": "Verified", "widget_number_of_reviews_text": "{{ number_of_reviews }} reviews", "widget_back_button_text": "Back", "widget_next_button_text": "Next", "widget_custom_forms_filter_button": "Filters", "custom_forms_style": "horizontal", "widget_show_review_information": false, "how_reviews_are_collected": "How reviews are collected?", "widget_show_review_keywords": false, "widget_gdpr_statement": "How we use your data: We'll only contact you about the review you left, and only if necessary. By submitting your review, you agree to Judge.me's \u003ca href='https://judge.me/terms' target='_blank' rel='nofollow noopener'\u003eterms\u003c/a\u003e, \u003ca href='https://judge.me/privacy' target='_blank' rel='nofollow noopener'\u003eprivacy\u003c/a\u003e and \u003ca href='https://judge.me/content-policy' target='_blank' rel='nofollow noopener'\u003econtent\u003c/a\u003e policies.", "widget_multilingual_sorting_enabled": false, "widget_translate_review_content_enabled": false, "widget_translate_review_content_method": "manual", "popup_widget_review_selection": "automatically_with_pictures", "popup_widget_round_border_style": true, "popup_widget_show_title": true, "popup_widget_show_body": true, "popup_widget_show_reviewer": false, "popup_widget_show_product": true, "popup_widget_show_pictures": true, "popup_widget_use_review_picture": true, "popup_widget_show_on_home_page": true, "popup_widget_show_on_product_page": true, "popup_widget_show_on_collection_page": true, "popup_widget_show_on_cart_page": true, "popup_widget_position": "bottom_left", "popup_widget_first_review_delay": 5, "popup_widget_duration": 5, "popup_widget_interval": 5, "popup_widget_review_count": 5, "popup_widget_hide_on_mobile": true, "review_snippet_widget_round_border_style": true, "review_snippet_widget_card_color": "#FFFFFF", "review_snippet_widget_slider_arrows_background_color": "#FFFFFF", "review_snippet_widget_slider_arrows_color": "#000000", "review_snippet_widget_star_color": "#108474", "show_product_variant": true, "all_reviews_product_variant_label_text": "Variant: ", "widget_show_verified_branding": true, "widget_ai_summary_title": "Customers say", "widget_ai_summary_disclaimer": "AI-powered review summary based on recent customer reviews", "widget_show_ai_summary": false, "widget_show_ai_summary_bg": false, "write_review_button_visibility": "everyone", "store_summary_widget_heading": "Customers rate this store", "store_summary_widget_button_text": "View customer reviews", "store_summary_widget_button_theme_text": "See AI reviews summary", "widget_show_review_title_input": false, "redirect_reviewers_invited_via_email": "external_form", "request_store_review_after_product_review": false, "request_review_other_products_in_order": true, "review_form_color_scheme": "custom", "review_form_corner_style": "extra_round", "review_form_star_color": "#037ECE", "review_form_text_color": "#000000", "review_form_background_color": "#FFF7E4", "review_form_field_background_color": "#fafafa", "review_form_button_color": "#037ECE", "review_form_button_text_color": "#ffffff", "review_form_modal_overlay_color": "#000000", "review_content_screen_title_text": "How would you rate this product?", "review_content_introduction_text": "Help spread the word about Sousa!", "store_review_form_title_text": "How would you rate this store?", "store_review_form_introduction_text": "We would love it if you would share a bit about your experience.", "show_review_guidance_text": true, "one_star_review_guidance_text": "Poor", "five_star_review_guidance_text": "Great", "customer_information_screen_title_text": "About you", "customer_information_introduction_text": "Please tell us more about you.", "custom_questions_screen_title_text": "Your experience in more detail", "custom_questions_introduction_text": "Here are a few questions to help us understand more about your experience.", "review_submitted_screen_title_text": "Thanks for your review!", "review_submitted_screen_thank_you_text": "We are processing it and it will appear on the store soon.", "review_submitted_screen_email_verification_text": "Please confirm your email by clicking the link we just sent you. This helps us keep reviews authentic.", "confirm_email_screen_title_text": "Confirm your email", "confirm_email_screen_message_text": "To help keep reviews authentic, we'll send you a secure link to continue writing your review. It only takes a moment.", "check_email_screen_title_text": "Check your email", "check_email_screen_message_text": "We sent you an email to {{ email }}. Click the button on the email to continue.", "check_email_screen_resend_message_text": "Email resent!", "check_email_resend_hint_text": "Didn't get the email? Check your spam folder or [resend the email].", "verification_email_rate_limit_error_text": "You've reached the limit for review attempts on this product. Please check your inbox or try again later.", "review_submitted_request_store_review_text": "Would you like to share your experience of shopping with us?", "review_submitted_review_other_products_text": "Would you like to review these products?", "store_review_screen_title_text": "Would you like to share your experience of shopping with us?", "store_review_introduction_text": "We value your feedback and use it to improve. Please share any thoughts or suggestions you have.", "reviewer_media_screen_title_picture_text": "Share a picture", "reviewer_media_introduction_picture_text": "Upload a photo to support your review.", "reviewer_media_screen_title_video_text": "Share a video", "reviewer_media_introduction_video_text": "Upload a video to support your review.", "reviewer_media_screen_title_picture_or_video_text": "Share a picture or video", "reviewer_media_introduction_picture_or_video_text": "Upload a photo or video to support your review.", "reviewer_media_youtube_url_text": "Paste your Youtube URL here", "advanced_settings_next_step_button_text": "Next", "advanced_settings_close_review_button_text": "Close", "modal_write_review_flow": true, "write_review_flow_required_text": "Required", "write_review_flow_privacy_message_text": "We respect your privacy.", "write_review_flow_anonymous_text": "Post review as anonymous", "write_review_flow_visibility_text": "This won't be visible to other customers.", "write_review_flow_multiple_selection_help_text": "Select as many as you like", "write_review_flow_single_selection_help_text": "Select one option", "write_review_flow_required_field_error_text": "This field is required", "write_review_flow_invalid_email_error_text": "Please enter a valid email address", "write_review_flow_max_length_error_text": "Max. {{ max_length }} characters.", "write_review_flow_media_upload_text": "\u003cb\u003eClick to upload\u003c/b\u003e or drag and drop", "write_review_flow_gdpr_statement": "We'll only contact you about your review if necessary. By submitting your review, you agree to our \u003ca href='https://judge.me/terms' target='_blank' rel='nofollow noopener'\u003eterms and conditions\u003c/a\u003e and \u003ca href='https://judge.me/privacy' target='_blank' rel='nofollow noopener'\u003eprivacy policy\u003c/a\u003e.", "rating_only_reviews_enabled": true, "show_negative_reviews_help_screen": false, "new_review_flow_help_screen_rating_threshold": 3, "negative_review_resolution_screen_title_text": "Tell us more", "negative_review_resolution_text": "Your experience matters to us. If there were issues with your purchase, we're here to help. Feel free to reach out to us, we'd love the opportunity to make things right.", "negative_review_resolution_button_text": "Contact us", "negative_review_resolution_proceed_with_review_text": "Leave a review", "negative_review_resolution_subject": "Issue with purchase from {{ shop_name }}.{{ order_name }}", "preview_badge_collection_page_install_status": false, "widget_review_custom_css": "", "preview_badge_custom_css": "", "preview_badge_stars_count": "5-stars", "featured_carousel_custom_css": "", "floating_tab_custom_css": "", "all_reviews_widget_custom_css": "", "medals_widget_custom_css": "", "verified_badge_custom_css": "", "all_reviews_text_custom_css": "", "transparency_badges_collected_via_store_invite": false, "transparency_badges_from_another_provider": false, "transparency_badges_collected_from_store_visitor": false, "transparency_badges_collected_by_verified_review_provider": false, "transparency_badges_earned_reward": false, "transparency_badges_collected_via_store_invite_text": "Review collected via store invitation", "transparency_badges_from_another_provider_text": "Review collected from another provider", "transparency_badges_collected_from_store_visitor_text": "Review collected from a store visitor", "transparency_badges_written_in_google_text": "Review written in Google", "transparency_badges_written_in_etsy_text": "Review written in Etsy", "transparency_badges_written_in_shop_app_text": "Review written in Shop App", "transparency_badges_earned_reward_text": "Review earned a reward for future purchase", "product_review_widget_per_page": 3, "widget_store_review_label_text": "Review about the store", "checkout_comment_extension_title_on_product_page": "Customer Comments", "checkout_comment_extension_num_latest_comment_show": 5, "checkout_comment_extension_format": "name_and_timestamp", "checkout_comment_customer_name": "last_initial", "checkout_comment_comment_notification": true, "preview_badge_collection_page_install_preference": false, "preview_badge_home_page_install_preference": false, "preview_badge_product_page_install_preference": false, "review_widget_install_preference": "", "review_carousel_install_preference": false, "floating_reviews_tab_install_preference": "none", "verified_reviews_count_badge_install_preference": false, "all_reviews_text_install_preference": false, "review_widget_best_location": false, "judgeme_medals_install_preference": false, "review_widget_revamp_enabled": true, "review_widget_qna_enabled": false, "review_widget_revamp_dual_publish_end_date": "2025-12-31T16:16:45.000+00:00", "review_widget_header_theme": "standard", "review_widget_widget_title_enabled": false, "review_widget_header_text_size": "small", "review_widget_header_text_weight": "regular", "review_widget_average_rating_style": "stars_only", "review_widget_bar_chart_enabled": true, "review_widget_bar_chart_type": "stars", "review_widget_bar_chart_style": "standard", "review_widget_expanded_media_gallery_enabled": true, "review_widget_show_review_highlights": false, "review_widget_show_review_keywords_in_gray": false, "review_widget_reviews_section_theme": "standard", "review_widget_image_style": "highlight", "review_widget_review_image_ratio": "square", "review_widget_stars_size": "medium", "review_widget_verified_badge": "standard_text", "review_widget_review_title_text_size": "medium", "review_widget_review_text_size": "medium", "review_widget_review_text_length": "medium", "review_widget_number_of_columns_desktop": 3, "review_widget_carousel_transition_speed": 5, "review_widget_custom_questions_answers_display": "always", "review_widget_card_section_size": "small", "review_widget_star_and_histogram_color": "#037ECE", "review_widget_button_color": "#5D2214", "review_widget_button_text_color": "#FFFFFF", "review_widget_text_color": "#000000", "review_widget_lighter_text_color": "#7B7B7B", "review_widget_corner_styling": "extra_round", "review_widget_review_word_singular": "review", "review_widget_review_word_plural": "reviews", "review_widget_voting_label": "Helpful?", "review_widget_shop_reply_label": "Reply from {{ shop_name }}:", "review_widget_filters_title": "Filters", "review_widget_filter_rating_title": "Rating", "review_widget_filter_keyword_title": "Keyword", "review_widget_clear_filters_text": "Clear filters", "review_widget_expand_more_text": "More", "review_widget_review_highlights_title": "Review highlights", "qna_widget_question_word_singular": "Question", "qna_widget_question_word_plural": "Questions", "qna_widget_answer_reply_label": "Answer from {{ answerer_name }}:", "qna_content_screen_title_text": "Ask a question about this product", "qna_widget_question_required_field_error_text": "Please enter your question.", "qna_widget_flow_gdpr_statement": "We'll only contact you about your question if necessary. By submitting your question, you agree to our \u003ca href='https://judge.me/terms' target='_blank' rel='nofollow noopener'\u003eterms and conditions\u003c/a\u003e and \u003ca href='https://judge.me/privacy' target='_blank' rel='nofollow noopener'\u003eprivacy policy\u003c/a\u003e.", "qna_widget_question_submitted_text": "Thanks for your question!", "qna_widget_close_form_text_question": "Close", "qna_widget_question_submit_success_text": "We’ll notify you by email when your question is answered.", "all_reviews_widget_v2025_enabled": false, "all_reviews_widget_v2025_header_theme": "default", "all_reviews_widget_v2025_widget_title_enabled": true, "all_reviews_widget_v2025_header_text_size": "medium", "all_reviews_widget_v2025_header_text_weight": "regular", "all_reviews_widget_v2025_average_rating_style": "compact", "all_reviews_widget_v2025_bar_chart_enabled": true, "all_reviews_widget_v2025_bar_chart_type": "numbers", "all_reviews_widget_v2025_bar_chart_style": "standard", "all_reviews_widget_v2025_expanded_media_gallery_enabled": false, "all_reviews_widget_v2025_show_store_medals": true, "all_reviews_widget_v2025_show_photo_gallery": true, "all_reviews_widget_v2025_show_review_keywords": false, "all_reviews_widget_v2025_show_ai_summary": false, "all_reviews_widget_v2025_show_ai_summary_bg": false, "all_reviews_widget_v2025_show_review_highlights": false, "all_reviews_widget_v2025_show_review_keywords_in_gray": false, "all_reviews_widget_v2025_add_search_bar": false, "all_reviews_widget_v2025_default_sort_method": "most-recent", "all_reviews_widget_v2025_reviews_per_page": 10, "all_reviews_widget_v2025_reviews_section_theme": "default", "all_reviews_widget_v2025_image_style": "thumbnails", "all_reviews_widget_v2025_review_image_ratio": "square", "all_reviews_widget_v2025_stars_size": "medium", "all_reviews_widget_v2025_verified_badge": "standard_text", "all_reviews_widget_v2025_review_title_text_size": "medium", "all_reviews_widget_v2025_review_text_size": "medium", "all_reviews_widget_v2025_review_text_length": "medium", "all_reviews_widget_v2025_number_of_columns_desktop": 3, "all_reviews_widget_v2025_carousel_transition_speed": 5, "all_reviews_widget_v2025_custom_questions_answers_display": "always", "all_reviews_widget_v2025_review_dates": false, "all_reviews_widget_v2025_card_section_size": "small", "all_reviews_widget_v2025_show_product_variant": false, "all_reviews_widget_v2025_show_reviewer_avatar": true, "all_reviews_widget_v2025_reviewer_name_as_initial": "", "all_reviews_widget_v2025_review_location_show": false, "all_reviews_widget_v2025_location_format": "", "all_reviews_widget_v2025_show_country_flag": false, "all_reviews_widget_v2025_widget_thumb": false, "all_reviews_widget_v2025_verified_by_shop_badge_style": "light", "all_reviews_widget_v2025_social_share": false, "all_reviews_widget_v2025_social_share_options_order": "Facebook,Twitter,LinkedIn,Pinterest", "all_reviews_widget_v2025_pagination_type": "standard", "all_reviews_widget_v2025_button_text_color": "#FFFFFF", "all_reviews_widget_v2025_text_color": "#000000", "all_reviews_widget_v2025_lighter_text_color": "#7B7B7B", "all_reviews_widget_v2025_corner_styling": "soft", "all_reviews_widget_v2025_title": "Customer reviews", "all_reviews_widget_v2025_ai_summary_title": "Customers say about this store", "all_reviews_widget_v2025_no_review_text": "Be the first to write a review", "all_reviews_widget_v2025_review_highlights_title": "Review highlights", "reviews_grid_widget_show_sample_reviews": false, "reviews_grid_widget_review_selection": "all", "reviews_grid_widget_select_products": [], "reviews_grid_widget_show_media_only": false, "reviews_grid_widget_display_order": "media_first", "reviews_grid_widget_columns_desktop": 3, "reviews_grid_widget_rows_desktop": 3, "reviews_grid_widget_columns_mobile": 2, "reviews_grid_widget_rows_mobile": 6, "reviews_grid_widget_show_stars": true, "reviews_grid_widget_show_reviewer_name": true, "reviews_grid_widget_show_review_title_on_hover_desktop": true, "reviews_grid_widget_corner_styling": "soft", "reviews_grid_widget_card_spacing": "medium", "reviews_grid_widget_header_text_color": "#000000", "reviews_grid_widget_star_and_reviewer_name_color": "#F9F9F9", "reviews_grid_widget_overlay_and_background_color": "#000000", "reviews_grid_widget_content_color": "#F9F9F9", "reviews_grid_widget_header_text": "From our customers", "reviews_grid_widget_show_average_rating": true, "platform": "shopify", "branding_url": "https://app.judge.me/reviews", "branding_text": "Powered by Judge.me", "locale": "en", "reply_name": "Sousa", "widget_version": "3.0", "footer": true, "autopublish": false, "review_dates": true, "enable_custom_form": false, "shop_locale": "en", "enable_multi_locales_translations": false, "show_review_title_input": false, "review_verification_email_status": "always", "require_verification_before_submit": false, "customer_account_validation_enabled": true, "can_be_branded": true, "reply_name_text": "the Sousa team" };</script>
+  <style class="jdgm-settings-style">
+    .jdgm-xx {
+      left: 0
+    }
+
+    :root {
+      --jdgm-primary-color: #108474;
+      --jdgm-secondary-color: rgba(16, 132, 116, 0.1);
+      --jdgm-star-color: #037ECE;
+      --jdgm-write-review-text-color: white;
+      --jdgm-write-review-bg-color: #5D2214;
+      --jdgm-paginate-color: #037ECE;
+      --jdgm-border-radius: 10;
+      --jdgm-reviewer-name-color: #108474
+    }
+
+    .jdgm-histogram__bar-content {
+      background-color: #037ECE
+    }
+
+    .jdgm-rev[data-verified-buyer=true] .jdgm-rev__icon.jdgm-rev__icon:after,
+    .jdgm-rev__buyer-badge.jdgm-rev__buyer-badge {
+      color: white;
+      background-color: #108474
+    }
+
+    .jdgm-review-widget--small .jdgm-gallery.jdgm-gallery .jdgm-gallery__thumbnail-link:nth-child(8) .jdgm-gallery__thumbnail-wrapper.jdgm-gallery__thumbnail-wrapper:before {
+      content: "See more"
+    }
+
+    @media only screen and (min-width: 768px) {
+      .jdgm-gallery.jdgm-gallery .jdgm-gallery__thumbnail-link:nth-child(8) .jdgm-gallery__thumbnail-wrapper.jdgm-gallery__thumbnail-wrapper:before {
+        content: "See more"
+      }
+    }
+
+    .jdgm-rev__thumb-btn {
+      color: #108474
+    }
+
+    .jdgm-rev__thumb-btn:hover {
+      opacity: 0.8
+    }
+
+    .jdgm-rev__thumb-btn:not([disabled]):hover,
+    .jdgm-rev__thumb-btn:hover,
+    .jdgm-rev__thumb-btn:active,
+    .jdgm-rev__thumb-btn:visited {
+      color: #108474
+    }
+
+    .jdgm-preview-badge .jdgm-star.jdgm-star {
+      color: #037ECE
+    }
+
+    .jdgm-prev-badge[data-average-rating='0.00'] {
+      display: none !important
+    }
+
+    .jdgm-rev .jdgm-rev__icon {
+      display: none !important
+    }
+
+    .jdgm-author-fullname {
+      display: none !important
+    }
+
+    .jdgm-author-all-initials {
+      display: none !important
+    }
+
+    .jdgm-author-last-initial {
+      display: none !important
+    }
+
+    .jdgm-rev-widg__title {
+      visibility: hidden
+    }
+
+    .jdgm-rev-widg__summary-text {
+      visibility: hidden
+    }
+
+    .jdgm-prev-badge__text {
+      visibility: hidden
+    }
+
+    .jdgm-rev__prod-link-prefix:before {
+      content: 'about'
+    }
+
+    .jdgm-rev__variant-label:before {
+      content: 'Variant: '
+    }
+
+    .jdgm-rev__out-of-store-text:before {
+      content: '(out of store)'
+    }
+
+    @media only screen and (min-width: 768px) {
+
+      .jdgm-rev__pics .jdgm-rev_all-rev-page-picture-separator,
+      .jdgm-rev__pics .jdgm-rev__product-picture {
+        display: none
+      }
+    }
+
+    @media only screen and (max-width: 768px) {
+
+      .jdgm-rev__pics .jdgm-rev_all-rev-page-picture-separator,
+      .jdgm-rev__pics .jdgm-rev__product-picture {
+        display: none
+      }
+    }
+
+    .jdgm-preview-badge[data-template="product"] {
+      display: none !important
+    }
+
+    .jdgm-preview-badge[data-template="collection"] {
+      display: none !important
+    }
+
+    .jdgm-preview-badge[data-template="index"] {
+      display: none !important
+    }
+
+    .jdgm-review-widget[data-from-snippet="true"] {
+      display: none !important
+    }
+
+    .jdgm-verified-count-badget[data-from-snippet="true"] {
+      display: none !important
+    }
+
+    .jdgm-carousel-wrapper[data-from-snippet="true"] {
+      display: none !important
+    }
+
+    .jdgm-all-reviews-text[data-from-snippet="true"] {
+      display: none !important
+    }
+
+    .jdgm-medals-section[data-from-snippet="true"] {
+      display: none !important
+    }
+
+    .jdgm-ugc-media-wrapper[data-from-snippet="true"] {
+      display: none !important
+    }
+
+    .jdgm-rev__transparency-badge[data-badge-type="review_collected_via_store_invitation"] {
+      display: none !important
+    }
+
+    .jdgm-rev__transparency-badge[data-badge-type="review_collected_from_another_provider"] {
+      display: none !important
+    }
+
+    .jdgm-rev__transparency-badge[data-badge-type="review_collected_from_store_visitor"] {
+      display: none !important
+    }
+
+    .jdgm-rev__transparency-badge[data-badge-type="review_written_in_etsy"] {
+      display: none !important
+    }
+
+    .jdgm-rev__transparency-badge[data-badge-type="review_written_in_google_business"] {
+      display: none !important
+    }
+
+    .jdgm-rev__transparency-badge[data-badge-type="review_written_in_shop_app"] {
+      display: none !important
+    }
+
+    .jdgm-rev__transparency-badge[data-badge-type="review_earned_for_future_purchase"] {
+      display: none !important
+    }
+
+    .jdgm-review-snippet-widget .jdgm-rev-snippet-widget__cards-container .jdgm-rev-snippet-card {
+      border-radius: 8px;
+      background: #fff
+    }
+
+    .jdgm-review-snippet-widget .jdgm-rev-snippet-widget__cards-container .jdgm-rev-snippet-card__rev-rating .jdgm-star {
+      color: #108474
+    }
+
+    .jdgm-review-snippet-widget .jdgm-rev-snippet-widget__prev-btn,
+    .jdgm-review-snippet-widget .jdgm-rev-snippet-widget__next-btn {
+      border-radius: 50%;
+      background: #fff
+    }
+
+    .jdgm-review-snippet-widget .jdgm-rev-snippet-widget__prev-btn>svg,
+    .jdgm-review-snippet-widget .jdgm-rev-snippet-widget__next-btn>svg {
+      fill: #000
+    }
+
+    .jdgm-full-rev-modal.rev-snippet-widget .jm-mfp-container .jm-mfp-content,
+    .jdgm-full-rev-modal.rev-snippet-widget .jm-mfp-container .jdgm-full-rev__icon,
+    .jdgm-full-rev-modal.rev-snippet-widget .jm-mfp-container .jdgm-full-rev__pic-img,
+    .jdgm-full-rev-modal.rev-snippet-widget .jm-mfp-container .jdgm-full-rev__reply {
+      border-radius: 8px
+    }
+
+    .jdgm-full-rev-modal.rev-snippet-widget .jm-mfp-container .jdgm-full-rev[data-verified-buyer="true"] .jdgm-full-rev__icon::after {
+      border-radius: 8px
+    }
+
+    .jdgm-full-rev-modal.rev-snippet-widget .jm-mfp-container .jdgm-full-rev .jdgm-rev__buyer-badge {
+      border-radius: calc(8px / 2)
+    }
+
+    .jdgm-full-rev-modal.rev-snippet-widget .jm-mfp-container .jdgm-full-rev .jdgm-full-rev__replier::before {
+      content: 'Sousa'
+    }
+
+    .jdgm-full-rev-modal.rev-snippet-widget .jm-mfp-container .jdgm-full-rev .jdgm-full-rev__product-button {
+      border-radius: calc(8px * 6)
+    }
+  </style>
+  <style class="jdgm-settings-style"></style>
+
+
+
+
+  <style class="jdgm-miracle-styles">
+    @-webkit-keyframes jdgm-spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg)
+      }
+
+      100% {
+        -webkit-transform: rotate(359deg);
+        -ms-transform: rotate(359deg);
+        transform: rotate(359deg)
+      }
+    }
+
+    @keyframes jdgm-spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg)
+      }
+
+      100% {
+        -webkit-transform: rotate(359deg);
+        -ms-transform: rotate(359deg);
+        transform: rotate(359deg)
+      }
+    }
+
+    @font-face {
+      font-family: 'JudgemeStar';
+      src: url("data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAScAA0AAAAABrAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAAEgAAAABoAAAAcbyQ+3kdERUYAAARgAAAAHgAAACAAMwAGT1MvMgAAAZgAAABGAAAAVi+vS9xjbWFwAAAB8AAAAEAAAAFKwBMjvmdhc3AAAARYAAAACAAAAAj//wADZ2x5ZgAAAkAAAAEJAAABdH33LXtoZWFkAAABMAAAAC0AAAA2BroQKWhoZWEAAAFgAAAAHAAAACQD5QHQaG10eAAAAeAAAAAPAAAAFAYAAABsb2NhAAACMAAAAA4AAAAOAO4AeG1heHAAAAF8AAAAHAAAACAASgAvbmFtZQAAA0wAAADeAAABkorWfVZwb3N0AAAELAAAACkAAABEp3ubLXgBY2BkYADhPPP4OfH8Nl8ZuJkYQODS2fRrCPr/aSYGxq1ALgcDWBoAO60LkwAAAHgBY2BkYGDc+v80gx4TAwgASaAICmABAFB+Arl4AWNgZGBgYGPQYWBiAAIwyQgWc2AAAwAHVQB6eAFjYGRiYJzAwMrAwejDmMbAwOAOpb8ySDK0MDAwMbByMsCBAAMCBKS5pjA4PGB4wMR44P8BBj3GrQymQGFGkBwAjtgK/gAAeAFjYoAAEA1jAwAAZAAHAHgB3crBCcAwDEPRZydkih567CDdf4ZskmLwFBV8xBfCaC4BXkOUmx4sU0h2ngNb9V0vQCxaRKIAevT7fGWuBrEAAAAAAAAAAAA0AHgAugAAeAF9z79Kw1AUx/FzTm7un6QmJtwmQ5Bg1abgEGr/BAqlU6Gju+Cgg1MkQ/sA7Vj7BOnmO/gUvo2Lo14NqIO6/IazfD8HEODtmQCfoANwNsyp2/GJt3WKQrd1NLiYYWx2PBqOsmJMEOznPOTzfSCrhAtbbLdmeFLJV9eKd63WLrZcIcuaEVdssWCKM6pLCfTVOYbz/0pNSMSZKLIZpvh78sAUH6PlMrreTCabP9r+Z/puPZ2ur/RqpQHgh+MIegCnXeM4MRAPjYN//5tj4ZtTjkFqEdmeMShlEJ7tVAly2TAkx6R68Fl4E/aVvn8JqHFQ4JS1434gXKcuL31dDhzs3YbsEOAd/IU88gAAAHgBfY4xTgMxEEVfkk0AgRCioKFxQYd2ZRtpixxgRU2RfhU5q5VWseQ4JdfgAJyBlmNwAM7ABRhZQ0ORwp7nr+eZAa54YwYg9zm3ynPOeFRe8MCrciXOh/KSS76UV5L/iDmrLiS5AeU519wrL3jmSbkS5115yR2fyivJv9kx0ZMZ2RLZw27q87iNQi8EBo5FSPIMw3HqBboi5lKTGAGDp8FKXWP+t9TU01Lj5His1Ba6uM9dTEMwvrFmbf5GC/q2drW3ruXUhhsCiQOjznFlCzYhHUZp4xp76vsvQh89CQAAeAFjYGJABowM6IANLMrEyMTIzMjCXpyRWJBqZshWXJJYBKOMAFHFBucAAAAAAAAB//8AAngBY2BkYGDgA2IJBhBgAvKZGViBJAuYxwAABJsAOgAAeAFjYGBgZACCk535hiD60tn0azAaAEqpB6wAAA==") format("woff");
+      font-weight: normal;
+      font-style: normal
+    }
+
+    .jdgm-star {
+      font-family: 'JudgemeStar';
+      display: inline !important;
+      text-decoration: none !important;
+      padding: 0 4px 0 0 !important;
+      margin: 0 !important;
+      font-weight: bold;
+      opacity: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale
+    }
+
+    .jdgm-star:hover {
+      opacity: 1
+    }
+
+    .jdgm-star:last-of-type {
+      padding: 0 !important
+    }
+
+    .jdgm-star.jdgm--on:before {
+      content: "\e000"
+    }
+
+    .jdgm-star.jdgm--off:before {
+      content: "\e001"
+    }
+
+    .jdgm-star.jdgm--half:before {
+      content: "\e002"
+    }
+
+    .jdgm-widget * {
+      margin: 0;
+      line-height: 1.4;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch
+    }
+
+    .jdgm-hidden {
+      display: none !important;
+      visibility: hidden !important
+    }
+
+    .jdgm-temp-hidden {
+      display: none
+    }
+
+    .jdgm-spinner {
+      width: 40px;
+      height: 40px;
+      margin: auto;
+      border-radius: 50%;
+      border-top: 2px solid #eee;
+      border-right: 2px solid #eee;
+      border-bottom: 2px solid #eee;
+      border-left: 2px solid #ccc;
+      -webkit-animation: jdgm-spin 0.8s infinite linear;
+      animation: jdgm-spin 0.8s infinite linear
+    }
+
+    .jdgm-spinner:empty {
+      display: block
+    }
+
+    .jdgm-prev-badge {
+      display: block !important
+    }
+  </style>
+
+
+
+
+
+
+
+
+
+
+
+  <script id="judgeme_widget_carousel_js" data-cfasync="false" type="text/javascript" async=""
+    src="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/widget_v3_theme_carousel.js"></script>
+
+
+
+
+
+  <link id="judgeme_widget_carousel_css" rel="stylesheet" type="text/css" media="all" onload="this.media='all'"
+    href="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/widget_v3_theme_carousel.css">
+
+
+
+
+  <script data-cfasync="false" class="jdgm-script">
+    !function (e) {
+      window.jdgm = window.jdgm || {}, jdgm.CDN_HOST = "https://cdnwidget.judge.me/", jdgm.CDN_HOST_ALT = "https://cdn2.judge.me/cdn/widget_frontend/", jdgm.API_HOST = "https://api.judge.me/", jdgm.CDN_BASE_URL = "https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/", jdgm.CDN_API_HOST = "https://cdn.judge.me/",
+      jdgm.docReady = function (d) {
+        (e.attachEvent ? "complete" === e.readyState : "loading" !== e.readyState) ?
+        setTimeout(d, 0) : e.addEventListener("DOMContentLoaded", d)
+      }, jdgm.loadCSS = function (d, t, o, a) {
+        !o && jdgm.loadCSS.requestedUrls.indexOf(d) >= 0 || (jdgm.loadCSS.requestedUrls.push(d),
+          (a = e.createElement("link")).rel = "stylesheet", a.class = "jdgm-stylesheet", a.media = "nope!",
+          a.href = d, a.onload = function () { this.media = "all", t && setTimeout(t) }, e.body.appendChild(a))
+      },
+      jdgm.loadCSS.requestedUrls = [], jdgm.loadJS = function (e, d) {
+        var t = new XMLHttpRequest;
+        t.onreadystatechange = function () { 4 === t.readyState && (Function(t.response)(), d && d(t.response)) },
+          t.open("GET", e), t.onerror = function () { if (e.indexOf(jdgm.CDN_HOST) === 0 && jdgm.CDN_HOST_ALT !== jdgm.CDN_HOST) { var f = e.replace(jdgm.CDN_HOST, jdgm.CDN_HOST_ALT); jdgm.loadJS(f, d) } }, t.send()
+      }, jdgm.docReady((function () {
+        (window.jdgmLoadCSS || e.querySelectorAll(
+          ".jdgm-widget, .jdgm-all-reviews-page").length > 0) && (jdgmSettings.widget_load_with_code_splitting ?
+            parseFloat(jdgmSettings.widget_version) >= 3 ? jdgm.loadCSS(jdgm.CDN_BASE_URL + "widget_v3_base.css") :
+              jdgm.loadCSS(jdgm.CDN_BASE_URL + "widget_base.css") : jdgm.loadCSS(jdgm.CDN_BASE_URL + "shopify_v2.css")
+        )
+      }))
+    }(document);
+  </script>
+  <noscript>
+    <link rel="stylesheet" type="text/css" media="all"
+      href="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/shopify_v2.css">
+  </noscript>
+
+  <!-- BEGIN app snippet: theme_fix_tags -->
+  <script>
+    (function () {
+      var jdgmThemeFixes = null;
+      if (!jdgmThemeFixes) return;
+      var thisThemeFix = jdgmThemeFixes[Shopify.theme.id];
+      if (!thisThemeFix) return;
+
+      if (thisThemeFix.html) {
+        document.addEventListener("DOMContentLoaded", function () {
+          var htmlDiv = document.createElement('div');
+          htmlDiv.classList.add('jdgm-theme-fix-html');
+          htmlDiv.innerHTML = thisThemeFix.html;
+          document.body.append(htmlDiv);
+        });
+      };
+
+      if (thisThemeFix.css) {
+        var styleTag = document.createElement('style');
+        styleTag.classList.add('jdgm-theme-fix-style');
+        styleTag.innerHTML = thisThemeFix.css;
+        document.head.append(styleTag);
+      };
+
+      if (thisThemeFix.js) {
+        var scriptTag = document.createElement('script');
+        scriptTag.classList.add('jdgm-theme-fix-script');
+        scriptTag.innerHTML = thisThemeFix.js;
+        document.head.append(scriptTag);
+      };
+    })();
+  </script>
+  <!-- END app snippet -->
+  <!-- End of Judge.me Core -->
+
+
+
+  <!-- END app block --><!-- BEGIN app block: shopify://apps/early-bird/blocks/app-embed/5e02e264-328a-43b1-b83b-d997dd7938d0 -->
+  <script>
+
+    //Run init on dom loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log("Early Bird ready to init");
+
+      try {
+
+        // Event listeners for quick add modals
+        ['ebquickviewopen', 'product-info:loaded'].forEach(event => document.addEventListener(event, (e) => {
+          try {
+            console.log("EarlyBird: Quick view modal opened.");
+
+            // Wait a short delay to give window object time to be set
+            setTimeout(() => {
+              try {
+                const ebGlobal = window?.EBGlobal;
+                const ebProduct = window?.EBCurrentProduct;
+                const ebVariants = window?.EBCurrentVariantData;
+
+                // Ensure we have collection products cached, or a global product object available
+                if ((!ebGlobal?.collectionProducts || !ebGlobal.collectionProducts.length) && !ebProduct) {
+                  throw ("EarlyBird: No product data or collection products found for quick view.");
+                }
+
+                // Set prefix parent wrapper selector (check cache first)
+                const parentSelector = ebGlobal?.settings?.quickViewWrapperSelector || "product-info";
+                const productIdSelector = ebGlobal?.settings?.quickViewProductIdSelector
+                  ? `${parentSelector} ${ebGlobal.settings.quickViewProductIdSelector}`
+                  : `${parentSelector} input[name="product-id"]`;
+
+                // Get product ID (using prefix class to only get from modal!)
+                const productInput = document.querySelector(productIdSelector);
+                const productId = productInput?.value ?? null
+
+                // Use window object if provided, otherwise try to find object in collection data
+                const productObject = ebProduct ? ebProduct : ebGlobal.collectionProducts.find(cp => cp.id === productId);
+
+                if (!productObject) {
+                  throw ("EarlyBird: Product not found.");
+                }
+
+                console.log("EarlyBird: Found product object.");
+
+                // Init EarlyBird app in the quick view modal, passing along fetched product info and parent selector
+                new EBApp.EarlyBird(shop, productObject ?? {}, window.Shopify.currency, ebVariants ?? [], parentSelector).init();
+
+              } catch (error) {
+                console.log(error);
+                document.body.classList.add("earlybird__valid");
+              }
+
+            }, 100);
+
+
+          } catch (error) {
+            console.log(error);
+            document.body.classList.add("earlybird__valid");
+          }
+        }));
+
+
+        const shop = "sousa-trf.myshopify.com";
+        const product = null;
+
+        const variantData = []
+
+        const collectionProducts = []
+
+        const searchProducts = []
+
+        if (product?.id) {
+
+          // Init EarlyBird app, passing along current product
+          console.log("Early Bird init from listener");
+          new EBApp.EarlyBird(shop, product, window.Shopify.currency, variantData).init();
+
+        } else if (collectionProducts && collectionProducts.length) {
+
+          const variantData = []
+
+          // Init EarlyBird app, passing along collection products
+          new EBApp.EarlyBirdCollection(shop, collectionProducts, variantData).init();
+
+        } else if (searchProducts && searchProducts.length) {
+
+          const variantData = []
+
+          // Init EarlyBird app, passing along search result products
+          new EBApp.EarlyBirdCollection(shop, searchProducts, variantData).init();
+
+        } else {
+          const products = document.querySelectorAll('a[href*="products/"]');
+
+          // If we find a featured collection, or any product item elements really
+          if (products.length > 0) {
+
+            // Init EarlyBird app, passing along product elements we found a reference to
+            new EBApp.EarlyBirdCollection(shop, [], [], products).init();
+
+          } else {
+            // NB: Have to set earlybird__valid class to show site-wide buttons
+            document.body.classList.add("earlybird__valid");
+            console.log("EarlyBird: Nothing to do - stopping.")
+          }
+        }
+
+      } catch (error) {
+        console.log(error);
+        document.body.classList.add("earlybird__valid");
+      }
+    }, { once: true });
+  </script>
+
+
+
+  <!-- END app block -->
+  <script src="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/loader.js"
+    type="text/javascript" defer="defer"></script>
+  <script
+    src="https://cdn.shopify.com/extensions/019dbf31-0283-72ab-888c-1ca7abafbef9/early-bird-163/assets/earlybird.min.js"
+    type="text/javascript" defer="defer"></script>
+  <link
+    href="https://cdn.shopify.com/extensions/019dbf31-0283-72ab-888c-1ca7abafbef9/early-bird-163/assets/earlybird.min.css"
+    rel="stylesheet" type="text/css" media="all">
+  <link href="https://monorail-edge.shopifysvc.com" rel="dns-prefetch">
+  <script>(function () { if ("sendBeacon" in navigator && "performance" in window) { try { var session_token_from_headers = performance.getEntriesByType('navigation')[0].serverTiming.find(x => x.name == '_s').description; } catch { var session_token_from_headers = undefined; } var session_cookie_matches = document.cookie.match(/_shopify_s=([^;]*)/); var session_token_from_cookie = session_cookie_matches && session_cookie_matches.length === 2 ? session_cookie_matches[1] : ""; var session_token = session_token_from_headers || session_token_from_cookie || ""; function handle_abandonment_event(e) { var entries = performance.getEntries().filter(function (entry) { return /monorail-edge.shopifysvc.com/.test(entry.name); }); if (!window.abandonment_tracked && entries.length === 0) { window.abandonment_tracked = true; var currentMs = Date.now(); var navigation_start = performance.timing.navigationStart; var payload = { shop_id: 96044581143, url: window.location.href, navigation_start, duration: currentMs - navigation_start, session_token, page_type: "index" }; window.navigator.sendBeacon("https://monorail-edge.shopifysvc.com/v1/produce", JSON.stringify({ schema_id: "online_store_buyer_site_abandonment/1.1", payload: payload, metadata: { event_created_at_ms: currentMs, event_sent_at_ms: currentMs } })); } } window.addEventListener('pagehide', handle_abandonment_event); } }());</script>
+  <script>
+    window.__TREKKIE_SHIM_QUEUE = window.__TREKKIE_SHIM_QUEUE || [];
+  </script>
+  <script
+    id="web-pixels-manager-setup">(function e(e, d, r, n, o) { if (void 0 === o && (o = {}), !Boolean(null === (a = null === (i = window.Shopify) || void 0 === i ? void 0 : i.analytics) || void 0 === a ? void 0 : a.replayQueue)) { var i, a; window.Shopify = window.Shopify || {}; var t = window.Shopify; t.analytics = t.analytics || {}; var s = t.analytics; s.replayQueue = [], s.publish = function (e, d, r) { return s.replayQueue.push([e, d, r]), !0 }; try { self.performance.mark("wpm:start") } catch (e) { } var l = function () { var e = { modern: /Edge?\/(1{2}[4-9]|1[2-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Firefox\/(1{2}[4-9]|1[2-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Chrom(ium|e)\/(9{2}|\d{3,})\.\d+(\.\d+|)|(Maci|X1{2}).+ Version\/(15\.\d+|(1[6-9]|[2-9]\d|\d{3,})\.\d+)([,.]\d+|)( \(\w+\)|)( Mobile\/\w+|) Safari\/|Chrome.+OPR\/(9{2}|\d{3,})\.\d+\.\d+|(CPU[ +]OS|iPhone[ +]OS|CPU[ +]iPhone|CPU IPhone OS|CPU iPad OS)[ +]+(15[._]\d+|(1[6-9]|[2-9]\d|\d{3,})[._]\d+)([._]\d+|)|Android:?[ /-](13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})(\.\d+|)(\.\d+|)|Android.+Firefox\/(13[5-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+Chrom(ium|e)\/(13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|SamsungBrowser\/([2-9]\d|\d{3,})\.\d+/, legacy: /Edge?\/(1[6-9]|[2-9]\d|\d{3,})\.\d+(\.\d+|)|Firefox\/(5[4-9]|[6-9]\d|\d{3,})\.\d+(\.\d+|)|Chrom(ium|e)\/(5[1-9]|[6-9]\d|\d{3,})\.\d+(\.\d+|)([\d.]+$|.*Safari\/(?![\d.]+ Edge\/[\d.]+$))|(Maci|X1{2}).+ Version\/(10\.\d+|(1[1-9]|[2-9]\d|\d{3,})\.\d+)([,.]\d+|)( \(\w+\)|)( Mobile\/\w+|) Safari\/|Chrome.+OPR\/(3[89]|[4-9]\d|\d{3,})\.\d+\.\d+|(CPU[ +]OS|iPhone[ +]OS|CPU[ +]iPhone|CPU IPhone OS|CPU iPad OS)[ +]+(10[._]\d+|(1[1-9]|[2-9]\d|\d{3,})[._]\d+)([._]\d+|)|Android:?[ /-](13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})(\.\d+|)(\.\d+|)|Mobile Safari.+OPR\/([89]\d|\d{3,})\.\d+\.\d+|Android.+Firefox\/(13[5-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+Chrom(ium|e)\/(13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+(UC? ?Browser|UCWEB|U3)[ /]?(15\.([5-9]|\d{2,})|(1[6-9]|[2-9]\d|\d{3,})\.\d+)\.\d+|SamsungBrowser\/(5\.\d+|([6-9]|\d{2,})\.\d+)|Android.+MQ{2}Browser\/(14(\.(9|\d{2,})|)|(1[5-9]|[2-9]\d|\d{3,})(\.\d+|))(\.\d+|)|K[Aa][Ii]OS\/(3\.\d+|([4-9]|\d{2,})\.\d+)(\.\d+|)/ }, d = e.modern, r = e.legacy, n = navigator.userAgent; return n.match(d) ? "modern" : n.match(r) ? "legacy" : "unknown" }(), u = "modern" === l ? "modern" : "legacy", c = (null != n ? n : { modern: "", legacy: "" })[u], f = function (e) { return [e.baseUrl, "/wpm", "/b", e.hashVersion, "modern" === e.buildTarget ? "m" : "l", ".js"].join("") }({ baseUrl: d, hashVersion: r, buildTarget: u }), m = function (e) { var d = e.version, r = e.bundleTarget, n = e.surface, o = e.pageUrl, i = e.monorailEndpoint; return { emit: function (e) { var a = e.status, t = e.errorMsg, s = (new Date).getTime(), l = JSON.stringify({ metadata: { event_sent_at_ms: s }, events: [{ schema_id: "web_pixels_manager_load/3.1", payload: { version: d, bundle_target: r, page_url: o, status: a, surface: n, error_msg: t }, metadata: { event_created_at_ms: s } }] }); if (!i) return console && console.warn && console.warn("[Web Pixels Manager] No Monorail endpoint provided, skipping logging."), !1; try { return self.navigator.sendBeacon.bind(self.navigator)(i, l) } catch (e) { } var u = new XMLHttpRequest; try { return u.open("POST", i, !0), u.setRequestHeader("Content-Type", "text/plain"), u.send(l), !0 } catch (e) { return console && console.warn && console.warn("[Web Pixels Manager] Got an unhandled error while logging to Monorail."), !1 } } } }({ version: r, bundleTarget: l, surface: e.surface, pageUrl: self.location.href, monorailEndpoint: e.monorailEndpoint }); try { o.browserTarget = l, function (e) { var d = e.src, r = e.async, n = void 0 === r || r, o = e.onload, i = e.onerror, a = e.sri, t = e.scriptDataAttributes, s = void 0 === t ? {} : t, l = document.createElement("script"), u = document.querySelector("head"), c = document.querySelector("body"); if (l.async = n, l.src = d, a && (l.integrity = a, l.crossOrigin = "anonymous"), s) for (var f in s) if (Object.prototype.hasOwnProperty.call(s, f)) try { l.dataset[f] = s[f] } catch (e) { } if (o && l.addEventListener("load", o), i && l.addEventListener("error", i), u) u.appendChild(l); else { if (!c) throw new Error("Did not find a head or body element to append the script"); c.appendChild(l) } }({ src: f, async: !0, onload: function () { if (!function () { var e, d; return Boolean(null === (d = null === (e = window.Shopify) || void 0 === e ? void 0 : e.analytics) || void 0 === d ? void 0 : d.initialized) }()) { var d = window.webPixelsManager.init(e) || void 0; if (d) { var r = window.Shopify.analytics; r.replayQueue.forEach((function (e) { var r = e[0], n = e[1], o = e[2]; d.publishCustomEvent(r, n, o) })), r.replayQueue = [], r.publish = d.publishCustomEvent, r.visitor = d.visitor, r.initialized = !0 } } }, onerror: function () { return m.emit({ status: "failed", errorMsg: "".concat(f, " has failed to load") }) }, sri: function (e) { var d = /^sha384-[A-Za-z0-9+/=]+$/; return "string" == typeof e && d.test(e) }(c) ? c : "", scriptDataAttributes: o }), m.emit({ status: "loading" }) } catch (e) { m.emit({ status: "failed", errorMsg: (null == e ? void 0 : e.message) || "Unknown error" }) } } })({ shopId: 96044581143, storefrontBaseUrl: "https://sousasupps.com", extensionsBaseUrl: "https://extensions.shopifycdn.com/cdn/shopifycloud/web-pixels-manager", monorailEndpoint: "https://monorail-edge.shopifysvc.com/unstable/produce_batch", surface: "storefront-renderer", enabledBetaFlags: ["72028870", "2dca8a86", "d5bdd5d0", "5476ea20", "5acaffe6"], webPixelsConfigList: [{ "id": "2690973975", "configuration": "{\"pixel_id\":\"2372714429884180\",\"pixel_type\":\"facebook_pixel\"}", "eventPayloadVersion": "v1", "runtimeContext": "OPEN", "scriptVersion": "d72ab942028ee4f6bccc581083be605e", "type": "APP", "apiClientId": 2329312, "privacyPurposes": ["ANALYTICS", "MARKETING", "SALE_OF_DATA"], "dataSharingAdjustments": { "protectedCustomerApprovalScopes": ["read_customer_address", "read_customer_email", "read_customer_name", "read_customer_personal_data", "read_customer_phone"], "dataSharingControls": ["share_all_events"] }, "dataSharingState": "optimized", "enabledFlags": ["9a3ed68a"] }, { "id": "2659025175", "configuration": "{\"config\":\"{\\\"google_tag_ids\\\":[\\\"G-TP10FLQ9HG\\\",\\\"GT-PLFF96HB\\\"],\\\"target_country\\\":\\\"ZZ\\\",\\\"gtag_events\\\":[{\\\"type\\\":\\\"search\\\",\\\"action_label\\\":\\\"G-TP10FLQ9HG\\\"},{\\\"type\\\":\\\"begin_checkout\\\",\\\"action_label\\\":\\\"G-TP10FLQ9HG\\\"},{\\\"type\\\":\\\"view_item\\\",\\\"action_label\\\":[\\\"G-TP10FLQ9HG\\\",\\\"MC-5YJNJ4E23B\\\"]},{\\\"type\\\":\\\"purchase\\\",\\\"action_label\\\":[\\\"G-TP10FLQ9HG\\\",\\\"MC-5YJNJ4E23B\\\"]},{\\\"type\\\":\\\"page_view\\\",\\\"action_label\\\":[\\\"G-TP10FLQ9HG\\\",\\\"MC-5YJNJ4E23B\\\"]},{\\\"type\\\":\\\"add_payment_info\\\",\\\"action_label\\\":\\\"G-TP10FLQ9HG\\\"},{\\\"type\\\":\\\"add_to_cart\\\",\\\"action_label\\\":\\\"G-TP10FLQ9HG\\\"}],\\\"enable_monitoring_mode\\\":false}\"}", "eventPayloadVersion": "v1", "runtimeContext": "OPEN", "scriptVersion": "5a723296a9ab7d2cddda5d574ded9c79", "type": "APP", "apiClientId": 1780363, "privacyPurposes": [], "dataSharingAdjustments": { "protectedCustomerApprovalScopes": ["read_customer_address", "read_customer_email", "read_customer_name", "read_customer_personal_data", "read_customer_phone"], "dataSharingControls": ["share_all_events"] }, "dataSharingState": "optimized", "enabledFlags": ["9a3ed68a"] }, { "id": "2643067159", "configuration": "{\"tagID\":\"2613190991935\"}", "eventPayloadVersion": "v1", "runtimeContext": "STRICT", "scriptVersion": "18031546ee651571ed29edbe71a3550b", "type": "APP", "apiClientId": 3009811, "privacyPurposes": ["ANALYTICS", "MARKETING", "SALE_OF_DATA"], "dataSharingAdjustments": { "protectedCustomerApprovalScopes": ["read_customer_address", "read_customer_email", "read_customer_name", "read_customer_personal_data", "read_customer_phone"], "dataSharingControls": ["share_all_events"] }, "dataSharingState": "optimized" }, { "id": "2501869847", "configuration": "{\"myshopifyDomain\":\"sousa-trf.myshopify.com\"}", "eventPayloadVersion": "v1", "runtimeContext": "STRICT", "scriptVersion": "23b97d18e2aa74363140dc29c9284e87", "type": "APP", "apiClientId": 2775569, "privacyPurposes": ["ANALYTICS", "MARKETING", "SALE_OF_DATA"], "dataSharingAdjustments": { "protectedCustomerApprovalScopes": ["read_customer_address", "read_customer_email", "read_customer_name", "read_customer_phone", "read_customer_personal_data"], "dataSharingControls": ["share_all_events"] }, "dataSharingState": "optimized" }, { "id": "2273214743", "configuration": "{\"webPixelName\":\"Judge.me\"}", "eventPayloadVersion": "v1", "runtimeContext": "STRICT", "scriptVersion": "34ad157958823915625854214640f0bf", "type": "APP", "apiClientId": 683015, "privacyPurposes": ["ANALYTICS"], "dataSharingAdjustments": { "protectedCustomerApprovalScopes": ["read_customer_email", "read_customer_name", "read_customer_personal_data", "read_customer_phone"], "dataSharingControls": ["share_all_events"] }, "dataSharingState": "unrestricted" }, { "id": "2222227735", "configuration": "{\"pixelCode\":\"D4FPLMBC77U5N1GROPHG\"}", "eventPayloadVersion": "v1", "runtimeContext": "STRICT", "scriptVersion": "22e92c2ad45662f435e4801458fb78cc", "type": "APP", "apiClientId": 4383523, "privacyPurposes": ["ANALYTICS", "MARKETING", "SALE_OF_DATA"], "dataSharingAdjustments": { "protectedCustomerApprovalScopes": ["read_customer_address", "read_customer_email", "read_customer_name", "read_customer_personal_data", "read_customer_phone"], "dataSharingControls": ["share_all_events"] }, "dataSharingState": "optimized" }, { "id": "2096103703", "configuration": "{\"accountID\":\"Xv4FPF\",\"webPixelConfig\":\"eyJlbmFibGVBZGRlZFRvQ2FydEV2ZW50cyI6IHRydWV9\"}", "eventPayloadVersion": "v1", "runtimeContext": "STRICT", "scriptVersion": "524f6c1ee37bacdca7657a665bdca589", "type": "APP", "apiClientId": 123074, "privacyPurposes": ["ANALYTICS", "MARKETING"], "dataSharingAdjustments": { "protectedCustomerApprovalScopes": ["read_customer_address", "read_customer_email", "read_customer_name", "read_customer_personal_data", "read_customer_phone"], "dataSharingControls": ["share_all_events"] }, "dataSharingState": "optimized", "enabledFlags": ["9a3ed68a"] }, { "id": "211419415", "eventPayloadVersion": "1", "runtimeContext": "LAX", "scriptVersion": "1", "type": "CUSTOM", "privacyPurposes": ["ANALYTICS", "MARKETING", "SALE_OF_DATA"], "name": "RunAds" }, { "id": "shopify-app-pixel", "configuration": "{}", "eventPayloadVersion": "v1", "runtimeContext": "STRICT", "scriptVersion": "0450", "apiClientId": "shopify-pixel", "type": "APP", "privacyPurposes": ["ANALYTICS", "MARKETING"] }, { "id": "shopify-custom-pixel", "eventPayloadVersion": "v1", "runtimeContext": "LAX", "scriptVersion": "0450", "apiClientId": "shopify-pixel", "type": "CUSTOM", "privacyPurposes": ["ANALYTICS", "MARKETING"] }], isMerchantRequest: false, initData: { "shop": { "name": "Sousa", "paymentSettings": { "currencyCode": "USD" }, "myshopifyDomain": "sousa-trf.myshopify.com", "countryCode": "US", "storefrontUrl": "https:\/\/sousasupps.com" }, "customer": null, "cart": null, "checkout": null, "productVariants": [], "purchasingCompany": null }, }, "https://sousasupps.com/cdn", "d93fb6acwa1fec5e6p3f0901a3m63922e87", { "modern": "", "legacy": "" }, { "trekkieShim": true, "shopId": "96044581143", "storefrontBaseUrl": "https:\/\/sousasupps.com", "extensionBaseUrl": "https:\/\/extensions.shopifycdn.com\/cdn\/shopifycloud\/web-pixels-manager", "surface": "storefront-renderer", "enabledBetaFlags": "[\"72028870\", \"2dca8a86\", \"d5bdd5d0\", \"5476ea20\", \"5acaffe6\"]", "isMerchantRequest": "false", "hashVersion": "d93fb6acwa1fec5e6p3f0901a3m63922e87", "publish": "custom", "events": "[[\"page_viewed\",{}]]" });</script>
+  <script async="" src="https://sousasupps.com/cdn/wpm/bd93fb6acwa1fec5e6p3f0901a3m63922e87m.js"
+    data-trekkie-shim="true" data-shop-id="96044581143" data-storefront-base-url="https://sousasupps.com"
+    data-extension-base-url="https://extensions.shopifycdn.com/cdn/shopifycloud/web-pixels-manager"
+    data-surface="storefront-renderer"
+    data-enabled-beta-flags="[&quot;72028870&quot;, &quot;2dca8a86&quot;, &quot;d5bdd5d0&quot;, &quot;5476ea20&quot;, &quot;5acaffe6&quot;]"
+    data-is-merchant-request="false" data-hash-version="d93fb6acwa1fec5e6p3f0901a3m63922e87" data-publish="custom"
+    data-events="[[&quot;page_viewed&quot;,{}]]" data-browser-target="modern"></script>
+  <script>
+    window.ShopifyAnalytics = window.ShopifyAnalytics || {};
+    window.ShopifyAnalytics.meta = window.ShopifyAnalytics.meta || {};
+    window.ShopifyAnalytics.meta.currency = 'USD';
+    var meta = { "page": { "pageType": "home", "requestId": "73857c01-f2d3-4452-927a-dc32ec55d735-1777428760" } };
+    for (var attr in meta) {
+      window.ShopifyAnalytics.meta[attr] = meta[attr];
+    }
+  </script>
+  <script class="analytics">
+    (function () {
+      var customDocumentWrite = function (content) {
+        var jquery = null;
+
+        if (window.jQuery) {
+          jquery = window.jQuery;
+        } else if (window.Checkout && window.Checkout.$) {
+          jquery = window.Checkout.$;
+        }
+
+        if (jquery) {
+          jquery('body').append(content);
+        }
+      };
+
+      var hasLoggedConversion = function (token) {
+        if (token) {
+          return document.cookie.indexOf('loggedConversion=' + token) !== -1;
+        }
+        return false;
+      }
+
+      var setCookieIfConversion = function (token) {
+        if (token) {
+          var twoMonthsFromNow = new Date(Date.now());
+          twoMonthsFromNow.setMonth(twoMonthsFromNow.getMonth() + 2);
+
+          document.cookie = 'loggedConversion=' + token + '; expires=' + twoMonthsFromNow;
+        }
+      }
+
+      var trekkie = window.ShopifyAnalytics.lib = window.trekkie = window.trekkie || [];
+      window.ShopifyAnalytics.lib.trekkie = window.trekkie;
+      if (trekkie.integrations) {
+        return;
+      }
+      trekkie.methods = [
+        'identify',
+        'page',
+        'ready',
+        'track',
+        'trackForm',
+        'trackLink'
+      ];
+      trekkie.factory = function (method) {
+        return function () {
+          var args = Array.prototype.slice.call(arguments);
+          args.unshift(method);
+          trekkie.push(args);
+          if (window.__TREKKIE_SHIM_QUEUE && (method == 'track' || method == 'page')) {
+            try {
+              window.__TREKKIE_SHIM_QUEUE.push({
+                from: 'trekkie-stub',
+                method: method,
+                args: args.slice(1)
+              });
+            } catch (e) {
+              // no-op
+            }
+          }
+          return trekkie;
+        };
+      };
+      for (var i = 0; i < trekkie.methods.length; i++) {
+        var key = trekkie.methods[i];
+        trekkie[key] = trekkie.factory(key);
+      }
+      trekkie.load = function (config) {
+        trekkie.config = config || {};
+        trekkie.config.initialDocumentCookie = document.cookie;
+        var first = document.getElementsByTagName('script')[0];
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.onerror = function (e) {
+          var scriptFallback = document.createElement('script');
+          scriptFallback.type = 'text/javascript';
+          scriptFallback.onerror = function (error) {
+            var Monorail = {
+              produce: function produce(monorailDomain, schemaId, payload) {
+                var currentMs = new Date().getTime();
+                var event = {
+                  schema_id: schemaId,
+                  payload: payload,
+                  metadata: {
+                    event_created_at_ms: currentMs,
+                    event_sent_at_ms: currentMs
+                  }
+                };
+                return Monorail.sendRequest("https://" + monorailDomain + "/v1/produce", JSON.stringify(event));
+              },
+              sendRequest: function sendRequest(endpointUrl, payload) {
+                // Try the sendBeacon API
+                if (window && window.navigator && typeof window.navigator.sendBeacon === 'function' && typeof window.Blob === 'function' && !Monorail.isIos12()) {
+                  var blobData = new window.Blob([payload], {
+                    type: 'text/plain'
+                  });
+
+                  if (window.navigator.sendBeacon(endpointUrl, blobData)) {

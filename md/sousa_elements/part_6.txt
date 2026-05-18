@@ -1,0 +1,802 @@
+                          <div class="inline-rte ">
+                            120
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto ">
+                          <div class="inline-rte ">
+                            50
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="break-words font-normal left-0 text-center w-[35vw] px-4 py-2 border-general border-scheme-text lg:w-auto">
+                          Sugar
+                        </th>
+                        <td
+                          class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto bg-[rgba(var(--color-highlight))] text-[rgba(var(--color-highlight-overlay))] highlight-col">
+                          <div class="inline-rte ">
+                            <strong>4g</strong>
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto ">
+                          <div class="inline-rte ">
+                            2g
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto ">
+                          <div class="inline-rte ">
+                            11g
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="break-words font-normal left-0 text-center w-[35vw] px-4 py-2 border-general border-scheme-text lg:w-auto">
+                          Calcium
+                        </th>
+                        <td
+                          class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto bg-[rgba(var(--color-highlight))] text-[rgba(var(--color-highlight-overlay))] highlight-col">
+                          <div class="inline-rte ">
+                            <strong>93mg</strong>
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto ">
+                          <div class="inline-rte ">
+                            130mg
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="break-words font-normal left-0 text-center w-[35vw] px-4 py-2 border-general border-scheme-text lg:w-auto">
+                          Magnesium
+                        </th>
+                        <td
+                          class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto bg-[rgba(var(--color-highlight))] text-[rgba(var(--color-highlight-overlay))] highlight-col">
+                          <div class="inline-rte ">
+                            <strong>50mg</strong>
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="break-words font-normal left-0 text-center w-[35vw] px-4 py-2 border-general border-scheme-text lg:w-auto">
+                          L-Theanine
+                        </th>
+                        <td
+                          class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto bg-[rgba(var(--color-highlight))] text-[rgba(var(--color-highlight-overlay))] highlight-col">
+                          <div class="inline-rte ">
+                            <strong>100mg</strong>
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="break-words font-normal left-0 text-center w-[35vw] px-4 py-2 border-general border-scheme-text lg:w-auto">
+                          Ginger Root
+                        </th>
+                        <td
+                          class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto bg-[rgba(var(--color-highlight))] text-[rgba(var(--color-highlight-overlay))] highlight-col">
+                          <div class="inline-rte ">
+                            <strong>100mg</strong>
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="break-words font-normal left-0 text-center w-[35vw] px-4 py-2 border-general border-scheme-text lg:w-auto">
+                          Vitamin C
+                        </th>
+                        <td
+                          class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto bg-[rgba(var(--color-highlight))] text-[rgba(var(--color-highlight-overlay))] highlight-col">
+                          <div class="inline-rte ">
+                            <strong>69%</strong>
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto ">
+                          <div class="inline-rte ">
+                            70%
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="break-words font-normal left-0 text-center w-[35vw] px-4 py-2 border-general border-scheme-text lg:w-auto">
+                          Vitamin B3
+                        </th>
+                        <td
+                          class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto bg-[rgba(var(--color-highlight))] text-[rgba(var(--color-highlight-overlay))] highlight-col">
+                          <div class="inline-rte ">
+                            <strong>119%</strong>
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="break-words font-normal left-0 text-center w-[35vw] px-4 py-2 border-general border-scheme-text lg:w-auto">
+                          Vitamin B6
+                        </th>
+                        <td
+                          class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto bg-[rgba(var(--color-highlight))] text-[rgba(var(--color-highlight-overlay))] highlight-col">
+                          <div class="inline-rte ">
+                            <strong>118%</strong>
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto ">
+                          <div class="inline-rte ">
+                            110%
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th
+                          class="break-words font-normal left-0 text-center w-[35vw] px-4 py-2 border-general border-scheme-text lg:w-auto">
+                          Vitamin B12
+                        </th>
+                        <td
+                          class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto bg-[rgba(var(--color-highlight))] text-[rgba(var(--color-highlight-overlay))] highlight-col">
+                          <div class="inline-rte ">
+                            <strong>458%</strong>
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto "><span
+                            style="--icon-thickness: 1.5;"
+                            class="mx-auto block w-8 rounded-full border-0 border-current comparison-table-icon bg-scheme-accent-2 text-scheme-accent-2-contrast"><svg
+                              class="theme-icon" width="100%" height="100%" viewBox="0 0 48 48" fill="none"
+                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1" d="M12 36.5 36.5 12m0 24.5L12 12"></path>
+                            </svg>
+                          </span>
+                          <div class="inline-rte mt-2">
+
+                          </div>
+                        </td>
+                        <td class="w-[35vw] px-4 py-2 text-center border-general border-scheme-text lg:w-auto ">
+                          <div class="inline-rte ">
+                            240%
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section><svg width="0" height="0" viewBox="0 0 200 200">
+        <defs>
+          <clipPath id="clip-sticker_PEtpMX" clipPathUnits="objectBoundingBox">
+            <path clip-rule="evenodd" transform="scale(0.005,0.005)"
+              d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z"
+              fill="black"></path>
+          </clipPath>
+          <path id="outline-sticker_PEtpMX" vector-effect="non-scaling-stroke"
+            d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z">
+          </path>
+        </defs>
+      </svg>
+      <div class="sticker pointer-events-none absolute z-sticker homeTable stickerFirst  " id="sticker-sticker_PEtpMX"
+        data-color-scheme="scheme1">
+        <div class="sticker__translate-container">
+          <div class="sticker__parallax-container" data-sticker="">
+            <div class="sticker__parallax-element">
+              <div class="sticker__rotate-container  ">
+                <div class="sticker__image rotate-anim">
+                  <img src="//sousasupps.com/cdn/shop/files/Chart_Images_2.png?v=1760234313&amp;width=780" alt=""
+                    srcset="//sousasupps.com/cdn/shop/files/Chart_Images_2.png?v=1760234313&amp;width=260 260w, //sousasupps.com/cdn/shop/files/Chart_Images_2.png?v=1760234313&amp;width=520 520w, //sousasupps.com/cdn/shop/files/Chart_Images_2.png?v=1760234313&amp;width=780 780w"
+                    width="780" height="1518" loading="lazy" class="sticker__width-container max-w-none" sizes="260px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #sticker-sticker_PEtpMX {
+          --block-width: 260;
+        }
+
+
+        #sticker-sticker_PEtpMX {
+          top: 20%;
+          left: 6%;
+        }
+
+        #sticker-sticker_PEtpMX .sticker__translate-container {
+          transform: translate(-50%, -50%);
+        }
+
+        #sticker-sticker_PEtpMX .sticker__rotate-container {
+          transform: rotate(0deg);
+        }
+
+        #sticker-text-sticker_PEtpMX,
+        #sticker-sticker_PEtpMX .sticker__fit-to-text {
+          --adjusted-sticker-font-size: calc(1.563rem * 1.5);
+          font-size: calc(var(--adjusted-sticker-font-size) * var(--block-width) / 300);
+          line-height: 1;
+        }
+
+        #sticker-text-sticker_PEtpMX {
+          padding: calc(2rem * var(--block-width) / 300);
+        }
+
+        #sticker-sticker_PEtpMX .sticker__width-container {
+          width: calc(var(--block-width) * 1px);
+        }
+      </style>
+
+
+
+      <svg width="0" height="0" viewBox="0 0 200 200">
+        <defs>
+          <clipPath id="clip-sticker_zKAxUz" clipPathUnits="objectBoundingBox">
+            <path clip-rule="evenodd" transform="scale(0.005,0.005)"
+              d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z"
+              fill="black"></path>
+          </clipPath>
+          <path id="outline-sticker_zKAxUz" vector-effect="non-scaling-stroke"
+            d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z">
+          </path>
+        </defs>
+      </svg>
+      <div class="sticker pointer-events-none absolute z-sticker homeTable stickerSecond  " id="sticker-sticker_zKAxUz"
+        data-color-scheme="scheme1">
+        <div class="sticker__translate-container">
+          <div class="sticker__parallax-container" data-sticker="">
+            <div class="sticker__parallax-element">
+              <div class="sticker__rotate-container  ">
+                <div class="sticker__image rotate-anim">
+                  <img src="//sousasupps.com/cdn/shop/files/Chart_Images_1.png?v=1760235932&amp;width=900" alt=""
+                    srcset="//sousasupps.com/cdn/shop/files/Chart_Images_1.png?v=1760235932&amp;width=300 300w, //sousasupps.com/cdn/shop/files/Chart_Images_1.png?v=1760235932&amp;width=600 600w, //sousasupps.com/cdn/shop/files/Chart_Images_1.png?v=1760235932&amp;width=900 900w"
+                    width="900" height="1318" loading="lazy" class="sticker__width-container max-w-none" sizes="300px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #sticker-sticker_zKAxUz {
+          --block-width: 300;
+        }
+
+
+        #sticker-sticker_zKAxUz {
+          top: 40%;
+          left: 94%;
+        }
+
+        #sticker-sticker_zKAxUz .sticker__translate-container {
+          transform: translate(-50%, -50%);
+        }
+
+        #sticker-sticker_zKAxUz .sticker__rotate-container {
+          transform: rotate(0deg);
+        }
+
+        #sticker-text-sticker_zKAxUz,
+        #sticker-sticker_zKAxUz .sticker__fit-to-text {
+          --adjusted-sticker-font-size: calc(1.563rem * 1.5);
+          font-size: calc(var(--adjusted-sticker-font-size) * var(--block-width) / 300);
+          line-height: 1;
+        }
+
+        #sticker-text-sticker_zKAxUz {
+          padding: calc(2rem * var(--block-width) / 300);
+        }
+
+        #sticker-sticker_zKAxUz .sticker__width-container {
+          width: calc(var(--block-width) * 1px);
+        }
+      </style>
+
+
+
+      <svg width="0" height="0" viewBox="0 0 200 200">
+        <defs>
+          <clipPath id="clip-sticker_39JUJD" clipPathUnits="objectBoundingBox">
+            <path clip-rule="evenodd" transform="scale(0.005,0.005)"
+              d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z"
+              fill="black"></path>
+          </clipPath>
+          <path id="outline-sticker_39JUJD" vector-effect="non-scaling-stroke"
+            d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z">
+          </path>
+        </defs>
+      </svg>
+      <div class="sticker pointer-events-none absolute z-sticker homeTable stickerthird  " id="sticker-sticker_39JUJD"
+        data-color-scheme="scheme1">
+        <div class="sticker__translate-container">
+          <div class="sticker__parallax-container" data-sticker="">
+            <div class="sticker__parallax-element">
+              <div class="sticker__rotate-container  ">
+                <div class="sticker__image rotate-anim">
+                  <img src="//sousasupps.com/cdn/shop/files/Chart_Images_3.png?v=1760234982&amp;width=900" alt=""
+                    srcset="//sousasupps.com/cdn/shop/files/Chart_Images_3.png?v=1760234982&amp;width=300 300w, //sousasupps.com/cdn/shop/files/Chart_Images_3.png?v=1760234982&amp;width=600 600w, //sousasupps.com/cdn/shop/files/Chart_Images_3.png?v=1760234982&amp;width=900 900w"
+                    width="900" height="955" loading="lazy" class="sticker__width-container max-w-none" sizes="300px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #sticker-sticker_39JUJD {
+          --block-width: 300;
+        }
+
+
+        #sticker-sticker_39JUJD {
+          top: 90%;
+          left: 6%;
+        }
+
+        #sticker-sticker_39JUJD .sticker__translate-container {
+          transform: translate(-50%, -50%);
+        }
+
+        #sticker-sticker_39JUJD .sticker__rotate-container {
+          transform: rotate(0deg);
+        }
+
+        #sticker-text-sticker_39JUJD,
+        #sticker-sticker_39JUJD .sticker__fit-to-text {
+          --adjusted-sticker-font-size: calc(1.563rem * 1.5);
+          font-size: calc(var(--adjusted-sticker-font-size) * var(--block-width) / 300);
+          line-height: 1;
+        }
+
+        #sticker-text-sticker_39JUJD {
+          padding: calc(2rem * var(--block-width) / 300);
+        }
+
+        #sticker-sticker_39JUJD .sticker__width-container {
+          width: calc(var(--block-width) * 1px);
+        }
+      </style>
+
+
+
+      <svg width="0" height="0" viewBox="0 0 200 200">
+        <defs>
+          <clipPath id="clip-sticker_qznGkB" clipPathUnits="objectBoundingBox">
+            <path clip-rule="evenodd" transform="scale(0.005,0.005)"
+              d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z"
+              fill="black"></path>
+          </clipPath>
+          <path id="outline-sticker_qznGkB" vector-effect="non-scaling-stroke"
+            d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z">
+          </path>
+        </defs>
+      </svg>
+      <div class="sticker pointer-events-none absolute z-sticker homeTable stickerForth  " id="sticker-sticker_qznGkB"
+        data-color-scheme="scheme1">
+        <div class="sticker__translate-container">
+          <div class="sticker__parallax-container" data-sticker="">
+            <div class="sticker__parallax-element">
+              <div class="sticker__rotate-container  ">
+                <div class="sticker__image rotate-anim">
+                  <img src="//sousasupps.com/cdn/shop/files/Chart_Images_4.png?v=1760234515&amp;width=450" alt=""
+                    srcset="//sousasupps.com/cdn/shop/files/Chart_Images_4.png?v=1760234515&amp;width=150 150w, //sousasupps.com/cdn/shop/files/Chart_Images_4.png?v=1760234515&amp;width=300 300w, //sousasupps.com/cdn/shop/files/Chart_Images_4.png?v=1760234515&amp;width=450 450w"
+                    width="450" height="526" loading="lazy" class="sticker__width-container max-w-none" sizes="150px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #sticker-sticker_qznGkB {
+          --block-width: 150;
+        }
+
+
+        #sticker-sticker_qznGkB {
+          top: 100%;
+          left: 25%;
+        }
+
+        #sticker-sticker_qznGkB .sticker__translate-container {
+          transform: translate(-50%, -50%);
+        }
+
+        #sticker-sticker_qznGkB .sticker__rotate-container {
+          transform: rotate(0deg);
+        }
+
+        #sticker-text-sticker_qznGkB,
+        #sticker-sticker_qznGkB .sticker__fit-to-text {
+          --adjusted-sticker-font-size: calc(1.563rem * 1.5);
+          font-size: calc(var(--adjusted-sticker-font-size) * var(--block-width) / 300);
+          line-height: 1;
+        }
+
+        #sticker-text-sticker_qznGkB {
+          padding: calc(2rem * var(--block-width) / 300);
+        }
+
+        #sticker-sticker_qznGkB .sticker__width-container {
+          width: calc(var(--block-width) * 1px);
+        }
+      </style>
+
+
+
+      <svg width="0" height="0" viewBox="0 0 200 200">
+        <defs>
+          <clipPath id="clip-sticker_pjA36p" clipPathUnits="objectBoundingBox">
+            <path clip-rule="evenodd" transform="scale(0.005,0.005)"
+              d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z"
+              fill="black"></path>
+          </clipPath>
+          <path id="outline-sticker_pjA36p" vector-effect="non-scaling-stroke"
+            d="M100.5 3L112.702 23.4603L130.629 7.77199L135.911 31.0015L157.809 21.6208L155.654 45.3457L179.379 43.1909L169.999 65.0887L193.228 70.3708L177.54 88.2981L198 100.5L177.54 112.702L193.228 130.629L169.999 135.911L179.379 157.809L155.654 155.654L157.809 179.379L135.911 169.999L130.629 193.228L112.702 177.54L100.5 198L88.2981 177.54L70.3708 193.228L65.0887 169.999L43.1909 179.379L45.3457 155.654L21.6208 157.809L31.0015 135.911L7.77199 130.629L23.4603 112.702L3 100.5L23.4603 88.2981L7.77199 70.3708L31.0015 65.0887L21.6208 43.1909L45.3457 45.3457L43.1909 21.6208L65.0887 31.0015L70.3708 7.77199L88.2981 23.4603L100.5 3Z">
+          </path>
+        </defs>
+      </svg>
+      <div class="sticker pointer-events-none absolute z-sticker homeTable stickerFifth  " id="sticker-sticker_pjA36p"
+        data-color-scheme="scheme1">
+        <div class="sticker__translate-container">
+          <div class="sticker__parallax-container" data-sticker="">
+            <div class="sticker__parallax-element">
+              <div class="sticker__rotate-container sticker-rotate-when-scrolling "
+                style="transform: rotate(2315.83deg);">
+                <div class="sticker__image rotate-anim">
+                  <img src="//sousasupps.com/cdn/shop/files/badge-low-workout.png?v=1760234476&amp;width=840" alt=""
+                    srcset="//sousasupps.com/cdn/shop/files/badge-low-workout.png?v=1760234476&amp;width=280 280w, //sousasupps.com/cdn/shop/files/badge-low-workout.png?v=1760234476&amp;width=560 560w, //sousasupps.com/cdn/shop/files/badge-low-workout.png?v=1760234476&amp;width=840 840w"
+                    width="840" height="489" loading="lazy" class="sticker__width-container max-w-none" sizes="280px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #sticker-sticker_pjA36p {
+          --block-width: 280;
+        }
+
+
+        #sticker-sticker_pjA36p {
+          top: 100%;
+          left: 75%;
+        }
+
+        #sticker-sticker_pjA36p .sticker__translate-container {
+          transform: translate(-50%, -50%);
+        }
+
+        #sticker-sticker_pjA36p .sticker__rotate-container {
+          transform: rotate(0deg);
+        }
+
+        #sticker-text-sticker_pjA36p,
+        #sticker-sticker_pjA36p .sticker__fit-to-text {
+          --adjusted-sticker-font-size: calc(1.563rem * 1.5);
+          font-size: calc(var(--adjusted-sticker-font-size) * var(--block-width) / 300);
+          line-height: 1;
+        }
+
+        #sticker-text-sticker_pjA36p {
+          padding: calc(2rem * var(--block-width) / 300);
+        }
+
+        #sticker-sticker_pjA36p .sticker__width-container {
+          width: calc(var(--block-width) * 1px);
+        }
+      </style>
+
+
+
+      <script src="//sousasupps.com/cdn/shop/t/6/assets/shapes-animations.js?v=111376164229927584001776097046"
+        defer=""></script>
+
+
+      <div id="shape-divider-shape_divider_ymnYFE"
+        class="shape-divider pointer-events-none z-20 w-full absolute top-0 left-0 w-full shape-divider-homeTable-above">
+        <div class="shape-divider-transform-reset">
+          <div class="shape-divider-svg-container relative left-0 flex min-w-full  -mt-shape-divider"
+            style="padding-top: 1.6666666666666665%;">
+            <div class=" absolute bottom-0 left-0 right-0 top-0 z-0 h-full w-full text-scheme-background">
+              <svg class="absolute bottom-0 left-0 right-0  top-0 z-0 h-full w-full  text-scheme-background "
+                data-color-scheme="scheme1" width="100%" height="100%" viewBox="0 0 1200.0 20.0" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0 8.46126C8 3.84592 16 3.84592 24 8.46126C32 13.0766 40 13.0766 48 8.46127C56 3.84593 64 3.84593 72 8.46127C80 13.0766 88 13.0766 96 8.46128C104 3.84594 112 3.84594 120 8.46128C128 13.0766 136 13.0766 144 8.46128C152 3.84594 160 3.84595 168 8.46129C176 13.0766 184 13.0766 192 8.46129C200 3.84595 208 3.84596 216 8.4613C224 13.0766 232 13.0766 240 8.4613C248 3.84596 256 3.84596 264 8.46131C272 13.0766 280 13.0766 288 8.46131C296 3.84597 304 3.84597 312 8.46131C320 13.0767 328 13.0767 336 8.46132C344 3.84598 352 3.84598 360 8.46132C368 13.0767 376 13.0767 384 8.46132C392 3.84599 400 3.84599 408 8.46133C416 13.0767 424 13.0767 432 8.46133C440 3.846 448 3.846 456 8.46134C464 13.0767 472 13.0767 480 8.46134C488 3.846 496 3.846 504 8.46135C512 13.0767 520 13.0767 528 8.46135C536 3.84601 544 3.84601 552 8.46135C560 13.0767 568 13.0767 576 8.46136C584 3.84602 592 3.84602 600 8.46136C608 13.0767 616 13.0767 624 8.46137C632 3.84603 640 3.84603 648 8.46137C656 13.0767 664 13.0767 672 8.46138C680 3.84604 688 3.84604 696 8.46138C704 13.0767 712 13.0767 720 8.46138C728 3.84604 736 3.84604 744 8.46139C752 13.0767 760 13.0767 768 8.46139C776 3.84605 784 3.84605 792 8.4614C800 13.0767 808 13.0767 816 8.4614C824 3.84606 832 3.84606 840 8.4614C848 13.0767 856 13.0767 864 8.46141C872 3.84607 880 3.84607 888 8.46141C896 13.0768 904 13.0768 912 8.46142C920 3.84608 928 3.84608 936 8.46142C944 13.0768 952 13.0768 960 8.46142C968 3.84608 976 3.84609 984 8.46143C992 13.0768 1000 13.0768 1008 8.46143C1016 3.84609 1024 3.8461 1032 8.46144C1040 13.0768 1048 13.0768 1056 8.46144C1064 3.8461 1072 3.8461 1080 8.46145C1088 13.0768 1096 13.0768 1104 8.46145C1112 3.84611 1120 3.84611 1128 8.46145C1136 13.0768 1144 13.0768 1152 8.46146C1160 3.84612 1168 3.84612 1176 8.46146C1184 13.0768 1192 13.0768 1200 8.46147V19.9999H0V8.46126Z"
+                  fill="currentColor"></path>
+                <path class="shape-divider-stroke" vector-effect="non-scaling-stroke"
+                  d="M1 8.46126C9 3.84592 17 3.84592 25 8.46126C33 13.0766 41 13.0766 49 8.46127C57 3.84593 65 3.84593 73 8.46127C81 13.0766 89 13.0766 97 8.46128C105 3.84594 113 3.84594 121 8.46128C129 13.0766 137 13.0766 145 8.46128C153 3.84594 161 3.84595 169 8.46129C177 13.0766 185 13.0766 193 8.46129C201 3.84595 209 3.84596 217 8.4613C225 13.0766 233 13.0766 241 8.4613C249 3.84596 257 3.84596 265 8.46131C273 13.0766 281 13.0766 289 8.46131C297 3.84597 305 3.84597 313 8.46131C321 13.0767 329 13.0767 337 8.46132C345 3.84598 353 3.84598 361 8.46132C369 13.0767 377 13.0767 385 8.46132C393 3.84599 401 3.84599 409 8.46133C417 13.0767 425 13.0767 433 8.46133C441 3.846 449 3.846 457 8.46134C465 13.0767 473 13.0767 481 8.46134C489 3.846 497 3.846 505 8.46135C513 13.0767 521 13.0767 529 8.46135C537 3.84601 544 3.84601 552 8.46135C560 13.0767 568 13.0767 576 8.46136C584 3.84602 592 3.84602 600 8.46136C608 13.0767 616 13.0767 624 8.46137C632 3.84603 640 3.84603 648 8.46137C656 13.0767 664 13.0767 672 8.46138C680 3.84604 688 3.84604 696 8.46138C704 13.0767 712 13.0767 720 8.46138C728 3.84604 736 3.84604 744 8.46139C752 13.0767 760 13.0767 768 8.46139C776 3.84605 784 3.84605 792 8.4614C800 13.0767 808 13.0767 816 8.4614C824 3.84606 832 3.84606 840 8.4614C848 13.0767 856 13.0767 864 8.46141C872 3.84607 880 3.84607 888 8.46141C896 13.0768 904 13.0768 912 8.46142C920 3.84608 928 3.84608 936 8.46142C944 13.0768 952 13.0768 960 8.46142C968 3.84608 976 3.84609 984 8.46143C992 13.0768 1000 13.0768 1008 8.46143C1016 3.84609 1024 3.8461 1032 8.46144C1040 13.0768 1048 13.0768 1056 8.46144C1064 3.8461 1072 3.8461 1081 8.46145C1088 13.0768 1096 13.0768 1104 8.46145C1112 3.84611 1120 3.84611 1128 8.46145C1136 13.0768 1144 13.0768 1152 8.46146C1160 3.84612 1168 3.84612 1176 8.46146C1184 13.0768 1192 13.0768 1201 8.46147"
+                  stroke="black"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #shape-divider-shape_divider_ymnYFE svg {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(-1);
+        }
+
+        #shape-divider-shape_divider_ymnYFE svg:nth-child(2) {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(-1) translateX(100%);
+        }
+
+        #shopify-section-template--26988430360855__comparison-table>data-island,
+        #shopify-section-template--26988430360855__comparison-table>section,
+        #shopify-section-template--26988430360855__comparison-table>footer,
+        #shopify-section-template--26988430360855__comparison-table [data-related-products-section] {
+          padding-top: 1.6666666666666665%;
+        }
+      </style>
+
+    </div>
+    <div id="shopify-section-template--26988430360855__faq_EUxQQF" class="shopify-section">
+      <section class="relative overflow-hidden bg-scheme-background text-scheme-text  faq-wrapper homeFaq"
+        data-color-scheme="scheme4">
+        <div class="section-content relative z-10 mx-auto max-w-site px-section py-section-vertical-spacing">
+
+          <h2
+            class="inline-heading-rte font-heading heading-standard  heading-style break-words text-center full_shadow">
+            FAQ
+          </h2>
+
+
+
+
+          <div class="section-content-top-margin">
+            <ul class="mx-auto flex flex-col  max-w-4xl">
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          What makes Sousa different?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_RE9Vcd" style="display: none;">
+                    <p>Hydration powders only provide electrolytes, and protein shakes only provide protein. Our
+                      founders would often drink 2 separate drinks daily to receive both benefits, so we decided to
+                      create Sousa Protein + Hydration! It gives you the benefits of each drink (plus vitamins and
+                      functional extras), so you don’t have to choose.</p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>Hydration powders only provide electrolytes, and protein shakes only provide protein. Our
+                      founders would often drink 2 separate drinks daily to receive both benefits, so we decided to
+                      create Sousa Protein + Hydration! It gives you the benefits of each drink (plus vitamins and
+                      functional extras), so you don’t have to choose.</p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          What is Sousa Protein + Hydration?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_zP7MRp" style="display: none;">
+                    <p>Sousa Protein + Hydration is Sousa’s flagship product, an all-in-one recovery drink mix. It’s a
+                      single-serve modern recovery drink designed to help you refuel, rehydrate, and recharge.&nbsp;
+                      Each packet combines the power of a protein shake with the science of a hydration formula, so you
+                      get the best of both in a single packet.</p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>Sousa Protein + Hydration is Sousa’s flagship product, an all-in-one recovery drink mix. It’s a
+                      single-serve modern recovery drink designed to help you refuel, rehydrate, and recharge.  Each
+                      packet combines the power of a protein shake with the science of a hydration formula, so you get
+                      the best of both in a single packet.</p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          What is the Sousa Total Recovery Formula (STRF)™?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>

@@ -1033,6 +1033,219 @@ CHIPS 규칙:
 });
 
 // ─────────────────────────────────────────────
+// 5-A. UNIFIED CHAT API — Kinect-style server-side intent routing
+//
+// POST /api/chat
+// Body: { mallId, productNo?, productName?, question, conversationHistory?, sessionId?, pageUrl? }
+//
+// 서버가 LLM으로 인텐트를 분류한 후 product_qa 또는 catalog_search로 라우팅.
+// 클라이언트 측 정규식 라우팅 제거 → 더 정확한 맥락 인식.
+// ─────────────────────────────────────────────
+
+/**
+ * LLM 기반 인텐트 분류 (Kinect 방식)
+ * - productNo가 없으면 무조건 catalog_search
+ * - 실패 시 휴리스틱으로 폴백
+ * @returns {"product_qa" | "catalog_search"}
+ */
+async function classifyQueryIntent({ question, productName, conversationHistory }) {
+  const historySnippet = (conversationHistory || [])
+    .slice(-4)
+    .map(m => `${m.role === 'user' ? '고객' : 'AI'}: ${m.content.slice(0, 100)}`)
+    .join('\n');
+
+  const prompt = `쇼핑몰 AI 어시스턴트의 인텐트 분류기입니다.
+
+현재 상품: ${productName || '(미상)'}
+고객 질문: "${question}"
+${historySnippet ? `최근 대화:\n${historySnippet}` : ''}
+
+분류 기준:
+- "product_qa": 지금 보고 있는 이 상품에 관한 모든 질문 (소재·핏·사이즈·세탁·착장감·스타일링·색상·옵션·걱정·불안 표현 등)
+- "catalog_search": 다른 상품을 찾거나 비교 추천 요청 (비슷한 것·대안·다른 스타일·새로운 추천 탐색 등)
+
+JSON만 응답 (설명 없이): {"intent":"product_qa","confidence":0.95}`;
+
+  try {
+    const res = await callGemini({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 60 },
+    });
+    const raw = res.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const match = raw.match(/\{[\s\S]*?\}/);
+    if (match) {
+      const parsed = JSON.parse(match[0]);
+      if (parsed.intent === 'product_qa' || parsed.intent === 'catalog_search') {
+        console.log(`[Intent] "${question.slice(0, 40)}" → ${parsed.intent} (conf:${parsed.confidence ?? '?'})`);
+        return parsed.intent;
+      }
+    }
+  } catch (e) {
+    console.warn('[Intent] 분류 실패, 휴리스틱 적용:', e.message);
+  }
+
+  // 폴백: 단순 키워드 휴리스틱
+  const seekingOther = /다른\s*(상품|옷|바지|아이템|것|거|제품|스타일)|추천\s*(해|받|좀|줘|줄래)|비슷한\s*(거|것|상품|옷)|대신할|대체|더\s*있나|뭐가\s*있|어떤\s*게\s*(있|좋)/.test(question);
+  return seekingOther ? 'catalog_search' : 'product_qa';
+}
+
+app.post('/api/chat', rateLimit(30), requireRegisteredMall, async (req, res) => {
+  const {
+    mallId, productNo, productName: domProductName,
+    question: rawQuestion, conversationHistory,
+    sessionId, pageUrl, mode,
+  } = req.body;
+  const question = sanitizeInput(rawQuestion, 300);
+  if (!question) return res.status(400).json({ error: 'question required' });
+
+  // SSE 헤더
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.flushHeaders();
+
+  const sse = (data) => { try { res.write(`data: ${JSON.stringify(data)}\n\n`); } catch {} };
+
+  console.log(`[Chat] mallId=${mallId} productNo=${productNo || '-'} question="${question}"`);
+
+  try {
+    // 1. 인텐트 분류 (상품 컨텍스트가 있을 때만)
+    let intent = 'catalog_search';
+    if (productNo) {
+      intent = await classifyQueryIntent({ question, productName: domProductName, conversationHistory });
+    }
+    sse({ type: 'intent', intent });
+
+    if (intent === 'product_qa') {
+      // ── product_qa 핸들러 ──
+      let productContext = '';
+      let productRow = null;
+      if (mallId && productNo) {
+        const { data: product } = await supabase
+          .from('products')
+          .select('name, price, attributes, embed_text')
+          .eq('store_id', mallId)
+          .eq('product_id', String(productNo))
+          .single();
+        if (product) {
+          productRow = product;
+          const attrs = product.attributes || {};
+          productContext = `상품명: ${product.name}\n가격: ${product.price?.toLocaleString()}원\n소재: ${attrs.material || '정보 없음'}\n상품 설명: ${product.embed_text?.slice(0, 800) || ''}`.trim();
+        }
+      }
+      if (!productContext && domProductName) productContext = `상품명: ${domProductName}`;
+
+      const historyContext = (conversationHistory || []).slice(-6)
+        .map(m => `${m.role === 'user' ? '고객' : 'AI'}: ${m.content}`)
+        .join('\n');
+
+      const prompt = `당신은 고급 패션 매장의 숙련된 어드바이저입니다. 고객이 편안하게 느낄 수 있도록 정중하고 섬세하게 응대하되, 지나치게 격식적이거나 딱딱하지 않게 따뜻한 존댓말을 사용하세요.
+
+${productContext ? `[현재 고객이 보고 계신 상품]\n${productContext}\n` : ''}${historyContext ? `[최근 대화]\n${historyContext}\n` : ''}
+고객 질문: "${question}"
+
+이 상품에 대한 질문에 직접 답변해 드리세요. 다른 상품을 추천하거나 역질문은 절대 하지 마세요.
+
+규칙:
+- 인사말 없이 바로 핵심 답변으로 시작할 것 — '안녕하세요', '고객님', '보고 계신' 같은 도입부 금지
+- 반드시 이 상품에 대해서만 답변할 것 — 다른 상품 추천 절대 금지
+- 고객이 상품에 대한 걱정이나 의심을 표현한 질문(예: "촌스러워 보이지 않을까요?")에는: 그 걱정에 먼저 공감한 뒤, 이 상품의 디자인·소재·핏·컬러에서 왜 그 걱정이 불필요한지 구체적으로 설명하고, 어떻게 스타일링하면 세련되어 보이는지 제안할 것. 절대 다른 상품을 권하지 말 것
+- 상품 정보를 근거로 구체적으로 답변할 것
+- 존댓말 사용: "~해요", "~거예요", "~답니다" (부드럽고 자연스럽게)
+- "~하시면 됩니다", "~해주시기 바랍니다" 같은 딱딱하거나 사무적인 표현 금지
+- 유머나 가벼운 말투 금지 — 신뢰감 있는 전문가 톤 유지
+- 다른 페이지나 링크로 안내하지 말 것 — 지금 이 자리에서 바로 답변할 것
+- 정보가 없을 경우에도 소재·디자인에서 추론하여 솔직하게 안내할 것
+- 2~3문장, 간결하게
+
+답변 후 반드시 아래 형식을 줄바꿈 후 추가:
+CHIPS:["질문1","질문2","질문3","질문4","질문5"]
+
+CHIPS 규칙:
+목표: 유저가 방금 한 질문("${question}")의 흐름을 그대로 이어받아, 자연스럽게 꼬리질문을 할 수 있도록 돕는 것.
+"이 질문을 한 사람이 다음에 궁금해할 것"을 5가지 나열한다.
+- 답변 내용이 아니라 유저의 질문 의도와 관심사를 기준으로 생성
+- 같은 관심사에서 파생되는 더 구체적인 질문, 다른 각도의 질문, 연관 주제로의 확장 순으로 구성
+- 실제 사람이 대화하듯 구어체로 — "세탁기 돌려도 돼요?", "다른 색도 있어요?" 형태
+- 반드시 물음표(?)로 끝나는 의문문만 — 서술형 절대 금지
+- 각 15자 이내
+- CHIPS: 태그 이외 다른 텍스트 추가 금지`;
+
+      const companionPromise = (mallId && productNo && productRow)
+        ? findCompanionProductsByQuestion({ mallId, productNo, question })
+        : Promise.resolve({ companionProducts: [], companionContext: null });
+
+      const geminiRes = await callGemini({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 16384 },
+      });
+
+      const rawAnswer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+      let answerChips = [];
+      const chipsMatch = rawAnswer.match(/CHIPS:\s*(\[[\s\S]*\])/);
+      if (chipsMatch) {
+        try { answerChips = JSON.parse(chipsMatch[1]); } catch {
+          try { answerChips = JSON.parse(chipsMatch[1].replace(/'/g, '"')); } catch {}
+        }
+      }
+      if (!Array.isArray(answerChips)) answerChips = [];
+      const answer = rawAnswer.replace(/\n?CHIPS:[\s\S]*$/, '').trim() || '죄송해요, 다시 시도해주세요.';
+
+      const { companionProducts, companionContext } = await companionPromise;
+
+      Promise.resolve(supabase.from('chat_logs').insert({
+        store_id: mallId, query: question, answer,
+        result_type: 'pdp_qa', product_count: 1,
+        product_ids: productNo ? [String(productNo)] : null,
+        session_id: sessionId || null, page_url: pageUrl || null,
+        companion_shown: companionProducts.length > 0,
+        companion_ids: companionProducts.length > 0 ? companionProducts.map(c => String(c.id)) : null,
+      })).catch(() => {});
+
+      sse({ type: 'done', intent: 'product_qa', answer, chips: answerChips, companionProducts, companionContext });
+
+    } else {
+      // ── catalog_search 핸들러 ──
+      const { recommend: recommendFn } = require('./services/recommender');
+
+      let previousProducts = [];
+      let userPreferences = null;
+      if (sessionId) {
+        const [prevLogsResult, prefResult] = await Promise.all([
+          supabase.from('chat_logs').select('product_ids')
+            .eq('store_id', mallId).eq('session_id', sessionId)
+            .not('product_ids', 'is', null).order('created_at', { ascending: false }).limit(3),
+          supabase.from('user_preferences').select('preferences')
+            .eq('store_id', mallId).eq('session_id', sessionId).single(),
+        ]);
+        const prevIds = [...new Set((prevLogsResult.data || []).flatMap(l => l.product_ids || []))].slice(0, 9);
+        if (prevIds.length) {
+          const { data: prevProds } = await supabase
+            .from('products').select('product_id, name, price').in('product_id', prevIds);
+          previousProducts = prevProds || [];
+        }
+        if (prefResult.data?.preferences && Object.keys(prefResult.data.preferences).length) {
+          userPreferences = prefResult.data.preferences;
+        }
+      }
+
+      const result = await recommendFn(
+        { mallId, query: question, conversationHistory, context: { sessionId, pageUrl, mode, previousProducts, userPreferences } },
+        (chunk) => sse({ type: 'chunk', text: chunk })
+      );
+      sse({ ...result, type: 'done', intent: 'catalog_search' });
+    }
+  } catch (err) {
+    console.error('[Chat Error]', err.message);
+    sse({ type: 'error', message: '죄송해요, 다시 시도해주세요.' });
+  } finally {
+    res.end();
+  }
+});
+
+// ─────────────────────────────────────────────
 // 6. SIZE EXTRACT API — 상품 사이즈 추출 파이프라인
 //
 // 3가지 소스 자동 시도 (우선순위 순):

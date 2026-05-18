@@ -1,0 +1,761 @@
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M12.0059 3.80113C14.6783 3.80113 14.9947 3.81285 16.0457 3.85974C17.0225 3.90272 17.5499 4.06681 17.9015 4.20356C18.3665 4.38328 18.7025 4.60207 19.0502 4.9498C19.4018 5.30143 19.6167 5.63352 19.7964 6.09846C19.9332 6.45009 20.0973 6.98144 20.1403 7.95429C20.1871 9.00918 20.1989 9.32565 20.1989 11.9941C20.1989 14.6665 20.1871 14.983 20.1403 16.034C20.0973 17.0107 19.9332 17.5382 19.7964 17.8898C19.6167 18.3548 19.3979 18.6908 19.0502 19.0385C18.6986 19.3901 18.3665 19.605 17.9015 19.7847C17.5499 19.9215 17.0186 20.0856 16.0457 20.1285C14.9908 20.1754 14.6743 20.1871 12.0059 20.1871C9.33346 20.1871 9.01699 20.1754 7.96601 20.1285C6.98925 20.0856 6.46181 19.9215 6.11018 19.7847C5.64524 19.605 5.30924 19.3862 4.96151 19.0385C4.60988 18.6869 4.395 18.3548 4.21527 17.8898C4.07853 17.5382 3.91443 17.0068 3.87146 16.034C3.82457 14.9791 3.81285 14.6626 3.81285 11.9941C3.81285 9.32174 3.82457 9.00527 3.87146 7.95429C3.91443 6.97753 4.07853 6.45009 4.21527 6.09846C4.395 5.63352 4.61379 5.29752 4.96151 4.9498C5.31314 4.59816 5.64524 4.38328 6.11018 4.20356C6.46181 4.06681 6.99316 3.90272 7.96601 3.85974C9.01699 3.81285 9.33346 3.80113 12.0059 3.80113ZM12.0059 2C9.29048 2 8.95057 2.01172 7.88396 2.05861C6.82125 2.10549 6.09064 2.2774 5.4577 2.52354C4.79742 2.7814 4.23872 3.12131 3.68392 3.68002C3.12522 4.23481 2.78531 4.79351 2.52745 5.44989C2.2813 6.08674 2.1094 6.81344 2.06251 7.87615C2.01563 8.94667 2.00391 9.28658 2.00391 12.002C2.00391 14.7173 2.01563 15.0572 2.06251 16.1239C2.1094 17.1866 2.2813 17.9172 2.52745 18.5501C2.78531 19.2104 3.12522 19.7691 3.68392 20.3239C4.23872 20.8787 4.79742 21.2225 5.4538 21.4765C6.09064 21.7226 6.81734 21.8945 7.88005 21.9414C8.94667 21.9883 9.28657 22 12.0019 22C14.7173 22 15.0572 21.9883 16.1238 21.9414C17.1866 21.8945 17.9172 21.7226 18.5501 21.4765C19.2065 21.2225 19.7652 20.8787 20.32 20.3239C20.8748 19.7691 21.2186 19.2104 21.4725 18.554C21.7187 17.9172 21.8906 17.1905 21.9375 16.1278C21.9844 15.0611 21.9961 14.7212 21.9961 12.0059C21.9961 9.29049 21.9844 8.95058 21.9375 7.88396C21.8906 6.82125 21.7187 6.09064 21.4725 5.45771C21.2264 4.79351 20.8865 4.23481 20.3278 3.68002C19.773 3.12522 19.2143 2.7814 18.5579 2.52745C17.9211 2.2813 17.1944 2.1094 16.1317 2.06251C15.0611 2.01172 14.7212 2 12.0059 2ZM12.0059 6.86423C9.16937 6.86423 6.86814 9.16546 6.86814 12.002C6.86814 14.8384 9.16937 17.1397 12.0059 17.1397C14.8423 17.1397 17.1436 14.8384 17.1436 12.002C17.1436 9.16546 14.8423 6.86423 12.0059 6.86423ZM12.0059 15.3346C10.1657 15.3346 8.67317 13.8422 8.67317 12.002C8.67317 10.1618 10.1657 8.66927 12.0059 8.66927C13.8461 8.66927 15.3385 10.1618 15.3385 12.002C15.3385 13.8422 13.8461 15.3346 12.0059 15.3346ZM17.3467 7.86048C18.007 7.86048 18.5462 7.32522 18.5462 6.66103C18.5462 6.00074 18.007 5.46157 17.3467 5.46157C16.6865 5.46157 16.1473 5.99683 16.1473 6.66103C16.1473 7.32131 16.6825 7.86048 17.3467 7.86048Z"
+                              fill="currentColor"></path>
+                          </svg>
+                        </span>
+                        <span class="visually-hidden">Instagram</span>
+                      </a>
+                    </li>
+
+
+                    <li class="mx-2 mt-2">
+                      <a class="fill-current" href="https://www.tiktok.com/@sousasupps" target="_blank">
+                        <span class="inline-block h-5 w-5 social-icon" aria-hidden="true"><svg aria-hidden="true"
+                            focusable="false" viewBox="0 0 24 24" class="icon icon-tiktok fill-current" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M16.0188 2H12.6482V15.6232C12.6482 17.2464 11.3518 18.5797 9.73853 18.5797C8.12526 18.5797 6.82889 17.2464 6.82889 15.6232C6.82889 14.029 8.09645 12.7246 9.65212 12.6667V9.24639C6.22391 9.30433 3.45831 12.1159 3.45831 15.6232C3.45831 19.1594 6.28153 22 9.76735 22C13.2531 22 16.0763 19.1304 16.0763 15.6232V8.63767C17.3439 9.56522 18.8996 10.1159 20.5416 10.1449V6.72464C18.0065 6.63768 16.0188 4.55072 16.0188 2Z"
+                              fill="currentColor"></path>
+                          </svg>
+                        </span>
+                        <span class="visually-hidden">TikTok</span>
+                      </a>
+                    </li>
+
+
+                    <li class="mx-2 mt-2">
+                      <a class="fill-current" href="https://www.linkedin.com/company/sousasupps/" target="_blank">
+                        <span class="inline-block h-5 w-5 social-icon" aria-hidden="true"><svg aria-hidden="true"
+                            focusable="false" viewBox="0 0 24 24" class="icon icon-linkedin fill-current" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M20.5195 2H3.47656C2.66016 2 2 2.64453 2 3.44141V20.5547C2 21.3516 2.66016 22 3.47656 22H20.5195C21.3359 22 22 21.3516 22 20.5586V3.44141C22 2.64453 21.3359 2 20.5195 2ZM7.93359 19.043H4.96484V9.49609H7.93359V19.043ZM6.44922 8.19531C5.49609 8.19531 4.72656 7.42578 4.72656 6.47656C4.72656 5.52734 5.49609 4.75781 6.44922 4.75781C7.39844 4.75781 8.16797 5.52734 8.16797 6.47656C8.16797 7.42187 7.39844 8.19531 6.44922 8.19531ZM19.043 19.043H16.0781V14.4023C16.0781 13.2969 16.0586 11.8711 14.5352 11.8711C12.9922 11.8711 12.7578 13.0781 12.7578 14.3242V19.043H9.79688V9.49609H12.6406V10.8008H12.6797C13.0742 10.0508 14.043 9.25781 15.4844 9.25781C18.4883 9.25781 19.043 11.2344 19.043 13.8047V19.043Z"
+                              fill="currentColor"></path>
+                          </svg>
+                        </span>
+                        <span class="visually-hidden">LinkedIn</span>
+                      </a>
+                    </li>
+
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="space-y-5 lg:col-span-5 footer-newsletter-wrapper lg:col-end-last">
+            <div>
+              <h2 class="font-heading mb-4">
+                Sign up to our newsletter
+              </h2>
+              <div class="newsletter-content mb-5">
+                <p>Join now for 10% off your first order!</p>
+              </div>
+              <div class="klaviyo-form-V8PKQL klaviyo-form form-version-cid-1">
+                <div class="needsclick  kl-private-reset-css-Xuajs1" style="transform: translate(0px, 0px);">
+                  <form aria-live="polite" data-testid="klaviyo-form-V8PKQL" novalidate=""
+                    class="needsclick klaviyo-form klaviyo-form-version-cid_1 go3279073480 kl-private-reset-css-Xuajs1"
+                    style="display: flex; flex-direction: row; box-sizing: border-box; width: 100%; overflow: visible; max-width: 600px; float: left; border-radius: 2px; border-style: none; border-width: 0px; border-color: rgb(0, 0, 0); background-color: rgba(255, 255, 255, 0); background-repeat: no-repeat; background-position-y: center; padding: 0px; flex: 1 1 0%;">
+                    <div class="needsclick  kl-private-reset-css-Xuajs1"
+                      style="display: flex; flex-direction: column; width: 100%; margin: 0px; padding: 0px; min-height: 120px; justify-content: center;">
+                      <div data-testid="form-row" class="needsclick  kl-private-reset-css-Xuajs1"
+                        style="display: flex; flex-direction: row; align-items: stretch; position: relative;">
+                        <div component="[object Object]" data-testid="form-component"
+                          class="needsclick  kl-private-reset-css-Xuajs1"
+                          style="display: flex; justify-content: flex-start; padding: 32px 10px 31px 0px; position: relative; flex: 1 0 0px;">
+                          <div class="needsclick  kl-private-reset-css-Xuajs1"
+                            style="display: flex; flex-grow: 1; flex-direction: column; align-self: flex-end;"><label
+                              id="label-email_01KJ8JE4WGBN2738M45KE3F4A5" for="email_01KJ8JE4WGBN2738M45KE3F4A5"
+                              class="needsclick klaviyo-sr-only kl-private-reset-css-Xuajs1"
+                              style="color: rgb(0, 0, 0); font-family: Nunito, Verdana, Geneva, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0px; padding-bottom: 6px;">Email</label><input
+                              id="email_01KJ8JE4WGBN2738M45KE3F4A5" type="email" autocomplete="email" name="email"
+                              tabindex="0" placeholder="your@email.com" aria-required="true" aria-invalid="false"
+                              options="[object Object]" class="needsclick go808567872 kl-private-reset-css-Xuajs1"
+                              style="box-sizing: border-box; border-radius: 50px; padding: 0px 0px 0px 16px; height: 54px; text-align: left; color: rgb(0, 0, 0); font-family: Nunito, Verdana, Geneva, sans-serif; font-size: 18px; font-weight: 400; letter-spacing: 0px; background-color: rgb(255, 255, 255); border: 1px solid rgb(93, 33, 19);">
+                            <div class="needsclick  kl-private-reset-css-Xuajs1"
+                              style="width: 100%; position: relative;"></div>
+                          </div>
+                        </div>
+                        <div component="[object Object]" data-testid="form-component"
+                          class="needsclick  kl-private-reset-css-Xuajs1"
+                          style="display: flex; justify-content: flex-start; padding: 32px 6px 31px; position: relative; flex: 1 0 0px;">
+                          <button type="button" tabindex="0" class="needsclick go2567439935 kl-private-reset-css-Xuajs1"
+                            style="background: rgb(249, 211, 61); border-radius: 54px; border-style: solid; border-color: rgb(93, 33, 19); border-width: 1px; color: rgb(93, 33, 19); font-family: bicyclette, Verdana, Geneva, sans-serif; font-size: 24px; font-weight: 800; letter-spacing: 0px; line-height: 1; font-style: normal; white-space: normal; padding-top: 0px; padding-bottom: 0px; text-align: center; word-break: break-word; align-self: flex-end; cursor: pointer; pointer-events: auto; height: 54px; width: 100%;">Sign
+                            me up!</button></div>
+                      </div>
+                    </div><input type="submit" tabindex="-1" value="Submit" style="display: none;">
+                  </form>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-btm section-content-top-margin justify-between text-scheme-text md:flex">
+          <div class="">
+            <p class="text-sm">
+              © 2026, <a href="/" title="">Sousa</a>.
+              <span class="inline-block">All Rights Reserved</span>
+            </p>
+          </div>
+          <div class="copyright-nav">
+            <ul>
+
+              <li>
+                <a href="/policies/terms-of-service" class="secondary-text-link">
+                  Terms and Conditions
+                </a>
+              </li>
+
+              <li>
+                <a href="/policies/privacy-policy" class="secondary-text-link">
+                  Privacy Policy
+                </a>
+              </li>
+
+              <li>
+                <a href="/pages/accessibility-statement" class="secondary-text-link">
+                  Accessibility
+                </a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+
+
+  </div>
+  <div id="shopify-section-sections--26988423774487__hero-logo"
+    class="shopify-section shopify-section-group-footer-group">
+    <section id="sections--26988423774487__hero-logo"
+      class="hero-logo-wrapper relative bg-scheme-background text-scheme-text  border-t-section border-section-border desktopFooterLogo"
+      data-color-scheme="scheme5" role="complementary">
+      <div>
+        <div class="section-content px-section py-half-section-vertical-spacing ">
+          <div class="mx-auto max-w-site">
+            <div class="mx-auto" style="max-width: 100%"><img
+                src="//sousasupps.com/cdn/shop/files/Logo_Footer.png?v=1760320821&amp;width=3000" alt="Sousa"
+                srcset="//sousasupps.com/cdn/shop/files/Logo_Footer.png?v=1760320821&amp;width=352 352w, //sousasupps.com/cdn/shop/files/Logo_Footer.png?v=1760320821&amp;width=832 832w, //sousasupps.com/cdn/shop/files/Logo_Footer.png?v=1760320821&amp;width=1200 1200w, //sousasupps.com/cdn/shop/files/Logo_Footer.png?v=1760320821&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/Logo_Footer.png?v=1760320821&amp;width=2190 2190w"
+                width="2190" class="w-full" sizes="100vw">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- END sections: footer-group --><!-- BEGIN sections: overlay-group -->
+  <div id="shopify-section-sections--26988425085207__age-check"
+    class="shopify-section shopify-section-group-overlay-group contents">
+  </div>
+  <!-- END sections: overlay-group -->
+  <div id="screenreader-announce" class="sr-only" aria-live="polite" role="status"></div>
+
+  <ul hidden="">
+    <li id="a11y-refresh-page-message">
+      Choosing a selection results in a full page refresh.
+    </li>
+    <li id="a11y-selection-message">
+      Press the space key then arrow keys to make a selection.
+    </li>
+  </ul>
+
+
+  <data-island role="complementary" x-data="" on="load" ready="">
+    <template x-teleport="body" data-teleport-template="true">
+      <div x-show="$store.modals.leftDrawer.open" @keydown.escape.prevent.stop="$store.modals.close('leftDrawer')"
+        @click="$store.modals.close('leftDrawer')" class="fixed inset-0 z-50" data-color-scheme="scheme1"
+        id="modals-leftDrawer">
+        <div x-show="$store.modals.leftDrawer.open" x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+          x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0" class="fixed inset-0 bg-scheme-text/75">
+          <!-- Overlay -->
+        </div>
+        <div x-show="$store.modals.leftDrawer.open" x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+          x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0"
+          x-transition:leave-end="-translate-x-full" class="drawer-transition-host h-full w-full">
+          <div @click.stop="" x-trap.noscroll.inert="$store.modals.leftDrawer.open"
+            class="relative mr-auto h-full w-11/12 overflow-y-auto border-r-section border-section-border bg-scheme-background text-scheme-text md:w-7/12 lg:w-5/12"
+            id="left-drawer-slot" role="dialog" aria-modal="true" :aria-label="getModalLabel('leftDrawer', $el)"
+            tabindex="-1">
+            <!-- Modal content is teleported here -->
+          </div>
+        </div>
+      </div>
+    </template>
+  </data-island>
+  <data-island role="complementary" x-data="" on="load" ready="">
+    <template x-teleport="body" data-teleport-template="true">
+      <div x-show="$store.modals.rightDrawer.open" @keydown.escape.prevent.stop="$store.modals.close('rightDrawer')"
+        @click="$store.modals.close('rightDrawer')" class="fixed inset-0 z-50" data-color-scheme="scheme1"
+        id="modals-rightDrawer">
+        <div x-show="$store.modals.rightDrawer.open" x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+          x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0" class="fixed inset-0 bg-scheme-text/75">
+          <!-- Overlay -->
+        </div>
+        <div x-show="$store.modals.rightDrawer.open" x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+          x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0"
+          x-transition:leave-end="translate-x-full" class="h-full w-full">
+          <div @click.stop="" x-trap.noscroll.inert="$store.modals.rightDrawer.open"
+            class="relative ml-auto h-full w-11/12 overflow-hidden border-l-section border-section-border bg-scheme-background text-scheme-text md:w-7/12 lg:w-5/12"
+            id="right-drawer-slot" role="dialog" aria-modal="true" :aria-label="getModalLabel('rightDrawer', $el)"
+            tabindex="-1">
+            <!-- Modal content is teleported here -->
+          </div>
+        </div>
+      </div>
+    </template>
+  </data-island>
+  <data-island role="complementary" x-data="" on="load" ready="">
+    <template x-teleport="body" data-teleport-template="true">
+      <div x-show="$store.modals.modal.open" @keydown.escape.prevent.stop="$store.modals.close('modal')"
+        class="fixed inset-0 z-40" id="modals-modal">
+        <div id="modal-slot" x-show="$store.modals.modal.open" x-transition.duration.300ms="" role="dialog"
+          aria-modal="true" class="relative m-auto h-full w-full overflow-y-auto"
+          x-trap.noscroll.inert="$store.modals.modal.open" :aria-label="getModalLabel('modal', $el)" tabindex="-1">
+        </div>
+      </div>
+    </template>
+  </data-island>
+  <data-island role="complementary" x-data="" on="load" ready="">
+    <template x-teleport="body" data-teleport-template="true">
+      <div x-show="$store.modals.popup.open" @keydown.escape.prevent.stop="$store.modals.close('popup')"
+        class="fixed inset-0 z-40" id="popups-popup">
+        <div x-show="$store.modals.popup.open" class="fixed inset-0 bg-scheme-text/75"
+          x-transition.opacity.duration.100ms="" @click="$store.modals.close('popup')">
+          <!-- Overlay -->
+        </div>
+        <div id="popup-slot" x-show="$store.modals.popup.open" x-transition.duration.200ms="" role="dialog"
+          aria-popup="true"
+          class="relative m-4 max-h-[calc(100%_-_(theme(spacing.4)_*_2))] overflow-y-scroll border-section border-section-border bg-scheme-background text-scheme-text lg:m-24 lg:max-h-[calc(100%_-_(theme(spacing.24)_*_2))]"
+          x-trap.noscroll.inert="$store.modals.popup.open" :aria-label="getModalLabel('popup', $el)" tabindex="-1">
+        </div>
+      </div>
+    </template>
+  </data-island>
+
+
+
+
+
+  <data-island x-data="ModalCart({openOnAddToCart: true})" x-init="initTeleport($root);" on="idle" ready="">
+    <div>
+      <template data-should-teleport="#right-drawer-slot" x-teleport="#right-drawer-slot" data-teleport-template="true">
+        <div x-show="$store.modals.rightDrawer.contents === 'cart'"
+          class="flex h-screen max-h-full flex-col overflow-hidden"
+          :data-modal-label="$store.modals.rightDrawer.contents === 'cart'? 'Your cart' : false" data-cart-drawer="">
+          <div class="relative flex items-center justify-between px-section pb-2.5 pt-5">
+            <h2 class="font-heading text-base lg:text-xl" tabindex="-1">
+              Your cart
+              <span class="sr-only">
+                -
+                <span x-text="$store.cart_count.countWithText"></span>
+              </span>
+            </h2>
+            <button @click.prevent="$store.modals.close('cart')" class="top-0 block">
+              <span class="sr-only">Close (esc)</span>
+              <span class="inline-block h-5 w-5"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" d="M43 5 5 43m38 0L5 5"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+          <div class="flex flex-auto flex-col overflow-hidden">
+            <data-island x-data="CartItems" data-cart-items=""
+              class="flex flex-auto flex-col overflow-hidden overflow-y-auto px-section" on="idle">
+
+
+              <div class="py-5 text-center">
+                <p>Your cart is currently empty.</p>
+              </div>
+
+            </data-island>
+            <p class="sr-only" id="cart-live-region-text" aria-live="polite" role="status" aria-hidden="true">
+              New subtotal:
+              $0.00 USD
+            </p>
+
+            <div class="relative  px-section pb-safe-bottom pt-5">
+              <div
+                class="pointer-events-none absolute left-0 right-0 top-0 h-16 w-full -translate-y-full bg-gradient-to-t from-scheme-background to-scheme-background-0">
+              </div>
+              <data-island x-data="CartFooter" data-cart-footer="" on="idle">
+
+              </data-island>
+
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </data-island>
+
+  <script src="//sousasupps.com/cdn/shop/t/6/assets/global.bundle.js?v=40207009305144628121776097046"
+    type="module"></script>
+
+
+
+  <script>
+    document.getElementById('navId-shop').addEventListener('click', function () {
+      document.getElementById('site-header-main').classList.add('mega-menu-item');
+    });
+    document.getElementById('navId-learn').addEventListener('click', function () {
+      document.getElementById('site-header-main').classList.remove('mega-menu-item');
+    });
+    document.body.addEventListener('click', function (event) {
+      const targetDiv = document.getElementById('site-header-main');
+      if (targetDiv && !targetDiv.contains(event.target)) {
+        targetDiv.classList.remove('mega-menu-item');
+      }
+    });
+  </script>
+  <div id="shopify-block-AWTZhbW00S0txY2tBM__15181020662106344915" class="shopify-block shopify-app-block">
+    <div class="jdgm-popup-widget-wrapper" role="complementary">
+      <div class="jdgm-widget jdgm-popup-widget" data-widget-name="popup_widget" data-impressions-tracked="true"
+        data-views-tracked="true">
+        <style>
+          .jdgm-popup-widget .jdgm-popup-widget__cards-container {
+            top: unset;
+            bottom: 40px;
+            left: 0;
+            right: unset
+          }
+
+          @media only screen and (max-width: 767px) {
+            .jdgm-popup-widget .jdgm-popup-widget__cards-container {
+              left: 24px;
+              right: unset
+            }
+          }
+
+          .jdgm-popup-widget .jdgm-popup-card {
+            border-radius: 8px;
+            height: 147px
+          }
+
+          .jdgm-popup-widget .jdgm-popup-card__close-btn {
+            border-radius: 8px
+          }
+
+          .jdgm-popup-widget .jdgm-popup-card__pic-wrapper {
+            border-radius: 8px 0 0 8px
+          }
+
+          .jdgm-popup-widget .jdgm-popup-card__rev-prod-wrapper {
+            width: 66%;
+            max-width: 238px
+          }
+
+          .jdgm-popup-widget .jdgm-popup-card__rev-content {
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3
+          }
+
+          .jdgm-popup-widget .jdgm-popup-card__reviewer {
+            display: none
+          }
+
+          .jdgm-full-rev-modal.popup-widget .jm-mfp-content {
+            border-radius: 8px
+          }
+
+          .jdgm-full-rev-modal.popup-widget .jdgm-full-rev__icon {
+            border-radius: 8px
+          }
+
+          .jdgm-full-rev-modal.popup-widget .jdgm-full-rev[data-verified-buyer="true"] .jdgm-full-rev__icon::after {
+            border-radius: 8px
+          }
+
+          .jdgm-full-rev-modal.popup-widget .jdgm-rev__buyer-badge {
+            border-radius: calc(8px / 2)
+          }
+
+          .jdgm-full-rev-modal.popup-widget .jdgm-full-rev__pic-img {
+            border-radius: 8px
+          }
+
+          .jdgm-full-rev-modal.popup-widget .jdgm-full-rev__reply {
+            border-radius: 8px
+          }
+
+          .jdgm-full-rev-modal.popup-widget .jdgm-full-rev__replier::before {
+            content: 'the Sousa team'
+          }
+
+          .jdgm-full-rev-modal.popup-widget .jdgm-full-rev__product-button {
+            border-radius: calc(8px * 6)
+          }
+        </style>
+        <div class="jdgm-popup-widget__cards-container" data-position="bottom_left">
+          <div class="jdgm-popup-card" data-review-id="46db61e3-ec44-495d-a685-f6128bf9f948"
+            style="left: 40px; display: none;"> <span class="jdgm-popup-card__close-btn" aria-label="Close popup widget"
+              role="button"> </span>
+            <div class="jdgm-popup-card__pic-wrapper"> <img class="jdgm-popup-card__pic" title="Review picture"
+                alt="Review picture"
+                data-src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/BoxesAllSquare_240x240.jpg?v=1774450604"
+                src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/BoxesAllSquare_240x240.jpg?v=1774450604">
+            </div>
+            <div class="jdgm-popup-card__rev-prod-wrapper">
+              <div class="jdgm-popup-card__rev-content-wrapper">
+                <div class="jdgm-popup-card__reviewer"> Anas </div>
+                <div class="jdgm-popup-card__rev-rating" aria-label="5 stars" role="img"> <span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span> </div>
+                <div class="jdgm-popup-card__rev-content"> <span class="jdgm-popup-card__rev-body">
+                    <p>Honestly such incredible flavors and taste!! Definitely my new go to post workout drink! 10/10
+                      would recommend!</p>
+                  </span> </div>
+              </div>
+              <div class="jdgm-popup-card__prod-wrapper">
+                <div class="jdgm-popup-card__prod-title"> Variety Bundle Protein + Hydration </div>
+              </div>
+            </div> <a class="jdgm-popup-card__full-rev-link" href="#46db61e3-ec44-495d-a685-f6128bf9f948-mojg57jc-gty3"
+              role="button"></a>
+          </div>
+          <div class="jdgm-popup-card" data-review-id="8ccd68eb-870f-427a-9648-724d9ff72d9b"
+            style="left: 40px; display: none;"> <span class="jdgm-popup-card__close-btn" aria-label="Close popup widget"
+              role="button"> </span>
+            <div class="jdgm-popup-card__pic-wrapper"> <img class="jdgm-popup-card__pic" title="Review picture"
+                alt="Review picture"
+                data-src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/CROPVanillaFrontSquareBlue_240x240.png?v=1762291079"
+                src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/CROPVanillaFrontSquareBlue_240x240.png?v=1762291079">
+            </div>
+            <div class="jdgm-popup-card__rev-prod-wrapper">
+              <div class="jdgm-popup-card__rev-content-wrapper">
+                <div class="jdgm-popup-card__reviewer"> Anonymous </div>
+                <div class="jdgm-popup-card__rev-rating" aria-label="5 stars" role="img"> <span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span> </div>
+                <div class="jdgm-popup-card__rev-content"> <span class="jdgm-popup-card__rev-body">
+                    <p>they've done the most complex flavor in the world justice with this one. and both protein +
+                      electrolytes all in one. so delicious!</p>
+                  </span> </div>
+              </div>
+              <div class="jdgm-popup-card__prod-wrapper">
+                <div class="jdgm-popup-card__prod-title"> Vanilla Protein + Hydration </div>
+              </div>
+            </div> <a class="jdgm-popup-card__full-rev-link" href="#8ccd68eb-870f-427a-9648-724d9ff72d9b-mojg57jc-gty3"
+              role="button"></a>
+          </div>
+          <div class="jdgm-popup-card" data-review-id="be10bd5e-2f32-4e40-bde5-773f60bf014e"
+            style="left: 40px; display: none;"> <span class="jdgm-popup-card__close-btn" aria-label="Close popup widget"
+              role="button"> </span>
+            <div class="jdgm-popup-card__pic-wrapper"> <img class="jdgm-popup-card__pic" title="Review picture"
+                alt="Review picture"
+                data-src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/pouchrendermockupbluefront_240x240.png?v=1774896785"
+                src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/pouchrendermockupbluefront_240x240.png?v=1774896785">
+            </div>
+            <div class="jdgm-popup-card__rev-prod-wrapper">
+              <div class="jdgm-popup-card__rev-content-wrapper">
+                <div class="jdgm-popup-card__reviewer"> Liv </div>
+                <div class="jdgm-popup-card__rev-rating" aria-label="5 stars" role="img"> <span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span> </div>
+                <div class="jdgm-popup-card__rev-content"> <span class="jdgm-popup-card__rev-body">
+                    <p>Amazing! No grainy texture you find in most protein powders! Finding something that tastes good
+                      and is good for you is a real struggle as a bodybuilder but Sousa is definitely a new staple in my
+                      diet</p>
+                  </span> </div>
+              </div>
+              <div class="jdgm-popup-card__prod-wrapper">
+                <div class="jdgm-popup-card__prod-title"> Variety Starter Pack Protein + Hydration </div>
+              </div>
+            </div> <a class="jdgm-popup-card__full-rev-link" href="#be10bd5e-2f32-4e40-bde5-773f60bf014e-mojg57jc-gty3"
+              role="button"></a>
+          </div>
+          <div class="jdgm-popup-card" data-review-id="4b8f4355-040b-461a-99a8-f5d04f28e97f"
+            style="left: 40px; display: none;"> <span class="jdgm-popup-card__close-btn" aria-label="Close popup widget"
+              role="button"> </span>
+            <div class="jdgm-popup-card__pic-wrapper"> <img class="jdgm-popup-card__pic" title="Review picture"
+                alt="Review picture"
+                data-src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/CROPVanillaFrontSquareBlue_240x240.png?v=1762291079"
+                src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/CROPVanillaFrontSquareBlue_240x240.png?v=1762291079">
+            </div>
+            <div class="jdgm-popup-card__rev-prod-wrapper">
+              <div class="jdgm-popup-card__rev-content-wrapper">
+                <div class="jdgm-popup-card__reviewer"> Daniel </div>
+                <div class="jdgm-popup-card__rev-rating" aria-label="5 stars" role="img"> <span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span> </div>
+                <div class="jdgm-popup-card__rev-content"> <span class="jdgm-popup-card__rev-body">
+                    <p>Super easy to mix and great flavour! Was the perfect drink after a long run!</p>
+                  </span> </div>
+              </div>
+              <div class="jdgm-popup-card__prod-wrapper">
+                <div class="jdgm-popup-card__prod-title"> Vanilla Protein + Hydration </div>
+              </div>
+            </div> <a class="jdgm-popup-card__full-rev-link" href="#4b8f4355-040b-461a-99a8-f5d04f28e97f-mojg57jc-gty3"
+              role="button"></a>
+          </div>
+          <div class="jdgm-popup-card" data-review-id="f85f52bc-a631-4fb6-bdb6-d424304c7cda"
+            style="left: 40px; display: none;"> <span class="jdgm-popup-card__close-btn" aria-label="Close popup widget"
+              role="button"> </span>
+            <div class="jdgm-popup-card__pic-wrapper"> <img class="jdgm-popup-card__pic" title="Review picture"
+                alt="Review picture"
+                data-src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/pouchrendermockupbluefront_240x240.png?v=1774896785"
+                src="https://cdn.shopify.com/s/files/1/0960/4458/1143/files/pouchrendermockupbluefront_240x240.png?v=1774896785">
+            </div>
+            <div class="jdgm-popup-card__rev-prod-wrapper">
+              <div class="jdgm-popup-card__rev-content-wrapper">
+                <div class="jdgm-popup-card__reviewer"> Anonymous </div>
+                <div class="jdgm-popup-card__rev-rating" aria-label="5 stars" role="img"> <span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span><span class="jdgm-star jdgm--on"></span><span
+                    class="jdgm-star jdgm--on"></span> </div>
+                <div class="jdgm-popup-card__rev-content"> <span class="jdgm-popup-card__rev-body">
+                    <p>My kids like the taste and a life saver for Ramadan</p>
+                  </span> </div>
+              </div>
+              <div class="jdgm-popup-card__prod-wrapper">
+                <div class="jdgm-popup-card__prod-title"> Variety Starter Pack Protein + Hydration </div>
+              </div>
+            </div> <a class="jdgm-popup-card__full-rev-link" href="#f85f52bc-a631-4fb6-bdb6-d424304c7cda-mojg57jc-gty3"
+              role="button"></a>
+          </div>
+        </div>
+        <div class="jdgm-popup-widget__modals-container">
+          <div class="jdgm-full-rev" data-verified-buyer="true" data-review-id="46db61e3-ec44-495d-a685-f6128bf9f948"
+            data-product-title="Variety Bundle Protein + Hydration" data-product-url="/products/variety-pack"
+            id="46db61e3-ec44-495d-a685-f6128bf9f948-mojg57jc-gty3">
+
+            <div class="jdgm-full-rev__header">
+              <div class="jdgm-full-rev__rating_and_timestamp_wrapper">
+                <span class="jdgm-full-rev__rating" data-score="5" tabindex="0" aria-label="5 star review" role="img">
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+                </span>
+                <span class="jdgm-full-rev__timestamp" data-content="04/27/2026">
+                  04/27/2026
+                </span>
+              </div>
+
+              <div class="jdgm-full-rev__profile-wrapper">
+
+                <div class="jdgm-full-rev__icon">
+                </div>
+
+
+                <div class="jdgm-full-rev__reviewer-and-location-wrapper">
+                  <div class="jdgm-full-rev__reviewer-wrapper">
+                    <span class="jdgm-full-rev__reviewer-name">
+                      Anas
+                    </span>
+
+                    <span class="jdgm-rev__buyer-badge"></span>
+
+                  </div>
+
+                  <div class="jdgm-full-rev__location-wrapper">
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="jdgm-full-rev__content">
+              <b class="jdgm-full-rev__title"></b>
+              <div class="jdgm-full-rev__body">
+                <p>Honestly such incredible flavors and taste!! Definitely my new go to post workout drink! 10/10 would
+                  recommend!</p>
+              </div>
+
+
+              <div class="jdgm-full-rev__custom-form">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__pics">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__vids">
+
+
+              </div>
+
+            </div>
+
+
+
+
+            <div class="jdgm-full-rev__product-wrapper">
+              <a class="jdgm-full-rev__product-button" href="/products/variety-pack#judgeme_product_reviews"></a>
+            </div>
+
+          </div>
+
+          <div class="jdgm-full-rev" data-verified-buyer="true" data-review-id="4b8f4355-040b-461a-99a8-f5d04f28e97f"
+            data-product-title="Vanilla Protein + Hydration" data-product-url=""
+            id="4b8f4355-040b-461a-99a8-f5d04f28e97f-mojg57jc-gty3">
+
+            <div class="jdgm-full-rev__header">
+              <div class="jdgm-full-rev__rating_and_timestamp_wrapper">
+                <span class="jdgm-full-rev__rating" data-score="5" tabindex="0" aria-label="5 star review" role="img">
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+                </span>
+                <span class="jdgm-full-rev__timestamp" data-content="03/13/2026">
+                  03/13/2026
+                </span>
+              </div>
+
+              <div class="jdgm-full-rev__profile-wrapper">
+
+                <div class="jdgm-full-rev__icon">
+                </div>
+
+
+                <div class="jdgm-full-rev__reviewer-and-location-wrapper">
+                  <div class="jdgm-full-rev__reviewer-wrapper">
+                    <span class="jdgm-full-rev__reviewer-name">
+                      Daniel
+                    </span>
+
+                    <span class="jdgm-rev__buyer-badge"></span>
+
+                  </div>
+
+                  <div class="jdgm-full-rev__location-wrapper">
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="jdgm-full-rev__content">
+              <b class="jdgm-full-rev__title"></b>
+              <div class="jdgm-full-rev__body">
+                <p>Super easy to mix and great flavour! Was the perfect drink after a long run!</p>
+              </div>
+
+
+              <div class="jdgm-full-rev__custom-form">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__pics">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__vids">
+
+
+              </div>
+
+            </div>
+
+
+
+
+            <div class="jdgm-full-rev__product-wrapper">
+              <a class="jdgm-full-rev__product-button" href="#judgeme_product_reviews"></a>
+            </div>
+
+          </div>
+
+          <div class="jdgm-full-rev" data-verified-buyer="true" data-review-id="8ccd68eb-870f-427a-9648-724d9ff72d9b"
+            data-product-title="Vanilla Protein + Hydration" data-product-url=""
+            id="8ccd68eb-870f-427a-9648-724d9ff72d9b-mojg57jc-gty3">
+
+            <div class="jdgm-full-rev__header">
+              <div class="jdgm-full-rev__rating_and_timestamp_wrapper">
+                <span class="jdgm-full-rev__rating" data-score="5" tabindex="0" aria-label="5 star review" role="img">
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+                </span>
+                <span class="jdgm-full-rev__timestamp" data-content="04/16/2026">
+                  04/16/2026
+                </span>
+              </div>
+
+              <div class="jdgm-full-rev__profile-wrapper">
+
+                <div class="jdgm-full-rev__icon">
+                </div>

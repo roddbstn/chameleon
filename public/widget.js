@@ -1787,8 +1787,13 @@
       return bar;
     }
 
-    async function consumeRecommendStream(fetchBody, { loadingBubble, onDone }) {
-      const res = await fetch(`${CHAMELEON_SERVER}/api/recommend`, {
+    // ── 통합 채팅 스트림 소비 (서버 인텐트 분류 방식) ──
+    // /api/chat 은 항상 SSE로 응답:
+    //   {type:'intent', intent:'product_qa'|'catalog_search'}
+    //   {type:'chunk',  text:'...'}           ← catalog_search 스트리밍
+    //   {type:'done',   intent, answer?, chips?, companionProducts?, products?, refinement_chips?}
+    async function consumeChatStream(fetchBody, { loadingBubble, onDone }) {
+      const res = await fetch(`${CHAMELEON_SERVER}/api/chat`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(fetchBody),
       });
@@ -1798,6 +1803,7 @@
       let streamBubble = null;
       let streamRaw = '';
       let loadingGone = false;
+      let resolvedIntent = null;
 
       const removeLoading = () => { if (!loadingGone) { loadingBubble.remove(); loadingGone = true; } };
 
@@ -1813,7 +1819,10 @@
           let data;
           try { data = JSON.parse(event.slice(6)); } catch { continue; }
 
-          if (data.type === 'chunk') {
+          if (data.type === 'intent') {
+            resolvedIntent = data.intent;
+          } else if (data.type === 'chunk') {
+            // catalog_search 스트리밍 청크
             removeLoading();
             streamRaw += data.text;
             if (!streamBubble) {
@@ -1825,12 +1834,13 @@
             scrollToBottom();
           } else if (data.type === 'done' || data.type === 'error') {
             removeLoading();
-            const msg = data.message || streamRaw || '죄송해요, 다시 시도해주세요.';
+            // product_qa: data.answer 사용 / catalog_search: streamRaw 사용
+            const msg = data.answer || data.message || streamRaw || '죄송해요, 다시 시도해주세요.';
             if (streamBubble) streamBubble.innerHTML = parseMd(msg);
             else addBubble('assistant', msg);
             messageLog.push({ role: 'assistant', text: msg });
 
-            if (data.type === 'done') onDone(data, msg);
+            if (data.type === 'done') onDone(data, msg, resolvedIntent || 'catalog_search');
           }
         }
       }
@@ -1838,48 +1848,21 @@
     }
 
     async function sendRefinement(query, bar) {
-      // PDP 컨텍스트에서 다른 상품을 찾는 게 아닌 경우 → 이 상품 Q&A로 라우팅
-      if (_pdpProductNo) {
-        const isSeekingOther = /다른\s*(상품|옷|바지|아이템|것|거|제품|스타일)|추천\s*(해|받|좀|좀만)?|비슷한\s*(거|것|상품|옷)|대신할|대체|더\s*있|뭐가\s*있|뭔가\s*있|어떤\s*게\s*(있|좋)/.test(query);
-        if (!isSeekingOther) {
-          sendProductQA(query, _pdpProductNo, _pdpProductName);
-          return;
-        }
-      }
       addBubble('user', query);
       const loadingBubble = addSkeletonLoader(query);
       sendBtn.disabled = true;
       try {
-        await consumeRecommendStream({
-          mallId: MALL_ID, query, conversationHistory: chatHistory,
+        await consumeChatStream({
+          mallId: MALL_ID, query,
+          productNo: _pdpProductNo || undefined,
+          productName: _pdpProductName || undefined,
+          conversationHistory: chatHistory,
           sessionId: sessionStorage.getItem('cml_sid') || '',
           pageUrl: location.href,
         }, {
           loadingBubble,
-          onDone: (data, msg) => {
-            // 스트림 버블이 이미 텍스트를 표시 → addBubble 호출 없이 카드/칩만 추가
-            if (data.products?.length) {
-              lastProducts = data.products;
-              const container = document.createElement('div');
-              container.className = 'cml-msg-products';
-              data.products.forEach((p, i) => container.appendChild(createMsgProductCard(p, i + 1)));
-              messagesEl.appendChild(container);
-              scrollToBottom();
-            }
-            if (data.refinement_chips?.length) {
-              _lastChips = data.refinement_chips;
-              if (_pdpTrayTrack) {
-                updatePdpTrayChips(data.refinement_chips);
-              } else {
-                if (_refineBar) _refineBar.remove();
-                _refineBar = renderRefinementChips(data.refinement_chips);
-                if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
-              }
-            }
-            chatHistory.push({ role: 'user', content: query });
-            chatHistory.push({ role: 'assistant', content: msg });
-            if (chatHistory.length > 20) chatHistory.splice(0, 2);
-            saveSession(lastProducts);
+          onDone: (data, msg, intent) => {
+            _handleChatDone(data, msg, intent, query);
           },
         });
       } catch {
@@ -1921,17 +1904,52 @@
       }
     }
 
+    // ── 인텐트별 onDone 공통 핸들러 ──
+    function _handleChatDone(data, msg, intent, query) {
+      if (intent === 'product_qa') {
+        if (data.companionProducts?.length) {
+          renderCompanionCards(data.companionProducts, data.companionContext);
+        }
+        if (data.chips?.length) {
+          _pdpChips = data.chips;
+          if (_pdpTrayTrack) updatePdpTrayChips(data.chips);
+          if (_refineBar) _refineBar.remove();
+          _refineBar = renderRefinementChips(data.chips);
+          if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+        } else {
+          const remaining = _pdpChips.filter(c => c !== query);
+          if (remaining.length && _pdpTrayTrack) updatePdpTrayChips(remaining);
+        }
+      } else {
+        // catalog_search
+        if (data.products?.length) {
+          lastProducts = data.products;
+          const container = document.createElement('div');
+          container.className = 'cml-msg-products';
+          data.products.forEach((p, i) => container.appendChild(createMsgProductCard(p, i + 1)));
+          messagesEl.appendChild(container);
+          scrollToBottom();
+        }
+        if (data.refinement_chips?.length) {
+          _lastChips = data.refinement_chips;
+          if (_pdpTrayTrack) {
+            updatePdpTrayChips(data.refinement_chips);
+          } else {
+            if (_refineBar) _refineBar.remove();
+            _refineBar = renderRefinementChips(data.refinement_chips);
+            if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
+          }
+        }
+      }
+      chatHistory.push({ role: 'user', content: query });
+      chatHistory.push({ role: 'assistant', content: msg });
+      if (chatHistory.length > 20) chatHistory.splice(0, 2);
+      saveSession(lastProducts);
+    }
+
     // ── 채팅 전송 ──
     async function sendChat(query) {
       if (!query.trim()) return;
-      // PDP 컨텍스트가 있을 때: 다른 상품을 찾는 게 아니면 이 상품 Q&A로 라우팅
-      if (_pdpProductNo) {
-        const isSeekingOther = /다른\s*(상품|옷|바지|아이템|것|거|제품|스타일)|추천\s*(해|받|좀|좀만)?|비슷한\s*(거|것|상품|옷)|대신할|대체|더\s*있|뭐가\s*있|뭔가\s*있|어떤\s*게\s*(있|좋)/.test(query);
-        if (!isSeekingOther) {
-          sendProductQA(query, _pdpProductNo, _pdpProductName);
-          return;
-        }
-      }
       if (_refineBar) { _refineBar.remove(); _refineBar = null; }
       _lastChips = [];
       addBubble('user', query);
@@ -1939,36 +1957,18 @@
       sendBtn.disabled = true;
       const pendingMode = _pendingMode; _pendingMode = null;
       try {
-        await consumeRecommendStream({
-          mallId: MALL_ID, query, conversationHistory: chatHistory,
+        await consumeChatStream({
+          mallId: MALL_ID, query,
+          productNo: _pdpProductNo || undefined,
+          productName: _pdpProductName || undefined,
+          conversationHistory: chatHistory,
           sessionId: sessionStorage.getItem('cml_sid') || '',
           pageUrl: location.href,
           mode: pendingMode || undefined,
         }, {
           loadingBubble,
-          onDone: (data, msg) => {
-            if (data.products?.length) {
-              lastProducts = data.products;
-              const container = document.createElement('div');
-              container.className = 'cml-msg-products';
-              data.products.forEach((p, i) => container.appendChild(createMsgProductCard(p, i + 1)));
-              messagesEl.appendChild(container);
-              scrollToBottom();
-            }
-            if (data.refinement_chips?.length) {
-              _lastChips = data.refinement_chips;
-              if (_pdpTrayTrack) {
-                updatePdpTrayChips(data.refinement_chips);
-              } else {
-                if (_refineBar) _refineBar.remove();
-                _refineBar = renderRefinementChips(data.refinement_chips);
-                if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
-              }
-            }
-            chatHistory.push({ role: 'user', content: query });
-            chatHistory.push({ role: 'assistant', content: msg });
-            if (chatHistory.length > 20) chatHistory.splice(0, 2);
-            saveSession(lastProducts);
+          onDone: (data, msg, intent) => {
+            _handleChatDone(data, msg, intent, query);
           },
         });
       } catch {

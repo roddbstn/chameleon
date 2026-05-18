@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chameleon — AI 쇼핑 도우미 데모</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ─────────────────────────────────────────────────
+       1. Reset & Variables
+    ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cw: 390px;
+      --green: #22C55E;
+      --black: #111111;
+      --panel-bg: #fafafa;
+      --panel-border: #E8E8E4;
+      --panel-border-light: #F0F0EE;
+      --bubble-user-bg: #111;
+      --bubble-ai-bg: #F4F4F2;
+      --chip-border: #D0D0CC;
+      --shelf-bg: #FAFAF9;
+      --input-bg: #FAFAF9;
+      --input-border: #E8E8E4;
+      --font-main: 'Noto Sans KR', 'Apple SD Gothic Neo', -apple-system, sans-serif;
+      --font-ui: 'Inter', 'Noto Sans KR', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-main);
+      background: #fff;
+      color: var(--black);
+      overflow: hidden;
+    }
+    body { display: flex; }
+
+    /* ─────────────────────────────────────────────────
+       2. Store Page
+    ───────────────────────────────────────────────── */
+    .store-page {
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+      height: 100dvh;
+      margin-right: var(--cw);
+    }
+
+    .demo-banner {
+      background: linear-gradient(90deg, #0c0c0c, #232323);
+      color: #fff;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    .demo-banner b { color: #A8FF78; }
+    .demo-banner a {
+      color: rgba(255,255,255,0.55);
+      font-size: 11px;
+      margin-left: 16px;
+      text-underline-offset: 3px;
+      transition: color 0.15s;
+    }
+    .demo-banner a:hover { color: #fff; }
+
+    .store-header {
+      position: sticky; top: 0; z-index: 10;
+      background: #fff;
+      border-bottom: 1px solid #EBEBEB;
+      padding: 0 clamp(16px, 3vw, 40px);
+      height: 62px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .store-logo {
+      font-size: 14px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .store-nav { display: flex; gap: 24px; }
+    .store-nav a {
+      font-size: 11px; font-weight: 500; color: #444;
+      text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .store-nav a:hover { color: #000; }
+    .store-icons { display: flex; gap: 14px; align-items: center; }
+    .store-icon-btn {
+      background: none; border: none; cursor: pointer;
+      color: #333; display: flex; align-items: center; padding: 4px;
+      transition: color 0.15s;
+    }
+    .store-icon-btn:hover { color: #000; }
+    .store-icon-btn svg { width: 19px; height: 19px; }
+
+    .store-breadcrumb {
+      padding: 13px clamp(16px, 3vw, 40px);
+      font-size: 10px; color: #AAA;
+      border-bottom: 1px solid #F5F5F3;
+      letter-spacing: 0.04em;
+    }
+    .store-breadcrumb span { color: #555; }
+
+    .product-page {
+      max-width: 920px; margin: 0 auto;
+      padding: 28px clamp(16px, 3vw, 36px);
+      display: grid;
+      grid-template-columns: 1fr min(390px, 46%);
+      gap: clamp(20px, 4vw, 52px);
+    }
+
+    .prd-gallery { position: sticky; top: 76px; }
+    .prd-main-img {
+      width: 100%; aspect-ratio: 3/4;
+      background: #F0F0EE; border-radius: 10px;
+      overflow: hidden; margin-bottom: 10px;
+    }
+    .prd-main-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .prd-thumbs { display: flex; gap: 8px; }
+    .prd-thumb {
+      width: 62px; height: 78px; background: #F5F5F3;
+      border-radius: 7px; border: 2px solid transparent;
+      overflow: hidden; cursor: pointer; transition: border-color 0.12s;
+    }
+    .prd-thumb.active { border-color: #111; }
+    .prd-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .prd-info { padding-top: 4px; }
+    .prd-brand {
+      font-size: 10px; font-weight: 600; color: #AAA;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .prd-name {
+      font-size: 17px; font-weight: 700; line-height: 1.4;
+      letter-spacing: -0.015em; margin-bottom: 14px;
+    }
+    .prd-price { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .prd-price-orig { font-size: 12px; color: #AAA; text-decoration: line-through; margin-bottom: 18px; }
+    .prd-divider { height: 1px; background: #F0F0EE; margin: 16px 0; }
+    .prd-opt-label {
+      font-size: 10px; font-weight: 600; color: #666;
+      letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .prd-colors { display: flex; gap: 8px; margin-bottom: 18px; }
+    .prd-color {
+      width: 27px; height: 27px; border-radius: 50%; cursor: pointer;
+      transition: box-shadow 0.12s;
+    }
+    .prd-color.active { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #111; }
+    .prd-sizes { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+    .prd-size {
+      width: 46px; height: 38px; border: 1px solid #DDD;
+      border-radius: 6px; font-size: 11px; font-weight: 500;
+      cursor: pointer; background: #fff; display: flex;
+      align-items: center; justify-content: center;
+      transition: all 0.12s; font-family: inherit;
+    }
+    .prd-size:hover { border-color: #111; }
+    .prd-size.active { border-color: #111; background: #111; color: #fff; }
+    .prd-size.sold-out { color: #CCC; cursor: default; border-color: #EEE; }
+    .prd-cart-btn {
+      width: 100%; height: 50px; background: #111; color: #fff;
+      border: none; border-radius: 9px; font-size: 13px;
+      font-weight: 600; letter-spacing: 0.03em; cursor: pointer;
+      margin-bottom: 8px; font-family: inherit; transition: opacity 0.15s;
+    }
+    .prd-cart-btn:hover { opacity: 0.86; }
+    .prd-wish-btn {
+      width: 100%; height: 44px; background: #fff; color: #333;
+      border: 1px solid #E0E0E0; border-radius: 9px; font-size: 12px;
+      cursor: pointer; font-family: inherit; transition: border-color 0.15s;
+    }
+    .prd-wish-btn:hover { border-color: #111; }
+    .prd-desc { margin-top: 26px; }
+    .prd-desc h3 {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: #666; margin-bottom: 10px;
+    }
+    .prd-desc p { font-size: 12px; line-height: 1.9; color: #444; letter-spacing: 0.02em; }
+    .prd-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .prd-tag {
+      padding: 4px 12px; background: #F5F5F3;
+      border-radius: 999px; font-size: 10px; color: #555;
+    }
+
+    @media (max-width: 840px) { .store-nav { display: none; } .product-page { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .product-page { grid-template-columns: 1fr; } .prd-gallery { position: static; } }
+    @media (max-width: 560px) { .store-page { display: none; } }
+
+    /* ─────────────────────────────────────────────────
+       3. Chat Panel
+    ───────────────────────────────────────────────── */
+    .chat-panel {
+      position: fixed; top: 0; right: 0;
+      width: var(--cw); height: 100dvh;
+      background: var(--panel-bg);
+      border-left: 1px solid var(--panel-border);
+      display: flex; flex-direction: column;
+      z-index: 999;
+      box-shadow: -6px 0 36px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    /* Header */
+    .cp-header {
+      flex-shrink: 0; height: 62px;
+      background: #fff; border-bottom: 1px solid var(--panel-border);
+      padding: 0 20px; display: flex;
+      align-items: center; justify-content: space-between;
+    }
+    .cp-header-left { display: flex; align-items: center; gap: 9px; }
+    .cp-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0;
+      animation: dotPulse 2.8s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.45); }
+      50%       { box-shadow: 0 0 0 4px rgba(34,197,94,0.10); }
+    }
+    .cp-title { font-size: 16px; font-weight: 700; color: var(--black); letter-spacing: -0.01em; }
+    .cp-header-actions { display: flex; align-items: center; gap: 2px; }
+    .cp-icon-btn {
+      background: none; border: none; color: #AAAAAA; cursor: pointer;
+      padding: 7px; border-radius: 7px; display: flex;
+      align-items: center; justify-content: center;
+      transition: color 0.15s, background 0.15s;
+    }
+    .cp-icon-btn:hover { color: #333; background: #F2F2F0; }
+    .cp-icon-btn svg { width: 17px; height: 17px; }
+
+    /* Welcome State */
+    .cp-welcome {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 20px 24px; overflow: hidden;
+    }
+    .cp-welcome-inner {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 28px; width: 100%; max-width: 310px;
+    }
+    .cp-welcome-title {
+      font-size: 18px; font-weight: 700; line-height: 1.55;
+      letter-spacing: -0.025em; color: #000; text-align: center;
+      animation: fadeUp 0.4s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cp-welcome-chips {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    }
+    .cp-welcome-chip {
+      border: 1.5px solid #D8D8D4; border-radius: 999px;
+      padding: 10px 20px; font-size: 13px; font-weight: 500;
+      color: #333; background: #fff; cursor: pointer;
+      font-family: var(--font-ui); letter-spacing: -0.01em;
+      transition: border-color 0.14s, color 0.14s, background 0.14s,
+                  transform 0.12s, box-shadow 0.14s;
+      animation: chipIn 0.35s ease both;
+    }
+    .cp-welcome-chip:nth-child(1) { animation-delay: 0.08s; }
+    .cp-welcome-chip:nth-child(2) { animation-delay: 0.14s; }
+    .cp-welcome-chip:nth-child(3) { animation-delay: 0.18s; }
+    .cp-welcome-chip:nth-child(4) { animation-delay: 0.22s; }
+    .cp-welcome-chip:nth-child(5) { animation-delay: 0.26s; }
+    .cp-welcome-chip:nth-child(6) { animation-delay: 0.30s; }
+    .cp-welcome-chip:nth-child(7) { animation-delay: 0.34s; }
+    @keyframes chipIn {
+      from { opacity: 0; transform: scale(0.9) translateY(6px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .cp-welcome-chip:hover {
+      border-color: #333; color: #111; background: #F8F8F7;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    }
+    .cp-welcome-chip:active { transform: scale(0.97); }
+
+    /* Chat Messages */
+    .cp-messages {
+      flex: 1; overflow-y: auto;
+      padding: 16px 20px 8px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .cp-messages::-webkit-scrollbar { width: 4px; }
+    .cp-messages::-webkit-scrollbar-track { background: transparent; }
+    .cp-messages::-webkit-scrollbar-thumb { background: #DEDEDE; border-radius: 4px; }
+
+    /* Bubbles */
+    .cp-bubble {
+      max-width: 86%; padding: 12px 16px;
+      border-radius: 14px; font-size: 13px;
+      line-height: 1.75; letter-spacing: 0.005em;
+      white-space: pre-wrap;
+      animation: bubbleIn 0.22s ease both;
+    }
+    @keyframes bubbleIn {
+      from { opacity: 0; transform: translateY(7px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cp-bubble strong { font-weight: 700; }
+    .cp-bubble.user {
+      align-self: flex-end;
+      background: var(--bubble-user-bg); color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .cp-bubble.assistant {
+      align-self: flex-start;
+      background: var(--bubble-ai-bg); color: #222;
+      border-bottom-left-radius: 4px;
+    }
+    .cp-bubble.loading { color: #BBBBBB; font-style: italic; font-size: 12px; }
+
+    /* Inline product cards in messages */
+    .cp-msg-products {
+      display: flex; flex-direction: column; gap: 8px;
+      max-width: 92%; align-self: flex-start;
+      animation: bubbleIn 0.25s ease both;
+    }
+    .cp-msg-card {
+      display: flex; background: #fff;
+      border: 1px solid #EBEBEB; border-radius: 12px;
+      overflow: hidden; transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .cp-msg-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.08); border-color: #D8D8D4; }
+    .cp-msg-card-img {
+      width: 96px; flex-shrink: 0; position: relative;
+      overflow: hidden; background: #EEEEED;
+    }
+    .cp-msg-card-img img {
+      width: 100%; height: 100%; min-height: 110px;
+      object-fit: cover; display: block;
+    }
+    .cp-msg-card-num {
+      position: absolute; top: 6px; left: 6px;
+      width: 20px; height: 20px;
+      background: rgba(0,0,0,0.58); color: #fff;
+      font-size: 10px; font-weight: 700; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cp-msg-card-info {
+      flex: 1; padding: 12px 14px;
+      display: flex; flex-direction: column; gap: 3px; min-width: 0;
+    }
+    .cp-msg-card-name {
+      font-size: 13px; font-weight: 700; color: #111;
+      line-height: 1.35; letter-spacing: -0.01em;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .cp-msg-card-price { font-size: 13px; font-weight: 600; color: #333; }
+    .cp-msg-card-reason {
+      font-size: 11px; color: #888; line-height: 1.45;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden; margin-top: 2px;
+    }
+    .cp-msg-card-btn-wrap {
+      margin-top: auto; padding-top: 8px; display: flex; justify-content: flex-end;
+    }
+    .cp-msg-card-btn {
+      padding: 7px 14px; border-radius: 8px;
+      font-size: 11px; font-weight: 700;
+      background: #111; color: #fff; border: none;
+      cursor: pointer; font-family: inherit; letter-spacing: 0.02em;
+      transition: opacity 0.15s; text-decoration: none; display: inline-block;
+    }
+    .cp-msg-card-btn:hover { opacity: 0.82; }
+
+    /* Product Shelf */
+    .cp-shelf {
+      flex-shrink: 0; background: var(--shelf-bg);
+      border-top: 1px solid var(--panel-border);
+      animation: bubbleIn 0.28s ease both;
+    }
+    .cp-shelf-header {
+      padding: 12px 16px 8px; font-size: 13px;
+      font-weight: 700; color: #555; letter-spacing: 0.02em;
+    }
+    .cp-shelf-list {
+      display: flex; gap: 10px; padding: 0 16px 14px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin; scrollbar-color: #DDD transparent;
+    }
+    .cp-shelf-list::-webkit-scrollbar { height: 3px; }
+    .cp-shelf-list::-webkit-scrollbar-thumb { background: #DDD; border-radius: 2px; }
+    .cp-shelf-card {
+      flex: 0 0 258px; height: 88px; background: #fff;
+      border: 1px solid #E8E8E4; border-radius: 12px;
+      overflow: hidden; scroll-snap-align: start; display: flex;
+      transition: box-shadow 0.15s;
+    }
+    .cp-shelf-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
+    .cp-shelf-card-img {
+      width: 68px; flex-shrink: 0; background: #F0F0EE;
+      position: relative; overflow: hidden;
+    }
+    .cp-shelf-card-img img { width: 100%; height: 100%; object-fit: cover; min-height: 88px; }
+    .cp-shelf-card-num {
+      position: absolute; top: 5px; left: 5px;
+      width: 17px; height: 17px;
+      background: rgba(0,0,0,0.55); color: #fff;
+      font-size: 9px; font-weight: 700; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cp-shelf-card-info {
+      flex: 1; padding: 8px 10px; display: flex;
+      flex-direction: column; justify-content: space-between; min-width: 0;
+    }
+    .cp-shelf-card-top { min-width: 0; }
+    .cp-shelf-card-name {
+      font-size: 12px; font-weight: 700; color: #111;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;
+    }
+    .cp-shelf-card-price { font-size: 11px; font-weight: 600; color: #444; }
+    .cp-shelf-card-reason {
+      font-size: 11px; color: #888;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .cp-shelf-card-btn {
+      font-size: 11px; font-weight: 700; background: #111; color: #fff;
+      border: none; border-radius: 6px; padding: 4px 9px;
+      cursor: pointer; font-family: inherit; transition: opacity 0.15s; align-self: flex-start;
+    }
+    .cp-shelf-card-btn:hover { opacity: 0.82; }
+
+    /* Follow-up chips */
+    .cp-follow {
+      flex-shrink: 0;
+      border-top: 1px solid var(--panel-border-light);
+      padding: 8px 0 4px;
+    }
+    .cp-follow-scroll {
+      display: flex; overflow-x: auto; gap: 8px;
+      padding: 2px 16px 4px; scrollbar-width: none;
+    }
+    .cp-follow-scroll::-webkit-scrollbar { display: none; }
+    .cp-follow-chip {
+      flex: 0 0 auto; border: 1px solid var(--chip-border);
+      border-radius: 999px; padding: 8px 16px; font-size: 12px;
+      color: #555; background: #fff; cursor: pointer;
+      font-family: inherit; white-space: nowrap;
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .cp-follow-chip:hover { border-color: #888; color: #111; }
+
+    /* Suggestion chips (before input) */
+    .cp-suggestions {
+      flex-shrink: 0; display: flex; overflow-x: auto;
+      gap: 8px; padding: 10px 16px 6px; scrollbar-width: none;
+    }
+    .cp-suggestions::-webkit-scrollbar { display: none; }
+    .cp-sug-chip {
+      flex: 0 0 auto; border: 1px solid var(--chip-border);
+      border-radius: 999px; padding: 9px 18px; font-size: 12px;
+      color: #555; background: #fff; cursor: pointer;
+      font-family: inherit; white-space: nowrap;
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .cp-sug-chip:hover { border-color: #888; color: #111; }
+
+    /* Input area */
+    .cp-input-row {
+      flex-shrink: 0; padding: 10px 20px 8px;
+      border-top: 1px solid var(--panel-border-light);
+      background: #fff;
+    }
+    .cp-input-wrap { position: relative; display: flex; align-items: center; }
+    .cp-input {
+      width: 100%; border: 1.5px solid var(--input-border);
+      border-radius: 16px; padding: 13px 52px 13px 18px;
+      font-size: 13px; outline: none; font-family: var(--font-main);
+      color: #333; background: var(--input-bg); transition: border-color 0.15s;
+      box-sizing: border-box;
+    }
+    .cp-input:focus { border-color: #CCCCCC; }
+    .cp-input::placeholder { color: #BBBBBB; }
+    .cp-send {
+      position: absolute; right: 7px;
+      width: 36px; height: 36px; border-radius: 10px;
+      background: #EEECEA; color: #777; border: none;
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; transition: background 0.15s, color 0.15s;
+    }
+    .cp-send:hover { background: #E0DED9; }
+    .cp-send.active { background: #111; color: #fff; }
+    .cp-send:disabled { opacity: 0.35; cursor: default; }
+    .cp-send svg { width: 15px; height: 15px; }
+
+    /* Powered by */
+    .cp-powered {
+      flex-shrink: 0; text-align: center;
+      padding: 8px 0 14px; font-size: 11px;
+      color: #C4C4C0; letter-spacing: 0.04em; background: #fff;
+    }
+    .cp-powered-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic; font-weight: 600;
+      font-size: 13px; color: #AAAAAA; letter-spacing: 0.01em;
+    }
+
+    /* Mobile full-screen panel */
+    @media (max-width: 560px) {
+      :root { --cw: 100vw; }
+      .chat-panel { border-left: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Store Page ─── -->
+  <div class="store-page">
+    <div class="demo-banner">
+      <b>Chameleon</b> AI 쇼핑 도우미 — 오른쪽에서 체험해보세요!
+      <a href="/demo.html">기존 데모 →</a>
+    </div>
+
+    <header class="store-header">
+      <div class="store-logo">SOLID</div>
+      <nav class="store-nav">
+        <a href="#">NEW</a><a href="#">BEST</a><a href="#">OUTER</a>
+        <a href="#">TOP</a><a href="#">BOTTOM</a><a href="#">SALE</a>
+      </nav>
+      <div class="store-icons">
+        <button class="store-icon-btn" aria-label="검색">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+        <button class="store-icon-btn" aria-label="위시리스트">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+        <button class="store-icon-btn" aria-label="장바구니">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="store-breadcrumb">HOME &nbsp;/&nbsp; TOP &nbsp;/&nbsp; <span>TERRY BANDING SHORTS</span></div>
+
+    <div class="product-page">
+      <!-- Gallery -->
+      <div class="prd-gallery">
+        <div class="prd-main-img">
+          <img src="https://picsum.photos/seed/solidmain1/600/800" alt="테리 밴딩 쇼츠 블랙 메인" loading="eager">
+        </div>
+        <div class="prd-thumbs">
+          <div class="prd-thumb active"><img src="https://picsum.photos/seed/solidmain1/200/267" alt="" loading="lazy"></div>
+          <div class="prd-thumb"><img src="https://picsum.photos/seed/solidmain2/200/267" alt="" loading="lazy"></div>
+          <div class="prd-thumb"><img src="https://picsum.photos/seed/solidmain3/200/267" alt="" loading="lazy"></div>
+          <div class="prd-thumb"><img src="https://picsum.photos/seed/solidmain4/200/267" alt="" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="prd-info">
+        <div class="prd-brand">SOLID HOMME</div>
+        <h1 class="prd-name">테리 밴딩 쇼츠<br>Terry Banding Shorts</h1>
+        <div class="prd-price">₩89,000</div>
+        <div class="prd-price-orig">₩109,000</div>
+        <div class="prd-divider"></div>
+
+        <div class="prd-opt-label">COLOR — BLACK</div>
+        <div class="prd-colors">
+          <div class="prd-color active" style="background:#111;" title="Black"></div>
+          <div class="prd-color" style="background:#F5F0E8;border:1px solid #DDD;" title="Ivory"></div>
+          <div class="prd-color" style="background:#2C4A6E;" title="Navy"></div>
+        </div>
+
+        <div class="prd-opt-label">SIZE</div>
+        <div class="prd-sizes">
+          <button class="prd-size sold-out">28</button>
+          <button class="prd-size">30</button>
+          <button class="prd-size active">32</button>
+          <button class="prd-size">34</button>
+          <button class="prd-size">36</button>
+        </div>
+
+        <div style="margin-top:18px;">
+          <button class="prd-cart-btn">장바구니 담기</button>
+          <button class="prd-wish-btn">♡ 위시리스트</button>
+        </div>
+
+        <div class="prd-desc">
+          <h3>Product Detail</h3>
+          <p>일본산 테리 원단의 리치한 텍스처와 밴딩 디테일이 만들어내는 구조적인 실루엣. 중량감 있는 소재가 캐주얼과 세미포멀의 경계를 자연스럽게 허물어줍니다. 일상은 물론 가벼운 외출까지 폭넓게 활용할 수 있는 시즌 핵심 아이템입니다.</p>
+          <div class="prd-tags">
+            <span class="prd-tag">일본산 원단</span>
+            <span class="prd-tag">테리 소재</span>
+            <span class="prd-tag">밴딩 허리</span>
+            <span class="prd-tag">세미 오버핏</span>
+            <span class="prd-tag">28–36 사이즈</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── AI Chat Panel ─── -->
+  <aside class="chat-panel" id="chatPanel" role="complementary" aria-label="AI 쇼핑 도우미">
+
+    <!-- Header -->
+    <header class="cp-header">
+      <div class="cp-header-left">
+        <span class="cp-dot" aria-hidden="true"></span>
+        <span class="cp-title">AI 쇼핑 도우미</span>
+      </div>
+      <div class="cp-header-actions">
+        <button class="cp-icon-btn" id="btnRefresh" title="대화 초기화" aria-label="대화 초기화">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.5 8a5.5 5.5 0 1 1 1.1 3.3"/>
+            <polyline points="1 5.5 2.5 8 5 6.5"/>
+          </svg>
+        </button>
+        <button class="cp-icon-btn" id="btnClose" title="닫기" aria-label="닫기">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M3 3l10 10M13 3L3 13"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Welcome State -->
+    <div class="cp-welcome" id="cpWelcome">
+      <div class="cp-welcome-inner">
+        <h2 class="cp-welcome-title">안녕하세요.<br>어떤 용도로 상품을<br>찾고 계신가요?</h2>
+        <div class="cp-welcome-chips" id="cpWelcomeChips">
+          <button class="cp-welcome-chip" data-q="선물용">선물용</button>
+          <button class="cp-welcome-chip" data-q="꾸안꾸">꾸안꾸</button>
+          <button class="cp-welcome-chip" data-q="시크한">시크한</button>
+          <button class="cp-welcome-chip" data-q="트렌드">트렌드</button>
+          <button class="cp-welcome-chip" data-q="귀여운">귀여운</button>
+          <button class="cp-welcome-chip" data-q="봄 느낌">봄 느낌</button>
+          <button class="cp-welcome-chip" data-q="댄디한">댄디한</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Messages (hidden initially) -->
+    <div class="cp-messages" id="cpMessages" style="display:none;" aria-live="polite" aria-label="대화 내용"></div>
+
+    <!-- Product Shelf (hidden initially) -->
+    <div class="cp-shelf" id="cpShelf" style="display:none;">
+      <div class="cp-shelf-header">추천 상품</div>
+      <div class="cp-shelf-list" id="cpShelfList"></div>
+    </div>
+
+    <!-- Follow-up Chips (hidden initially) -->
+    <div class="cp-follow" id="cpFollow" style="display:none;">
+      <div class="cp-follow-scroll" id="cpFollowScroll"></div>
+    </div>
+
+    <!-- Suggestion Chips -->
+    <div class="cp-suggestions" id="cpSuggestions" role="list" aria-label="추천 질문">
+      <button class="cp-sug-chip" data-q="여름에 시원한 셔츠를 찾고 있어요" role="listitem">여름에 시원한 셔츠를 찾고 있어요</button>
+      <button class="cp-sug-chip" data-q="싼데 인기 많은 상품을 찾고 있어요" role="listitem">싼데 인기 많은 상품을 찾고 있어요</button>
+      <button class="cp-sug-chip" data-q="소개팅에 입기 좋은 옷 있나요?" role="listitem">소개팅에 입기 좋은 옷 있나요?</button>
+      <button class="cp-sug-chip" data-q="출근룩 추천해주세요" role="listitem">출근룩 추천해주세요</button>
+    </div>
+
+    <!-- Input -->
+    <div class="cp-input-row">
+      <div class="cp-input-wrap">
+        <input
+          class="cp-input" id="cpInput" type="text"
+          placeholder="무엇을 도와드릴까요?" autocomplete="off"
+          aria-label="질문 입력"
+        >
+        <button class="cp-send" id="cpSend" aria-label="전송">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 12.5V1.5M1.5 7l5.5-5.5 5.5 5.5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Powered By -->
+    <div class="cp-powered">
+      Powered by <span class="cp-powered-name">Chameleon</span>
+    </div>
+  </aside>
+
+  <script>
+    /* ────────────────────────────────────────────
+       Mock Data
+    ──────────────────────────────────────────── */
+    const PRODUCTS = [
+      {
+        id: 'p1',
+        name: '베이직 하프 스웨트셔츠 멜란지 그레이',
+        price: 71100,
+        image: 'https://picsum.photos/seed/cml_p1/300/360',
+        reason: '세미 루즈핏 멜란지 그레이. 어떤 피부톤에도 자연스럽게 어울려요',
+      },
+      {
+        id: 'p2',
+        name: '롤업 하프 셔츠 블랙',
+        price: 87200,
+        image: 'https://picsum.photos/seed/cml_p2/300/360',
+        reason: '세미 오버핏의 얇은 코튼 소재로 시크·시원한 여름 필수 아이템',
+      },
+      {
+        id: 'p3',
+        name: '링클프리 반팔 오픈카라 셔츠 화이트',
+        price: 62000,
+        image: 'https://picsum.photos/seed/cml_p3/300/360',
+        reason: '구김 없는 소재라 언제 어디서나 단정하게 유지돼요',
+      },
+      {
+        id: 'p4',
+        name: '오버핏 코튼 반팔 티셔츠 아이보리',
+        price: 45000,
+        image: 'https://picsum.photos/seed/cml_p4/300/360',
+        reason: '코튼 100% 오버핏. 일상에서 편하게 입기 딱 좋아요',
+      },
+      {
+        id: 'p5',
+        name: '린넨 반팔 버튼다운 셔츠 베이지',
+        price: 68000,
+        image: 'https://picsum.photos/seed/cml_p5/300/360',
+        reason: '린넨 소재로 통기성 최상. 봄부터 여름까지 오래 입을 수 있어요',
+      },
+    ];
+
+    const RESPONSES = {
+      '선물용': {
+        segments: [
+          '선물용으로 딱 맞는 아이템들 골라봤어요! 깔끔하고 실용적이라 누구에게나 잘 어울려요.',
+          '1. **베이직 하프 스웨트셔츠 멜란지 그레이**\n멜란지 그레이 컬러는 무채색 계열 중 가장 세련된 느낌이에요. 어떤 피부톤에도 자연스럽게 어울리고, 가볍고 부드러운 코튼 소재라 받는 분도 편하게 입으실 거예요.',
+          '2. **링클프리 반팔 오픈카라 셔츠 화이트**\n구김이 잘 안 가는 소재라 관리도 쉽고, 화이트 컬러에 오픈카라 디테일이 세련되어 선물로도 아주 좋아요.',
+          '3. **오버핏 코튼 반팔 티셔츠 아이보리**\n코튼 100%에 오버핏이라 편하게 입을 수 있고, 가격도 합리적이라 부담 없이 선물하기 좋아요.',
+        ],
+        products: [PRODUCTS[0], PRODUCTS[2], PRODUCTS[3]],
+        followChips: ['어떤 사이즈가 좋을까요?', '남녀 공용으로 입기 좋은가요?', '포장 서비스 있나요?'],
+      },
+      '꾸안꾸': {
+        segments: [
+          '꾸민 듯 안 꾼 듯, 자연스러운 꾸안꾸 스타일! 이런 아이템들 어떠세요?',
+          '1. **롤업 하프 셔츠 블랙**\n세미 오버핏에 얇은 코튼 소재로, 살짝 롤업한 디테일이 포인트예요. 블랙 컬러는 어떤 하의에도 잘 어울리는 만능 아이템이에요.',
+          '2. **오버핏 코튼 반팔 티셔츠 아이보리**\n코튼 100% 오버핏 티셔츠로, 심플하면서도 꾸안꾸 감성에 딱 맞아요. 청바지나 트레이닝 팬츠와 함께 입으면 찰떡이에요.',
+        ],
+        products: [PRODUCTS[1], PRODUCTS[3], PRODUCTS[4]],
+        followChips: ['하의 매치 추천해주세요', '여름 코디법 알려줘요', '비슷한 그레이 계열도 있나요?'],
+      },
+      '시크한': {
+        segments: [
+          '미니멀하고 세련된 시크 스타일을 원하시는군요. 딱 맞는 아이템들이에요.',
+          '1. **베이직 하프 스웨트셔츠 멜란지 그레이**\n멜란지 그레이의 은은한 색감과 세미 루즈 핏이 시크한 분위기를 연출해줘요. 심플하지만 디테일에서 감각이 느껴지는 아이템이에요.',
+          '2. **롤업 하프 셔츠 블랙**\n블랙 컬러에 세미 오버핏, 얇은 코튼 소재가 시크한 여름 룩의 핵심이에요. 롤업 디테일이 깔끔하면서도 스타일리시한 느낌을 줘요.',
+        ],
+        products: [PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]],
+        followChips: ['시크한 하의 추천해주세요', '어떤 신발이 잘 어울려요?', '블랙 코디법 알려줘요'],
+      },
+      '트렌드': {
+        segments: [
+          '지금 가장 핫한 트렌드 아이템들이에요! 이번 시즌 꼭 챙겨야 할 필수 아이템들이에요.',
+          '1. **롤업 하프 셔츠 블랙**\n오버핏 셔츠 트렌드의 핵심 아이템이에요. 얇은 코튼 소재에 세미 오버핏이라 지금 가장 많이 찾는 스타일이에요.',
+          '2. **오버핏 코튼 반팔 티셔츠 아이보리**\n오버핏 기본 티셔츠는 올 시즌 가장 많이 찾는 아이템이에요. 아이보리 컬러가 요즘 트렌드에 딱 맞아요.',
+        ],
+        products: [PRODUCTS[1], PRODUCTS[3], PRODUCTS[4]],
+        followChips: ['요즘 인기 컬러 뭐예요?', '레이어드 코디 알려주세요', '스트리트 감성으로 입으려면?'],
+      },
+      '귀여운': {
+        segments: [
+          '귀엽고 사랑스러운 스타일로 추천드리는 아이템들이에요!',
+          '1. **오버핏 코튼 반팔 티셔츠 아이보리**\n밝은 아이보리 컬러와 편안한 오버핏이 어우러져 사랑스러운 분위기를 연출해줘요.',
+          '2. **린넨 반팔 버튼다운 셔츠 베이지**\n따뜻한 베이지 톤의 린넨 셔츠예요. 자연스러운 소재감과 은은한 컬러가 귀여운 분위기를 만들어줘요.',
+        ],
+        products: [PRODUCTS[3], PRODUCTS[4], PRODUCTS[2]],
+        followChips: ['치마랑 같이 입으면 어때요?', '봄 소풍에 어울리는 코디는?', '파스텔 컬러도 있나요?'],
+      },
+      '봄 느낌': {
+        segments: [
+          '봄 분위기 물씬 나는 아이템들이에요! 상큼하고 가볍고 기분 좋은 컬러들로 골랐어요.',
+          '1. **링클프리 반팔 오픈카라 셔츠 화이트**\n화이트 컬러에 오픈카라 디테일이 봄 느낌 가득이에요. 구김 없는 소재라 피크닉이나 나들이에도 딱이에요.',
+          '2. **린넨 반팔 버튼다운 셔츠 베이지**\n봄 느낌에 딱 맞는 베이지 린넨 소재예요. 통기성이 좋아 봄부터 여름까지 오래 입을 수 있어요.',
+        ],
+        products: [PRODUCTS[2], PRODUCTS[4], PRODUCTS[3]],
+        followChips: ['봄 나들이 룩 추천해주세요', '캐주얼한 봄 코디 알려줘요', '레이어드 하기 좋은 건 뭐예요?'],
+      },
+      '댄디한': {
+        segments: [
+          '세련되고 댄디한 스타일로 추천드리는 아이템들이에요!',
+          '1. **베이직 하프 스웨트셔츠 멜란지 그레이**\n멜란지 그레이의 세련된 색감이 댄디한 분위기를 자아내요. 슬랙스나 치노 팬츠와 함께 입으면 아주 스타일리시해요.',
+          '2. **링클프리 반팔 오픈카라 셔츠 화이트**\n오픈카라 디자인의 화이트 셔츠는 댄디한 코디의 기본이에요. 깔끔하고 단정한 느낌을 주면서도 차별화된 디테일이 있어요.',
+        ],
+        products: [PRODUCTS[0], PRODUCTS[2], PRODUCTS[1]],
+        followChips: ['슬랙스랑 매치하면 어때요?', '비즈니스 캐주얼로 입으려면?', '구두랑 어울리는 건 뭐예요?'],
+      },
+    };
+
+    function getResponse(query) {
+      if (RESPONSES[query]) return RESPONSES[query];
+      const q = query;
+      if (/여름|시원|셔츠/.test(q)) return {
+        segments: [
+          '여름에 딱 맞는 시원한 아이템들이에요! 통기성 좋은 소재만 골랐어요.',
+          '1. **린넨 반팔 버튼다운 셔츠 베이지**\n린넨 소재는 여름 필수템이에요. 천연 소재라 땀이 나도 쾌적하고, 베이지 컬러가 여름 느낌 물씬 나요.',
+          '2. **롤업 하프 셔츠 블랙**\n얇은 코튼 소재의 반팔 셔츠예요. 통기성이 좋아 더운 여름에도 시원하게 입을 수 있어요.',
+          '3. **링클프리 반팔 오픈카라 셔츠 화이트**\n화이트 컬러는 여름에 시원해 보이는 효과가 있어요. 오픈카라 디자인으로 목 부분도 시원해요.',
+        ],
+        products: [PRODUCTS[4], PRODUCTS[1], PRODUCTS[2]],
+        followChips: ['자외선 차단 되는 건 있나요?', '빠른 건조 소재는 뭐예요?', '해변에서 입어도 될까요?'],
+      };
+      if (/싼|저렴|가성비|인기/.test(q)) return {
+        segments: [
+          '가성비 최고에 인기도 많은 베스트셀러들이에요! 많이들 찾으시는 아이템들이에요.',
+          '1. **오버핏 코튼 반팔 티셔츠 아이보리**\n45,000원으로 가장 합리적인 가격이면서도 인기가 아주 많은 아이템이에요. 코튼 100%라 착용감도 좋아요.',
+          '2. **링클프리 반팔 오픈카라 셔츠 화이트**\n62,000원의 합리적인 가격에 구김 없는 기능성 소재예요. 활용도가 높아 많이들 찾으세요.',
+        ],
+        products: [PRODUCTS[3], PRODUCTS[2], PRODUCTS[0]],
+        followChips: ['사이즈별 재고 있나요?', '세일 상품도 있나요?', '묶음 구매 할인 있나요?'],
+      };
+      if (/소개팅|데이트/.test(q)) return {
+        segments: [
+          '소개팅룩으로 딱인 아이템들이에요! 깔끔하면서도 세련되어 보이는 스타일로 골랐어요.',
+          '1. **롤업 하프 셔츠 블랙**\n블랙 셔츠는 소개팅의 정석이에요. 세미 오버핏이라 너무 타이트하지 않고 자연스러운 실루엣을 만들어줘요.',
+          '2. **베이직 하프 스웨트셔츠 멜란지 그레이**\n그레이 계열은 세련되면서도 부담스럽지 않아 소개팅에 딱이에요. 깔끔한 인상을 줄 수 있어요.',
+        ],
+        products: [PRODUCTS[1], PRODUCTS[0], PRODUCTS[4]],
+        followChips: ['하의는 뭐가 잘 어울려요?', '신발 추천해주세요', '캐주얼 vs 세미포멀 어떤 게 좋을까요?'],
+      };
+      if (/출근|오피스|비즈니스/.test(q)) return {
+        segments: [
+          '출근룩으로 딱 맞는 아이템들이에요! 깔끔하고 프로페셔널하면서도 스타일리시해요.',
+          '1. **링클프리 반팔 오픈카라 셔츠 화이트**\n구김 없는 소재로 하루 종일 단정한 모습 유지가 가능해요. 오피스룩의 기본이면서도 트렌디한 오픈카라 디테일이 포인트예요.',
+          '2. **베이직 하프 스웨트셔츠 멜란지 그레이**\n비즈니스 캐주얼 코드에 잘 맞는 그레이 컬러예요. 슬랙스와 함께 입으면 세련된 출근룩 완성이에요.',
+        ],
+        products: [PRODUCTS[2], PRODUCTS[0], PRODUCTS[1]],
+        followChips: ['슬랙스 추천해주세요', '넥타이 없이 입어도 되나요?', '재킷 레이어드 가능한가요?'],
+      };
+      return {
+        segments: [
+          '원하시는 스타일에 맞는 아이템들을 골라봤어요!',
+          '1. **베이직 하프 스웨트셔츠 멜란지 그레이**\n세미 루즈핏으로 활용도 높은 그레이 컬러예요. 코튼 소재의 편안한 착용감이 매력적이에요.',
+          '2. **롤업 하프 셔츠 블랙**\n얇은 코튼 소재의 세미 오버핏 셔츠예요. 블랙 컬러로 다양한 하의와 잘 어울려요.',
+        ],
+        products: [PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]],
+        followChips: ['다른 컬러도 있나요?', '사이즈 추천해주세요', '비슷한 다른 상품 있나요?'],
+      };
+    }
+
+    /* ────────────────────────────────────────────
+       DOM Refs
+    ──────────────────────────────────────────── */
+    const cpWelcome      = document.getElementById('cpWelcome');
+    const cpMessages     = document.getElementById('cpMessages');
+    const cpShelf        = document.getElementById('cpShelf');
+    const cpShelfList    = document.getElementById('cpShelfList');
+    const cpFollow       = document.getElementById('cpFollow');
+    const cpFollowScroll = document.getElementById('cpFollowScroll');
+    const cpSuggestions  = document.getElementById('cpSuggestions');
+    const cpInput        = document.getElementById('cpInput');
+    const cpSend         = document.getElementById('cpSend');
+    const btnRefresh     = document.getElementById('btnRefresh');
+
+    let isWelcome = true;
+
+    /* ────────────────────────────────────────────
+       Helpers
+    ──────────────────────────────────────────── */
+    function parseMd(txt) {
+      return txt
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    }
+
+    function enterChat() {
+      if (!isWelcome) return;
+      isWelcome = false;
+      cpWelcome.style.transition = 'opacity 0.18s';
+      cpWelcome.style.opacity = '0';
+      setTimeout(() => {
+        cpWelcome.style.display = 'none';
+        cpMessages.style.display = 'flex';
+        cpMessages.style.opacity = '0';
+        requestAnimationFrame(() => {
+          cpMessages.style.transition = 'opacity 0.2s';
+          cpMessages.style.opacity = '1';
+        });
+      }, 160);
+    }
+
+    function addBubble(role, text) {
+      const div = document.createElement('div');
+      div.className = `cp-bubble ${role}`;
+      if (role === 'assistant') div.innerHTML = parseMd(text);
+      else div.textContent = text;
+      cpMessages.appendChild(div);
+      cpMessages.scrollTop = cpMessages.scrollHeight;
+      return div;
+    }
+
+    function addMsgCards(products, offset) {
+      const wrap = document.createElement('div');
+      wrap.className = 'cp-msg-products';
+      products.forEach((p, i) => {
+        const card = document.createElement('div');
+        card.className = 'cp-msg-card';
+        card.setAttribute('role', 'article');
+        card.setAttribute('aria-label', p.name);
+        card.innerHTML = `
+          <div class="cp-msg-card-img">
+            <img src="${p.image}" alt="${p.name}" loading="lazy">
+            <span class="cp-msg-card-num" aria-hidden="true">${offset + i + 1}</span>
+          </div>
+          <div class="cp-msg-card-info">
+            <div class="cp-msg-card-name">${p.name}</div>
+            <div class="cp-msg-card-price">${Number(p.price).toLocaleString()}원</div>
+            <div class="cp-msg-card-reason">${p.reason}</div>
+            <div class="cp-msg-card-btn-wrap">
+              <a class="cp-msg-card-btn" href="#" onclick="return false;" aria-label="${p.name} 자세히 보기">자세히 보기</a>
+            </div>
+          </div>`;
+        wrap.appendChild(card);
+      });
+      cpMessages.appendChild(wrap);
+      cpMessages.scrollTop = cpMessages.scrollHeight;
+    }
+
+    function populateShelf(products) {
+      cpShelfList.innerHTML = '';
+      products.forEach((p, i) => {
+        const card = document.createElement('div');
+        card.className = 'cp-shelf-card';
+        card.innerHTML = `
+          <div class="cp-shelf-card-img">
+            <img src="${p.image}" alt="${p.name}" loading="lazy">
+            <span class="cp-shelf-card-num" aria-hidden="true">${i + 1}</span>
+          </div>
+          <div class="cp-shelf-card-info">
+            <div class="cp-shelf-card-top">
+              <div class="cp-shelf-card-name">${p.name}</div>
+              <div class="cp-shelf-card-price">${Number(p.price).toLocaleString()}원</div>
+            </div>
+            <div class="cp-shelf-card-reason">${p.reason}</div>
+            <button class="cp-shelf-card-btn" aria-label="${p.name} 자세히 보기">자세히 보기</button>
+          </div>`;
+        cpShelfList.appendChild(card);
+      });
+      cpShelf.style.display = 'block';
+    }
+
+    function showFollowChips(chips) {
+      cpFollowScroll.innerHTML = chips
+        .map(c => `<button class="cp-follow-chip" data-q="${c}">${c}</button>`)
+        .join('');
+      cpFollow.style.display = 'block';
+      cpFollowScroll.querySelectorAll('.cp-follow-chip').forEach(btn => {
+        btn.addEventListener('click', () => sendMessage(btn.dataset.q));
+      });
+    }
+
+    /* ────────────────────────────────────────────
+       Send Message
+    ──────────────────────────────────────────── */
+    async function sendMessage(query) {
+      if (!query.trim()) return;
+      enterChat();
+      cpSuggestions.style.display = 'none';
+      cpFollow.style.display = 'none';
+
+      await new Promise(r => setTimeout(r, 180));
+
+      addBubble('user', query);
+      const loader = addBubble('assistant loading', '추천을 찾고 있어요...');
+      cpSend.disabled = true;
+
+      await new Promise(r => setTimeout(r, 850 + Math.random() * 550));
+
+      loader.remove();
+
+      const resp = getResponse(query);
+      let pidx = 0;
+
+      resp.segments.forEach(seg => {
+        addBubble('assistant', seg);
+        if (/^\d+\./.test(seg.trim()) && pidx < resp.products.length) {
+          addMsgCards([resp.products[pidx]], pidx);
+          pidx++;
+        }
+      });
+
+      populateShelf(resp.products);
+      showFollowChips(resp.followChips);
+
+      cpSend.disabled = false;
+      cpInput.focus();
+      cpMessages.scrollTop = cpMessages.scrollHeight;
+    }
+
+    /* ────────────────────────────────────────────
+       Event Listeners
+    ──────────────────────────────────────────── */
+    cpInput.addEventListener('input', () => {
+      cpSend.classList.toggle('active', cpInput.value.trim().length > 0);
+    });
+
+    cpInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.isComposing) {
+        const q = cpInput.value.trim();
+        if (!q) return;
+        cpInput.value = '';
+        cpSend.classList.remove('active');
+        sendMessage(q);
+      }
+    });
+
+    cpSend.addEventListener('click', () => {
+      const q = cpInput.value.trim();
+      if (!q) return;
+      cpInput.value = '';
+      cpSend.classList.remove('active');
+      sendMessage(q);
+    });
+
+    document.getElementById('cpWelcomeChips').addEventListener('click', e => {
+      const btn = e.target.closest('.cp-welcome-chip');
+      if (btn) sendMessage(btn.dataset.q);
+    });
+
+    document.getElementById('cpSuggestions').addEventListener('click', e => {
+      const btn = e.target.closest('.cp-sug-chip');
+      if (btn) sendMessage(btn.dataset.q);
+    });
+
+    btnRefresh.addEventListener('click', () => {
+      isWelcome = true;
+      cpMessages.style.display = 'none';
+      cpMessages.innerHTML = '';
+      cpShelf.style.display = 'none';
+      cpShelfList.innerHTML = '';
+      cpFollow.style.display = 'none';
+      cpFollowScroll.innerHTML = '';
+      cpSuggestions.style.display = 'flex';
+      cpWelcome.style.display = 'flex';
+      cpWelcome.style.opacity = '1';
+    });
+
+    document.getElementById('btnClose').addEventListener('click', () => btnRefresh.click());
+
+    /* Store interactions */
+    document.querySelectorAll('.prd-thumb').forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.prd-thumb').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.prd-size:not(.sold-out)').forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.prd-size').forEach(s => s.classList.remove('active'));
+        el.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.prd-color').forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.prd-color').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,800 @@
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Sousa is perfect for when I’m rushing out the door in the morning. It tastes delicious, and I
+                          feel need to feel hydrated and ready to take on my day.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Gloria
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone is-active"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone09" role="group"
+                  aria-roledescription="slide" aria-label="1 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #047cc0;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          It tastes better than any protein I’ve had on the market. Crazy that I’m also getting hydrated
+                          as well. I can't believe nobody has thought of this.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Tomas
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone10" role="group"
+                  aria-roledescription="slide" aria-label="2 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #fee07b;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          I feel like every company is always trying to get me to buy more more more. I love that Sousa
+                          tastes great and combines what I already love to make it more convenient for me.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Scott
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone11" role="group"
+                  aria-roledescription="slide" aria-label="3 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #f4878e;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Every morning it takes me 20 minutes to take all of my supplements and make my protein
+                          smoothie. I love Sousa because it’s just one less thing I need to make and one less dish to
+                          clean.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Sabrina
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone12" role="group"
+                  aria-roledescription="slide" aria-label="4 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #ffcc37;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Sousa is perfect for when I’m rushing out the door in the morning. It tastes delicious, and I
+                          feel need to feel hydrated and ready to take on my day.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Gloria
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone is-active"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone13" role="group"
+                  aria-roledescription="slide" aria-label="1 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #047cc0;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          It tastes better than any protein I’ve had on the market. Crazy that I’m also getting hydrated
+                          as well. I can't believe nobody has thought of this.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Tomas
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone14" role="group"
+                  aria-roledescription="slide" aria-label="2 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #fee07b;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          I feel like every company is always trying to get me to buy more more more. I love that Sousa
+                          tastes great and combines what I already love to make it more convenient for me.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Scott
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone15" role="group"
+                  aria-roledescription="slide" aria-label="3 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #f4878e;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Every morning it takes me 20 minutes to take all of my supplements and make my protein
+                          smoothie. I love Sousa because it’s just one less thing I need to make and one less dish to
+                          clean.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Sabrina
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone16" role="group"
+                  aria-roledescription="slide" aria-label="4 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #ffcc37;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Sousa is perfect for when I’m rushing out the door in the morning. It tastes delicious, and I
+                          feel need to feel hydrated and ready to take on my day.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Gloria
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="splide__arrows mt-5 flex items-center justify-between px-section splide__arrows--ltr">
+              <div class="controls relative z-10 ml-auto pb-button-shadow">
+                <div class="flex gap-2">
+                  <button class="splide__arrow splide__arrow--prev push-btn" aria-label="Go to last slide"
+                    aria-controls="slideshow-template--26988430360855__testimonials_tDAXBP-track">
+                    <span class="sr-only">Previous slide</span>
+                    <span class="push-btn__surface p-2 align-bottom">
+                      <span class="block h-5 w-5"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2"
+                            d="M5 24h39M26 43 5.593 25.297A1.73 1.73 0 0 1 5 24.002a1.706 1.706 0 0 1 .593-1.296L26 5">
+                          </path>
+                        </svg>
+                      </span>
+                    </span>
+                  </button><button class="splide__arrow splide__arrow--next push-btn" aria-label="Next slide"
+                    aria-controls="slideshow-template--26988430360855__testimonials_tDAXBP-track">
+                    <span class="sr-only">Next slide</span>
+                    <span class="push-btn__surface p-2 align-bottom">
+                      <span class="block h-5 w-5"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2"
+                            d="M43 24H4m18 19 20.407-17.703A1.73 1.73 0 0 0 43 24.002a1.706 1.706 0 0 0-.593-1.296L22 5">
+                          </path>
+                        </svg>
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+
+            <script class="slideshow-options" type="application/json">
+        {
+          "mediaQuery": "min",
+          "arrows": true,
+          "pagination": false,
+          "rewind": true,
+          "autoWidth": true,
+          "gap": "2.5rem",
+          "focus": "left",
+          "type": "loop",
+          "autoScroll": {
+            "autoStart": false,
+            "speed": 0
+          },
+          "padding": {
+            "left": "1.25rem",
+            "right": "1.25rem"
+          },
+          "clones": 8
+        }
+      </script>
+            <style>
+              @media (min-width: 990px) {
+                #slideshow-template--26988430360855__testimonials_tDAXBP .splide__slide {
+                  width: 20%;
+                }
+              }
+            </style>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div id="shopify-section-template--26988430360855__image_with_text_nXEqW8" class="shopify-section">
+      <section
+        class="bg-scheme-background text-scheme-text  relative overflow-hidden section-image-with-text homeImgTextBundling"
+        data-color-scheme="scheme2">
+        <div class="section-content relative z-10 py-section-vertical-spacing">
+          <div class="relative z-10 mx-auto max-w-5xl px-section">
+            <div class="">
+              <div class=" section-content text_alignment relative z-10 mx-auto">
+                <div class="grid grid-flow-row-dense items-center grid-cols-1 gap-10 lg:grid-cols-12">
+                  <div class="lg:col-start-7 lg:col-end-13 img-with-text-img">
+                    <div
+                      class="media media--css-only media-template--26988430360855__image_with_text_nXEqW8-41285467013399 media--disable-styles default ">
+                      <img src="//sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=3000" alt=""
+                        srcset="//sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=200 200w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=350 350w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=450 450w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=750 750w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=850 850w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=960 960w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/Boxes_2.png?v=1760316858&amp;width=3000 3000w"
+                        width="3000" height="4489" loading="lazy" class="media__styled-element bg-scheme-card"
+                        sizes="(min-width: 990px) calc(100vw / 2), 100vw"
+                        onerror="this.style.color=&quot;currentColor&quot;"
+                        onload="this.style.color=&quot;currentColor&quot;" style="color: currentcolor;">
+                    </div>
+                  </div>
+                  <div class="flex items-center lg:col-span-6 img-with-text-content">
+                    <div class="text-left w-full">
+
+                      <h2
+                        class="inline-heading-rte font-heading  heading-standard heading-style full_shadow break-words">
+                        buy a bundle &amp; save a lot!
+                      </h2>
+
+
+                      <div class="rte mt-5 max-w-2xl ">
+                        <ol>
+                          <li>
+                            <h4>choose our 3-flavor pack</h4>
+                          </li>
+                          <li>
+                            <h4>save an additional 15%!</h4>
+                          </li>
+                        </ol>
+                      </div>
+                      <div class="img-with-text-buttons mt-5"><a href="/products/variety-pack"
+                          class="push-btn inline-block">
+                          <span class="push-btn__surface">Try Them All!</span>
+                        </a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div id="shape-divider-shape_divider_Uzhajq"
+        class="shape-divider pointer-events-none z-20 w-full absolute top-0 left-0 w-full shape-divider-homeImgTextBundling-above">
+        <div class="shape-divider-transform-reset">
+          <div class="shape-divider-svg-container relative left-0 flex min-w-full  -mt-shape-divider"
+            style="padding-top: 1.6666666666666665%;">
+            <div class=" absolute bottom-0 left-0 right-0 top-0 z-0 h-full w-full text-scheme-background">
+              <svg class="absolute bottom-0 left-0 right-0  top-0 z-0 h-full w-full  text-scheme-background "
+                data-color-scheme="scheme1" width="100%" height="100%" viewBox="0 0 1200.0 20.0" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0 8.46126C8 3.84592 16 3.84592 24 8.46126C32 13.0766 40 13.0766 48 8.46127C56 3.84593 64 3.84593 72 8.46127C80 13.0766 88 13.0766 96 8.46128C104 3.84594 112 3.84594 120 8.46128C128 13.0766 136 13.0766 144 8.46128C152 3.84594 160 3.84595 168 8.46129C176 13.0766 184 13.0766 192 8.46129C200 3.84595 208 3.84596 216 8.4613C224 13.0766 232 13.0766 240 8.4613C248 3.84596 256 3.84596 264 8.46131C272 13.0766 280 13.0766 288 8.46131C296 3.84597 304 3.84597 312 8.46131C320 13.0767 328 13.0767 336 8.46132C344 3.84598 352 3.84598 360 8.46132C368 13.0767 376 13.0767 384 8.46132C392 3.84599 400 3.84599 408 8.46133C416 13.0767 424 13.0767 432 8.46133C440 3.846 448 3.846 456 8.46134C464 13.0767 472 13.0767 480 8.46134C488 3.846 496 3.846 504 8.46135C512 13.0767 520 13.0767 528 8.46135C536 3.84601 544 3.84601 552 8.46135C560 13.0767 568 13.0767 576 8.46136C584 3.84602 592 3.84602 600 8.46136C608 13.0767 616 13.0767 624 8.46137C632 3.84603 640 3.84603 648 8.46137C656 13.0767 664 13.0767 672 8.46138C680 3.84604 688 3.84604 696 8.46138C704 13.0767 712 13.0767 720 8.46138C728 3.84604 736 3.84604 744 8.46139C752 13.0767 760 13.0767 768 8.46139C776 3.84605 784 3.84605 792 8.4614C800 13.0767 808 13.0767 816 8.4614C824 3.84606 832 3.84606 840 8.4614C848 13.0767 856 13.0767 864 8.46141C872 3.84607 880 3.84607 888 8.46141C896 13.0768 904 13.0768 912 8.46142C920 3.84608 928 3.84608 936 8.46142C944 13.0768 952 13.0768 960 8.46142C968 3.84608 976 3.84609 984 8.46143C992 13.0768 1000 13.0768 1008 8.46143C1016 3.84609 1024 3.8461 1032 8.46144C1040 13.0768 1048 13.0768 1056 8.46144C1064 3.8461 1072 3.8461 1080 8.46145C1088 13.0768 1096 13.0768 1104 8.46145C1112 3.84611 1120 3.84611 1128 8.46145C1136 13.0768 1144 13.0768 1152 8.46146C1160 3.84612 1168 3.84612 1176 8.46146C1184 13.0768 1192 13.0768 1200 8.46147V19.9999H0V8.46126Z"
+                  fill="currentColor"></path>
+                <path class="shape-divider-stroke" vector-effect="non-scaling-stroke"
+                  d="M1 8.46126C9 3.84592 17 3.84592 25 8.46126C33 13.0766 41 13.0766 49 8.46127C57 3.84593 65 3.84593 73 8.46127C81 13.0766 89 13.0766 97 8.46128C105 3.84594 113 3.84594 121 8.46128C129 13.0766 137 13.0766 145 8.46128C153 3.84594 161 3.84595 169 8.46129C177 13.0766 185 13.0766 193 8.46129C201 3.84595 209 3.84596 217 8.4613C225 13.0766 233 13.0766 241 8.4613C249 3.84596 257 3.84596 265 8.46131C273 13.0766 281 13.0766 289 8.46131C297 3.84597 305 3.84597 313 8.46131C321 13.0767 329 13.0767 337 8.46132C345 3.84598 353 3.84598 361 8.46132C369 13.0767 377 13.0767 385 8.46132C393 3.84599 401 3.84599 409 8.46133C417 13.0767 425 13.0767 433 8.46133C441 3.846 449 3.846 457 8.46134C465 13.0767 473 13.0767 481 8.46134C489 3.846 497 3.846 505 8.46135C513 13.0767 521 13.0767 529 8.46135C537 3.84601 545 3.84601 553 8.46135C561 13.0767 569 13.0767 577 8.46136C585 3.84602 593 3.84602 601 8.46136C609 13.0767 617 13.0767 625 8.46137C633 3.84603 641 3.84603 649 8.46137C657 13.0767 665 13.0767 673 8.46138C681 3.84604 689 3.84604 697 8.46138C705 13.0767 713 13.0767 721 8.46138C729 3.84604 737 3.84604 745 8.46139C753 13.0767 761 13.0767 769 8.46139C777 3.84605 785 3.84605 793 8.4614C801 13.0767 809 13.0767 817 8.4614C825 3.84606 833 3.84606 841 8.4614C849 13.0767 857 13.0767 865 8.46141C873 3.84607 881 3.84607 889 8.46141C897 13.0768 905 13.0768 913 8.46142C921 3.84608 929 3.84608 937 8.46142C945 13.0768 953 13.0768 961 8.46142C969 3.84608 977 3.84609 985 8.46143C993 13.0768 1001 13.0768 1009 8.46143C1017 3.84609 1025 3.8461 1033 8.46144C1041 13.0768 1049 13.0768 1057 8.46144C1065 3.8461 1073 3.8461 1081 8.46145C1089 13.0768 1097 13.0768 1105 8.46145C1113 3.84611 1121 3.84611 1129 8.46145C1137 13.0768 1145 13.0768 1153 8.46146C1161 3.84612 1169 3.84612 1177 8.46146C1185 13.0768 1193 13.0768 1201 8.46147"
+                  stroke="black"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #shape-divider-shape_divider_Uzhajq svg {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(-1);
+        }
+
+        #shape-divider-shape_divider_Uzhajq svg:nth-child(2) {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(-1) translateX(100%);
+        }
+
+        #shopify-section-template--26988430360855__image_with_text_nXEqW8>data-island,
+        #shopify-section-template--26988430360855__image_with_text_nXEqW8>section,
+        #shopify-section-template--26988430360855__image_with_text_nXEqW8>footer,
+        #shopify-section-template--26988430360855__image_with_text_nXEqW8 [data-related-products-section] {
+          padding-top: 1.6666666666666665%;
+        }
+      </style>
+
+      <div id="shape-divider-shape_divider_jh9cMr"
+        class="shape-divider pointer-events-none z-20 w-full absolute bottom-0 left-0 w-full shape-divider-homeImgTextBundling-below">
+        <div class="shape-divider-transform-reset">
+          <div class="shape-divider-svg-container relative left-0 flex min-w-full  -mb-shape-divider"
+            style="padding-top: 1.6666666666666665%;">
+            <div class=" absolute bottom-0 left-0 right-0 top-0 z-0 h-full w-full text-scheme-background">
+              <svg class="absolute bottom-0 left-0 right-0  top-0 z-0 h-full w-full  text-scheme-background "
+                data-color-scheme="scheme1" width="100%" height="100%" viewBox="0 0 1200.0 20.0" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0 8.46126C8 3.84592 16 3.84592 24 8.46126C32 13.0766 40 13.0766 48 8.46127C56 3.84593 64 3.84593 72 8.46127C80 13.0766 88 13.0766 96 8.46128C104 3.84594 112 3.84594 120 8.46128C128 13.0766 136 13.0766 144 8.46128C152 3.84594 160 3.84595 168 8.46129C176 13.0766 184 13.0766 192 8.46129C200 3.84595 208 3.84596 216 8.4613C224 13.0766 232 13.0766 240 8.4613C248 3.84596 256 3.84596 264 8.46131C272 13.0766 280 13.0766 288 8.46131C296 3.84597 304 3.84597 312 8.46131C320 13.0767 328 13.0767 336 8.46132C344 3.84598 352 3.84598 360 8.46132C368 13.0767 376 13.0767 384 8.46132C392 3.84599 400 3.84599 408 8.46133C416 13.0767 424 13.0767 432 8.46133C440 3.846 448 3.846 456 8.46134C464 13.0767 472 13.0767 480 8.46134C488 3.846 496 3.846 504 8.46135C512 13.0767 520 13.0767 528 8.46135C536 3.84601 544 3.84601 552 8.46135C560 13.0767 568 13.0767 576 8.46136C584 3.84602 592 3.84602 600 8.46136C608 13.0767 616 13.0767 624 8.46137C632 3.84603 640 3.84603 648 8.46137C656 13.0767 664 13.0767 672 8.46138C680 3.84604 688 3.84604 696 8.46138C704 13.0767 712 13.0767 720 8.46138C728 3.84604 736 3.84604 744 8.46139C752 13.0767 760 13.0767 768 8.46139C776 3.84605 784 3.84605 792 8.4614C800 13.0767 808 13.0767 816 8.4614C824 3.84606 832 3.84606 840 8.4614C848 13.0767 856 13.0767 864 8.46141C872 3.84607 880 3.84607 888 8.46141C896 13.0768 904 13.0768 912 8.46142C920 3.84608 928 3.84608 936 8.46142C944 13.0768 952 13.0768 960 8.46142C968 3.84608 976 3.84609 984 8.46143C992 13.0768 1000 13.0768 1008 8.46143C1016 3.84609 1024 3.8461 1032 8.46144C1040 13.0768 1048 13.0768 1056 8.46144C1064 3.8461 1072 3.8461 1080 8.46145C1088 13.0768 1096 13.0768 1104 8.46145C1112 3.84611 1120 3.84611 1128 8.46145C1136 13.0768 1144 13.0768 1152 8.46146C1160 3.84612 1168 3.84612 1176 8.46146C1184 13.0768 1192 13.0768 1200 8.46147V19.9999H0V8.46126Z"
+                  fill="currentColor"></path>
+                <path class="shape-divider-stroke" vector-effect="non-scaling-stroke"
+                  d="M1 8.46126C9 3.84592 17 3.84592 25 8.46126C33 13.0766 41 13.0766 49 8.46127C57 3.84593 65 3.84593 73 8.46127C81 13.0766 89 13.0766 97 8.46128C105 3.84594 113 3.84594 121 8.46128C129 13.0766 137 13.0766 145 8.46128C153 3.84594 161 3.84595 169 8.46129C177 13.0766 185 13.0766 193 8.46129C201 3.84595 209 3.84596 217 8.4613C225 13.0766 233 13.0766 241 8.4613C249 3.84596 257 3.84596 265 8.46131C273 13.0766 281 13.0766 289 8.46131C297 3.84597 305 3.84597 313 8.46131C321 13.0767 329 13.0767 337 8.46132C345 3.84598 353 3.84598 361 8.46132C369 13.0767 377 13.0767 385 8.46132C393 3.84599 401 3.84599 409 8.46133C417 13.0767 425 13.0767 433 8.46133C441 3.846 449 3.846 457 8.46134C465 13.0767 473 13.0767 481 8.46134C489 3.846 497 3.846 505 8.46135C513 13.0767 521 13.0767 529 8.46135C537 3.84601 545 3.84601 553 8.46135C561 13.0767 569 13.0767 577 8.46136C585 3.84602 593 3.84602 601 8.46136C609 13.0767 617 13.0767 625 8.46137C633 3.84603 641 3.84603 649 8.46137C657 13.0767 665 13.0767 673 8.46138C681 3.84604 689 3.84604 697 8.46138C705 13.0767 713 13.0767 721 8.46138C729 3.84604 737 3.84604 745 8.46139C753 13.0767 761 13.0767 769 8.46139C777 3.84605 785 3.84605 793 8.4614C801 13.0767 809 13.0767 817 8.4614C825 3.84606 833 3.84606 841 8.4614C849 13.0767 857 13.0767 865 8.46141C873 3.84607 881 3.84607 889 8.46141C897 13.0768 905 13.0768 913 8.46142C921 3.84608 929 3.84608 937 8.46142C945 13.0768 953 13.0768 961 8.46142C969 3.84608 977 3.84609 985 8.46143C993 13.0768 1001 13.0768 1009 8.46143C1017 3.84609 1025 3.8461 1033 8.46144C1041 13.0768 1049 13.0768 1057 8.46144C1065 3.8461 1073 3.8461 1081 8.46145C1089 13.0768 1097 13.0768 1105 8.46145C1113 3.84611 1121 3.84611 1129 8.46145C1137 13.0768 1145 13.0768 1153 8.46146C1161 3.84612 1169 3.84612 1177 8.46146C1185 13.0768 1193 13.0768 1201 8.46147"
+                  stroke="black"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #shape-divider-shape_divider_jh9cMr svg {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(1);
+        }
+
+        #shape-divider-shape_divider_jh9cMr svg:nth-child(2) {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(1) translateX(100%);
+        }
+
+        #shopify-section-template--26988430360855__image_with_text_nXEqW8>data-island,
+        #shopify-section-template--26988430360855__image_with_text_nXEqW8>section,
+        #shopify-section-template--26988430360855__image_with_text_nXEqW8>footer,
+        #shopify-section-template--26988430360855__image_with_text_nXEqW8 [data-related-products-section] {
+          padding-bottom: 1.6666666666666665%;
+        }
+      </style>
+
+    </div>
+    <div id="shopify-section-template--26988430360855__testimonials_f7hFax" class="shopify-section">
+
+      <section class="relative overflow-hidden bg-scheme-background text-scheme-text  section-testimonials homeInsta"
+        data-color-scheme="scheme1">
+        <div class="section-content py-section-vertical-spacing">
+
+          <h2
+            class="inline-heading-rte font-heading heading-standard  heading-style break-words text-center full_shadow">
+            @sousasupps
+          </h2>
+
+
+          <div id="slideshow-template--26988430360855__testimonials_f7hFax"
+            class="splide section-content-top-margin splide--loop splide--ltr splide--draggable is-active is-overflow is-initialized"
+            role="region" aria-roledescription="carousel">
+            <div class="splide__track splide__track--loop splide__track--ltr splide__track--draggable"
+              id="slideshow-template--26988430360855__testimonials_f7hFax-track"
+              style="padding-left: 1.25rem; padding-right: 1.25rem;" aria-live="off" aria-atomic="true">
+              <ul class="splide__list  w-full mt-10" id="slideshow-template--26988430360855__testimonials_f7hFax-list"
+                role="presentation" style="transform: translateX(-6020.44px);">
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone01" role="group"
+                  aria-roledescription="slide" aria-label="1 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41272997216535 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=3000"
+                            alt=""
+                            srcset="//sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=200 200w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=350 350w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=450 450w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=750 750w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=850 850w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=960 960w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone02" role="group"
+                  aria-roledescription="slide" aria-label="2 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41309255303447 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=3000"
+                            alt="Sousa Vanilla single-serve protein and electrolyte packet, 20g whey protein, 1500mg electrolytes, 100 calories"
+                            srcset="//sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=200 200w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=350 350w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=450 450w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=750 750w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=850 850w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=960 960w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone03" role="group"
+                  aria-roledescription="slide" aria-label="3 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41272991580439 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=3000"
+                            alt=""
+                            srcset="//sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=200 200w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=350 350w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=450 450w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=750 750w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=850 850w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=960 960w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone is-active"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone04" role="group"
+                  aria-roledescription="slide" aria-label="4 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41309256319255 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=3000"
+                            alt="Sousa Strawberry Milkshake single-serve protein and electrolyte packet, 20g whey protein, 1500mg electrolytes, 100 calories"
+                            srcset="//sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=200 200w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=350 350w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=450 450w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=750 750w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=850 850w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=960 960w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone05" role="group"
+                  aria-roledescription="slide" aria-label="5 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41272990466327 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=3000"
+                            alt=""
+                            srcset="//sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=200 200w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=350 350w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=450 450w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=750 750w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=850 850w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=960 960w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone06" role="group"
+                  aria-roledescription="slide" aria-label="6 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41309256909079 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=3000"
+                            alt="Sousa Salted Caramel single-serve protein and electrolyte packet, 20g whey protein, 1500mg electrolytes, 100 calories"
+                            srcset="//sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=200 200w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=350 350w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=450 450w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=750 750w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=850 850w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=960 960w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone07" role="group"
+                  aria-roledescription="slide" aria-label="1 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41272997216535 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=3000"
+                            alt=""
+                            srcset="//sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=200 200w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=350 350w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=450 450w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=750 750w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=850 850w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=960 960w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone08" role="group"
+                  aria-roledescription="slide" aria-label="2 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41309255303447 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=3000"
+                            alt="Sousa Vanilla single-serve protein and electrolyte packet, 20g whey protein, 1500mg electrolytes, 100 calories"
+                            srcset="//sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=200 200w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=350 350w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=450 450w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=750 750w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=850 850w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=960 960w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone09" role="group"
+                  aria-roledescription="slide" aria-label="3 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41272991580439 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=3000"
+                            alt=""
+                            srcset="//sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=200 200w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=350 350w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=450 450w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=750 750w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=850 850w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=960 960w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeBoxSidePink.jpg?v=1760127209&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;" style="color: currentcolor;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone is-active"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone10" role="group"
+                  aria-roledescription="slide" aria-label="4 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41309256319255 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=3000"
+                            alt="Sousa Strawberry Milkshake single-serve protein and electrolyte packet, 20g whey protein, 1500mg electrolytes, 100 calories"
+                            srcset="//sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=200 200w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=350 350w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=450 450w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=750 750w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=850 850w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=960 960w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/StrawberryMilkshakeSachetAboveBlue.jpg?v=1765472409&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;" style="color: currentcolor;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone11" role="group"
+                  aria-roledescription="slide" aria-label="5 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41272990466327 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=3000"
+                            alt=""
+                            srcset="//sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=200 200w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=350 350w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=450 450w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=750 750w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=850 850w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=960 960w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/SaltedCaramelBoxSideOrange.jpg?v=1760127152&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;" style="color: currentcolor;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-clone12" role="group"
+                  aria-roledescription="slide" aria-label="6 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41309256909079 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=3000"
+                            alt="Sousa Salted Caramel single-serve protein and electrolyte packet, 20g whey protein, 1500mg electrolytes, 100 calories"
+                            srcset="//sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=200 200w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=350 350w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=450 450w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=750 750w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=850 850w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=960 960w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1280 1280w, //sousasupps.com/cdn/shop/files/VanillaSachetAboveBlue.jpg?v=1765472409&amp;width=1440 1440w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1536 1536w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1706 1706w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1782 1782w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=1920 1920w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=2560 2560w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=2880 2880w, //sousasupps.com/cdn/shop/files/SaltedCaramelSachetAboveBlue.jpg?v=1765472409&amp;width=3000 3000w"
+                            width="3000" height="3000" loading="lazy" class="media__styled-element bg-scheme-card"
+                            sizes="500px" onerror="this.style.color=&quot;currentColor&quot;"
+                            onload="this.style.color=&quot;currentColor&quot;" style="color: currentcolor;">
+                        </div>
+                      </div>
+                      <blockquote class="text-center mt-5">
+                        <div class="inline-rte font-body text-base">
+
+                        </div>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow"
+                  id="slideshow-template--26988430360855__testimonials_f7hFax-slide01" role="group"
+                  aria-roledescription="slide" aria-label="1 of 6" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="">
+                    <div class=" text-center" style="background-color: #ffffff;">
+                      <div class="mx-auto mb-5 " style="max-width: 500px">
+                        <div
+                          class="media media--css-only media-template--26988430360855__testimonials_f7hFax-41272997216535 media--disable-styles default ">
+                          <img
+                            src="//sousasupps.com/cdn/shop/files/VanillaBoxSideYellow.jpg?v=1760127467&amp;width=3000"
+                            alt=""

@@ -1,0 +1,1018 @@
+
+                <div class="jdgm-full-rev__reviewer-and-location-wrapper">
+                  <div class="jdgm-full-rev__reviewer-wrapper">
+                    <span class="jdgm-full-rev__reviewer-name">
+                      Anonymous
+                    </span>
+
+                    <span class="jdgm-rev__buyer-badge"></span>
+
+                  </div>
+
+                  <div class="jdgm-full-rev__location-wrapper">
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="jdgm-full-rev__content">
+              <b class="jdgm-full-rev__title"></b>
+              <div class="jdgm-full-rev__body">
+                <p>they've done the most complex flavor in the world justice with this one. and both protein +
+                  electrolytes all in one. so delicious!</p>
+              </div>
+
+
+              <div class="jdgm-full-rev__custom-form">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__pics">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__vids">
+
+
+              </div>
+
+            </div>
+
+
+
+
+            <div class="jdgm-full-rev__product-wrapper">
+              <a class="jdgm-full-rev__product-button" href="#judgeme_product_reviews"></a>
+            </div>
+
+          </div>
+
+          <div class="jdgm-full-rev" data-verified-buyer="true" data-review-id="be10bd5e-2f32-4e40-bde5-773f60bf014e"
+            data-product-title="Variety Starter Pack Protein + Hydration"
+            data-product-url="/products/variety-sample-pack" id="be10bd5e-2f32-4e40-bde5-773f60bf014e-mojg57jc-gty3">
+
+            <div class="jdgm-full-rev__header">
+              <div class="jdgm-full-rev__rating_and_timestamp_wrapper">
+                <span class="jdgm-full-rev__rating" data-score="5" tabindex="0" aria-label="5 star review" role="img">
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+                </span>
+                <span class="jdgm-full-rev__timestamp" data-content="03/14/2026">
+                  03/14/2026
+                </span>
+              </div>
+
+              <div class="jdgm-full-rev__profile-wrapper">
+
+                <div class="jdgm-full-rev__icon">
+                </div>
+
+
+                <div class="jdgm-full-rev__reviewer-and-location-wrapper">
+                  <div class="jdgm-full-rev__reviewer-wrapper">
+                    <span class="jdgm-full-rev__reviewer-name">
+                      Liv
+                    </span>
+
+                    <span class="jdgm-rev__buyer-badge"></span>
+
+                  </div>
+
+                  <div class="jdgm-full-rev__location-wrapper">
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="jdgm-full-rev__content">
+              <b class="jdgm-full-rev__title"></b>
+              <div class="jdgm-full-rev__body">
+                <p>Amazing! No grainy texture you find in most protein powders! Finding something that tastes good and
+                  is good for you is a real struggle as a bodybuilder but Sousa is definitely a new staple in my diet
+                </p>
+              </div>
+
+
+              <div class="jdgm-full-rev__custom-form">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__pics">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__vids">
+
+
+              </div>
+
+            </div>
+
+
+
+
+            <div class="jdgm-full-rev__product-wrapper">
+              <a class="jdgm-full-rev__product-button" href="/products/variety-sample-pack#judgeme_product_reviews"></a>
+            </div>
+
+          </div>
+
+          <div class="jdgm-full-rev" data-verified-buyer="true" data-review-id="f85f52bc-a631-4fb6-bdb6-d424304c7cda"
+            data-product-title="Variety Starter Pack Protein + Hydration"
+            data-product-url="/products/variety-sample-pack" id="f85f52bc-a631-4fb6-bdb6-d424304c7cda-mojg57jc-gty3">
+
+            <div class="jdgm-full-rev__header">
+              <div class="jdgm-full-rev__rating_and_timestamp_wrapper">
+                <span class="jdgm-full-rev__rating" data-score="5" tabindex="0" aria-label="5 star review" role="img">
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+
+
+                  <span class="jdgm-star jdgm--on"></span>
+
+                </span>
+                <span class="jdgm-full-rev__timestamp" data-content="02/21/2026">
+                  02/21/2026
+                </span>
+              </div>
+
+              <div class="jdgm-full-rev__profile-wrapper">
+
+                <div class="jdgm-full-rev__icon">
+                </div>
+
+
+                <div class="jdgm-full-rev__reviewer-and-location-wrapper">
+                  <div class="jdgm-full-rev__reviewer-wrapper">
+                    <span class="jdgm-full-rev__reviewer-name">
+                      Anonymous
+                    </span>
+
+                    <span class="jdgm-rev__buyer-badge"></span>
+
+                  </div>
+
+                  <div class="jdgm-full-rev__location-wrapper">
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="jdgm-full-rev__content">
+              <b class="jdgm-full-rev__title"></b>
+              <div class="jdgm-full-rev__body">
+                <p>My kids like the taste and a life saver for Ramadan</p>
+              </div>
+
+
+              <div class="jdgm-full-rev__custom-form">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__pics">
+
+              </div>
+
+
+
+              <div class="jdgm-full-rev__vids">
+
+
+              </div>
+
+            </div>
+
+
+
+
+            <div class="jdgm-full-rev__product-wrapper">
+              <a class="jdgm-full-rev__product-button" href="/products/variety-sample-pack#judgeme_product_reviews"></a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div id="shopify-block-AWWtidFBUQnFZWFd0O__829863287651809547" class="shopify-block shopify-app-block">
+
+
+
+
+
+
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet">
+
+
+
+    <script>
+      window._kinect = {
+        shop: "sousa-trf.myshopify.com",
+        primaryColor: "#9dc0e4",
+        accentColor: "#9dc0e4",
+        brandName: "Sousa",
+        welcomeMessage: "Hi! What are you looking for today?",
+
+        logoUrl: "\/\/sousasupps.com\/cdn\/shop\/files\/sousa_ai.png?v=1775544831\u0026width=480",
+
+
+        displayMode: "page-shift",
+        panelWidth: 340,
+        panelSide: "right",
+        productCardSize: 140,
+        productViewMode: "carousel",
+        productCardSizeMobile: 140,
+        productViewModeMobile: "carousel",
+        mobileOverrides: true,
+        mobileChatSize: "full",
+        starters: "What makes Sousa different?, What is in each packet?, Show me your best deal",
+        starterChipColor: "#5d2113",
+        defaultOpen: true,
+        fontSize: 13,
+        autoTheme: true,
+        sneakPeek: {
+          enabled: true,
+          style: "fab-animation",
+          countdown: 5,
+          page: "all",
+          animationTime: 3,
+          animationStyle: "peek",
+          panelReveal: "welcome-message",
+          customText: ""
+        },
+        _theme: {
+          bodyFont: null,
+          bodyFontWeight: null,
+          bodyFontStyle: null,
+          bodyFontFallbacks: null,
+          headerFont: null,
+          textColor: null,
+          bgColor: null,
+          accentColor: null
+        }
+      };
+    </script>
+
+
+
+    <script>
+      window._kinectPageContext = { type: "index" };
+    </script>
+
+
+
+
+    <style id="kinect-page-shift-styles">
+      body.kinect-page-shift {
+        --kinect-page-shift-offset: 340px;
+        transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+          margin-right 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      body.kinect-page-shift.kinect-page-shift-left {
+        margin-left: var(--kinect-page-shift-offset) !important;
+        margin-right: 0 !important;
+      }
+
+      body.kinect-page-shift.kinect-page-shift-right {
+        margin-right: var(--kinect-page-shift-offset) !important;
+        margin-left: 0 !important;
+      }
+
+      body:not(.kinect-page-shift) {
+        transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+          margin-right 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* While the user is dragging the resize handle, kill the margin transition
+       so the storefront tracks the cursor in real time instead of lagging. */
+      body.kinect-resizing.kinect-page-shift {
+        transition: none !important;
+      }
+
+      /* Keep common floating menus/drawers constrained to the visible viewport area. */
+      body.kinect-page-shift :is(.cart-drawer,
+        .mini-cart,
+        .drawer,
+        .dropdown-menu,
+        .site-nav__dropdown,
+        .header__submenu,
+        .predictive-search,
+        [role="dialog"],
+        [role="menu"],
+        [role="listbox"]) {
+        max-width: calc(100vw - var(--kinect-page-shift-offset)) !important;
+        box-sizing: border-box;
+      }
+
+      body.kinect-page-shift.kinect-page-shift-left :is(.cart-drawer,
+        .mini-cart,
+        .drawer,
+        .predictive-search) {
+        left: var(--kinect-page-shift-offset) !important;
+        right: auto !important;
+      }
+
+      body.kinect-page-shift.kinect-page-shift-right :is(.cart-drawer,
+        .mini-cart,
+        .drawer,
+        .predictive-search) {
+        right: var(--kinect-page-shift-offset) !important;
+        left: auto !important;
+      }
+
+      @media (max-width: 768px) {
+        body.kinect-page-shift {
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+      }
+    </style>
+
+
+    <script
+      src="https://cdn.shopify.com/extensions/019dd135-63ef-730c-a5b4-861926b9c3fa/kinect-sousa-42/assets/kinect-url-classifier.js"
+      defer=""></script>
+    <script
+      src="https://cdn.shopify.com/extensions/019dd135-63ef-730c-a5b4-861926b9c3fa/kinect-sousa-42/assets/kinect-consent.js"
+      defer=""></script>
+    <script
+      src="https://cdn.shopify.com/extensions/019dd135-63ef-730c-a5b4-861926b9c3fa/kinect-sousa-42/assets/kinect-session-tracker.js"
+      defer=""></script>
+    <script
+      src="https://cdn.shopify.com/extensions/019dd135-63ef-730c-a5b4-861926b9c3fa/kinect-sousa-42/assets/kinect-event-batcher.js"
+      defer=""></script>
+
+
+    <script
+      src="https://cdn.shopify.com/extensions/019dd135-63ef-730c-a5b4-861926b9c3fa/kinect-sousa-42/assets/kinect-widget.js"
+      defer=""></script>
+
+
+  </div>
+  <div tabindex="-1" aria-hidden="true" id="web-pixels-manager-sandbox-container" data-shopify-privacy="exclude"
+    style="height: 0px !important; width: 0px !important; position: fixed !important; visibility: hidden !important; overflow: hidden !important; z-index: -100 !important; margin: 0px !important; padding: 0px !important; border: 0px !important;">
+    <iframe tabindex="-1" aria-hidden="true"
+      name="web-pixel-sandbox-CUSTOM-211419415-LAX-d93fb6acwa1fec5e6p3f0901a3m63922e87"
+      src="https://sousasupps.com/web-pixels@d93fb6acwa1fec5e6p3f0901a3m63922e87/custom/web-pixel-211419415@1/sandbox/modern/"
+      id="web-pixel-sandbox-CUSTOM-211419415-LAX-d93fb6acwa1fec5e6p3f0901a3m63922e87"
+      sandbox="allow-scripts allow-forms"
+      style="height: 0px !important; width: 0px !important; visibility: hidden !important;"></iframe><iframe
+      tabindex="-1" aria-hidden="true"
+      name="web-pixel-sandbox-CUSTOM-shopify-custom-pixel-LAX-d93fb6acwa1fec5e6p3f0901a3m63922e87"
+      src="https://sousasupps.com/web-pixels@d93fb6acwa1fec5e6p3f0901a3m63922e87/custom/web-pixel-shopify-custom-pixel@0450/sandbox/modern/"
+      id="web-pixel-sandbox-CUSTOM-shopify-custom-pixel-LAX-d93fb6acwa1fec5e6p3f0901a3m63922e87"
+      sandbox="allow-scripts allow-forms"
+      style="height: 0px !important; width: 0px !important; visibility: hidden !important;"></iframe></div>
+
+  <link rel="stylesheet" media="all"
+    href="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/widget_v3_base.css">
+  <link class="jdgm-prefetch" rel="prefetch" crossorigin="" as="script"
+    href="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/widget_common.js">
+  <link class="jdgm-prefetch" rel="prefetch" crossorigin="" as="script"
+    href="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/widget_others.js">
+  <link class="jdgm-prefetch" rel="prefetch" crossorigin="" as="script"
+    href="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/widget_form.js">
+  <link class="jdgm-prefetch" rel="prefetch" crossorigin="" as="style"
+    href="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/widget_v3_form.css">
+  <shop-cart-sync experiments="{}" data-instance-id="d6d43e6e-6f19-45a0-89f8-db3319a285c2"></shop-cart-sync><a
+    class="jdgm-random-link jdgm-hidden" href="#" rel="nofollow" style="display: none;">Judge.me</a>
+  <style>
+    .jdgm-rev__icon::after {
+      content: '\e001';
+    }
+
+    .jdgm-rev__icon::after,
+    .jdgm-rev__buyer-badge {
+      display: inline-block;
+      color: #ffffff;
+      background-color: rgb(93, 33, 19);
+    }
+
+    .jdgm-rev__buyer-badge:before {
+      content: 'Verified';
+    }
+
+    .jdgm-rev-widg__title {
+      visibility: unset;
+    }
+
+    .jdgm-rev-widg__summary-text {
+      visibility: unset;
+    }
+
+    .jdgm-prev-badge__text {
+      visibility: unset;
+    }
+
+    .jdgm-quest__body:before {
+      content: 'Question:';
+    }
+
+    .jdgm-ans__body:before {
+      content: 'Answer:';
+    }
+
+    .jdgm-star {
+      color: #037ECE;
+    }
+
+    .jdgm-ask-question-btn,
+    .jdgm-write-rev-link,
+    .jdgm-all-reviews-rating-wrapper,
+    .jdgm-carousel-wrapper a,
+    .jdgm-rev__prod-link,
+    .jdgm-all-reviews-text a,
+    .jdgm-carousel-item__product,
+    .jdgm-carousel-number-of-reviews,
+    .jdgm-revs-tab__url {
+      color: rgb(93, 33, 19);
+    }
+
+    a.jdgm-write-rev-link {
+      color: rgb(93, 33, 19);
+      background-color: #5D2214;
+    }
+
+    /* Legacy selectors, to keep old CSS specificities */
+    .jdgm-preview-badge .jdgm-star {
+      color: #037ECE;
+    }
+
+    .jdgm-histogram .jdgm-star {
+      color: #037ECE;
+    }
+  </style>
+  <link rel="stylesheet" media="all"
+    href="https://cdn.shopify.com/extensions/019dd34c-1ab4-73c9-9e6b-90956804ecd3/judgeme-491/assets/widget_v3_media.css">
+  <script src="https://www.googletagmanager.com/gtag/js?id=G-TP10FLQ9HG"></script>
+  <script src="https://www.googletagmanager.com/gtag/js?id=GT-PLFF96HB"></script>
+  <div x-show="$store.modals.leftDrawer.open" @keydown.escape.prevent.stop="$store.modals.close('leftDrawer')"
+    @click="$store.modals.close('leftDrawer')" class="fixed inset-0 z-50" data-color-scheme="scheme1"
+    id="modals-leftDrawer" data-teleport-target="true" style="display: none;">
+    <div x-show="$store.modals.leftDrawer.open" x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0" class="fixed inset-0 bg-scheme-text/75" style="display: none;">
+      <!-- Overlay -->
+    </div>
+    <div x-show="$store.modals.leftDrawer.open" x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+      x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0"
+      x-transition:leave-end="-translate-x-full" class="drawer-transition-host h-full w-full" style="display: none;">
+      <div @click.stop="" x-trap.noscroll.inert="$store.modals.leftDrawer.open"
+        class="relative mr-auto h-full w-11/12 overflow-y-auto border-r-section border-section-border bg-scheme-background text-scheme-text md:w-7/12 lg:w-5/12"
+        id="left-drawer-slot" role="dialog" aria-modal="true" :aria-label="getModalLabel('leftDrawer', $el)"
+        tabindex="-1">
+        <!-- Modal content is teleported here -->
+        <div :data-modal-label="$store.modals.leftDrawer.contents === 'nav' ? 'Main menu' : false"
+          x-show="$store.modals.leftDrawer.contents === 'nav'" class="sidebar-nav px-section py-5 "
+          data-teleport-target="true" style="display: none;">
+          <div class="relative flex items-center justify-between pb-5">
+            <h2 class="sr-only" tabindex="-1">
+              Main menu
+            </h2>
+            <button @click.prevent="$store.modals.close('nav')" class="top-0 block">
+              <span class="sr-only">Close (esc)</span>
+              <span class="inline-block h-5 w-5"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" d="M43 5 5 43m38 0L5 5"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+          <ul class="mt-5">
+
+            <li class="text-lg lg:text-xl" style="--first-delay-tap: 0;">
+
+              <data-island x-data="
+        {
+          expanded: false
+        }
+      ">
+                <button
+                  class="font-heading flex w-full flex-row items-center justify-center py-2.5 text-left nav-list-item heading-secondary"
+                  @click="expanded = ! expanded" :aria-expanded="expanded">
+                  <span>Shop</span>
+                  <div class="icon-chevron-down">
+                    <span class="block h-3 w-3" :class="{'rotate-180': expanded}"><svg class="theme-icon"
+                        viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                          stroke-linejoin="round" stroke-width="2" d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14">
+                        </path>
+                      </svg>
+                    </span>
+                  </div>
+                </button>
+                <div x-show="expanded" x-collapse="">
+
+
+
+
+
+
+
+
+
+                  <div class="mega-menu-wrapper">
+                    <div class="mega-menu-right">
+
+                      <h2>shop by flavor</h2>
+
+                      <ul class="mega-child-nav">
+
+                        <li>
+                          <a
+                            href="https://sousasupps.com/collections/all/products/protein-hydration-recovery-drink-mix?variant=52818915721495">
+
+                            <img src="//sousasupps.com/cdn/shop/files/nav-salted-caramel_large.png?v=20139536889053184"
+                              alt="Salted Caramel">
+                            <span>Salted Caramel</span>
+                          </a>
+                        </li>
+
+                        <li>
+                          <a
+                            href="https://sousasupps.com/products/protein-hydration-recovery-drink-mix?variant=52818915655959">
+
+                            <img src="//sousasupps.com/cdn/shop/files/nav-vanilla_large.png?v=2355158988840234439"
+                              alt="Vanilla">
+                            <span>Vanilla</span>
+                          </a>
+                        </li>
+
+                        <li>
+                          <a
+                            href="https://sousasupps.com/collections/all/products/protein-hydration-recovery-drink-mix?variant=52818915688727">
+
+                            <img
+                              src="//sousasupps.com/cdn/shop/files/nav-strawberry-milkshake_large.png?v=10119771110715019941"
+                              alt="Strawberry Milkshake">
+                            <span>Strawberry Milkshake</span>
+                          </a>
+                        </li>
+
+                      </ul>
+
+                      <a href="/collections/all" class="push-btn inline-block">
+                        <span class="push-btn__surface">Shop All</span>
+                      </a>
+
+                    </div>
+                  </div>
+
+
+
+
+
+                </div>
+              </data-island>
+
+            </li>
+
+
+            <li class="text-lg lg:text-xl" style="--first-delay-tap: 0;">
+
+              <data-island x-data="
+        {
+          expanded: false
+        }
+      ">
+                <button
+                  class="font-heading flex w-full flex-row items-center justify-center py-2.5 text-left nav-list-item heading-secondary"
+                  @click="expanded = ! expanded" :aria-expanded="expanded">
+                  <span> Learn</span>
+                  <div class="icon-chevron-down">
+                    <span class="block h-3 w-3" :class="{'rotate-180': expanded}"><svg class="theme-icon"
+                        viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                          stroke-linejoin="round" stroke-width="2" d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14">
+                        </path>
+                      </svg>
+                    </span>
+                  </div>
+                </button>
+                <div x-show="expanded" x-collapse="">
+
+
+
+
+
+                  <ul class="pb-5 text-base font-main sub-menu-wrapper">
+
+
+
+                    <li class="my-3 text-base" style="--second-delay-tap: 0;">
+
+                      <a class="" href="/pages/about-us">
+                        About Us
+                      </a>
+
+                    </li>
+
+
+
+                    <li class="my-3 text-base" style="--second-delay-tap: 1;">
+
+                      <a class="" href="/pages/compare">
+                        Compare
+                      </a>
+
+                    </li>
+
+
+
+                    <li class="my-3 text-base" style="--second-delay-tap: 2;">
+
+                      <a class="" href="/pages/learn">
+                        Learn
+                      </a>
+
+                    </li>
+
+
+
+                    <li class="my-3 text-base" style="--second-delay-tap: 3;">
+
+                      <a class="" href="/pages/faq">
+                        FAQ
+                      </a>
+
+                    </li>
+
+                  </ul>
+
+
+
+                </div>
+              </data-island>
+
+            </li>
+
+
+            <li class="text-lg lg:text-xl" style="--first-delay-tap: 0;">
+
+              <a class="nav-single-item font-heading block py-2.5 heading-secondary" href="/pages/contact">
+                Contact
+              </a>
+
+            </li>
+          </ul>
+
+          <div class="space-y-5 footer-nav">
+
+            <div class="feature-content">
+
+              <a href="/products/variety-pack" class="push-btn push-btn--pop inline-block push-btn--no-shadow">
+                <span class="push-btn__surface ">Bundle &amp; Save</span>
+              </a>
+
+              <img class="mt-5 lg:hidden" src="//sousasupps.com/cdn/shop/files/Boxes_1_900x.png?v=1759994066"
+                alt="Bundle &amp; Save">
+
+
+
+            </div>
+            <ul class="hidden space-y-1.5">
+
+              <li>
+                <a href="https://sousasupps.com/customer_authentication/redirect?locale=en&amp;region_country=US"
+                  id="customer_login_link">Log in</a>
+              </li>
+              <li>
+                <a href="https://shopify.com/96044581143/account?locale=en&amp;buyer_flags=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb3VzYS10cmYubXlzaG9waWZ5LmNvbSIsImZsYWdzIjpbXSwiZXhwIjoxNzc4MDMzNTYwLCJuYmYiOjE3Nzc0Mjg3NjB9.uBirWLIZjGPg5V7JOKWgMxUxHpj3vgwVzkM_a-qlEqA"
+                  id="customer_register_link">Create account</a>
+              </li>
+
+            </ul>
+
+            <form class="hidden relative mx-auto mt-10 block max-w-2xl" action="/search" method="get" role="search">
+              <label for="Search" class="visually-hidden">
+                Search
+              </label>
+              <input type="search" name="q" id="Search" class="input w-full pr-12 placeholder-current" value=""
+                placeholder="Search">
+              <button class="absolute right-2 top-1/2 flex -translate-y-1/2 transform p-1" type="submit">
+                <span class="inline-block h-5 w-5 shrink-0"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                      stroke-linejoin="round" stroke-width="2"
+                      d="M7 21.5a15.5 15.5 0 1 0 31 0 15.5 15.5 0 0 0-31 0v0ZM43 42l-9-9"></path>
+                  </svg>
+                </span>
+                <span class="visually-hidden">Search</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div x-show="$store.modals.rightDrawer.open" @keydown.escape.prevent.stop="$store.modals.close('rightDrawer')"
+    @click="$store.modals.close('rightDrawer')" class="fixed inset-0 z-50" data-color-scheme="scheme1"
+    id="modals-rightDrawer" data-teleport-target="true" style="display: none;">
+    <div x-show="$store.modals.rightDrawer.open" x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0" class="fixed inset-0 bg-scheme-text/75" style="display: none;">
+      <!-- Overlay -->
+    </div>
+    <div x-show="$store.modals.rightDrawer.open" x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+      x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0"
+      x-transition:leave-end="translate-x-full" class="h-full w-full" style="display: none;">
+      <div @click.stop="" x-trap.noscroll.inert="$store.modals.rightDrawer.open"
+        class="relative ml-auto h-full w-11/12 overflow-hidden border-l-section border-section-border bg-scheme-background text-scheme-text md:w-7/12 lg:w-5/12"
+        id="right-drawer-slot" role="dialog" aria-modal="true" :aria-label="getModalLabel('rightDrawer', $el)"
+        tabindex="-1">
+        <!-- Modal content is teleported here -->
+        <div x-show="$store.modals.rightDrawer.contents === 'cart'"
+          class="flex h-screen max-h-full flex-col overflow-hidden"
+          :data-modal-label="$store.modals.rightDrawer.contents === 'cart'? 'Your cart' : false" data-cart-drawer=""
+          data-teleport-target="true" style="display: none;">
+          <div class="relative flex items-center justify-between px-section pb-2.5 pt-5">
+            <h2 class="font-heading text-base lg:text-xl" tabindex="-1">
+              Your cart
+              <span class="sr-only">
+                -
+                <span x-text="$store.cart_count.countWithText">undefined items</span>
+              </span>
+            </h2>
+            <button @click.prevent="$store.modals.close('cart')" class="top-0 block">
+              <span class="sr-only">Close (esc)</span>
+              <span class="inline-block h-5 w-5"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" d="M43 5 5 43m38 0L5 5"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+          <div class="flex flex-auto flex-col overflow-hidden">
+            <data-island x-data="CartItems" data-cart-items=""
+              class="flex flex-auto flex-col overflow-hidden overflow-y-auto px-section" on="idle" ready="">
+
+
+              <div class="py-5 text-center">
+                <p>Your cart is currently empty.</p>
+              </div>
+
+            </data-island>
+            <p class="sr-only" id="cart-live-region-text" aria-live="polite" role="status" aria-hidden="true">
+              New subtotal:
+              $0.00 USD
+            </p>
+
+            <div class="relative  px-section pb-safe-bottom pt-5">
+              <div
+                class="pointer-events-none absolute left-0 right-0 top-0 h-16 w-full -translate-y-full bg-gradient-to-t from-scheme-background to-scheme-background-0">
+              </div>
+              <data-island x-data="CartFooter" data-cart-footer="" on="idle" ready="">
+
+              </data-island>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div x-show="$store.modals.modal.open" @keydown.escape.prevent.stop="$store.modals.close('modal')"
+    class="fixed inset-0 z-40" id="modals-modal" data-teleport-target="true" style="display: none;">
+    <div id="modal-slot" x-show="$store.modals.modal.open" x-transition.duration.300ms="" role="dialog"
+      aria-modal="true" class="relative m-auto h-full w-full overflow-y-auto"
+      x-trap.noscroll.inert="$store.modals.modal.open" :aria-label="getModalLabel('modal', $el)" tabindex="-1"
+      style="display: none;"></div>
+  </div>
+  <div x-show="$store.modals.popup.open" @keydown.escape.prevent.stop="$store.modals.close('popup')"
+    class="fixed inset-0 z-40" id="popups-popup" data-teleport-target="true" style="display: none;">
+    <div x-show="$store.modals.popup.open" class="fixed inset-0 bg-scheme-text/75"
+      x-transition.opacity.duration.100ms="" @click="$store.modals.close('popup')" style="display: none;">
+      <!-- Overlay -->
+    </div>
+    <div id="popup-slot" x-show="$store.modals.popup.open" x-transition.duration.200ms="" role="dialog"
+      aria-popup="true"
+      class="relative m-4 max-h-[calc(100%_-_(theme(spacing.4)_*_2))] overflow-y-scroll border-section border-section-border bg-scheme-background text-scheme-text lg:m-24 lg:max-h-[calc(100%_-_(theme(spacing.24)_*_2))]"
+      x-trap.noscroll.inert="$store.modals.popup.open" :aria-label="getModalLabel('popup', $el)" tabindex="-1"
+      style="display: none;"></div>
+  </div><yd-sidebar data-wxt-shadow-root=""
+    style="z-index: 9998; overflow: visible; position: relative; width: 0px; height: 0px; display: block;"></yd-sidebar>
+  <div class="glasp-extension-toaster"
+    style="display: block; width: 320px; margin: unset; padding: unset; border: unset; border-radius: unset; outline: unset; background-color: unset; box-shadow: unset; position: fixed; top: 40px; right: 24px; z-index: 9999;">
+  </div>
+  <div id="kinect-fab"
+    style="display: contents; --kinect-primary: #9dc0e4; --kinect-accent: #9dc0e4; --kinect-panel-width: 340px; --kinect-text-primary: #5d2113; --kinect-bg-page: #fff7e4; --kinect-font-size: 13px; --kinect-font: &quot;proxima-soft&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; --kinect-user-bubble: #9dc0e4; --kinect-user-text: #1c1917; --kinect-header-bg: #9dc0e4; --kinect-header-text: #1c1917; --kinect-bg-surface: #fffbf2; --kinect-bg-muted: #f5eddb; --kinect-text-secondary: #9e7767; --kinect-border: #ebe3d2;">
+  </div>
+  <div id="kinect-panel-host"
+    style="display: contents; --kinect-primary: #9dc0e4; --kinect-accent: #9dc0e4; --kinect-accent-text: #1c1917; --kinect-panel-width: 320.6484375px; --kinect-card-min-width: 140px; --kinect-mobile-height: 100dvh; --kinect-text-primary: #5d2113; --kinect-bg-page: #fff7e4; --kinect-font-size: 13px; --kinect-user-text: #1c1917; --kinect-header-text: #1c1917; --kinect-starter-color: #5d2113; --kinect-font: &quot;proxima-soft&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; --kinect-user-bubble: #9dc0e4; --kinect-header-bg: #9dc0e4; --kinect-bg-surface: #fffbf2; --kinect-bg-muted: #f5eddb; --kinect-text-secondary: #9e7767; --kinect-border: #ebe3d2;">
+  </div>
+  <div id="dynamic-react-root"></div>
+  <div>
+    <div class="needsclick kl-teaser-VrSZQH kl-private-reset-css-Xuajs1"
+      style="z-index: 90000; position: fixed; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 0px 30px); bottom: 0px; left: 0px; margin: 0px 20px; width: 284px;">
+      <div data-testid="animated-teaser" class="needsclick  kl-private-reset-css-Xuajs1"
+        style="height: 100%; width: 100%;"><span tabindex="0" role="button"
+          class="needsclick Teaser-pointer-Hn1zd kl-private-reset-css-Xuajs1"
+          style="overflow: hidden; box-sizing: border-box; border-radius: 50px 50px 0px 0px; background-color: rgb(4, 124, 192); min-height: 50px; height: 100%; padding: 8px; display: flex; flex-direction: column; justify-content: center;">
+          <div class="needsclick  kl-private-reset-css-Xuajs1">
+            <div class="needsclick  kl-private-reset-css-Xuajs1">
+              <div id="rich-text-01KK1ZJNVDC7RHBRDJ6WKQ8QYN" class="kl-private-reset-css-Xuajs1 go3176171171"
+                style="width: 100%;">
+                <h1 style="text-align: center;"><span
+                    style="font-family: bicyclette, Verdana, Geneva, sans-serif; font-weight: 800; font-style: normal; font-size: 28px; color: rgb(255, 247, 228);">Get
+                    10% Off!</span></h1>
+              </div>
+            </div>
+          </div>
+        </span><button tabindex="0" aria-label="Close teaser"
+          class="needsclick klaviyo-close-form go2324193863 kl-private-reset-css-Xuajs1"
+          style="position: absolute; z-index: 6; cursor: pointer; height: 20px; width: 20px; border-radius: 50%; top: -16px; right: -16px;"><svg
+            role="img" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true" class="needsclick  kl-private-reset-css-Xuajs1">
+            <title id="title-Close-teaser">Close teaser</title>
+            <circle cx="10" cy="10" r="9.5" fill="rgba(0,0,0,0)" stroke="rgba(255,247,228)" style="cursor: pointer;">
+            </circle>
+            <path d="M6 6L14 14M6 14L14 6L6 14Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" style="cursor: pointer;"></path>
+          </svg></button></div>
+    </div>
+    <div class="needsclick  kl-private-reset-css-Xuajs1">
+      <div class="needsclick go1272136950 kl-private-reset-css-Xuajs1" style="display: none;"></div>
+      <div role="dialog" aria-modal="true" aria-label="POPUP Form" class="needsclick  kl-private-reset-css-Xuajs1"
+        style="display: none; z-index: 90000; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; justify-content: center; align-items: center; overflow: clip auto; background-color: rgba(20, 20, 20, 0.6); animation-timing-function: ease; animation-play-state: running; animation-iteration-count: 1; animation-fill-mode: both; animation-delay: 0.25s; animation-duration: 0.35s; animation-name: klaviyo-fadein;">
+        <div class="needsclick  kl-private-reset-css-Xuajs1"
+          style="overflow: visible; transform: scale(1); transform-origin: center center; max-height: 100%; border-radius: 20px; position: relative; display: flex; justify-content: center; flex: 0 0 auto; align-self: center;">
+          <div data-testid="POPUP" class="needsclick  kl-private-reset-css-Xuajs1" style="flex: 1 1 0%;">
+            <div class="needsclick go249761392 kl-private-reset-css-Xuajs1"
+              style="position: relative; flex-direction: column; display: flex; margin-left: 0px; margin-right: 0px; flex: 1 1 0%; align-self: stretch;">
+              <div class="needsclick  kl-private-reset-css-Xuajs1">
+                <div data-testid="modal-form-container" class="needsclick  kl-private-reset-css-Xuajs1"
+                  style="position: relative; z-index: 1; display: flex; flex: 1 1 0%; align-self: stretch; box-shadow: rgba(0, 0, 0, 0.698) 0px 0px 30px; border-radius: 20px;">
+                  <button tabindex="0" aria-label="Close dialog"
+                    class="needsclick klaviyo-close-form go3078810314 kl-private-reset-css-Xuajs1"
+                    style="position: absolute; z-index: 6; cursor: pointer; height: 30px; width: 30px; border-radius: 50%; top: 0px; right: 0px; margin-right: 10px; margin-top: 10px;"><svg
+                      role="img" width="30" height="30" viewBox="0 0 20 20" fill="none"
+                      xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                      class="needsclick  kl-private-reset-css-Xuajs1">
+                      <title id="title-Close-dialog">Close dialog</title>
+                      <circle cx="10" cy="10" r="9.5" fill="rgba(16,119,199,1)" stroke="rgba(1,116,206,1)"
+                        style="cursor: pointer;"></circle>
+                      <path d="M6 6L14 14M6 14L14 6L6 14Z" stroke="rgba(18,129,217,1)" stroke-width="1"
+                        stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer;"></path>
+                    </svg></button>
+                  <form aria-live="polite" data-testid="klaviyo-form-VrSZQH" novalidate=""
+                    class="needsclick klaviyo-form klaviyo-form-version-cid_3 go3600011406 kl-private-reset-css-Xuajs1"
+                    style="display: flex; flex-direction: row; box-sizing: border-box; width: 780px; min-width: 200px; max-width: 1000px; border-radius: 20px; border-style: none; border-width: 0px; border-color: rgb(0, 0, 0); background-color: rgb(5, 124, 192); background-repeat: no-repeat; background-position-y: center; padding: 20px; flex: 1 1 0%;">
+                    <div class="needsclick  kl-private-reset-css-Xuajs1"
+                      style="display: flex; flex-direction: column; width: 260px; margin: -20px 0px -20px -20px; padding: 0px; border-top: 0px solid transparent; border-right: 0px; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-bottom-left-radius: 20px; border-top-left-radius: 20px; overflow: hidden; background-color: rgba(255, 255, 255, 0); min-width: 260px; min-height: 250px;">
+                      <div class="needsclick  kl-private-reset-css-Xuajs1"
+                        style="width: 100%; height: 100%; position: relative;"><img
+                          src="https://d3k81ch9hvuctc.cloudfront.net/company/Xv4FPF/images/5c77a951-f755-4e2b-bce0-6324db403bf1.png"
+                          alt="" class="needsclick  kl-private-reset-css-Xuajs1"
+                          style="width: 100%; height: 100%; object-fit: contain; object-position: center center;"></div>
+                    </div>
+                    <div class="needsclick  kl-private-reset-css-Xuajs1"
+                      style="display: flex; flex-direction: column; width: 100%; margin: 0px; padding: 0px 0px 0px 20px; min-height: 250px; justify-content: center;">
+                      <div data-testid="form-row" class="needsclick  kl-private-reset-css-Xuajs1"
+                        style="display: flex; flex-direction: row; align-items: stretch; position: relative;">
+                        <div component="[object Object]" data-testid="form-component"
+                          class="needsclick  kl-private-reset-css-Xuajs1"
+                          style="display: flex; justify-content: flex-start; padding: 10px; position: relative; flex: 1 0 0px;">
+                          <div id="rich-text-01KK1ZJNWKBWV3ZE5WNF9ZRGHS"
+                            class="kl-private-reset-css-Xuajs1 go3176171171" style="width: 100%;">
+                            <h1 style="text-align: center; line-height: 1; letter-spacing: 0px; font-size: 14px;"><span
+                                style="line-height: 1; letter-spacing: 0px; color: rgb(254, 224, 122); font-family: bicyclette; font-size: 60px;"><span
+                                  style="font-weight: 800;">Get 10% off your first order.</span></span></h1>
+                          </div>
+                        </div>
+                      </div>
+                      <div data-testid="form-row" class="needsclick  kl-private-reset-css-Xuajs1"
+                        style="display: flex; flex-direction: row; align-items: stretch; position: relative;">
+                        <div component="[object Object]" data-testid="form-component"
+                          class="needsclick  kl-private-reset-css-Xuajs1"
+                          style="display: flex; justify-content: flex-start; padding: 10px 6px; position: relative; flex: 1 0 0px;">
+                          <div class="needsclick  kl-private-reset-css-Xuajs1"
+                            style="display: flex; flex-grow: 1; flex-direction: column; align-self: flex-end;"><input
+                              id="first_name_01KK1ZJNWWNT4TTCC20X6T9H2M" type="text" autocomplete="given-name"
+                              tabindex="0" placeholder="First Name" aria-label="First Name" aria-required="true"
+                              aria-invalid="false" options="[object Object]"
+                              class="needsclick go1231371783 kl-private-reset-css-Xuajs1"
+                              style="box-sizing: border-box; border-radius: 20px; padding: 0px 0px 0px 16px; height: 53px; text-align: left; color: rgb(255, 247, 228); font-family: bicyclette, Verdana, Geneva, sans-serif; font-size: 20px; font-weight: 800; letter-spacing: 0px; background-color: rgba(255, 255, 255, 0); border: 1px solid rgb(255, 255, 255);">
+                            <div class="needsclick  kl-private-reset-css-Xuajs1"
+                              style="width: 100%; position: relative;"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div data-testid="form-row" class="needsclick  kl-private-reset-css-Xuajs1"
+                        style="display: flex; flex-direction: row; align-items: stretch; position: relative;">
+                        <div component="[object Object]" data-testid="form-component"
+                          class="needsclick  kl-private-reset-css-Xuajs1"
+                          style="display: flex; justify-content: flex-start; padding: 10px 6px; position: relative; flex: 1 0 0px;">
+                          <div class="needsclick  kl-private-reset-css-Xuajs1"
+                            style="display: flex; flex-grow: 1; flex-direction: column; align-self: flex-end;"><input
+                              id="email_01KK1ZJNX4T1RJ9WVF5KFJGRHY" type="email" autocomplete="email" name="email"
+                              tabindex="0" placeholder="Email" aria-label="Email" aria-required="true"
+                              aria-invalid="false" options="[object Object]"
+                              class="needsclick go1231371783 kl-private-reset-css-Xuajs1"
+                              style="box-sizing: border-box; border-radius: 20px; padding: 0px 0px 0px 16px; height: 53px; text-align: left; color: rgb(255, 247, 228); font-family: bicyclette, Verdana, Geneva, sans-serif; font-size: 20px; font-weight: 800; letter-spacing: 0px; background-color: rgba(255, 255, 255, 0); border: 1px solid rgb(255, 255, 255);">
+                            <div class="needsclick  kl-private-reset-css-Xuajs1"
+                              style="width: 100%; position: relative;"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div data-testid="form-row" class="needsclick  kl-private-reset-css-Xuajs1"
+                        style="display: flex; flex-direction: row; align-items: stretch; position: relative;">
+                        <div component="[object Object]" data-testid="form-component"
+                          class="needsclick  kl-private-reset-css-Xuajs1"
+                          style="display: flex; justify-content: flex-start; padding: 10px 0px; position: relative; background-color: rgba(255, 255, 255, 0); flex: 1 0 0px;">
+                          <button type="button" tabindex="0" class="needsclick go1642924675 kl-private-reset-css-Xuajs1"
+                            style="background: rgb(249, 211, 61); border-radius: 320px; border-style: solid; border-color: rgb(58, 70, 160); border-width: 2px; color: rgb(89, 28, 15); font-family: bicyclette, Verdana, Geneva, sans-serif; font-size: 24px; font-weight: 800; letter-spacing: 0px; line-height: 1; font-style: normal; white-space: normal; padding-top: 11px; padding-bottom: 11px; text-align: center; word-break: break-word; align-self: flex-end; cursor: pointer; pointer-events: auto; height: auto; width: 100%;">Claim
+                            10% OFF</button></div>
+                      </div>
+                      <div data-testid="form-row" class="needsclick  kl-private-reset-css-Xuajs1"
+                        style="display: flex; flex-direction: row; align-items: stretch; position: relative;">
+                        <div component="[object Object]" data-testid="form-component"
+                          class="needsclick  kl-private-reset-css-Xuajs1"
+                          style="display: flex; justify-content: flex-start; padding: 0px; position: relative; flex: 1 0 0px;">
+                          <button type="button" tabindex="0" class="needsclick go1642924675 kl-private-reset-css-Xuajs1"
+                            style="background: rgba(19, 1, 1, 0); border-radius: 0px; border-style: solid; border-color: rgb(4, 124, 192); border-width: 0px; color: rgb(255, 247, 228); font-family: Inter, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 0px; line-height: 1; font-style: normal; white-space: normal; padding-top: 11px; padding-bottom: 11px; text-align: center; word-break: break-word; align-self: flex-end; cursor: pointer; pointer-events: auto; height: 40px; width: 100%;">No
+                            thanks, I'll pay at full price</button></div>
+                      </div>
+                    </div><input type="submit" tabindex="-1" value="Submit" style="display: none;">
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<div class="glasp-extension"
+  style="display: block; width: unset; margin: unset; padding: unset; border: unset; border-radius: unset; outline: unset; background-color: unset; box-shadow: unset; position: fixed; bottom: 16px; right: 16px; z-index: 9999;">
+  <div class="glasp-extension" style="font-family: inherit;"></div>
+</div><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+
+</html>

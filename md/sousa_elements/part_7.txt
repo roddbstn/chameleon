@@ -1,0 +1,802 @@
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_UBrVPN" style="display: none;">
+                    <p>The Sousa Total Recovery Formula™ is our signature blend that combines protein, electrolytes, and
+                      vitamins into one convenient recovery mix. Each packet delivers:</p>
+                    <ul>
+                      <li>20 g of high-quality whey protein for muscle repair</li>
+                      <li>~1500 mg of electrolytes (sodium, potassium, magnesium, chloride, calcium) for hydration</li>
+                      <li>Essential vitamins like C, B6, B12, Niacin, and Pantothenic Acid for everyday wellness</li>
+                      <li>Functional extras like L-Theanine and Organic Ginger Root for focus and digestion</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>The Sousa Total Recovery Formula™ is our signature blend that combines protein, electrolytes, and
+                      vitamins into one convenient recovery mix. Each packet delivers:</p>
+                    <ul>
+                      <li>20 g of high-quality whey protein for muscle repair</li>
+                      <li>~1500 mg of electrolytes (sodium, potassium, magnesium, chloride, calcium) for hydration</li>
+                      <li>Essential vitamins like C, B6, B12, Niacin, and Pantothenic Acid for everyday wellness</li>
+                      <li>Functional extras like L-Theanine and Organic Ginger Root for focus and digestion</li>
+                    </ul>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          Is Sousa third-party tested?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_NQEnEP" style="display: none;">
+                    <p>Yes. Every batch of Sousa Protein + Hydration is third-party tested for quality and manufactured
+                      in a US-based, GMP-certified, FDA registered facility. Contact us to learn more about our
+                      additional certifications.</p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>Yes. Every batch of Sousa Protein + Hydration is third-party tested for quality and manufactured
+                      in a US-based, GMP-certified, FDA registered facility. Contact us to learn more about our
+                      additional certifications.</p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          Why does Sousa Protein + Hydration contain sugar?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_nqawq3" style="display: none;">
+                    <p>A small amount of sugar (4g of organic cane sugar per packet) isn’t just for taste, it actually
+                      helps your body hydrate better. Sodium and glucose (sugar) work together in your gut to pull water
+                      into your bloodstream faster, a process called sodium–glucose co-transport. That’s why
+                      medical-grade rehydration formulas always include sugar. Sousa Protein + Hydration uses just
+                      enough to optimize absorption without reaching unnecessary sugar levels.</p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>A small amount of sugar (4g of organic cane sugar per packet) isn’t just for taste, it actually
+                      helps your body hydrate better. Sodium and glucose (sugar) work together in your gut to pull water
+                      into your bloodstream faster, a process called sodium–glucose co-transport. That’s why
+                      medical-grade rehydration formulas always include sugar. Sousa Protein + Hydration uses just
+                      enough to optimize absorption without reaching unnecessary sugar levels.</p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          When should I take Sousa Protein + Hydration?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_n3jALj" style="display: none;">
+                    <p>You can enjoy it anytime! However, the benefits are most effective post-workout, when your body
+                      needs to replenish electrolytes and repair muscles. It’s also great during busy days, after
+                      travel, or whenever you want a protein + hydration boost.</p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>You can enjoy it anytime! However, the benefits are most effective post-workout, when your body
+                      needs to replenish electrolytes and repair muscles. It’s also great during busy days, after
+                      travel, or whenever you want a protein + hydration boost.</p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          How much liquid should I mix with one packet?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_TcXEKk" style="display: none;">
+                    <p>Mix one packet with 10–16 ounces of cold liquid (water or milk). Use less liquid for a stronger
+                      flavor, more for a lighter taste.</p>
+                    <p>Fun fact: our founders love to mix with milk!</p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>Mix one packet with 10–16 ounces of cold liquid (water or milk). Use less liquid for a stronger
+                      flavor, more for a lighter taste.</p>
+                    <p>Fun fact: our founders love to mix with milk!</p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          Does Sousa Sousa Protein + Hydration have artificial sugars?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_WagqnF" style="display: none;">
+                    <p>No. Sousa Protein + Hydration is sweetened with organic cane sugar and a natural stevia blend.
+                      This keeps the taste smooth and satisfying without relying on artificial sugars or chemical
+                      sweeteners.</p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>No. Sousa Protein + Hydration is sweetened with organic cane sugar and a natural stevia blend.
+                      This keeps the taste smooth and satisfying without relying on artificial sugars or chemical
+                      sweeteners.</p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          Is Sousa Protein + Hydration Gluten Free?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_BXUGXY" style="display: none;">
+                    <p>Yes! Sousa Protein + Hydration is formulated and tested to be gluten-free. It contains no wheat,
+                      rye, barley, or other known sources of gluten. If you have celiac disease or are extremely
+                      sensitive, please contact us and we’ll share details on our manufacturing and handling practices.
+                    </p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>Yes! Sousa Protein + Hydration is formulated and tested to be gluten-free. It contains no wheat,
+                      rye, barley, or other known sources of gluten. If you have celiac disease or are extremely
+                      sensitive, please contact us and we’ll share details on our manufacturing and handling practices.
+                    </p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          Does Sousa Protein + Hydration contain caffeine?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_NaBWa6" style="display: none;">
+                    <p>No. Sousa Protein + Hydration is caffeine-free. Instead, it includes 100 mg of L-Theanine, an
+                      amino acid that promotes calm focus without jitters.</p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>No. Sousa Protein + Hydration is caffeine-free. Instead, it includes 100 mg of L-Theanine, an
+                      amino acid that promotes calm focus without jitters.</p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          Where is Sousa Protein + Hydration made?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_Jhx7Pj" style="display: none;">
+                    <p>Sousa Protein + Hydration is made in the USA in facilities that meet strict quality and safety
+                      standards. It does contain Ingredients of both international and domestic origin.</p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>Sousa Protein + Hydration is made in the USA in facilities that meet strict quality and safety
+                      standards. It does contain Ingredients of both international and domestic origin.</p>
+                  </div>
+                </noscript>
+              </li>
+              <li class="">
+                <div class="border-scheme-text border-b-1 py-5" x-data="{ open: false }">
+                  <h3 class="">
+                    <button @click="open = !open"
+                      class="font-heading heading-secondary flex w-full cursor-pointer items-center justify-between text-left"
+                      :aria-expanded="open ? true : 'false'" aria-expanded="false">
+                      <div class="flex w-10/12 grow-0 items-center lg:w-11/12"><span class="break-words">
+                          What’s your return or satisfaction policy?
+                        </span>
+                      </div>
+                      <div class="block flex-shrink-0 pl-5">
+                        <span class="inline-block h-5 w-5 origin-center transform transition"
+                          :class="{'rotate-180': open }"><svg class="theme-icon" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2"
+                              d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </h3>
+                  <div class="rte mt-4" x-show="open" id="question_fjkpbL" style="display: none;">
+                    <p>We stand behind every purchase. If you’re not completely satisfied, please email
+                      contact@sousasupps.com or contact us through our <a href="https://sousasupps.com/pages/returns"
+                        title="https://sousasupps.com/pages/returns">returns</a> page within 30 days of delivery to
+                      initiate the return process. All we ask is that you please share your feedback as to why you are
+                      requesting a return. </p>
+                  </div>
+                </div>
+
+                <noscript>
+                  <div class="rte mt-8">
+                    <h2 class="heading-standard"></h2>
+                    <p>We stand behind every purchase. If you’re not completely satisfied, please email
+                      contact@sousasupps.com or contact us through our <a href="https://sousasupps.com/pages/returns"
+                        title="https://sousasupps.com/pages/returns">returns</a> page within 30 days of delivery to
+                      initiate the return process. All we ask is that you please share your feedback as to why you are
+                      requesting a return. </p>
+                  </div>
+                </noscript>
+              </li>
+            </ul>
+          </div>
+
+
+        </div>
+      </section>
+      <div id="shape-divider-shape_divider_bYcXFf"
+        class="shape-divider pointer-events-none z-20 w-full absolute bottom-0 left-0 w-full shape-divider-homeFaq-below">
+        <div class="shape-divider-transform-reset">
+          <div class="shape-divider-svg-container relative left-0 flex min-w-full  -mb-shape-divider"
+            style="padding-top: 1.6666666666666665%;">
+            <div class=" absolute bottom-0 left-0 right-0 top-0 z-0 h-full w-full text-scheme-background">
+              <svg class="absolute bottom-0 left-0 right-0  top-0 z-0 h-full w-full  text-scheme-background "
+                data-color-scheme="scheme1" width="100%" height="100%" viewBox="0 0 1200.0 20.0" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0 8.46126C8 3.84592 16 3.84592 24 8.46126C32 13.0766 40 13.0766 48 8.46127C56 3.84593 64 3.84593 72 8.46127C80 13.0766 88 13.0766 96 8.46128C104 3.84594 112 3.84594 120 8.46128C128 13.0766 136 13.0766 144 8.46128C152 3.84594 160 3.84595 168 8.46129C176 13.0766 184 13.0766 192 8.46129C200 3.84595 208 3.84596 216 8.4613C224 13.0766 232 13.0766 240 8.4613C248 3.84596 256 3.84596 264 8.46131C272 13.0766 280 13.0766 288 8.46131C296 3.84597 304 3.84597 312 8.46131C320 13.0767 328 13.0767 336 8.46132C344 3.84598 352 3.84598 360 8.46132C368 13.0767 376 13.0767 384 8.46132C392 3.84599 400 3.84599 408 8.46133C416 13.0767 424 13.0767 432 8.46133C440 3.846 448 3.846 456 8.46134C464 13.0767 472 13.0767 480 8.46134C488 3.846 496 3.846 504 8.46135C512 13.0767 520 13.0767 528 8.46135C536 3.84601 544 3.84601 552 8.46135C560 13.0767 568 13.0767 576 8.46136C584 3.84602 592 3.84602 600 8.46136C608 13.0767 616 13.0767 624 8.46137C632 3.84603 640 3.84603 648 8.46137C656 13.0767 664 13.0767 672 8.46138C680 3.84604 688 3.84604 696 8.46138C704 13.0767 712 13.0767 720 8.46138C728 3.84604 736 3.84604 744 8.46139C752 13.0767 760 13.0767 768 8.46139C776 3.84605 784 3.84605 792 8.4614C800 13.0767 808 13.0767 816 8.4614C824 3.84606 832 3.84606 840 8.4614C848 13.0767 856 13.0767 864 8.46141C872 3.84607 880 3.84607 888 8.46141C896 13.0768 904 13.0768 912 8.46142C920 3.84608 928 3.84608 936 8.46142C944 13.0768 952 13.0768 960 8.46142C968 3.84608 976 3.84609 984 8.46143C992 13.0768 1000 13.0768 1008 8.46143C1016 3.84609 1024 3.8461 1032 8.46144C1040 13.0768 1048 13.0768 1056 8.46144C1064 3.8461 1072 3.8461 1080 8.46145C1088 13.0768 1096 13.0768 1104 8.46145C1112 3.84611 1120 3.84611 1128 8.46145C1136 13.0768 1144 13.0768 1152 8.46146C1160 3.84612 1168 3.84612 1176 8.46146C1184 13.0768 1192 13.0768 1200 8.46147V19.9999H0V8.46126Z"
+                  fill="currentColor"></path>
+                <path class="shape-divider-stroke" vector-effect="non-scaling-stroke"
+                  d="M1 8.46126C9 3.84592 17 3.84592 25 8.46126C33 13.0766 41 13.0766 49 8.46127C57 3.84593 65 3.84593 73 8.46127C81 13.0766 89 13.0766 97 8.46128C105 3.84594 113 3.84594 121 8.46128C129 13.0766 137 13.0766 145 8.46128C153 3.84594 161 3.84595 169 8.46129C177 13.0766 185 13.0766 193 8.46129C201 3.84595 209 3.84596 217 8.4613C225 13.0766 233 13.0766 241 8.4613C249 3.84596 257 3.84596 265 8.46131C273 13.0766 281 13.0766 289 8.46131C297 3.84597 305 3.84597 313 8.46131C321 13.0767 329 13.0767 337 8.46132C345 3.84598 353 3.84598 361 8.46132C369 13.0767 377 13.0767 385 8.46132C393 3.84599 401 3.84599 409 8.46133C417 13.0767 425 13.0767 433 8.46133C441 3.846 449 3.846 457 8.46134C465 13.0767 473 13.0767 481 8.46134C489 3.846 497 3.846 505 8.46135C513 13.0767 521 13.0767 529 8.46135C537 3.84601 545 3.84601 553 8.46135C561 13.0767 569 13.0767 577 8.46136C585 3.84602 593 3.84602 601 8.46136C609 13.0767 617 13.0767 625 8.46137C633 3.84603 641 3.84603 649 8.46137C657 13.0767 665 13.0767 673 8.46138C681 3.84604 689 3.84604 697 8.46138C705 13.0767 713 13.0767 721 8.46138C729 3.84604 737 3.84604 745 8.46139C753 13.0767 761 13.0767 769 8.46139C777 3.84605 785 3.84605 793 8.4614C801 13.0767 809 13.0767 817 8.4614C825 3.84606 833 3.84606 841 8.4614C849 13.0767 857 13.0767 865 8.46141C873 3.84607 881 3.84607 889 8.46141C897 13.0768 905 13.0768 913 8.46142C921 3.84608 929 3.84608 937 8.46142C945 13.0768 953 13.0768 961 8.46142C969 3.84608 977 3.84609 985 8.46143C993 13.0768 1001 13.0768 1009 8.46143C1017 3.84609 1025 3.8461 1033 8.46144C1041 13.0768 1049 13.0768 1057 8.46144C1065 3.8461 1073 3.8461 1081 8.46145C1089 13.0768 1097 13.0768 1105 8.46145C1113 3.84611 1121 3.84611 1129 8.46145C1137 13.0768 1145 13.0768 1153 8.46146C1161 3.84612 1169 3.84612 1177 8.46146C1185 13.0768 1193 13.0768 1201 8.46147"
+                  stroke="black"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #shape-divider-shape_divider_bYcXFf svg {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(1);
+        }
+
+        #shape-divider-shape_divider_bYcXFf svg:nth-child(2) {
+          transform: translate3d(0, 0, 0) scaleX(1) scaleY(1) translateX(100%);
+        }
+
+        #shopify-section-template--26988430360855__faq_EUxQQF>data-island,
+        #shopify-section-template--26988430360855__faq_EUxQQF>section,
+        #shopify-section-template--26988430360855__faq_EUxQQF>footer,
+        #shopify-section-template--26988430360855__faq_EUxQQF [data-related-products-section] {
+          padding-bottom: 1.6666666666666665%;
+        }
+      </style>
+
+    </div>
+    <div id="shopify-section-template--26988430360855__testimonials_tDAXBP" class="shopify-section">
+      <svg width="0" height="0" viewBox="0 0 200 200" role="presentation" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="clip-template--26988430360855__testimonials_tDAXBP" clipPathUnits="objectBoundingBox">
+            <path clip-rule="evenodd" transform="scale(0.005,0.005)"
+              d="M100.5 11.7492L115.94 2L127.624 16.0484L145.318 11.5414L152.079 28.5146L170.3 29.6973L171.499 47.9171L188.458 54.6777L183.966 72.386L198 84.0531L188.25 99.492L198 114.947L183.966 126.614L188.458 144.306L171.499 151.067L170.3 169.303L152.079 170.485L145.318 187.459L127.624 182.952L115.94 197L100.5 187.251L85.0598 197L73.3918 182.952L55.682 187.459L48.9209 170.485L30.6996 169.303L29.5008 151.067L12.5422 144.306L17.0496 126.614L3 114.947L12.75 99.492L3 84.0531L17.0496 72.386L12.5422 54.6777L29.5008 47.9171L30.6996 29.6973L48.9209 28.5146L55.682 11.5414L73.3918 16.0484L85.0598 2L100.5 11.7492Z"
+              fill="black"></path>
+          </clipPath>
+          <path id="outline-template--26988430360855__testimonials_tDAXBP" vector-effect="non-scaling-stroke"
+            d="M100.5 11.7492L115.94 2L127.624 16.0484L145.318 11.5414L152.079 28.5146L170.3 29.6973L171.499 47.9171L188.458 54.6777L183.966 72.386L198 84.0531L188.25 99.492L198 114.947L183.966 126.614L188.458 144.306L171.499 151.067L170.3 169.303L152.079 170.485L145.318 187.459L127.624 182.952L115.94 197L100.5 187.251L85.0598 197L73.3918 182.952L55.682 187.459L48.9209 170.485L30.6996 169.303L29.5008 151.067L12.5422 144.306L17.0496 126.614L3 114.947L12.75 99.492L3 84.0531L17.0496 72.386L12.5422 54.6777L29.5008 47.9171L30.6996 29.6973L48.9209 28.5146L55.682 11.5414L73.3918 16.0484L85.0598 2L100.5 11.7492Z">
+          </path>
+        </defs>
+      </svg>
+      <section
+        class="relative overflow-hidden bg-scheme-background text-scheme-text  section-testimonials homeTestimonials"
+        data-color-scheme="scheme1">
+        <div class="section-content py-section-vertical-spacing">
+
+          <h2
+            class="inline-heading-rte font-heading heading-standard  heading-style break-words text-center full_shadow">
+            don’t just listen to us
+          </h2>
+
+
+          <div id="slideshow-template--26988430360855__testimonials_tDAXBP"
+            class="splide section-content-top-margin splide--loop splide--ltr splide--draggable is-active is-initialized is-overflow"
+            role="region" aria-roledescription="carousel">
+            <div class="splide__track splide__track--loop splide__track--ltr splide__track--draggable"
+              id="slideshow-template--26988430360855__testimonials_tDAXBP-track" aria-live="polite" aria-atomic="true"
+              style="padding-left: 1.25rem; padding-right: 1.25rem;">
+              <ul class="splide__list  w-full mt-5" id="slideshow-template--26988430360855__testimonials_tDAXBP-list"
+                role="presentation" style="transform: translateX(-3205.44px);">
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone is-active"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone01" role="group"
+                  aria-roledescription="slide" aria-label="1 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #047cc0;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          It tastes better than any protein I’ve had on the market. Crazy that I’m also getting hydrated
+                          as well. I can't believe nobody has thought of this.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Tomas
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone02" role="group"
+                  aria-roledescription="slide" aria-label="2 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #fee07b;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          I feel like every company is always trying to get me to buy more more more. I love that Sousa
+                          tastes great and combines what I already love to make it more convenient for me.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Scott
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone03" role="group"
+                  aria-roledescription="slide" aria-label="3 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #f4878e;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Every morning it takes me 20 minutes to take all of my supplements and make my protein
+                          smoothie. I love Sousa because it’s just one less thing I need to make and one less dish to
+                          clean.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Sabrina
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone04" role="group"
+                  aria-roledescription="slide" aria-label="4 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #ffcc37;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Sousa is perfect for when I’m rushing out the door in the morning. It tastes delicious, and I
+                          feel need to feel hydrated and ready to take on my day.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Gloria
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone is-active"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone05" role="group"
+                  aria-roledescription="slide" aria-label="1 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #047cc0;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          It tastes better than any protein I’ve had on the market. Crazy that I’m also getting hydrated
+                          as well. I can't believe nobody has thought of this.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Tomas
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone06" role="group"
+                  aria-roledescription="slide" aria-label="2 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #fee07b;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          I feel like every company is always trying to get me to buy more more more. I love that Sousa
+                          tastes great and combines what I already love to make it more convenient for me.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Scott
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone07" role="group"
+                  aria-roledescription="slide" aria-label="3 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #f4878e;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Every morning it takes me 20 minutes to take all of my supplements and make my protein
+                          smoothie. I love Sousa because it’s just one less thing I need to make and one less dish to
+                          clean.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Sabrina
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow splide__slide--clone is-prev"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-clone08" role="group"
+                  aria-roledescription="slide" aria-label="4 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #ffcc37;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Sousa is perfect for when I’m rushing out the door in the morning. It tastes delicious, and I
+                          feel need to feel hydrated and ready to take on my day.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Gloria
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow is-active is-visible"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-slide01" role="group"
+                  aria-roledescription="slide" aria-label="1 of 4" style="margin-right: 2.5rem;">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #047cc0;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          It tastes better than any protein I’ve had on the market. Crazy that I’m also getting hydrated
+                          as well. I can't believe nobody has thought of this.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Tomas
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow is-next"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-slide02" role="group"
+                  aria-roledescription="slide" aria-label="2 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #fee07b;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          I feel like every company is always trying to get me to buy more more more. I love that Sousa
+                          tastes great and combines what I already love to make it more convenient for me.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Scott
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-slide03" role="group"
+                  aria-roledescription="slide" aria-label="3 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #f4878e;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"></span>
+                        <div class="inline-rte font-body text-base">
+                          Every morning it takes me 20 minutes to take all of my supplements and make my protein
+                          smoothie. I love Sousa because it’s just one less thing I need to make and one less dish to
+                          clean.
+                        </div>
+
+                        <footer class="font-heading mt-5 break-words">
+                          Sabrina
+                        </footer>
+
+                      </blockquote>
+                    </div>
+                  </div>
+                </li>
+                <li class="splide__slide w-4/5 pb-card-shadow"
+                  id="slideshow-template--26988430360855__testimonials_tDAXBP-slide04" role="group"
+                  aria-roledescription="slide" aria-label="4 of 4" style="margin-right: 2.5rem;" aria-hidden="true">
+                  <div class="text-scheme-card-text card">
+                    <div class="bg-scheme-card card__surface py-10 px-5 h-full text-center"
+                      style="background-color: #ffcc37;">
+                      <blockquote class="text-center "><span class="mb-5 block text-center tracking-rating"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
+                            src="//cdn.shopify.com/s/files/1/0960/4458/1143/files/icon-star.png"><img
+                            class="testimonial-star"
