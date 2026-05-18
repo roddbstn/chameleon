@@ -993,6 +993,8 @@
     panel.id = 'cml-chat-panel';
     panel.className = 'cml-chat-panel';
 
+    let _refineDurationValue = '36s'; // 팔로업 칩 duration — applyCssVars에서 갱신, renderRefinementChips에서 사용
+
     // ── CSS 변수 주입 헬퍼 ──
     function mixHex(hex, alpha) {
       if (!/^#[0-9A-Fa-f]{6}$/.test(hex)) return null;
@@ -1126,7 +1128,6 @@
     let lastProducts  = [];
     let _refineBar    = null;
     let _lastChips    = [];   // 마지막 추천의 정제 칩 레이블 (세션 저장용)
-    let _refineDurationValue = '36s'; // 팔로업 칩 애니메이션 duration (applyCssVars에서 갱신)
 
     // PDP 칩 풀 + 컨텍스트 (product_qa 모드 전용)
     let _pdpChips      = [];
