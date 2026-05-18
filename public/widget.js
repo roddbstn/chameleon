@@ -1212,6 +1212,9 @@
           _refineBar = renderRefinementChips(chips);
           if (_refineBar) messagesEl.appendChild(_refineBar);
         }
+        // 복원된 메시지가 있으면 이미 대화가 시작된 상태 — scrollPastWelcome 재실행 방지
+        _chatStarted = true;
+        messagesEl.style.minHeight = scrollArea.clientHeight + 'px';
         scrollArea.scrollTop = scrollArea.scrollHeight;
         (history || []).forEach(h => chatHistory.push(h));
         messageLog.push(...(messages || []));
