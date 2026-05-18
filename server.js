@@ -975,7 +975,7 @@ CHIPS 규칙:
 
     const geminiRes = await callGemini({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 1024 },
+      generationConfig: { maxOutputTokens: 2048 },
     });
 
     const rawAnswer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
