@@ -1024,9 +1024,10 @@
       // 인라인 칩과 팔로업 칩 스크롤 속도 (팔로업은 패널이 좁아 2배 느리게 설정)
       const _chipSpeed    = config?.chipScrollSpeed || 5;
       const _chipDuration = `${(11 - _chipSpeed) * 3}s`;
-      const _refineDuration = `${(11 - _chipSpeed) * 6}s`;
+      const _rd = `${(11 - _chipSpeed) * 6}s`;
+      _refineDurationValue = _rd; // 모듈 레벨 변수에 저장 → renderRefinementChips에서 사용
       panel.style.setProperty('--cml-chips-duration', _chipDuration);
-      panel.style.setProperty('--cml-refine-duration', _refineDuration);
+      panel.style.setProperty('--cml-refine-duration', _rd);
     }
     applyCssVars(config?.theme);
 
@@ -1125,6 +1126,7 @@
     let lastProducts  = [];
     let _refineBar    = null;
     let _lastChips    = [];   // 마지막 추천의 정제 칩 레이블 (세션 저장용)
+    let _refineDurationValue = '36s'; // 팔로업 칩 애니메이션 duration (applyCssVars에서 갱신)
 
     // PDP 칩 풀 + 컨텍스트 (product_qa 모드 전용)
     let _pdpChips      = [];
@@ -1678,6 +1680,7 @@
       bar.className = 'cml-refine-bar';
       const track = document.createElement('div');
       track.className = 'cml-refine-track';
+      track.style.animationDuration = _refineDurationValue; // CSS 변수 상속 불안정 → 인라인 직접 설정
       track.appendChild(makeSet(false));
       track.appendChild(makeSet(true));
       bar.appendChild(track);
