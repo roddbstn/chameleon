@@ -742,7 +742,7 @@
       align-items: stretch;
     }
     .cml-msg-product-card {
-      flex: 1; min-width: 0;
+      flex: 1; min-width: 0; max-width: 160px;
       display: flex; flex-direction: column;
       background: #fff; border: 1px solid rgba(94,70,55,0.12);
       border-radius: 10px; overflow: hidden;
@@ -1838,6 +1838,14 @@
     }
 
     async function sendRefinement(query, bar) {
+      // PDP 컨텍스트에서 다른 상품을 찾는 게 아닌 경우 → 이 상품 Q&A로 라우팅
+      if (_pdpProductNo) {
+        const isSeekingOther = /다른\s*(상품|옷|바지|아이템|것|거|제품|스타일)|추천\s*(해|받|좀|좀만)?|비슷한\s*(거|것|상품|옷)|대신할|대체|더\s*있|뭐가\s*있|뭔가\s*있|어떤\s*게\s*(있|좋)/.test(query);
+        if (!isSeekingOther) {
+          sendProductQA(query, _pdpProductNo, _pdpProductName);
+          return;
+        }
+      }
       addBubble('user', query);
       const loadingBubble = addSkeletonLoader(query);
       sendBtn.disabled = true;
