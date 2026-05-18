@@ -1882,10 +1882,13 @@
           renderCompanionCards(data.companionProducts, data.companionContext);
         }
 
-        // 답변 후 하단 칩 트레이: AI 맥락 칩 우선, 없으면 나머지 칩으로 갱신
+        // 답변 후 칩 갱신: 인라인 칩 트레이 + 팔로업 칩 동시 업데이트
         if (data.chips?.length) {
-          _pdpChips = data.chips; // 풀 교체 (다음 질문 맥락 기준)
+          _pdpChips = data.chips;
           updatePdpTrayChips(data.chips);
+          if (_refineBar) _refineBar.remove();
+          _refineBar = renderRefinementChips(data.chips);
+          if (_refineBar) { messagesEl.appendChild(_refineBar); scrollToBottom(); }
         } else {
           const remaining = _pdpChips.filter(c => c !== query);
           if (remaining.length) updatePdpTrayChips(remaining);
