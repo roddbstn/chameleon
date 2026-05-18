@@ -1695,6 +1695,7 @@
           btn.textContent = label;
           if (ariaHidden) btn.tabIndex = -1;
           btn.addEventListener('click', () => {
+            if (sendBtn.disabled) return; // 로딩 중 차단
             bar.classList.add('cml-paused');
             bar.querySelectorAll('.cml-refine-chip').forEach(c => c.classList.remove('cml-active'));
             bar.querySelectorAll('.cml-refine-chip').forEach(c => {
@@ -1710,77 +1711,75 @@
 
       const bar = document.createElement('div');
       bar.className = 'cml-refine-bar';
-      const track = document.createElement('div');
-      track.className = 'cml-refine-track';
-      track.style.animationDuration = _refineDurationValue;
-      track.appendChild(makeSet(false));
-      track.appendChild(makeSet(true));
-      bar.appendChild(track);
+      const refineTrack = document.createElement('div');
+      refineTrack.className = 'cml-refine-track';
+      refineTrack.style.animationDuration = _refineDurationValue;
+      refineTrack.appendChild(makeSet(false));
+      refineTrack.appendChild(makeSet(true));
+      bar.appendChild(refineTrack);
 
       // ── 드래그 스크롤 ──
-      // mousemove/mouseup은 document에 붙여야 element 밖에서도 추적됨
-      // drag 중엔 wrap 없이 직선 이동 → 경계 넘을 때 순간이동 방지
       let _rdIsDragging = false, _rdDidDrag = false;
       let _rdStartX = 0, _rdBaseX = 0;
 
       const resumeRefineAnim = (rawX) => {
-        const halfW = track.scrollWidth / 2 || 1;
+        const halfW = refineTrack.scrollWidth / 2 || 1;
         const wrappedX = ((rawX % halfW) + halfW) % halfW - halfW;
         const dur   = parseFloat(_refineDurationValue) || 36;
         const delay = -((-wrappedX / halfW) * dur);
-        track.style.transform = '';
-        track.style.animation = `cml-chips-scroll ${dur}s ${delay}s linear infinite`;
+        refineTrack.style.transform = '';
+        refineTrack.style.animation = `cml-chips-scroll ${dur}s ${delay}s linear infinite`;
       };
 
-      track.addEventListener('mousedown', (e) => {
+      refineTrack.addEventListener('mousedown', (e) => {
         _rdIsDragging = true; _rdDidDrag = false; _rdStartX = e.clientX;
-        const m = new DOMMatrix(getComputedStyle(track).transform);
+        const m = new DOMMatrix(getComputedStyle(refineTrack).transform);
         _rdBaseX = m.m41;
-        track.style.animation = 'none';
-        track.style.transform = `translateX(${_rdBaseX}px)`;
-        track.classList.add('cml-refine-dragging');
+        refineTrack.style.animation = 'none';
+        refineTrack.style.transform = `translateX(${_rdBaseX}px)`;
+        refineTrack.classList.add('cml-refine-dragging');
         e.preventDefault();
 
         const onRefineMouseMove = (ev) => {
           const dx = ev.clientX - _rdStartX;
           if (Math.abs(dx) > 4) _rdDidDrag = true;
-          track.style.transform = `translateX(${_rdBaseX + dx}px)`;
+          refineTrack.style.transform = `translateX(${_rdBaseX + dx}px)`;
         };
         const onRefineMouseUp = (ev) => {
           _rdIsDragging = false;
-          track.classList.remove('cml-refine-dragging');
+          refineTrack.classList.remove('cml-refine-dragging');
           document.removeEventListener('mousemove', onRefineMouseMove);
           document.removeEventListener('mouseup', onRefineMouseUp);
           const finalX = _rdBaseX + (ev.clientX - _rdStartX);
           if (_rdDidDrag) {
             resumeRefineAnim(finalX);
           } else {
-            track.style.transform = '';
-            track.style.animation = '';
+            refineTrack.style.transform = '';
+            refineTrack.style.animation = '';
           }
         };
         document.addEventListener('mousemove', onRefineMouseMove);
         document.addEventListener('mouseup', onRefineMouseUp);
       });
       // 터치 지원
-      track.addEventListener('touchstart', (e) => {
+      refineTrack.addEventListener('touchstart', (e) => {
         _rdStartX = e.touches[0].clientX;
-        const m = new DOMMatrix(getComputedStyle(track).transform);
+        const m = new DOMMatrix(getComputedStyle(refineTrack).transform);
         _rdBaseX = m.m41;
-        track.classList.add('cml-refine-dragging');
-        track.style.transform = `translateX(${_rdBaseX}px)`;
+        refineTrack.classList.add('cml-refine-dragging');
+        refineTrack.style.transform = `translateX(${_rdBaseX}px)`;
       }, { passive: true });
-      track.addEventListener('touchmove', (e) => {
+      refineTrack.addEventListener('touchmove', (e) => {
         const dx = e.touches[0].clientX - _rdStartX;
-        track.style.transform = `translateX(${_rdBaseX + dx}px)`;
+        refineTrack.style.transform = `translateX(${_rdBaseX + dx}px)`;
       }, { passive: true });
-      track.addEventListener('touchend', () => {
-        track.classList.remove('cml-refine-dragging');
-        track.style.transform = '';
-        track.style.animation = '';
+      refineTrack.addEventListener('touchend', () => {
+        refineTrack.classList.remove('cml-refine-dragging');
+        refineTrack.style.transform = '';
+        refineTrack.style.animation = '';
       });
       // 드래그 중 클릭 방지
-      track.addEventListener('click', (e) => { if (_rdDidDrag) { _rdDidDrag = false; e.stopPropagation(); } });
+      refineTrack.addEventListener('click', (e) => { if (_rdDidDrag) { _rdDidDrag = false; e.stopPropagation(); } });
 
       return bar;
     }
@@ -1952,11 +1951,19 @@
       }
     }
 
-    sendBtn.addEventListener('click', () => { const q = inputEl.value; inputEl.value = ''; sendChat(q); });
+    // 로딩 중 여부는 sendBtn.disabled 로 판단
+    sendBtn.addEventListener('click', () => {
+      if (sendBtn.disabled) return; // 로딩 중: 텍스트 유지, 전송 차단
+      const q = inputEl.value; inputEl.value = ''; sendChat(q);
+    });
     inputEl.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.isComposing) { const q = inputEl.value; inputEl.value = ''; sendChat(q); }
+      if (e.key === 'Enter' && !e.isComposing) {
+        if (sendBtn.disabled) return; // 로딩 중: 텍스트 유지, 전송 차단
+        const q = inputEl.value; inputEl.value = ''; sendChat(q);
+      }
     });
     panel.querySelector('#cml-welcome-chips').addEventListener('click', e => {
+      if (sendBtn.disabled) return; // 로딩 중 칩 클릭 무시
       const chip = e.target.closest('.cml-welcome-chip');
       if (!chip) return;
       track('chip_click', { chipLabel: chip.dataset.q, productNo: chip.dataset.pid || null });
@@ -2049,6 +2056,7 @@
 
     // PDP 인라인 패널의 질문 칩 클릭 이벤트 수신
     document.addEventListener('chameleon:ask', e => {
+      if (sendBtn.disabled) return; // 로딩 중 인라인 칩 클릭 차단
       openSidebar();
       const { query, mode, productNo, productName, fullChips } = e.detail;
       track('chip_click', { chipLabel: query, productNo: productNo || null });
