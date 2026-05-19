@@ -1889,7 +1889,7 @@
       sendBtn.disabled = true;
       try {
         await consumeChatStream({
-          mallId: MALL_ID, query,
+          mallId: MALL_ID, question: query,
           productNo: _pdpProductNo || undefined,
           productName: _pdpProductName || undefined,
           conversationHistory: chatHistory,
@@ -1994,7 +1994,7 @@
       const pendingMode = _pendingMode; _pendingMode = null;
       try {
         await consumeChatStream({
-          mallId: MALL_ID, query,
+          mallId: MALL_ID, question: query,
           productNo: _pdpProductNo || undefined,
           productName: _pdpProductName || undefined,
           conversationHistory: chatHistory,
