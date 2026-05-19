@@ -1792,11 +1792,49 @@
     //   {type:'intent', intent:'product_qa'|'catalog_search'}
     //   {type:'chunk',  text:'...'}           ← catalog_search 스트리밍
     //   {type:'done',   intent, answer?, chips?, companionProducts?, products?, refinement_chips?}
+    //
+    // Mobile Safari 14.4 이하: res.body.getReader() 미지원 → res.text() 폴백
     async function consumeChatStream(fetchBody, { loadingBubble, onDone }) {
       const res = await fetch(`${CHAMELEON_SERVER}/api/chat`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(fetchBody),
       });
+
+      // ── SSE 이벤트 파싱 공통 함수 ──
+      function parseSseEvents(text, { onIntent, onChunk, onDoneEvent }) {
+        const lines = text.split('\n');
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          let data;
+          try { data = JSON.parse(line.slice(6)); } catch { continue; }
+          if (data.type === 'intent')                      onIntent(data.intent);
+          else if (data.type === 'chunk')                  onChunk(data.text);
+          else if (data.type === 'done' || data.type === 'error') onDoneEvent(data);
+        }
+      }
+
+      // ── Mobile Safari 폴백: ReadableStream 미지원 시 전체 텍스트로 읽기 ──
+      if (!res.body || typeof res.body.getReader !== 'function') {
+        const text = await res.text();
+        loadingBubble.remove();
+        let resolvedIntent = null;
+        let streamRaw = '';
+        let doneData = null;
+        parseSseEvents(text, {
+          onIntent: (i) => { resolvedIntent = i; },
+          onChunk:  (t) => { streamRaw += t; },
+          onDoneEvent: (d) => { doneData = d; },
+        });
+        if (doneData) {
+          const msg = doneData.answer || doneData.message || streamRaw || '죄송해요, 다시 시도해주세요.';
+          addBubble('assistant', msg);
+          messageLog.push({ role: 'assistant', text: msg });
+          if (doneData.type === 'done') onDone(doneData, msg, resolvedIntent || 'catalog_search');
+        }
+        return;
+      }
+
+      // ── 일반 스트리밍 경로 ──
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let sseBuffer = '';
@@ -1822,7 +1860,6 @@
           if (data.type === 'intent') {
             resolvedIntent = data.intent;
           } else if (data.type === 'chunk') {
-            // catalog_search 스트리밍 청크
             removeLoading();
             streamRaw += data.text;
             if (!streamBubble) {
@@ -1834,7 +1871,6 @@
             scrollToBottom();
           } else if (data.type === 'done' || data.type === 'error') {
             removeLoading();
-            // product_qa: data.answer 사용 / catalog_search: streamRaw 사용
             const msg = data.answer || data.message || streamRaw || '죄송해요, 다시 시도해주세요.';
             if (streamBubble) streamBubble.innerHTML = parseMd(msg);
             else addBubble('assistant', msg);
