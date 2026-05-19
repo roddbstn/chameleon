@@ -1044,27 +1044,40 @@ CHIPS 규칙:
 
 /**
  * LLM 기반 인텐트 분류 (Kinect 방식)
- * - productNo가 없으면 무조건 catalog_search
- * - 실패 시 휴리스틱으로 폴백
+ *
+ * PDP 기본 원칙: 고객이 상품 페이지에 있으면 디폴트는 product_qa.
+ * "지금 보는 상품 말고 다른 걸 원한다"는 명확한 신호가 있을 때만 catalog_search.
+ *
  * @returns {"product_qa" | "catalog_search"}
  */
 async function classifyQueryIntent({ question, productName, conversationHistory }) {
+  // ── 1단계: 명확한 catalog_search 신호 체크 (LLM 불필요) ──
+  // "다른 상품/비슷한 거/추천해줘" 등 타 상품 탐색 의도가 명확한 표현
+  const EXPLICIT_CATALOG_RE = /다른\s*(상품|옷|제품|아이템|스타일|거|것)|비슷한\s*(거|것|상품|옷|아이템)|추천\s*(해줘|받고|좀|줘|줄래|주세요|해\s*주)|대신할|대체할|뭐가\s*있|다른\s*걸\s*(보여|추천)|새로운\s*추천/;
+
+  if (!EXPLICIT_CATALOG_RE.test(question)) {
+    // 명확한 신호 없음 → PDP에서는 무조건 product_qa
+    console.log(`[Intent] "${question.slice(0, 40)}" → product_qa (명시적 신호 없음)`);
+    return 'product_qa';
+  }
+
+  // ── 2단계: 명확한 신호가 있을 때만 LLM으로 한 번 더 확인 ──
+  // ("다른 색도 있어요?" 같은 경우 이 상품 옵션 질문일 수 있으므로)
   const historySnippet = (conversationHistory || [])
     .slice(-4)
     .map(m => `${m.role === 'user' ? '고객' : 'AI'}: ${m.content.slice(0, 100)}`)
     .join('\n');
 
   const prompt = `쇼핑몰 AI 어시스턴트의 인텐트 분류기입니다.
-
-현재 상품: ${productName || '(미상)'}
+고객이 지금 "${productName || '(상품)'}" 상품 페이지를 보고 있습니다.
+${historySnippet ? `최근 대화:\n${historySnippet}\n` : ''}
 고객 질문: "${question}"
-${historySnippet ? `최근 대화:\n${historySnippet}` : ''}
 
-분류 기준:
-- "product_qa": 지금 보고 있는 이 상품에 관한 모든 질문 (소재·핏·사이즈·세탁·착장감·스타일링·색상·옵션·걱정·불안 표현 등)
-- "catalog_search": 다른 상품을 찾거나 비교 추천 요청 (비슷한 것·대안·다른 스타일·새로운 추천 탐색 등)
+판단 기준:
+- "catalog_search": 이 상품 말고 완전히 다른 상품을 찾고 싶어하는 경우
+- "product_qa": 이 상품의 옵션·색상·사이즈·스타일링 등 이 상품에 대해 더 알고 싶어하는 경우
 
-JSON만 응답 (설명 없이): {"intent":"product_qa","confidence":0.95}`;
+JSON만 응답: {"intent":"product_qa","confidence":0.9}`;
 
   try {
     const res = await callGemini({
@@ -1081,12 +1094,11 @@ JSON만 응답 (설명 없이): {"intent":"product_qa","confidence":0.95}`;
       }
     }
   } catch (e) {
-    console.warn('[Intent] 분류 실패, 휴리스틱 적용:', e.message);
+    console.warn('[Intent] LLM 분류 실패, 키워드 결과 사용:', e.message);
   }
 
-  // 폴백: 단순 키워드 휴리스틱
-  const seekingOther = /다른\s*(상품|옷|바지|아이템|것|거|제품|스타일)|추천\s*(해|받|좀|줘|줄래)|비슷한\s*(거|것|상품|옷)|대신할|대체|더\s*있나|뭐가\s*있|어떤\s*게\s*(있|좋)/.test(question);
-  return seekingOther ? 'catalog_search' : 'product_qa';
+  // 폴백: 명확한 신호가 있었으므로 catalog_search
+  return 'catalog_search';
 }
 
 app.post('/api/chat', rateLimit(30), requireRegisteredMall, async (req, res) => {
