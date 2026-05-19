@@ -925,10 +925,34 @@
       document.addEventListener('mousemove', onMove);
       document.addEventListener('mouseup', onUp);
     });
+    // 터치 드래그 — _cpDidDrag 세팅
+    chipsTrack.addEventListener('touchstart', (e) => {
+      _cpStartX = e.touches[0].clientX;
+      _cpDidDrag = false;
+      const m = new DOMMatrix(getComputedStyle(chipsTrack).transform);
+      _cpBaseX = m.m41;
+      chipsTrack.style.animation = 'none';
+      chipsTrack.style.transform = `translateX(${_cpBaseX}px)`;
+    }, { passive: true });
+    chipsTrack.addEventListener('touchmove', (e) => {
+      const dx = e.touches[0].clientX - _cpStartX;
+      if (Math.abs(dx) > 4) _cpDidDrag = true;
+      chipsTrack.style.transform = `translateX(${_cpBaseX + dx}px)`;
+    }, { passive: true });
+    chipsTrack.addEventListener('touchend', () => {
+      const m = new DOMMatrix(getComputedStyle(chipsTrack).transform);
+      const halfW = chipsTrack.scrollWidth / 2 || 1;
+      const wrappedX = ((m.m41 % halfW) + halfW) % halfW - halfW;
+      const dur = parseFloat(getComputedStyle(panel).getPropertyValue('--cml-chips-duration')) || 18;
+      chipsTrack.style.transform = '';
+      chipsTrack.style.animation = `cml-chips-scroll ${dur}s ${-((-wrappedX / halfW) * dur)}s linear infinite`;
+    });
 
+    // capture:true — 버튼보다 먼저 발화해서 드래그 중 클릭 차단
     chipsWrap.addEventListener('click', e => {
+      if (_cpDidDrag) { _cpDidDrag = false; e.stopPropagation(); return; }
       const chip = e.target.closest('.cml-chip');
-      if (!chip || _cpDidDrag) { _cpDidDrag = false; return; }
+      if (!chip) return;
       track('pdp_chip_click', { chipLabel: chip.dataset.q, productNo: productCtx?.productNo || null });
       document.dispatchEvent(new CustomEvent('chameleon:ask', {
         detail: {
@@ -939,7 +963,7 @@
           fullChips:   content?.chips          || [],
         },
       }));
-    });
+    }, true);
   }
 
   // ── 10. 사이드바 채팅 (Shadow DOM 격리) ──────────────
@@ -1767,6 +1791,7 @@
       // 터치 지원
       refineTrack.addEventListener('touchstart', (e) => {
         _rdStartX = e.touches[0].clientX;
+        _rdDidDrag = false;
         const m = new DOMMatrix(getComputedStyle(refineTrack).transform);
         _rdBaseX = m.m41;
         refineTrack.classList.add('cml-refine-dragging');
@@ -1774,6 +1799,7 @@
       }, { passive: true });
       refineTrack.addEventListener('touchmove', (e) => {
         const dx = e.touches[0].clientX - _rdStartX;
+        if (Math.abs(dx) > 4) _rdDidDrag = true;
         refineTrack.style.transform = `translateX(${_rdBaseX + dx}px)`;
       }, { passive: true });
       refineTrack.addEventListener('touchend', () => {
@@ -1781,8 +1807,8 @@
         refineTrack.style.transform = '';
         refineTrack.style.animation = '';
       });
-      // 드래그 중 클릭 방지
-      refineTrack.addEventListener('click', (e) => { if (_rdDidDrag) { _rdDidDrag = false; e.stopPropagation(); } });
+      // capture:true — 버튼의 click보다 먼저 발화해서 드래그 중 클릭 차단
+      refineTrack.addEventListener('click', (e) => { if (_rdDidDrag) { _rdDidDrag = false; e.stopPropagation(); } }, true);
 
       return bar;
     }
@@ -2289,6 +2315,7 @@
       });
       _pdpTrayTrack.addEventListener('touchstart', (e) => {
         dragStartX = e.touches[0].clientX;
+        didDrag = false;
         const m = new DOMMatrix(getComputedStyle(_pdpTrayTrack).transform);
         dragBaseX = m.m41;
         _pdpTrayTrack.classList.add('cml-tray-dragging');
@@ -2296,6 +2323,7 @@
       }, { passive: true });
       _pdpTrayTrack.addEventListener('touchmove', (e) => {
         const dx = e.touches[0].clientX - dragStartX;
+        if (Math.abs(dx) > 4) didDrag = true;
         _pdpTrayTrack.style.transform = `translateX(${dragBaseX + dx}px)`;
       }, { passive: true });
       _pdpTrayTrack.addEventListener('touchend', () => {
@@ -2304,15 +2332,16 @@
         _pdpTrayTrack.style.animation = '';
       });
 
+      // capture:true — 버튼보다 먼저 발화해서 드래그 중 클릭 차단
       _pdpTrayTrack.addEventListener('click', (e) => {
-        if (didDrag) { didDrag = false; return; }
+        if (didDrag) { didDrag = false; e.stopPropagation(); return; }
         const chip = e.target.closest('.cml-pdp-welcome-chip');
         if (!chip) return;
         document.dispatchEvent(new CustomEvent('chameleon:ask', {
           detail: { query: chip.dataset.q, mode: 'product_qa',
             productNo: chip.dataset.pid, productName: chip.dataset.pname, fullChips: _pdpChips },
         }));
-      });
+      }, true);
     }
 
     // done 이벤트 chips → PDP 트레이 업데이트 + 트레이 표시
