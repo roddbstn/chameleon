@@ -866,6 +866,8 @@
       if (el) { console.log(`[Chameleon] 삽입 위치 (config): ${config.insert.selector}`); return el; }
     }
     const fallbacks = [
+      '.xans-product-detail .infoArea .xans-product-price',
+      '.xans-product-price',
       '.xans-product-detail .infoArea .xans-product-action',
       '.xans-product-action', '.xans-product-buy', '.prd-add-info',
       'form[name="product_order_info"]', '.product-info',
