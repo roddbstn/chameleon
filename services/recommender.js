@@ -719,9 +719,19 @@ async function enrichProducts(products, mallId = null) {
   if (error) console.warn(`[Enrich] error: ${error.message}`);
 
   const imgMap = {}, priceMap = {};
-  (rows || []).forEach(r => {
-    const rawImg = r.raw_data?.list_image || r.raw_data?.detail_image || null;
-    // protocol-relative URL(//cdn...) → https: 보정
+  console.log(`[Enrich] DB rows: ${(rows || []).length}개, 조회 IDs: ${ids.slice(0, 3).join(',')}...`);
+  (rows || []).forEach((r, i) => {
+    if (i === 0) {
+      const keys = Object.keys(r.raw_data || {});
+      const imgFields = keys.filter(k => k.toLowerCase().includes('image'));
+      console.log(`[Enrich] raw_data keys: ${keys.slice(0, 15).join(', ')}`);
+      console.log(`[Enrich] image fields: ${JSON.stringify(imgFields.reduce((o, k) => ({ ...o, [k]: r.raw_data[k] }), {}))}`);
+    }
+    const rawImg = r.raw_data?.list_image
+      || r.raw_data?.detail_image
+      || r.raw_data?.main_image
+      || r.raw_data?.tiny_image
+      || null;
     imgMap[r.product_id]   = rawImg ? rawImg.replace(/^\/\//, 'https://') : null;
     priceMap[r.product_id] = r.price;
   });

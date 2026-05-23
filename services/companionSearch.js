@@ -132,7 +132,7 @@ async function vectorSearchCompanion(mallId, searchQuery, excludeProductId) {
 
   const imgMap = {}, priceMap = {};
   (rows || []).forEach(r => {
-    const rawImg = r.raw_data?.list_image || r.raw_data?.detail_image || null;
+    const rawImg = r.raw_data?.list_image || r.raw_data?.detail_image || r.raw_data?.main_image || r.raw_data?.tiny_image || null;
     imgMap[r.product_id]   = rawImg ? rawImg.replace(/^\/\//, 'https://') : null;
     priceMap[r.product_id] = r.price;
   });
