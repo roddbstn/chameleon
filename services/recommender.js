@@ -345,6 +345,7 @@ inference_log: 암묵적 단서에서 추론한 것을 배열로. 예: ["'통풍
 
 search_query: 상황(바닷가→휴양지 여름 시원한)·스타일·소재·핏·시즌을 연상 확장해 풍부하게.
 ★ 코디 요청 주의: "A랑 어울리는 B 추천"이면 검색 대상은 B이지 A가 아님. A(이미 가진 아이템)는 제외하고 B(찾아야 할 아이템) 중심으로 쿼리 작성. 예: "데님 스커트랑 어울리는 상의" → search_query는 "여성 캐주얼 상의 니트 블라우스 티셔츠"로 작성 (데님 스커트 제외).
+  또한 코디 요청 시 hard_filters.category에 찾는 아이템 종류를 설정할 것. 예: "상의" → category: "티셔츠|니트|블라우스|셔츠|탑", "하의" → category: "팬츠|스커트|치마|바지", "아우터" → category: "자켓|코트|가디건|점퍼".
 
 clarification_needed: 항상 false. 단서가 부족해도 합리적으로 추론해 검색하라.
   → 질문 금지. 정보가 부족하면 가장 일반적인 가정을 하면 됨.
@@ -414,12 +415,12 @@ function applyHardFilters(products, hardFilters = {}) {
     if (matched.length >= 2) result = matched;
     else console.log(`[HardFilter] colors_include 적용 시 결과 부족 — 건너뜀`);
   }
-  // 카테고리 강제
+  // 카테고리 강제 ("|" 구분으로 여러 키워드 OR 매칭 지원)
   if (hardFilters.category) {
-    const cat = hardFilters.category.toLowerCase();
+    const cats = hardFilters.category.toLowerCase().split('|').map(s => s.trim()).filter(Boolean);
     const filtered = result.filter(p => {
       const t = ((p.name || '') + ' ' + (p.embed_text || '')).toLowerCase();
-      return t.includes(cat);
+      return cats.some(c => t.includes(c));
     });
     if (filtered.length >= 2) result = filtered;
     else console.log(`[HardFilter] category="${hardFilters.category}" 적용 시 결과 부족 — 건너뜀`);
@@ -678,9 +679,9 @@ ${productList}
 - 질문 절대 금지 — 궁금한 것은 CHIPS로만 유도
 
 ★★ 모든 상품 설명을 완전히 끝낸 후, 마지막 줄에만 아래를 추가 (중간 삽입 절대 금지):
-PRODUCTS:[응답에 나온 순서대로 번호, 예: 2,1,3]
+PRODUCTS:[위 상품 목록(1~N번)에서 선택한 상품의 목록 번호를 응답 순서대로. 예: 목록 3번→목록 1번→목록 5번 순으로 추천했다면 → 3,1,5]
 CHIPS:["질문1","질문2","질문3"]
-(PRODUCTS, CHIPS는 UI 파싱 후 제거됨 — 설명 도중 삽입 시 답변이 잘려 보임)
+(PRODUCTS의 번호는 반드시 위 "검색된 상품 후보" 목록의 번호임 — 응답 내 1,2,3 순서와 다를 수 있음. PRODUCTS, CHIPS는 UI 파싱 후 제거됨)
 
 ${mode === 'discovery' ? `CHIPS 작성 규칙 (스타일 탐색 모드):
 - 고객이 방금 한 질문 맥락 + 우리가 보여준 스타일들을 고려해, 고객이 실제로 다음에 물어볼 법한 완성형 질문 2~4개
