@@ -720,20 +720,13 @@ async function enrichProducts(products, mallId = null) {
   if (error) console.warn(`[Enrich] error: ${error.message}`);
 
   const imgMap = {}, priceMap = {};
-  console.log(`[Enrich] DB rows: ${(rows || []).length}개, 조회 IDs: ${ids.slice(0, 3).join(',')}...`);
-  (rows || []).forEach((r, i) => {
-    if (i === 0) {
-      const keys = Object.keys(r.raw_data || {});
-      const imgFields = keys.filter(k => k.toLowerCase().includes('image'));
-      console.log(`[Enrich] raw_data keys: ${keys.slice(0, 15).join(', ')}`);
-      console.log(`[Enrich] image fields: ${JSON.stringify(imgFields.reduce((o, k) => ({ ...o, [k]: r.raw_data[k] }), {}))}`);
-    }
-    const rawImg = r.raw_data?.list_image
-      || r.raw_data?.detail_image
-      || r.raw_data?.main_image
-      || r.raw_data?.tiny_image
-      || null;
-    imgMap[r.product_id]   = rawImg ? rawImg.replace(/^\/\//, 'https://') : null;
+  console.log(`[Enrich] DB rows: ${(rows || []).length}개, 조회 IDs: ${ids.slice(0, 5).join(',')}`);
+  (rows || []).forEach((r) => {
+    const rd = r.raw_data || {};
+    const rawImg = rd.list_image || rd.detail_image || rd.main_image || rd.tiny_image || rd.small_image || null;
+    const url = rawImg ? rawImg.replace(/^\/\//, 'https://') : null;
+    console.log(`[Enrich] id=${r.product_id} img=${url ? url.slice(-40) : 'NULL'}`);
+    imgMap[r.product_id]   = url;
     priceMap[r.product_id] = r.price;
   });
 
