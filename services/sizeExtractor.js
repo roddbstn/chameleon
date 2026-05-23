@@ -29,25 +29,77 @@ const SIZE_KEYWORDS = ['어깨', '가슴', '허리', '소매', '기장', '힙', 
  * @param {string} [pageHtml] - 상품 상세페이지 전체 HTML (선택)
  * @returns {object|null} 정규화된 사이즈 데이터
  */
+/**
+ * description/pageHtml의 <img> 태그에서 사이즈표 이미지 URL 후보 추출
+ * - "size", "사이즈", "치수" 등 주변에 있는 이미지 우선
+ * - 없으면 description 내 모든 이미지 (최대 5개)
+ */
+function extractSizeImageUrls(html, limit = 5) {
+  if (!html) return [];
+  const imgPattern = /<img[^>]+src=["']([^"']+)["'][^>]*>/gi;
+  const allImgs = [];
+  let m;
+  while ((m = imgPattern.exec(html)) !== null) {
+    allImgs.push(m[1]);
+  }
+  if (!allImgs.length) return [];
+
+  // 이미지 태그 주변 100자에 사이즈 키워드가 있는 이미지 우선
+  const prioritized = [];
+  const rest = [];
+  const sizeHints = ['size', '사이즈', '치수', 'chart', '실측', '사이즈표'];
+  const imgTagPattern = /<img[^>]+src=["']([^"']+)["'][^>]*>/gi;
+  let match;
+  while ((match = imgTagPattern.exec(html)) !== null) {
+    const surrounding = html.slice(Math.max(0, match.index - 150), match.index + match[0].length + 150).toLowerCase();
+    if (sizeHints.some(h => surrounding.includes(h))) {
+      prioritized.push(match[1]);
+    } else {
+      rest.push(match[1]);
+    }
+  }
+
+  return [...new Set([...prioritized, ...rest])].slice(0, limit);
+}
+
 async function extractSizeData(productInfo, pageHtml = '') {
   const candidates = [];
 
-  // 1. 상품 페이지 HTML에서 추출 (가장 신뢰도 높음)
+  // 1. 상품 페이지 HTML에서 텍스트/테이블 추출 (가장 신뢰도 높음)
   if (pageHtml) {
     const result = await extractFromHtml(pageHtml);
     if (result) candidates.push({ source: 'page_html', data: result });
   }
 
-  // 2. description 필드 HTML에서 추출
+  // 2. description 필드 HTML에서 텍스트/테이블 추출
   if (productInfo.description && candidates.length === 0) {
     const result = await extractFromHtml(productInfo.description);
     if (result) candidates.push({ source: 'description', data: result });
   }
 
-  // 3. 사이즈가이드 이미지 → Vision OCR
+  // 3. 명시적으로 제공된 사이즈가이드 이미지 → Vision OCR
   if (productInfo.sizeGuideImageUrl && candidates.length === 0) {
     const result = await extractFromImage(productInfo.sizeGuideImageUrl);
-    if (result) candidates.push({ source: 'image_ocr', data: result });
+    if (result) candidates.push({ source: 'image_ocr_explicit', data: result });
+  }
+
+  // 4. description/pageHtml 내 <img> 태그 자동 탐지 → Vision OCR
+  //    한국 패션몰 대부분이 사이즈표를 이미지로 삽입하므로 필수
+  if (candidates.length === 0) {
+    const imgUrls = [
+      ...extractSizeImageUrls(productInfo.description),
+      ...extractSizeImageUrls(pageHtml),
+    ].filter((u, i, arr) => arr.indexOf(u) === i).slice(0, 5); // 중복 제거, 최대 5개
+
+    for (const url of imgUrls) {
+      const absUrl = url.startsWith('//') ? 'https:' + url : url;
+      console.log(`[SizeExtractor] 이미지 OCR 시도: ${absUrl.slice(-60)}`);
+      const result = await extractFromImage(absUrl);
+      if (result) {
+        candidates.push({ source: 'image_ocr_auto', data: result });
+        break; // 첫 성공 시 중단
+      }
+    }
   }
 
   if (candidates.length === 0) {
@@ -61,7 +113,7 @@ async function extractSizeData(productInfo, pageHtml = '') {
 
   console.log(`[SizeExtractor] source=${best.source}, sizes=${Object.keys(best.data.sizes || {}).length}개`);
 
-  // 4. LLM 정규화 — 수치 → 핏/계절/스타일 도출
+  // 5. LLM 정규화 — 수치 → 핏/계절/스타일 도출
   const normalized = await normalizeWithLLM(best.data, productInfo);
   return { ...normalized, _source: best.source };
 }
