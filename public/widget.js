@@ -766,18 +766,18 @@
       color: #CCC; font-size: 10px;
     }
     .cml-msg-product-info {
-      padding: 8px 8px 9px;
-      display: flex; flex-direction: column; gap: 2px;
+      padding: 8px 8px 10px;
+      display: flex; flex-direction: column; gap: 4px;
       flex: 1;
     }
     .cml-msg-product-name {
-      font-size: 11px; font-weight: 600; color: #111;
+      font-size: 12px; font-weight: 600; color: #111;
       line-height: 1.35; letter-spacing: -0.01em;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
       overflow: hidden;
     }
     .cml-msg-product-price {
-      font-size: 11px; color: #5E4637; font-weight: 600;
+      font-size: 12px; color: #5E4637; font-weight: 600; line-height: 1.35;
     }
     .cml-msg-product-btn-wrap { margin-top: auto; padding-top: 6px; }
     .cml-msg-product-btn {
