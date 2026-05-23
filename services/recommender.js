@@ -677,10 +677,10 @@ ${productList}
 - 각 상품 설명은 1~2문장으로 간결하게 — 핵심 셀링포인트 위주
 - 질문 절대 금지 — 궁금한 것은 CHIPS로만 유도
 
-응답 맨 끝(줄바꿈 후) 반드시 추가:
+★★ 모든 상품 설명을 완전히 끝낸 후, 마지막 줄에만 아래를 추가 (중간 삽입 절대 금지):
 PRODUCTS:[응답에 나온 순서대로 번호, 예: 2,1,3]
 CHIPS:["질문1","질문2","질문3"]
-(PRODUCTS, CHIPS는 UI 파싱 후 제거됨)
+(PRODUCTS, CHIPS는 UI 파싱 후 제거됨 — 설명 도중 삽입 시 답변이 잘려 보임)
 
 ${mode === 'discovery' ? `CHIPS 작성 규칙 (스타일 탐색 모드):
 - 고객이 방금 한 질문 맥락 + 우리가 보여준 스타일들을 고려해, 고객이 실제로 다음에 물어볼 법한 완성형 질문 2~4개
@@ -694,7 +694,7 @@ ${mode === 'discovery' ? `CHIPS 작성 규칙 (스타일 탐색 모드):
 
   const reqBody = {
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { maxOutputTokens: 3000 },
+    generationConfig: { maxOutputTokens: 8192 },
   };
 
   if (onChunk) return await callGeminiStream(reqBody, onChunk);
@@ -897,7 +897,11 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
     }
 
     const enriched = await enrichProducts(palette, mallId);
-    const rawMessage = await generateRecommendation(query, intent, enriched, systemPrompt, 'discovery', { pdpProduct }, makeTagFilter(streamCallback));
+    let rawMessage = await generateRecommendation(query, intent, enriched, systemPrompt, 'discovery', { pdpProduct }, makeTagFilter(streamCallback));
+    if (!rawMessage.includes('PRODUCTS:')) {
+      console.warn('[Recommend] Discovery PRODUCTS 태그 없음 — 재생성 시도');
+      rawMessage = await generateRecommendation(query, intent, enriched, systemPrompt, 'discovery', { pdpProduct }, null);
+    }
     await logApiCost(mallId, 'response_generation', 3000, 700);
 
     const message = cleanMessage(rawMessage);
@@ -950,9 +954,16 @@ async function recommend({ mallId, query, conversationHistory = [], context = {}
   const enriched = await enrichProducts(products, mallId);
 
   // ── 추천 생성 (상위 6개만 AI에게 전달) ──
-  const rawMessage = await generateRecommendation(
+  // PRODUCTS 태그가 없으면 Gemini가 응답 도중 잘린 것 → 스트림 없이 1회 재시도
+  let rawMessage = await generateRecommendation(
     query, intent, enriched.slice(0, 6), systemPrompt, mode, { pdpProduct }, makeTagFilter(streamCallback)
   );
+  if (!rawMessage.includes('PRODUCTS:')) {
+    console.warn('[Recommend] PRODUCTS 태그 없음 — 재생성 시도');
+    rawMessage = await generateRecommendation(
+      query, intent, enriched.slice(0, 6), systemPrompt, mode, { pdpProduct }, null
+    );
+  }
   await logApiCost(mallId, 'response_generation', 3000, 700);
 
   const reasons  = parseReasons(rawMessage);

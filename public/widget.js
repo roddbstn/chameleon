@@ -1897,7 +1897,9 @@
             scrollToBottom();
           } else if (data.type === 'done' || data.type === 'error') {
             removeLoading();
-            const msg = data.answer || data.message || streamRaw || '죄송해요, 다시 시도해주세요.';
+            // data.message가 streamRaw보다 짧으면(잘린 경우) streamRaw 우선 사용
+            const serverMsg = data.answer || data.message || '';
+            const msg = serverMsg.length >= streamRaw.length ? serverMsg : (streamRaw || serverMsg || '죄송해요, 다시 시도해주세요.');
             if (streamBubble) streamBubble.innerHTML = parseMd(msg);
             else addBubble('assistant', msg);
             messageLog.push({ role: 'assistant', text: msg });
