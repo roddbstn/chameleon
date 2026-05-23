@@ -82,9 +82,10 @@ async function extractFromHtml(html) {
   const section = extractSizeSection(html);
   if (!section) return null;
 
-  const prompt = `다음 HTML에서 상의/하의/신발 등의 사이즈 치수 표를 추출해 JSON으로 반환하세요.
+  const prompt = `다음 텍스트(HTML 또는 평문)에서 상의/하의/신발 등의 사이즈 치수 표를 추출해 JSON으로 반환하세요.
+"M - 총장 63 / 어깨 45 / 가슴 51.5" 형식도 테이블로 인식하세요.
 
-HTML:
+텍스트:
 ${section}
 
 반환 형식:
@@ -119,26 +120,44 @@ ${section}
 }
 
 /**
- * HTML에서 사이즈 관련 <table> 섹션만 추출
+ * HTML에서 사이즈 관련 섹션만 추출
  * 전체 HTML을 LLM에 보내면 토큰 낭비 → 관련 부분만 잘라냄
  */
 function extractSizeSection(html) {
-  // 사이즈 키워드가 포함된 <table> 요소 추출
+  // 1. 사이즈 키워드가 포함된 <table> 요소 추출
   const tablePattern = /<table[\s\S]*?<\/table>/gi;
   const tables = [...html.matchAll(tablePattern)].map(m => m[0]);
   const sizeTables = tables.filter(t =>
     SIZE_KEYWORDS.some(k => t.toLowerCase().includes(k.toLowerCase()))
   );
-
   if (sizeTables.length > 0) {
     return sizeTables.join('\n').slice(0, 8000);
   }
 
-  // 테이블 없으면 키워드 주변 텍스트 섹션
+  // 2. 평문 파싱: HTML 태그 제거 후 키워드 밀도가 가장 높은 구역 탐색
+  //    "M - 총장 63 / 어깨 45 / ..." 형식의 비테이블 사이즈 데이터 대응
+  const plain = html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&[a-z]+;/gi, ' ')
+    .replace(/\s+/g, ' ');
+
+  // 500자 윈도우를 100자씩 슬라이드하며 키워드가 가장 많이 몰린 구역 탐색
+  const WIN = 500;
+  let bestIdx = -1, bestCount = 0;
+  for (let i = 0; i < plain.length - WIN; i += 100) {
+    const win = plain.slice(i, i + WIN);
+    const count = SIZE_KEYWORDS.filter(k => win.includes(k)).length;
+    if (count > bestCount) { bestCount = count; bestIdx = i; }
+  }
+  if (bestCount >= 2 && bestIdx > -1) {
+    return plain.slice(Math.max(0, bestIdx - 200), bestIdx + 2500);
+  }
+
+  // 3. 최종 폴백: 첫 번째 키워드 주변 평문 텍스트
   for (const keyword of SIZE_KEYWORDS) {
-    const idx = html.indexOf(keyword);
+    const idx = plain.indexOf(keyword);
     if (idx > -1) {
-      return html.slice(Math.max(0, idx - 300), idx + 3000);
+      return plain.slice(Math.max(0, idx - 200), idx + 2500);
     }
   }
 
