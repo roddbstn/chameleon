@@ -173,44 +173,49 @@ ${section}
 
 /**
  * HTML에서 사이즈 관련 섹션만 추출
- * 전체 HTML을 LLM에 보내면 토큰 낭비 → 관련 부분만 잘라냄
+ * 지원 형식:
+ *   A. <table> 기반 (인실런스, 일반 쇼핑몰)
+ *   B. <ul><li> 기반 (인실런스 등 리스트 형 테이블)
+ *   C. 평문 슬래시 구분 (M - 총장 63 / 어깨 45 / ...)
+ *   D. 밀도 기반 폴백
  */
 function extractSizeSection(html) {
-  // 1. 사이즈 키워드가 포함된 <table> 요소 추출
+  // A. <table> 중 사이즈 키워드 포함된 것
   const tablePattern = /<table[\s\S]*?<\/table>/gi;
-  const tables = [...html.matchAll(tablePattern)].map(m => m[0]);
-  const sizeTables = tables.filter(t =>
-    SIZE_KEYWORDS.some(k => t.toLowerCase().includes(k.toLowerCase()))
-  );
-  if (sizeTables.length > 0) {
-    return sizeTables.join('\n').slice(0, 8000);
-  }
+  const sizeTables = [...html.matchAll(tablePattern)]
+    .map(m => m[0])
+    .filter(t => SIZE_KEYWORDS.some(k => t.toLowerCase().includes(k.toLowerCase())));
+  if (sizeTables.length > 0) return sizeTables.join('\n').slice(0, 8000);
 
-  // 2. 평문 파싱: HTML 태그 제거 후 키워드 밀도가 가장 높은 구역 탐색
-  //    "M - 총장 63 / 어깨 45 / ..." 형식의 비테이블 사이즈 데이터 대응
+  // B. 연속된 <ul> 클러스터 중 사이즈 키워드 포함된 구역
+  //    <ul><li>S</li><li>M</li></ul><ul><li>총장</li><li>66</li></ul> 형식 대응
+  const ulPattern = /(<ul[\s\S]*?<\/ul>\s*){2,}/gi;
+  const ulClusters = [...html.matchAll(ulPattern)]
+    .map(m => m[0])
+    .filter(c => SIZE_KEYWORDS.some(k => c.includes(k)));
+  if (ulClusters.length > 0) return ulClusters.join('\n').slice(0, 8000);
+
+  // C·D. HTML 태그 제거 후 평문 탐색
   const plain = html
     .replace(/<[^>]+>/g, ' ')
     .replace(/&[a-z]+;/gi, ' ')
     .replace(/\s+/g, ' ');
 
-  // 500자 윈도우를 100자씩 슬라이드하며 키워드가 가장 많이 몰린 구역 탐색
+  // 500자 윈도우 슬라이드로 키워드 밀도 가장 높은 구역 탐색
   const WIN = 500;
   let bestIdx = -1, bestCount = 0;
   for (let i = 0; i < plain.length - WIN; i += 100) {
-    const win = plain.slice(i, i + WIN);
-    const count = SIZE_KEYWORDS.filter(k => win.includes(k)).length;
+    const count = SIZE_KEYWORDS.filter(k => plain.slice(i, i + WIN).includes(k)).length;
     if (count > bestCount) { bestCount = count; bestIdx = i; }
   }
   if (bestCount >= 2 && bestIdx > -1) {
     return plain.slice(Math.max(0, bestIdx - 200), bestIdx + 2500);
   }
 
-  // 3. 최종 폴백: 첫 번째 키워드 주변 평문 텍스트
+  // 최종 폴백: 첫 번째 키워드 주변
   for (const keyword of SIZE_KEYWORDS) {
     const idx = plain.indexOf(keyword);
-    if (idx > -1) {
-      return plain.slice(Math.max(0, idx - 200), idx + 2500);
-    }
+    if (idx > -1) return plain.slice(Math.max(0, idx - 200), idx + 2500);
   }
 
   return null;

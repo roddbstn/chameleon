@@ -876,6 +876,19 @@
       const el = document.querySelector(sel);
       if (el) { console.log(`[Chameleon] 삽입 위치 (fallback): ${sel}`); return el; }
     }
+    // 가격 텍스트 요소에서 블록 조상을 역추적
+    const priceTextEl = document.querySelector('[id*="price_text"], [id*="price"]');
+    if (priceTextEl) {
+      let el = priceTextEl.parentElement;
+      while (el && el.parentElement && el.parentElement !== document.body) {
+        const d = window.getComputedStyle(el).display;
+        if ((d === 'block' || d === 'list-item' || d === 'flex' || d === 'table-row') && el.offsetWidth > 200) {
+          console.log('[Chameleon] 삽입 위치 (price traverse):', el);
+          return el;
+        }
+        el = el.parentElement;
+      }
+    }
     return null;
   }
 
