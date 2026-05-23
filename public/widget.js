@@ -824,7 +824,7 @@
       mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
     }
     .cml-refine-track {
-      display: flex; width: max-content; gap: 8px;
+      display: flex; width: max-content;
       animation: cml-chips-scroll var(--cml-refine-duration, 36s) linear infinite;
     }
     .cml-refine-bar:hover .cml-refine-track,
